@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- -->
+    <!-- Label shown on launcher icon -->
+    <string name="app_label">健康时钟</string>
+
+    <!-- Menu item on Alarm Clock screen: Add alarm -->
+    <string name="add_alarm">添加闹钟</string>
+
+    <!-- Context Menu Item on Alarm Settings screen: Delete alarm -->
+    <string name="delete_alarm">取消闹钟</string>
+
+    <!-- Context Menu Item on Alarm Settings screen: Enable alarm -->
+    <string name="enable_alarm">启用闹钟</string>
+
+    <!-- Context Menu Item on Alarm Settings screen: Disable alarm -->
+    <string name="disable_alarm">停用闹钟</string>
+
+    <!-- Delete alarm confirmation dialog message. -->
+    <string name="delete_alarm_confirm">将会取消此闹钟。</string>
+
+    <!-- Menu item on Alarm Clock screen: Show clock -->
+    <string name="show_clock">显示时钟</string>
+
+    <!-- Menu item on Alarm Clock screen: Hide clock -->
+    <string name="hide_clock">隐藏时钟</string>
+
+    <!-- Setting label on Set alarm screen: Label -->
+    <string name="label">标签</string>
+
+    <!-- Default label to display for an alarm -->
+    <string name="default_label">闹钟</string>
+
+    <!-- Preference category on Alarm Settings screen: Set alarm -->
+    <string name="set_alarm">设置闹钟</string>
+
+    <!-- Setting labels on Set alarm screen: Vibration on or off -->
+    <string name="alarm_vibrate">振动</string>
+
+    <!-- Setting labels on Set alarm screen: Repeat -->
+    <string name="alarm_repeat">重复</string>
+
+    <!-- Setting labels on Set alarm screen: Select alarm ringtone  -->
+    <string name="alert">铃声</string>
+
+    <!-- Setting labels on Set alarm screen: Set time  -->
+    <string name="time">时间</string>
+
+    <!-- Button labels on the alarm dialog: Dismiss -->
+    <string name="alarm_alert_dismiss_text">取消</string>
+
+    <!-- Alarm Alert screen: this message is shown after an alarm rung
+         unattended for a number of minutes.  It tells the user that
+         the alarm has been silenced.-->
+    <string name="alarm_alert_alert_silenced">闹钟响铃时间为 <xliff:g id="minutes">%d</xliff:g> 分钟</string>
+
+    <!-- Button labels on the alarm dialog: Snooze -->
+    <string name="alarm_alert_snooze_text">暂停再响</string>
+
+    <!-- Toast that appears after Alarm is snoozed from the Alarm
+         dialog. Says the alarm will snooze for xxx minutes.  -->
+    <string name="alarm_alert_snooze_set">暂停 <xliff:g id="minutes">%d</xliff:g> 分钟。</string>
+
+    <!-- 0: nothing
+         1: days
+         2:      hours
+         3: days hours
+         4:            minutes
+         5: days       minutes
+         6:      hours minutes
+         7: days hours minutes
+    --><skip />
+
+    <!-- Alarm confirmation toast: Describes how long from now until
+         alarm fires -->
+    <string-array name="alarm_set">
+        <item>已将此闹钟设置为从现在起不到 1 分钟后提醒。</item>
+        <item>已将此闹钟设置为从现在起 <xliff:g id="DAYS" example="2 days">%1$s</xliff:g> 后再提醒。</item>
+        <item>已将此闹钟设置为从现在起 <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g> 后再提醒。</item>
+        <item>已将此闹钟设置为从现在起 <xliff:g id="DAYS" example="2 days">%1$s</xliff:g> <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g> 后再提醒。</item>
+        <item>已将此闹钟设置为从现在起 <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> 后再提醒。</item>
+        <item>已将此闹钟设置为从现在起 <xliff:g id="DAYS" example="2 days">%1$s</xliff:g> <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> 后再提醒。</item>
+        <item>已将此闹钟设置为从现在起 <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g> <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> 后再提醒。</item>
+        <item>已将该闹钟设置为从现在起 <xliff:g id="DAYS" example="2 days">%1$s</xliff:g> <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g> <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> 后再提醒。</item>
+    </string-array>
+
+    <!-- Alarm confirmation toast: singular day -->
+    <string name="day">"1 天"</string>
+
+    <!-- Alarm confirmation toast: plural days -->
+    <string name="days">"<xliff:g id="days">%s</xliff:g> 天"</string>
+
+    <!-- Alarm confirmation toast: singular hour -->
+    <string name="hour">1 小时</string>
+
+    <!-- Alarm confirmation toast: plural hours -->
+    <string name="hours"><xliff:g id="hours">%s</xliff:g> 小时</string>
+
+    <!-- Alarm confirmation toast: singular minute  -->
+    <string name="minute">"1 分钟"</string>
+
+    <!-- Alarm confirmation toast: plural minutes  -->
+    <string name="minutes">"<xliff:g id="minutes">%s</xliff:g> 分钟"</string>
+
+    <!-- Repeat options that appear under an alarm on main Alarm Clock
+         screen to identify repetition schedule: special case for when
+         the alarm is set to repeat every day -->
+    <string name="every_day">每天</string>
+
+    <!-- Repeat options that appear under an alarm on main Alarm Clock
+         screen to identify repetition schedule: special case for when
+         the alarm is set to never repeat -->
+    <string name="never">一律不</string>
+
+    <!-- Repeat options that appear under an alarm on main Alarm Clock
+         screen to identify repetition schedule: concatenate days with
+         this character, i.e. "Mon, Tue, Wed" -->
+    <string name="day_concat">", "</string>
+
+    <!-- Appears at the top of the Clock Picker screen: Tell user to
+         select a clock to display -->
+    <string name="clock_instructions">选择要显示的时钟。</string>
+
+    <!-- Label for analog clock gadget, shown in list of all gadgets -->
+    <string name="analog_gadget">模拟时钟</string>
+
+    <!-- Menu item title for general Alarm Clock Settings -->
+    <string name="settings">设置</string>
+
+    <!-- Setting title for whether the alarm should play in silent mode.
+         Usually, silent mode only affects the ringer, but this setting
+         will make the alarms respect silent mode too. -->
+    <string name="alarm_in_silent_mode_title">静音模式下闹钟响</string>
+
+    <!-- Setting summary for whether the alarm should play in silent mode. -->
+    <string name="alarm_in_silent_mode_summary">手机处于静音模式时，闹钟仍会响</string>
+
+    <!-- Setting title for changing the snooze duration. -->
+    <string name="snooze_duration_title">再响间隔</string>
+
+    <!-- Entries listed in the ListPreference when invoking the snooze duration
+         preference. -->
+    <string-array name="snooze_duration_entries">
+      <item>5 分钟</item>
+      <item>10 分钟</item>
+      <item>15 分钟</item>
+      <item>20 分钟</item>
+      <item>25 分钟</item>
+      <item>30 分钟</item>
+    </string-array>
+
+    <!-- Values that are retrieved from the ListPreference. These must match
+         the snooze_duration_entries above. -->
+    <string-array name="snooze_duration_values">
+      <item>5</item>
+      <item>10</item>
+      <item>15</item>
+      <item>20</item>
+      <item>25</item>
+      <item>30</item>
+    </string-array>
+
+    <!-- Done button when editing an alarm. -->
+    <string name="done">完成</string>
+
+    <!-- Revert button when editing an alarm. -->
+    <string name="revert">还原</string>
+
+    <!-- Setting title for changing the alarm volume. -->
+    <string name="alarm_volume_title">闹钟音量</string>
+
+    <!-- Setting summary for changing the alarm volume. -->
+    <string name="alarm_volume_summary">设置闹钟音量</string>
+
+    <!-- Summary for the alarm preference when silent is chosen. -->
+    <string name="silent_alarm_summary">静音</string>
+
+    <!-- Text to display in the small text of the notification -->
+    <string name="alarm_notify_text">选择暂停或关闭此闹钟。</string>
+
+    <!-- Text to display in the notification ticker and label -->
+    <string name="alarm_notify_snooze_label"><xliff:g id="label">%s</xliff:g>（已暂停）</string>
+
+    <!-- Text to display in the notification when the alarm has been snoozed -->
+    <string name="alarm_notify_snooze_text">已将闹钟设置为从现在起 <xliff:g id="time">%s</xliff:g>后再提醒。选中可以取消。</string>
+
+    <!-- Title of the setting to change the volume/camera button behavior. -->
+    <string name="volume_button_setting_title">侧边按钮功用</string>
+
+    <!-- The summary of the side button setting. -->
+    <string name="volume_button_setting_summary">设置侧边按钮在闹钟启动时的功用</string>
+
+    <!-- Title of the ringtone setting. -->
+    <string name="default_ringtone_setting_title">设置默认铃声</string>
+
+    <!-- Entries listed in the setting for the side-button action. -->
+    <string-array name="volume_button_setting_entries">
+      <item>无</item>
+      <item>暂停</item>
+      <item>关闭</item>
+    </string-array>
+
+    <!-- Values for the side-button setting. -->
+    <string-array name="volume_button_setting_values">
+      <item>0</item>
+      <item>1</item>
+      <item>2</item>
+    </string-array>
+</resources>
+
+
