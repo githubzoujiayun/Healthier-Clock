@@ -1,35 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2007 The Android Open Source Project
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/main_bg" >
 
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-  
-          http://www.apache.org/licenses/LICENSE-2.0
-  
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
+    <!-- 标题栏 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/base_layout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="6dip"
-    android:orientation="vertical"> 
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/title_bar" >
+
+        <Button
+            android:id="@+id/settings"
+            style="@style/title_bar_left_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/title_list" />
+
+        <TextView
+            android:id="@+id/title_text"
+            style="@style/title_bar_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/app_label" />
+
+        <Button
+            android:id="@+id/account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/title_account" />
+    </RelativeLayout>
+
+    <!-- 天气块 -->
+
+    <RelativeLayout
+        android:id="@+id/weather_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_bar" >
+
+        <ImageView
+            android:id="@+id/weather_picture"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/weather_sunny"
+            android:src="@drawable/weather_sunny" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/weather_picture"
+            android:contentDescription="@string/weather_shadow"
+            android:src="@drawable/weather_shadow" />
+    </RelativeLayout>
+
+    <!-- 闹钟列表 -->
+
+    <ScrollView
+        android:id="@+id/solution_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/channel"
+        android:layout_below="@+id/weather_layout" >
+
+        <LinearLayout
+            android:id="@+id/alarms"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
-        android:id="@+id/clock_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="192dip"/>
+        android:id="@+id/base_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/channel"
+        android:layout_below="@+id/weather_layout"
+        android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/alarms_list"
+        <ListView
+            android:id="@+id/alarms_list"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <!-- 标题栏下阴影 -->
+
+    <View
+        android:id="@+id/title_bar_shadow"
+        android:layout_width="fill_parent"
+        android:layout_height="5dip"
+        android:layout_below="@+id/title_bar"
+        android:background="@drawable/title_bar_shadow" />
+
+    <Button
+        android:id="@+id/add_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_above="@+id/button_add_alarm_arrow"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/button_add_alarm"
+        android:gravity="center"
+        android:text="@string/add_alarm"
+        android:textColor="#FFFFFF" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/button_add_alarm_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/weather_layout"
+        android:src="@drawable/button_add_alarm_arrow" />
+    <!--
+         <ImageView
+        android:id="@+id/title_bar_shadow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_bar"
+        android:contentDescription="@string/title_bar_shadow"
+        android:src="@drawable/title_shadow" />
+    -->
+
+
+    <!-- 底部按钮 -->
+
+    <LinearLayout
+        android:id="@+id/channel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/channel_buttons_on_alarm"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/alarm"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:text="@string/default_label"
+            android:textColor="#367021"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/chinese_hour"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:text="@string/chinese_hour"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/solar_terms"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:text="@string/solar_terms"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/favorites"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:text="@string/favorites"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</RelativeLayout>

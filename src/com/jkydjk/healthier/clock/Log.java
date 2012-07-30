@@ -20,7 +20,6 @@
 
 package com.jkydjk.healthier.clock;
 
-import android.os.SystemClock;
 import android.util.Config;
 
 class Log {

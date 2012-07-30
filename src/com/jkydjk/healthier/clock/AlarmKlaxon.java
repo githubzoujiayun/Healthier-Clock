@@ -16,8 +16,6 @@
 
 package com.jkydjk.healthier.clock;
 
-import com.jkydjk.healthier.clock.R;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +26,6 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;

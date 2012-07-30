@@ -16,8 +16,6 @@
 
 package com.jkydjk.healthier.clock;
 
-import com.jkydjk.healthier.clock.R;
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;

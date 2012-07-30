@@ -16,8 +16,6 @@
 
 package com.jkydjk.healthier.clock;
 
-import com.jkydjk.healthier.clock.R;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;

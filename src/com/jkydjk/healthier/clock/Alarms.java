@@ -16,12 +16,14 @@
 
 package com.jkydjk.healthier.clock;
 
+import java.util.Calendar;
+
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,9 +32,6 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.provider.Settings;
 import android.text.format.DateFormat;
-
-import java.util.Calendar;
-import java.text.DateFormatSymbols;
 
 /**
  * The Alarms provider supplies info about Alarm Clock settings
@@ -91,11 +90,10 @@ public class Alarms {
     }
 
     /**
-     * Removes an existing Alarm.  If this alarm is snoozing, disables
-     * snooze.  Sets next alert.
+     * Removes an existing Alarm. If this alarm is snoozing, disables snooze.
+     * Sets next alert.
      */
-    public static void deleteAlarm(
-            Context context, int alarmId) {
+    public static void deleteAlarm(Context context, int alarmId) {
 
         ContentResolver contentResolver = context.getContentResolver();
         /* If alarm is snoozing, lose it */
@@ -109,31 +107,24 @@ public class Alarms {
 
     /**
      * Queries all alarms
+     * 
      * @return cursor over all alarms
      */
     public static Cursor getAlarmsCursor(ContentResolver contentResolver) {
-        return contentResolver.query(
-                Alarm.Columns.CONTENT_URI, Alarm.Columns.ALARM_QUERY_COLUMNS,
-                null, null, Alarm.Columns.DEFAULT_SORT_ORDER);
+        return contentResolver.query(Alarm.Columns.CONTENT_URI, Alarm.Columns.ALARM_QUERY_COLUMNS, null, null, Alarm.Columns.DEFAULT_SORT_ORDER);
     }
 
     // Private method to get a more limited set of alarms from the database.
-    private static Cursor getFilteredAlarmsCursor(
-            ContentResolver contentResolver) {
-        return contentResolver.query(Alarm.Columns.CONTENT_URI,
-                Alarm.Columns.ALARM_QUERY_COLUMNS, Alarm.Columns.WHERE_ENABLED,
-                null, null);
+    private static Cursor getFilteredAlarmsCursor(ContentResolver contentResolver) {
+        return contentResolver.query(Alarm.Columns.CONTENT_URI, Alarm.Columns.ALARM_QUERY_COLUMNS, Alarm.Columns.WHERE_ENABLED, null, null);
     }
 
     /**
-     * Return an Alarm object representing the alarm id in the database.
-     * Returns null if no alarm exists.
+     * Return an Alarm object representing the alarm id in the database. Returns
+     * null if no alarm exists.
      */
     public static Alarm getAlarm(ContentResolver contentResolver, int alarmId) {
-        Cursor cursor = contentResolver.query(
-                ContentUris.withAppendedId(Alarm.Columns.CONTENT_URI, alarmId),
-                Alarm.Columns.ALARM_QUERY_COLUMNS,
-                null, null, null);
+        Cursor cursor = contentResolver.query(ContentUris.withAppendedId(Alarm.Columns.CONTENT_URI, alarmId), Alarm.Columns.ALARM_QUERY_COLUMNS, null, null, null);
         Alarm alarm = null;
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -144,26 +135,30 @@ public class Alarms {
         return alarm;
     }
 
-
     /**
-     * A convenience method to set an alarm in the Alarms
-     * content provider.
-     *
-     * @param id             corresponds to the _id column
-     * @param enabled        corresponds to the ENABLED column
-     * @param hour           corresponds to the HOUR column
-     * @param minutes        corresponds to the MINUTES column
-     * @param daysOfWeek     corresponds to the DAYS_OF_WEEK column
-     * @param time           corresponds to the ALARM_TIME column
-     * @param vibrate        corresponds to the VIBRATE column
-     * @param message        corresponds to the MESSAGE column
-     * @param alert          corresponds to the ALERT column
+     * A convenience method to set an alarm in the Alarms content provider.
+     * 
+     * @param id
+     *            corresponds to the _id column
+     * @param enabled
+     *            corresponds to the ENABLED column
+     * @param hour
+     *            corresponds to the HOUR column
+     * @param minutes
+     *            corresponds to the MINUTES column
+     * @param daysOfWeek
+     *            corresponds to the DAYS_OF_WEEK column
+     * @param time
+     *            corresponds to the ALARM_TIME column
+     * @param vibrate
+     *            corresponds to the VIBRATE column
+     * @param message
+     *            corresponds to the MESSAGE column
+     * @param alert
+     *            corresponds to the ALERT column
      * @return Time when the alarm will fire.
      */
-    public static long setAlarm(
-            Context context, int id, boolean enabled, int hour, int minutes,
-            Alarm.DaysOfWeek daysOfWeek, boolean vibrate, String message,
-            String alert) {
+    public static long setAlarm(Context context, int id, boolean enabled, int hour, int minutes, Alarm.DaysOfWeek daysOfWeek, boolean vibrate, String message, String alert) {
 
         ContentValues values = new ContentValues(8);
         ContentResolver resolver = context.getContentResolver();
@@ -174,9 +169,8 @@ public class Alarms {
             time = calculateAlarm(hour, minutes, daysOfWeek).getTimeInMillis();
         }
 
-        if (Log.LOGV) Log.v(
-                "**  setAlarm * idx " + id + " hour " + hour + " minutes " +
-                minutes + " enabled " + enabled + " time " + time);
+        if (Log.LOGV)
+            Log.v("**  setAlarm * idx " + id + " hour " + hour + " minutes " + minutes + " enabled " + enabled + " time " + time);
 
         values.put(Alarm.Columns.ENABLED, enabled ? 1 : 0);
         values.put(Alarm.Columns.HOUR, hour);
@@ -186,17 +180,14 @@ public class Alarms {
         values.put(Alarm.Columns.VIBRATE, vibrate);
         values.put(Alarm.Columns.MESSAGE, message);
         values.put(Alarm.Columns.ALERT, alert);
-        resolver.update(ContentUris.withAppendedId(Alarm.Columns.CONTENT_URI, id),
-                        values, null, null);
+        resolver.update(ContentUris.withAppendedId(Alarm.Columns.CONTENT_URI, id), values, null, null);
 
-        long timeInMillis =
-                calculateAlarm(hour, minutes, daysOfWeek).getTimeInMillis();
+        long timeInMillis = calculateAlarm(hour, minutes, daysOfWeek).getTimeInMillis();
 
         if (enabled) {
             // If this alarm fires before the next snooze, clear the snooze to
             // enable this alarm.
-            SharedPreferences prefs = context.getSharedPreferences(
-                    AlarmClock.PREFERENCES, 0);
+            SharedPreferences prefs = context.getSharedPreferences(AlarmClock.PREFERENCES, 0);
             long snoozeTime = prefs.getLong(PREF_SNOOZE_TIME, 0);
             if (timeInMillis < snoozeTime) {
                 clearSnoozePreference(context, prefs);
@@ -210,25 +201,23 @@ public class Alarms {
 
     /**
      * A convenience method to enable or disable an alarm.
-     *
-     * @param id             corresponds to the _id column
-     * @param enabled        corresponds to the ENABLED column
+     * 
+     * @param id
+     *            corresponds to the _id column
+     * @param enabled
+     *            corresponds to the ENABLED column
      */
 
-    public static void enableAlarm(
-            final Context context, final int id, boolean enabled) {
+    public static void enableAlarm(final Context context, final int id, boolean enabled) {
         enableAlarmInternal(context, id, enabled);
         setNextAlert(context);
     }
 
-    private static void enableAlarmInternal(final Context context,
-            final int id, boolean enabled) {
-        enableAlarmInternal(context, getAlarm(context.getContentResolver(), id),
-                enabled);
+    private static void enableAlarmInternal(final Context context, final int id, boolean enabled) {
+        enableAlarmInternal(context, getAlarm(context.getContentResolver(), id), enabled);
     }
 
-    private static void enableAlarmInternal(final Context context,
-            final Alarm alarm, boolean enabled) {
+    private static void enableAlarmInternal(final Context context, final Alarm alarm, boolean enabled) {
         ContentResolver resolver = context.getContentResolver();
 
         ContentValues values = new ContentValues(2);
@@ -239,14 +228,12 @@ public class Alarms {
         if (enabled) {
             long time = 0;
             if (!alarm.daysOfWeek.isRepeatSet()) {
-                time = calculateAlarm(alarm.hour, alarm.minutes,
-                        alarm.daysOfWeek).getTimeInMillis();
+                time = calculateAlarm(alarm.hour, alarm.minutes, alarm.daysOfWeek).getTimeInMillis();
             }
             values.put(Alarm.Columns.ALARM_TIME, time);
         }
 
-        resolver.update(ContentUris.withAppendedId(
-                Alarm.Columns.CONTENT_URI, alarm.id), values, null, null);
+        resolver.update(ContentUris.withAppendedId(Alarm.Columns.CONTENT_URI, alarm.id), values, null, null);
     }
 
     public static Alarm calculateNextAlert(final Context context) {
@@ -261,8 +248,7 @@ public class Alarms {
                     // A time of 0 indicates this is a repeating alarm, so
                     // calculate the time to get the next alert.
                     if (a.time == 0) {
-                        a.time = calculateAlarm(a.hour, a.minutes, a.daysOfWeek)
-                                .getTimeInMillis();
+                        a.time = calculateAlarm(a.hour, a.minutes, a.daysOfWeek).getTimeInMillis();
                     } else if (a.time < now) {
                         // Expired alarm, disable it and move along.
                         enableAlarmInternal(context, a, false);
@@ -280,8 +266,7 @@ public class Alarms {
     }
 
     /**
-     * Disables non-repeating alarms that have passed.  Called at
-     * boot.
+     * Disables non-repeating alarms that have passed. Called at boot.
      */
     public static void disableExpiredAlarms(final Context context) {
         Cursor cur = getFilteredAlarmsCursor(context.getContentResolver());
@@ -294,8 +279,7 @@ public class Alarms {
                 // non-zero, check if the time is before now.
                 if (alarm.time != 0 && alarm.time < now) {
                     if (Log.LOGV) {
-                        Log.v("** DISABLE " + alarm.id + " now " + now +" set "
-                                + alarm.time);
+                        Log.v("** DISABLE " + alarm.id + " now " + now + " set " + alarm.time);
                     }
                     enableAlarmInternal(context, alarm, false);
                 }
@@ -305,9 +289,9 @@ public class Alarms {
     }
 
     /**
-     * Called at system startup, on time/timezone change, and whenever
-     * the user changes alarm settings.  Activates snooze if set,
-     * otherwise loads all alarms, activates next alert.
+     * Called at system startup, on time/timezone change, and whenever the user
+     * changes alarm settings. Activates snooze if set, otherwise loads all
+     * alarms, activates next alert.
      */
     public static void setNextAlert(final Context context) {
         if (!enableSnoozeAlert(context)) {
@@ -321,16 +305,16 @@ public class Alarms {
     }
 
     /**
-     * Sets alert in AlarmManger and StatusBar.  This is what will
-     * actually launch the alert when the alarm triggers.
-     *
-     * @param alarm Alarm.
-     * @param atTimeInMillis milliseconds since epoch
+     * Sets alert in AlarmManger and StatusBar. This is what will actually
+     * launch the alert when the alarm triggers.
+     * 
+     * @param alarm
+     *            Alarm.
+     * @param atTimeInMillis
+     *            milliseconds since epoch
      */
-    private static void enableAlert(Context context, final Alarm alarm,
-            final long atTimeInMillis) {
-        AlarmManager am = (AlarmManager)
-                context.getSystemService(Context.ALARM_SERVICE);
+    private static void enableAlert(Context context, final Alarm alarm, final long atTimeInMillis) {
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         if (Log.LOGV) {
             Log.v("** setAlert id " + alarm.id + " atTime " + atTimeInMillis);
@@ -352,8 +336,7 @@ public class Alarms {
         out.setDataPosition(0);
         intent.putExtra(ALARM_RAW_DATA, out.marshall());
 
-        PendingIntent sender = PendingIntent.getBroadcast(
-                context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         am.set(AlarmManager.RTC_WAKEUP, atTimeInMillis, sender);
 
@@ -367,24 +350,20 @@ public class Alarms {
 
     /**
      * Disables alert in AlarmManger and StatusBar.
-     *
-     * @param id Alarm ID.
+     * 
+     * @param id
+     *            Alarm ID.
      */
     static void disableAlert(Context context) {
-        AlarmManager am = (AlarmManager)
-                context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent sender = PendingIntent.getBroadcast(
-                context, 0, new Intent(ALARM_ALERT_ACTION),
-                PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent sender = PendingIntent.getBroadcast(context, 0, new Intent(ALARM_ALERT_ACTION), PendingIntent.FLAG_CANCEL_CURRENT);
         am.cancel(sender);
         setStatusBarIcon(context, false);
         saveNextAlarm(context, "");
     }
 
-    static void saveSnoozeAlert(final Context context, final int id,
-            final long time) {
-        SharedPreferences prefs = context.getSharedPreferences(
-                AlarmClock.PREFERENCES, 0);
+    static void saveSnoozeAlert(final Context context, final int id, final long time) {
+        SharedPreferences prefs = context.getSharedPreferences(AlarmClock.PREFERENCES, 0);
         if (id == -1) {
             clearSnoozePreference(context, prefs);
         } else {
@@ -401,8 +380,7 @@ public class Alarms {
      * Disable the snooze alert if the given id matches the snooze id.
      */
     static void disableSnoozeAlert(final Context context, final int id) {
-        SharedPreferences prefs = context.getSharedPreferences(
-                AlarmClock.PREFERENCES, 0);
+        SharedPreferences prefs = context.getSharedPreferences(AlarmClock.PREFERENCES, 0);
         int snoozeId = prefs.getInt(PREF_SNOOZE_ID, -1);
         if (snoozeId == -1) {
             // No snooze set, do nothing.
@@ -416,12 +394,10 @@ public class Alarms {
     // Helper to remove the snooze preference. Do not use clear because that
     // will erase the clock preferences. Also clear the snooze notification in
     // the window shade.
-    private static void clearSnoozePreference(final Context context,
-            final SharedPreferences prefs) {
+    private static void clearSnoozePreference(final Context context, final SharedPreferences prefs) {
         final int alarmId = prefs.getInt(PREF_SNOOZE_ID, -1);
         if (alarmId != -1) {
-            NotificationManager nm = (NotificationManager)
-                    context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             nm.cancel(alarmId);
         }
 
@@ -433,11 +409,11 @@ public class Alarms {
 
     /**
      * If there is a snooze set, enable it in AlarmManager
+     * 
      * @return true if snooze is set
      */
     private static boolean enableSnoozeAlert(final Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(
-                AlarmClock.PREFERENCES, 0);
+        SharedPreferences prefs = context.getSharedPreferences(AlarmClock.PREFERENCES, 0);
 
         int id = prefs.getInt(PREF_SNOOZE_ID, -1);
         if (id == -1) {
@@ -460,18 +436,22 @@ public class Alarms {
      * Tells the StatusBar whether the alarm is enabled or disabled
      */
     private static void setStatusBarIcon(Context context, boolean enabled) {
-//        Intent alarmChanged = new Intent(Intent.ACTION_ALARM_CHANGED);
+        // Intent alarmChanged = new Intent(Intent.ACTION_ALARM_CHANGED);
         Intent alarmChanged = new Intent("android.intent.action.ALARM_CHANGED");
         alarmChanged.putExtra("alarmSet", enabled);
         context.sendBroadcast(alarmChanged);
     }
 
     /**
-     * Given an alarm in hours and minutes, return a time suitable for
-     * setting in AlarmManager.
-     * @param hour Always in 24 hour 0-23
-     * @param minute 0-59
-     * @param daysOfWeek 0-59
+     * Given an alarm in hours and minutes, return a time suitable for setting
+     * in AlarmManager.
+     * 
+     * @param hour
+     *            Always in 24 hour 0-23
+     * @param minute
+     *            0-59
+     * @param daysOfWeek
+     *            0-59
      */
     static Calendar calculateAlarm(int hour, int minute, Alarm.DaysOfWeek daysOfWeek) {
 
@@ -483,8 +463,7 @@ public class Alarms {
         int nowMinute = c.get(Calendar.MINUTE);
 
         // if alarm is behind current time, advance one day
-        if (hour < nowHour  ||
-            hour == nowHour && minute <= nowMinute) {
+        if (hour < nowHour || hour == nowHour && minute <= nowMinute) {
             c.add(Calendar.DAY_OF_YEAR, 1);
         }
         c.set(Calendar.HOUR_OF_DAY, hour);
@@ -493,15 +472,17 @@ public class Alarms {
         c.set(Calendar.MILLISECOND, 0);
 
         int addDays = daysOfWeek.getNextAlarm(c);
-        /* Log.v("** TIMES * " + c.getTimeInMillis() + " hour " + hour +
-           " minute " + minute + " dow " + c.get(Calendar.DAY_OF_WEEK) + " from now " +
-           addDays); */
-        if (addDays > 0) c.add(Calendar.DAY_OF_WEEK, addDays);
+        /*
+         * Log.v("** TIMES * " + c.getTimeInMillis() + " hour " + hour +
+         * " minute " + minute + " dow " + c.get(Calendar.DAY_OF_WEEK) +
+         * " from now " + addDays);
+         */
+        if (addDays > 0)
+            c.add(Calendar.DAY_OF_WEEK, addDays);
         return c;
     }
 
-    static String formatTime(final Context context, int hour, int minute,
-                             Alarm.DaysOfWeek daysOfWeek) {
+    static String formatTime(final Context context, int hour, int minute, Alarm.DaysOfWeek daysOfWeek) {
         Calendar c = calculateAlarm(hour, minute, daysOfWeek);
         return formatTime(context, c);
     }
@@ -509,7 +490,7 @@ public class Alarms {
     /* used by AlarmAlert */
     static String formatTime(final Context context, Calendar c) {
         String format = get24HourMode(context) ? M24 : M12;
-        return (c == null) ? "" : (String)DateFormat.format(format, c);
+        return (c == null) ? "" : (String) DateFormat.format(format, c);
     }
 
     /**
@@ -517,7 +498,7 @@ public class Alarms {
      */
     private static String formatDayAndTime(final Context context, Calendar c) {
         String format = get24HourMode(context) ? DM24 : DM12;
-        return (c == null) ? "" : (String)DateFormat.format(format, c);
+        return (c == null) ? "" : (String) DateFormat.format(format, c);
     }
 
     /**
@@ -525,9 +506,7 @@ public class Alarms {
      * settings so those who care can make use of it.
      */
     static void saveNextAlarm(final Context context, String timeString) {
-        Settings.System.putString(context.getContentResolver(),
-                                  Settings.System.NEXT_ALARM_FORMATTED,
-                                  timeString);
+        Settings.System.putString(context.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED, timeString);
     }
 
     /**

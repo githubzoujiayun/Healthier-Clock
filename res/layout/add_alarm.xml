@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/main_bg" >
+
+    <!-- 标题栏 -->
+
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/title_bar" >
+
+        <Button
+            android:id="@+id/cancel"
+            style="@style/title_bar_left_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/cancel" />
+
+        <TextView
+            android:id="@+id/title_text"
+            style="@style/title_bar_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/add_alarm" />
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/alarm_grid"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_bar"
+        android:gravity="center_horizontal|center_vertical"
+        android:numColumns="4"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:verticalSpacing="10dp" >
+    </GridView>
+
+    <!-- <Button
+        android:id="@+id/work_rest_a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/alarm_category_work_rest"
+        android:text="@string/alarm_category_work_rest" /> -->
+    <!--
+
+    <Button
+        android:id="@+id/work_rest"
+        style="@style/alarm_category_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/alarm_category_work_rest"
+        android:text="@string/alarm_category_work_rest" />
+
+    <Button
+        android:id="@+id/take_medicine"
+        style="@style/alarm_category_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/alarm_category_take_medicine"
+        android:text="@string/alarm_category_take_medicine" />
+
+    <Button
+        android:id="@+id/movement"
+        style="@style/alarm_category_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/alarm_category_take_medicine"
+        android:text="@string/alarm_category_movement" />
+
+    <Button
+        android:id="@+id/timer"
+        style="@style/alarm_category_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/alarm_category_take_medicine"
+        android:text="@string/alarm_category_timer" />
+
+    <Button
+        android:id="@+id/custom"
+        style="@style/alarm_category_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/alarm_category_take_medicine"
+        android:text="@string/alarm_category_custom" />
+    -->
+
+
+    <!-- 标题栏下阴影 -->
+
+    <View
+        android:id="@+id/title_bar_shadow"
+        android:layout_width="fill_parent"
+        android:layout_height="5dip"
+        android:layout_below="@+id/title_bar"
+        android:background="@drawable/title_bar_shadow" />
+
+</RelativeLayout>

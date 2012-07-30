@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ImageView
+        android:id="@+id/image_item"
+        android:contentDescription="@string/alarm_category_image_content_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" >
+    </ImageView>
+
+    <TextView
+        android:id="@+id/text_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_item"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:shadowColor="@color/title_bar_button_text_shadow"
+        android:shadowDx="1.5"
+        android:shadowDy="1.5"
+        android:shadowRadius="1"
+        android:textColor="@color/alarm_category_button_text"
+        android:textSize="14sp" >
+    </TextView>
+
+</RelativeLayout>

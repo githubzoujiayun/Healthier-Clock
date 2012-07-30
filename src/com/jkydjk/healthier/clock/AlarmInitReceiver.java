@@ -16,9 +16,9 @@
 
 package com.jkydjk.healthier.clock;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.BroadcastReceiver;
 
 public class AlarmInitReceiver extends BroadcastReceiver {
 
