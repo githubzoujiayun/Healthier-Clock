@@ -20,7 +20,6 @@ import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,6 +29,8 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.text.format.Time;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -50,7 +51,9 @@ import android.widget.TextView;
  * AlarmClock application.
  */
 @SuppressLint("NewApi")
-public class AlarmClock extends Activity implements OnClickListener, OnItemClickListener {
+public class AlarmClock extends BaseActivity implements OnClickListener, OnItemClickListener {
+
+	protected static final int MSG_CLOCK = 0x1234;
 
 	static final String PREFERENCES = "AlarmClock";
 	static final String PREF_CLOCK_FACE = "face";
@@ -71,6 +74,8 @@ public class AlarmClock extends Activity implements OnClickListener, OnItemClick
 	private Button settingsButton;
 	private Button addAlarmButton;
 
+	private TextView welcomeTextView;
+
 	// private View mClock = null;
 	private ListView mAlarmsList;
 	private Cursor alarmsCursor;
@@ -81,6 +86,11 @@ public class AlarmClock extends Activity implements OnClickListener, OnItemClick
 	 * Which clock face to show
 	 */
 	private int mFace = -1;
+
+	private final Handler mHandler = new Handler();
+
+	public Handler timer;
+	private Thread timerThread;
 
 	/*
 	 * TODO: it would be nice for this to live in an xml config file.
@@ -191,6 +201,9 @@ public class AlarmClock extends Activity implements OnClickListener, OnItemClick
 		addAlarmButton = (Button) findViewById(R.id.add_alarm);
 		addAlarmButton.setOnClickListener(this);
 
+		welcomeTextView = (TextView) findViewById(R.id.welcome);
+		setWelcomeText();
+
 		String[] ampm = new DateFormatSymbols().getAmPmStrings();
 		mAm = ampm[0];
 		mPm = ampm[1];
@@ -200,9 +213,39 @@ public class AlarmClock extends Activity implements OnClickListener, OnItemClick
 		alarmsCursor = Alarms.getAlarmsCursor(getContentResolver());
 
 		updateLayout();
+
+		timer = new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case MSG_CLOCK:
+					setWelcomeText();
+					break;
+				}
+				super.handleMessage(msg);
+			}
+		};
+		timerThread = new LooperThread();
+		timerThread.start();
+
 	}
 
-	private final Handler mHandler = new Handler();
+	class LooperThread extends Thread {
+		@Override
+		public void run() {
+			super.run();
+			try {
+				do {
+					Message msg = new Message();
+					msg.what = AlarmClock.MSG_CLOCK;
+					AlarmClock.this.timer.sendMessage(msg);
+					Thread.sleep(1000 * 60);
+				} while (Thread.interrupted() == false);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
@@ -217,15 +260,9 @@ public class AlarmClock extends Activity implements OnClickListener, OnItemClick
 	}
 
 	private void updateLayout() {
-
-		// alarmsCursor
-
 		mAlarmsList = (ListView) findViewById(R.id.alarms_list);
-
 		mAlarmsList.setAdapter(new AlarmTimeAdapter(this, alarmsCursor));
-
 		mAlarmsList.setVerticalScrollBarEnabled(true);
-
 		mAlarmsList.setOnItemClickListener(this);
 		mAlarmsList.setOnCreateContextMenuListener(this);
 	}
@@ -233,7 +270,7 @@ public class AlarmClock extends Activity implements OnClickListener, OnItemClick
 	@Override
 	protected void onResume() {
 		super.onResume();
-
+		setWelcomeText();
 		int face = mPrefs.getInt(PREF_CLOCK_FACE, 0);
 		if (mFace != face) {
 			if (face < 0 || face >= AlarmClock.CLOCKS.length) {
@@ -316,8 +353,32 @@ public class AlarmClock extends Activity implements OnClickListener, OnItemClick
 
 		case R.id.add_alarm:
 			startActivity(new Intent(this, AddAlarm.class));
-//			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+			// overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 			break;
 		}
+	}
+
+	private void setWelcomeText() {
+		Time t = new Time();
+		t.setToNow();
+		int hour = t.hour;
+
+		if (5 <= hour && hour < 11) {
+			welcomeTextView.setText(getStringResourceID(getApplicationContext(), "welcome_good_morning"));
+		} else if (11 <= hour && hour < 13) {
+			welcomeTextView.setText(getStringResourceID(getApplicationContext(), "welcome_good_noon"));
+		} else if (13 <= hour && hour < 19) {
+			welcomeTextView.setText(getStringResourceID(getApplicationContext(), "welcome_good_afternoon"));
+		} else {
+			welcomeTextView.setText(getStringResourceID(getApplicationContext(), "welcome_good_evening"));
+		}
+
+	}
+
+	@Override
+	public void finish() {
+		super.finish();
+//		timer.removeCallbacks(timerThread); // 移除线程回调
+//		timerThread.interrupt(); // 终止线程
 	}
 }

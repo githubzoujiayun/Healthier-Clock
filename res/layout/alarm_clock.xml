@@ -53,11 +53,89 @@
             android:src="@drawable/weather_sunny" />
 
         <ImageView
+            android:id="@+id/weather_shadow"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/weather_picture"
             android:contentDescription="@string/weather_shadow"
             android:src="@drawable/weather_shadow" />
+
+        <TextView
+            android:id="@+id/welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/weather_shadow"
+            android:layout_marginLeft="12dp"
+            android:paddingTop="8dp"
+            android:shadowColor="#333333"
+            android:shadowDx="1.5"
+            android:shadowDy="1.5"
+            android:shadowRadius="1"
+            android:text="@string/welcome_good_morning"
+            android:textColor="#FFFFFFFF"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/welcome"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/welcome"
+            android:shadowColor="#333333"
+            android:shadowDx="1.5"
+            android:shadowDy="1.5"
+            android:shadowRadius="1"
+            android:text="上海"
+            android:textColor="#FFFFFFFF"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:id="@+id/weather_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/weather_shadow"
+            android:layout_below="@+id/welcome"
+            android:layout_marginLeft="12dp"
+            android:orientation="horizontal"
+            android:paddingTop="5dp" >
+
+            <com.jkydjk.healthier.clock.widget.TextViewWeather
+                android:id="@+id/weather_logo_today"
+                style="@style/weather_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="@string/wealther_logo_shade" />
+
+            <TextView
+                android:id="@+id/weather_text_today"
+                style="@style/weather_info"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="今天 阴\n25 - 33℃" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#FFFFFFFF" />
+
+            <com.jkydjk.healthier.clock.widget.TextViewWeather
+                android:id="@+id/weather_logo_tomorrow"
+                style="@style/weather_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="@string/wealther_logo_cloudy" />
+
+            <TextView
+                android:id="@+id/weather_text_tomorrow"
+                style="@style/weather_info"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="明天 多云\n25 - 35℃" />
+        </LinearLayout>
     </RelativeLayout>
 
     <!-- 闹钟列表 -->
@@ -94,12 +172,15 @@
 
     <!-- 标题栏下阴影 -->
 
-    <View
+    <ImageView
         android:id="@+id/title_bar_shadow"
         android:layout_width="fill_parent"
-        android:layout_height="5dip"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/title_bar"
-        android:background="@drawable/title_bar_shadow" />
+        android:contentDescription="@string/title_bar_shadow"
+        android:src="@drawable/title_shadow" />
+
+    <!-- 添加闹钟按钮 -->
 
     <Button
         android:id="@+id/add_alarm"
@@ -109,6 +190,10 @@
         android:layout_alignParentRight="true"
         android:background="@drawable/button_add_alarm"
         android:gravity="center"
+        android:shadowColor="#333333"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
         android:text="@string/add_alarm"
         android:textColor="#FFFFFF" />
 
@@ -119,70 +204,5 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/weather_layout"
         android:src="@drawable/button_add_alarm_arrow" />
-    <!--
-         <ImageView
-        android:id="@+id/title_bar_shadow"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title_bar"
-        android:contentDescription="@string/title_bar_shadow"
-        android:src="@drawable/title_shadow" />
-    -->
-
-
-    <!-- 底部按钮 -->
-
-    <LinearLayout
-        android:id="@+id/channel"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/channel_buttons_on_alarm"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/alarm"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:text="@string/default_label"
-            android:textColor="#367021"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/chinese_hour"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:text="@string/chinese_hour"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/solar_terms"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:text="@string/solar_terms"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/favorites"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:text="@string/favorites"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
-    </LinearLayout>
 
 </RelativeLayout>

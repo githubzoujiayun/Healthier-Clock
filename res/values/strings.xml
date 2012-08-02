@@ -1,20 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright (C) 2007 The Android Open Source Project
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-          http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
-
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!--  -->
@@ -22,7 +6,7 @@
     <string name="app_label">健康时钟</string>
 
     <!-- Menu item on Alarm Clock screen: Add alarm -->
-    <string name="add_alarm">添加闹钟</string>
+    <string name="add_alarm">新增闹钟</string>
 
     <!-- Context Menu Item on Alarm Settings screen: Delete alarm -->
     <string name="delete_alarm">取消闹钟</string>
@@ -254,6 +238,15 @@
     <string name="favorites">收藏</string>
     <string name="cancel">取消</string>
     
+    <!-- Welcome text -->
+    <string name="welcome_good_morning">早上好</string>
+    <string name="welcome_good_noon">中午好</string>
+    <string name="welcome_good_afternoon">下午好</string>
+    <string name="welcome_good_evening">晚上好</string>
+    
+    <!-- Weather logo font -->
+    <string name="wealther_logo_shade">`</string>
+    <string name="wealther_logo_cloudy">1</string>
     
     <!-- Alarm category -->
     <string name="alarm_category_image_content_description">闹钟分类图标</string>

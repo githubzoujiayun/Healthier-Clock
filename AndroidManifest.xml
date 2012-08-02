@@ -38,7 +38,7 @@
             android:authorities="com.jkydjk.healthier.clock" />
 
         <activity
-            android:name="AlarmClock"
+            android:name="Healthier"
             android:configChanges="orientation|keyboardHidden|keyboard|navigation"
             android:label="@string/app_label"
             android:screenOrientation="portrait" >
@@ -47,6 +47,18 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="ChineseHour" />
+        <activity android:name="SolarTerms" />
+        <activity android:name="Favorites" />
+        <activity
+            android:name="AlarmClock"
+            android:configChanges="orientation|keyboardHidden|keyboard|navigation"
+            android:label="@string/app_label"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
@@ -59,19 +71,17 @@
         </activity>
         <activity
             android:name="SetAlarm"
-            android:screenOrientation="portrait"
-            android:label="@string/set_alarm" />
-        
+            android:label="@string/set_alarm"
+            android:screenOrientation="portrait" />
         <activity
             android:name="AddAlarm"
             android:label="@string/add_alarm"
             android:screenOrientation="portrait" />
-        
         <activity
             android:name="AlarmAlert"
-            android:screenOrientation="portrait"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
             android:taskAffinity=""
             android:theme="@style/alarm_alert" />
 
@@ -82,9 +92,9 @@
         -->
         <activity
             android:name="AlarmAlertFullScreen"
-            android:screenOrientation="portrait"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
             android:taskAffinity=""
             android:theme="@android:style/Theme.Wallpaper.NoTitleBar" />
         <activity android:name="ClockPicker" />
@@ -131,7 +141,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/analog_appwidget" />
         </receiver>
-        
     </application>
 
 </manifest>

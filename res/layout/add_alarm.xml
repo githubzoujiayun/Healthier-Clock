@@ -42,56 +42,6 @@
         android:verticalSpacing="10dp" >
     </GridView>
 
-    <!-- <Button
-        android:id="@+id/work_rest_a"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTop="@drawable/alarm_category_work_rest"
-        android:text="@string/alarm_category_work_rest" /> -->
-    <!--
-
-    <Button
-        android:id="@+id/work_rest"
-        style="@style/alarm_category_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTop="@drawable/alarm_category_work_rest"
-        android:text="@string/alarm_category_work_rest" />
-
-    <Button
-        android:id="@+id/take_medicine"
-        style="@style/alarm_category_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTop="@drawable/alarm_category_take_medicine"
-        android:text="@string/alarm_category_take_medicine" />
-
-    <Button
-        android:id="@+id/movement"
-        style="@style/alarm_category_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTop="@drawable/alarm_category_take_medicine"
-        android:text="@string/alarm_category_movement" />
-
-    <Button
-        android:id="@+id/timer"
-        style="@style/alarm_category_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTop="@drawable/alarm_category_take_medicine"
-        android:text="@string/alarm_category_timer" />
-
-    <Button
-        android:id="@+id/custom"
-        style="@style/alarm_category_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTop="@drawable/alarm_category_take_medicine"
-        android:text="@string/alarm_category_custom" />
-    -->
-
-
     <!-- 标题栏下阴影 -->
 
     <View
