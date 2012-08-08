@@ -138,37 +138,46 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <!-- 闹钟列表 -->
+    <!-- 无闹钟提示块 -->
 
-    <ScrollView
-        android:id="@+id/solution_content"
+    <RelativeLayout
+        android:id="@+id/no_alarm"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/channel"
-        android:layout_below="@+id/weather_layout" >
-
-        <LinearLayout
-            android:id="@+id/alarms"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-        </LinearLayout>
-    </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/base_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/channel"
+        android:layout_alignParentBottom="true"
         android:layout_below="@+id/weather_layout"
-        android:orientation="vertical" >
+        android:layout_centerHorizontal="true" >
 
-        <ListView
-            android:id="@+id/alarms_list"
-            android:layout_width="fill_parent"
-            android:layout_height="0dip"
-            android:layout_weight="1" />
-    </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/no_alarm" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="5sp"
+            android:text="@string/no_alarm"
+            android:textColor="#FF666666" />
+    </RelativeLayout>
+
+    <!-- 闹钟列表 -->
+    <ListView
+        android:id="@+id/alarms_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/weather_layout"
+        android:background="@android:color/transparent"
+        android:cacheColorHint="#00000000"
+        android:dividerHeight="1.0px"
+        android:divider="#CCCCCC"
+        android:fadingEdge="none"
+        android:listSelector="@android:color/transparent"
+        android:scrollingCache="false" />
 
     <!-- 标题栏下阴影 -->
 

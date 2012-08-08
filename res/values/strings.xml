@@ -255,6 +255,14 @@
     <string name="alarm_category_movement">运动提醒</string>
     <string name="alarm_category_timer">计时器</string>
     <string name="alarm_category_custom">自定义</string>
+    <string name="alarm_category_custom_alarm">闹铃</string>
     
+    <!-- Alarm action -->
+    <string name="edit">编辑</string>
+    <string name="close">关闭</string>
+    <string name="open">开启</string>
+    <string name="delete">删除</string>
+    <string name="skip">跳过</string>
     
+    <string name="no_alarm">点击按钮添加新的闹钟\n健康生活由此开始</string>
 </resources>

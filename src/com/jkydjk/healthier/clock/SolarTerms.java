@@ -10,6 +10,6 @@ public class SolarTerms extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.tab_host_third_view);
+		setContentView(R.layout.solar_terms);
 	}
 }

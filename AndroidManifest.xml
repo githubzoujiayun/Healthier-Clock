@@ -1,32 +1,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jkydjk.healthier.clock" >
 
-    <original-package android:name="com.jkydjk.healthier.clock" />
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="8" />
 
-    <!-- 授权信息 -->
-    <!-- 自启动程序的声明，当Android系统启动时会发送这个广播，所以自启动程序必需声明 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <!-- 允许程序读取或写入系统设置 -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <!-- 允许程序禁用键盘锁 -->
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <!-- 可以得到电话的信息。（电话号码，用户识别码，等等） -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- 允许程序访问WiFi网络状态信息 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 允许程序访问有关GSM网络信息(Allows applications to access information about networks) -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- 网络访问 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 粗略定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- 精细定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- 模拟定位 -->
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
-    <!-- 允许访问振动设备 -->
     <uses-permission android:name="android.permission.VIBRATE" />
-    <!-- 允许使用PowerManager的WakeLocks保持进程在休眠时从屏幕消失 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application

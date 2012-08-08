@@ -10,6 +10,6 @@ public class ChineseHour extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.tab_host_second_view);
+		setContentView(R.layout.chinese_hour);
 	}
 }

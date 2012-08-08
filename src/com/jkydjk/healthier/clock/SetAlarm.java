@@ -211,7 +211,7 @@ public class SetAlarm extends PreferenceActivity implements TimePickerDialog.OnT
      * Display a toast that tells the user how long until the alarm goes off.
      * This helps prevent "am/pm" mistakes.
      */
-    static void popAlarmSetToast(Context context, int hour, int minute, Alarm.DaysOfWeek daysOfWeek) {
+    public static void popAlarmSetToast(Context context, int hour, int minute, Alarm.DaysOfWeek daysOfWeek) {
         popAlarmSetToast(context, Alarms.calculateAlarm(hour, minute, daysOfWeek).getTimeInMillis());
     }
 

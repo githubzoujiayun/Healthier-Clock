@@ -29,313 +29,320 @@ import android.provider.BaseColumns;
 
 public final class Alarm implements Parcelable {
 
-    //////////////////////////////
-    // Parcelable apis
-    //////////////////////////////
-    public static final Parcelable.Creator<Alarm> CREATOR
-            = new Parcelable.Creator<Alarm>() {
-                public Alarm createFromParcel(Parcel p) {
-                    return new Alarm(p);
-                }
+	// ////////////////////////////
+	// Parcelable apis
+	// ////////////////////////////
+	public static final Parcelable.Creator<Alarm> CREATOR = new Parcelable.Creator<Alarm>() {
+		public Alarm createFromParcel(Parcel p) {
+			return new Alarm(p);
+		}
 
-                public Alarm[] newArray(int size) {
-                    return new Alarm[size];
-                }
-            };
+		public Alarm[] newArray(int size) {
+			return new Alarm[size];
+		}
+	};
 
-    public int describeContents() {
-        return 0;
-    }
+	public int describeContents() {
+		return 0;
+	}
 
-    public void writeToParcel(Parcel p, int flags) {
-        p.writeInt(id);
-        p.writeInt(enabled ? 1 : 0);
-        p.writeInt(hour);
-        p.writeInt(minutes);
-        p.writeInt(daysOfWeek.getCoded());
-        p.writeLong(time);
-        p.writeInt(vibrate ? 1 : 0);
-        p.writeString(label);
-        p.writeParcelable(alert, flags);
-        p.writeInt(silent ? 1 : 0);
-    }
-    //////////////////////////////
-    // end Parcelable apis
-    //////////////////////////////
+	public void writeToParcel(Parcel p, int flags) {
+		p.writeInt(id);
+		p.writeInt(enabled ? 1 : 0);
+		p.writeInt(hour);
+		p.writeInt(minutes);
+		p.writeInt(daysOfWeek.getCoded());
+		p.writeLong(time);
+		p.writeInt(vibrate ? 1 : 0);
+		p.writeString(label);
+		p.writeParcelable(alert, flags);
+		p.writeInt(silent ? 1 : 0);
+	}
 
-    //////////////////////////////
-    // Column definitions
-    //////////////////////////////
-    public static class Columns implements BaseColumns {
-        /**
-         * The content:// style URL for this table
-         */
-        public static final Uri CONTENT_URI =
-                Uri.parse("content://com.jkydjk.healthier.clock/alarm");
+	// ////////////////////////////
+	// end Parcelable apis
+	// ////////////////////////////
 
-        /**
-         * Hour in 24-hour localtime 0 - 23.
-         * <P>Type: INTEGER</P>
-         */
-        public static final String HOUR = "hour";
+	// ////////////////////////////
+	// Column definitions
+	// ////////////////////////////
+	public static class Columns implements BaseColumns {
+		/**
+		 * The content:// style URL for this table
+		 */
+		public static final Uri CONTENT_URI = Uri.parse("content://com.jkydjk.healthier.clock/alarm");
 
-        /**
-         * Minutes in localtime 0 - 59
-         * <P>Type: INTEGER</P>
-         */
-        public static final String MINUTES = "minutes";
+		/**
+		 * 闹铃的名称
+		 * <p>
+		 * Type: STRING
+		 * </p>
+		 */
+		public static final String NAME = "name";
 
-        /**
-         * Days of week coded as integer
-         * <P>Type: INTEGER</P>
-         */
-        public static final String DAYS_OF_WEEK = "daysofweek";
+		/**
+		 * Hour in 24-hour localtime 0 - 23.
+		 * <p>
+		 * Type: INTEGER
+		 * </p>
+		 */
+		public static final String HOUR = "hour";
 
-        /**
-         * Alarm time in UTC milliseconds from the epoch.
-         * <P>Type: INTEGER</P>
-         */
-        public static final String ALARM_TIME = "alarmtime";
+		/**
+		 * Minutes in localtime 0 - 59
+		 * <p>
+		 * Type: INTEGER
+		 * </p>
+		 */
+		public static final String MINUTES = "minutes";
 
-        /**
-         * True if alarm is active
-         * <P>Type: BOOLEAN</P>
-         */
-        public static final String ENABLED = "enabled";
+		/**
+		 * Days of week coded as integer
+		 * <p>
+		 * Type: INTEGER
+		 * </p>
+		 */
+		public static final String DAYS_OF_WEEK = "daysofweek";
 
-        /**
-         * True if alarm should vibrate
-         * <P>Type: BOOLEAN</P>
-         */
-        public static final String VIBRATE = "vibrate";
+		/**
+		 * Alarm time in UTC milliseconds from the epoch.
+		 * <p>
+		 * Type: INTEGER
+		 * </p>
+		 */
+		public static final String ALARM_TIME = "alarmtime";
 
-        /**
-         * Message to show when alarm triggers
-         * Note: not currently used
-         * <P>Type: STRING</P>
-         */
-        public static final String MESSAGE = "message";
+		/**
+		 * True if alarm is active
+		 * <p>
+		 * Type: BOOLEAN
+		 * </p>
+		 */
+		public static final String ENABLED = "enabled";
 
-        /**
-         * Audio alert to play when alarm triggers
-         * <P>Type: STRING</P>
-         */
-        public static final String ALERT = "alert";
+		/**
+		 * True if alarm should vibrate
+		 * <p>
+		 * Type: BOOLEAN
+		 * </p>
+		 */
+		public static final String VIBRATE = "vibrate";
 
-        /**
-         * The default sort order for this table
-         */
-        public static final String DEFAULT_SORT_ORDER =
-                HOUR + ", " + MINUTES + " ASC";
+		/**
+		 * Message to show when alarm triggers Note: not currently used
+		 * <p>
+		 * Type: STRING
+		 * </p>
+		 */
+		public static final String MESSAGE = "message";
 
-        // Used when filtering enabled alarms.
-        public static final String WHERE_ENABLED = ENABLED + "=1";
+		/**
+		 * 响铃时的声音
+		 * <p>
+		 * Type: STRING
+		 * </p>
+		 */
+		public static final String ALERT = "alert";
 
-        static final String[] ALARM_QUERY_COLUMNS = {
-            _ID, HOUR, MINUTES, DAYS_OF_WEEK, ALARM_TIME,
-            ENABLED, VIBRATE, MESSAGE, ALERT };
+		/**
+		 * 默认排序顺序
+		 */
+		public static final String DEFAULT_SORT_ORDER = HOUR + ", " + MINUTES + " ASC";
 
-        /**
-         * These save calls to cursor.getColumnIndexOrThrow()
-         * THEY MUST BE KEPT IN SYNC WITH ABOVE QUERY COLUMNS
-         */
-        public static final int ALARM_ID_INDEX = 0;
-        public static final int ALARM_HOUR_INDEX = 1;
-        public static final int ALARM_MINUTES_INDEX = 2;
-        public static final int ALARM_DAYS_OF_WEEK_INDEX = 3;
-        public static final int ALARM_TIME_INDEX = 4;
-        public static final int ALARM_ENABLED_INDEX = 5;
-        public static final int ALARM_VIBRATE_INDEX = 6;
-        public static final int ALARM_MESSAGE_INDEX = 7;
-        public static final int ALARM_ALERT_INDEX = 8;
-    }
-    //////////////////////////////
-    // End column definitions
-    //////////////////////////////
+		// Used when filtering enabled alarms.
+		public static final String WHERE_ENABLED = ENABLED + "=1";
 
-    // Public fields
-    public int        id;
-    public boolean    enabled;
-    public int        hour;
-    public int        minutes;
-    public DaysOfWeek daysOfWeek;
-    public long       time;
-    public boolean    vibrate;
-    public String     label;
-    public Uri        alert;
-    public boolean    silent;
+		static final String[] ALARM_QUERY_COLUMNS = { _ID, NAME, HOUR, MINUTES, DAYS_OF_WEEK, ALARM_TIME, ENABLED, VIBRATE, MESSAGE, ALERT };
 
-    public Alarm(Cursor c) {
-        id = c.getInt(Columns.ALARM_ID_INDEX);
-        enabled = c.getInt(Columns.ALARM_ENABLED_INDEX) == 1;
-        hour = c.getInt(Columns.ALARM_HOUR_INDEX);
-        minutes = c.getInt(Columns.ALARM_MINUTES_INDEX);
-        daysOfWeek = new DaysOfWeek(c.getInt(Columns.ALARM_DAYS_OF_WEEK_INDEX));
-        time = c.getLong(Columns.ALARM_TIME_INDEX);
-        vibrate = c.getInt(Columns.ALARM_VIBRATE_INDEX) == 1;
-        label = c.getString(Columns.ALARM_MESSAGE_INDEX);
-        String alertString = c.getString(Columns.ALARM_ALERT_INDEX);
-        if (Alarms.ALARM_ALERT_SILENT.equals(alertString)) {
-            if (Log.LOGV) {
-                Log.v("Alarm is marked as silent");
-            }
-            silent = true;
-        } else {
-            if (alertString != null && alertString.length() != 0) {
-                alert = Uri.parse(alertString);
-            }
+		/**
+		 * These save calls to cursor.getColumnIndexOrThrow() THEY MUST BE KEPT
+		 * IN SYNC WITH ABOVE QUERY COLUMNS
+		 */
+		public static final int ALARM_ID_INDEX = 0;
+		public static final int ALARM_NAME_INDEX = 1;
+		public static final int ALARM_HOUR_INDEX = 2;
+		public static final int ALARM_MINUTES_INDEX = 3;
+		public static final int ALARM_DAYS_OF_WEEK_INDEX = 4;
+		public static final int ALARM_TIME_INDEX = 5;
+		public static final int ALARM_ENABLED_INDEX = 6;
+		public static final int ALARM_VIBRATE_INDEX = 7;
+		public static final int ALARM_MESSAGE_INDEX = 8;
+		public static final int ALARM_ALERT_INDEX = 9;
+	}
 
-            // If the database alert is null or it failed to parse, use the
-            // default alert.
-            if (alert == null) {
-                alert = RingtoneManager.getDefaultUri(
-                        RingtoneManager.TYPE_ALARM);
-            }
-        }
-    }
+	// ////////////////////////////
+	// End column definitions
+	// ////////////////////////////
 
-    public Alarm(Parcel p) {
-        id = p.readInt();
-        enabled = p.readInt() == 1;
-        hour = p.readInt();
-        minutes = p.readInt();
-        daysOfWeek = new DaysOfWeek(p.readInt());
-        time = p.readLong();
-        vibrate = p.readInt() == 1;
-        label = p.readString();
-        alert = (Uri) p.readParcelable(null);
-        silent = p.readInt() == 1;
-    }
+	// Public fields
+	public int id;
+	public String name;
+	public boolean enabled;
+	public int hour;
+	public int minutes;
+	public DaysOfWeek daysOfWeek;
+	public long time;
+	public boolean vibrate;
+	public String label;
+	public Uri alert;
+	public boolean silent;
 
-    public String getLabelOrDefault(Context context) {
-        if (label == null || label.length() == 0) {
-            return context.getString(R.string.default_label);
-        }
-        return label;
-    }
+	public Alarm(Cursor c) {
+		id = c.getInt(Columns.ALARM_ID_INDEX);
+		name = c.getString(Columns.ALARM_NAME_INDEX);
+		enabled = c.getInt(Columns.ALARM_ENABLED_INDEX) == 1;
+		hour = c.getInt(Columns.ALARM_HOUR_INDEX);
+		minutes = c.getInt(Columns.ALARM_MINUTES_INDEX);
+		daysOfWeek = new DaysOfWeek(c.getInt(Columns.ALARM_DAYS_OF_WEEK_INDEX));
+		time = c.getLong(Columns.ALARM_TIME_INDEX);
+		vibrate = c.getInt(Columns.ALARM_VIBRATE_INDEX) == 1;
+		label = c.getString(Columns.ALARM_MESSAGE_INDEX);
+		String alertString = c.getString(Columns.ALARM_ALERT_INDEX);
 
-    /*
-     * Days of week code as a single int.
-     * 0x00: no day
-     * 0x01: Monday
-     * 0x02: Tuesday
-     * 0x04: Wednesday
-     * 0x08: Thursday
-     * 0x10: Friday
-     * 0x20: Saturday
-     * 0x40: Sunday
-     */
-    static final class DaysOfWeek {
+		if (Alarms.ALARM_ALERT_SILENT.equals(alertString)) {
+			if (Log.LOGV) {
+				Log.v("报警被标记为无声");
+			}
+			silent = true;
+		} else {
+			if (alertString != null && alertString.length() != 0) {
+				alert = Uri.parse(alertString);
+			}
+			// 如果数据库警报是空的，或未能解析，使用默认警报.
+			if (alert == null) {
+				alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+			}
+		}
+	}
 
-        private static int[] DAY_MAP = new int[] {
-            Calendar.MONDAY,
-            Calendar.TUESDAY,
-            Calendar.WEDNESDAY,
-            Calendar.THURSDAY,
-            Calendar.FRIDAY,
-            Calendar.SATURDAY,
-            Calendar.SUNDAY,
-        };
+	public Alarm(Parcel p) {
+		id = p.readInt();
+		enabled = p.readInt() == 1;
+		hour = p.readInt();
+		minutes = p.readInt();
+		daysOfWeek = new DaysOfWeek(p.readInt());
+		time = p.readLong();
+		vibrate = p.readInt() == 1;
+		label = p.readString();
+		alert = (Uri) p.readParcelable(null);
+		silent = p.readInt() == 1;
+	}
 
-        // Bitmask of all repeating days
-        private int mDays;
+	public String getLabelOrDefault(Context context) {
+		if (label == null || label.length() == 0) {
+			return context.getString(R.string.default_label);
+		}
+		return label;
+	}
 
-        DaysOfWeek(int days) {
-            mDays = days;
-        }
+	/*
+	 * Days of week code as a single int. 0x00: no day 0x01: Monday 0x02:
+	 * Tuesday 0x04: Wednesday 0x08: Thursday 0x10: Friday 0x20: Saturday 0x40:
+	 * Sunday
+	 */
+	public static final class DaysOfWeek {
 
-        public String toString(Context context, boolean showNever) {
-            StringBuilder ret = new StringBuilder();
+		private static int[] DAY_MAP = new int[] { Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY, };
 
-            // no days
-            if (mDays == 0) {
-                return showNever ?
-                        context.getText(R.string.never).toString() : "";
-            }
+		// Bitmask of all repeating days
+		private int mDays;
 
-            // every day
-            if (mDays == 0x7f) {
-                return context.getText(R.string.every_day).toString();
-            }
+		DaysOfWeek(int days) {
+			mDays = days;
+		}
 
-            // count selected days
-            int dayCount = 0, days = mDays;
-            while (days > 0) {
-                if ((days & 1) == 1) dayCount++;
-                days >>= 1;
-            }
+		public String toString(Context context, boolean showNever) {
+			StringBuilder ret = new StringBuilder();
 
-            // short or long form?
-            DateFormatSymbols dfs = new DateFormatSymbols();
-            String[] dayList = (dayCount > 1) ?
-                    dfs.getShortWeekdays() :
-                    dfs.getWeekdays();
+			// no days
+			if (mDays == 0) {
+				return showNever ? context.getText(R.string.never).toString() : "";
+			}
 
-            // selected days
-            for (int i = 0; i < 7; i++) {
-                if ((mDays & (1 << i)) != 0) {
-                    ret.append(dayList[DAY_MAP[i]]);
-                    dayCount -= 1;
-                    if (dayCount > 0) ret.append(
-                            context.getText(R.string.day_concat));
-                }
-            }
-            return ret.toString();
-        }
+			// every day
+			if (mDays == 0x7f) {
+				return context.getText(R.string.every_day).toString();
+			}
 
-        private boolean isSet(int day) {
-            return ((mDays & (1 << day)) > 0);
-        }
+			// count selected days
+			int dayCount = 0, days = mDays;
+			while (days > 0) {
+				if ((days & 1) == 1)
+					dayCount++;
+				days >>= 1;
+			}
 
-        public void set(int day, boolean set) {
-            if (set) {
-                mDays |= (1 << day);
-            } else {
-                mDays &= ~(1 << day);
-            }
-        }
+			// short or long form?
+			DateFormatSymbols dfs = new DateFormatSymbols();
+			String[] dayList = (dayCount > 1) ? dfs.getShortWeekdays() : dfs.getWeekdays();
 
-        public void set(DaysOfWeek dow) {
-            mDays = dow.mDays;
-        }
+			// selected days
+			for (int i = 0; i < 7; i++) {
+				if ((mDays & (1 << i)) != 0) {
+					ret.append(dayList[DAY_MAP[i]]);
+					dayCount -= 1;
+					if (dayCount > 0)
+						ret.append(context.getText(R.string.day_concat));
+				}
+			}
+			return ret.toString();
+		}
 
-        public int getCoded() {
-            return mDays;
-        }
+		private boolean isSet(int day) {
+			return ((mDays & (1 << day)) > 0);
+		}
 
-        // Returns days of week encoded in an array of booleans.
-        public boolean[] getBooleanArray() {
-            boolean[] ret = new boolean[7];
-            for (int i = 0; i < 7; i++) {
-                ret[i] = isSet(i);
-            }
-            return ret;
-        }
+		public void set(int day, boolean set) {
+			if (set) {
+				mDays |= (1 << day);
+			} else {
+				mDays &= ~(1 << day);
+			}
+		}
 
-        public boolean isRepeatSet() {
-            return mDays != 0;
-        }
+		public void set(DaysOfWeek dow) {
+			mDays = dow.mDays;
+		}
 
-        /**
-         * returns number of days from today until next alarm
-         * @param c must be set to today
-         */
-        public int getNextAlarm(Calendar c) {
-            if (mDays == 0) {
-                return -1;
-            }
+		public int getCoded() {
+			return mDays;
+		}
 
-            int today = (c.get(Calendar.DAY_OF_WEEK) + 5) % 7;
+		// Returns days of week encoded in an array of booleans.
+		public boolean[] getBooleanArray() {
+			boolean[] ret = new boolean[7];
+			for (int i = 0; i < 7; i++) {
+				ret[i] = isSet(i);
+			}
+			return ret;
+		}
 
-            int day = 0;
-            int dayCount = 0;
-            for (; dayCount < 7; dayCount++) {
-                day = (today + dayCount) % 7;
-                if (isSet(day)) {
-                    break;
-                }
-            }
-            return dayCount;
-        }
-    }
+		public boolean isRepeatSet() {
+			return mDays != 0;
+		}
+
+		/**
+		 * returns number of days from today until next alarm
+		 * 
+		 * @param c
+		 *            must be set to today
+		 */
+		public int getNextAlarm(Calendar c) {
+			if (mDays == 0) {
+				return -1;
+			}
+
+			int today = (c.get(Calendar.DAY_OF_WEEK) + 5) % 7;
+
+			int day = 0;
+			int dayCount = 0;
+			for (; dayCount < 7; dayCount++) {
+				day = (today + dayCount) % 7;
+				if (isSet(day)) {
+					break;
+				}
+			}
+			return dayCount;
+		}
+	}
 }
