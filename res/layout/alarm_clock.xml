@@ -13,13 +13,20 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/title_bar" >
 
-        <Button
+        <LinearLayout
             android:id="@+id/settings"
             style="@style/title_bar_left_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/title_list" />
+            android:gravity="center" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_list" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/title_text"
@@ -29,12 +36,20 @@
             android:layout_centerInParent="true"
             android:text="@string/app_label" />
 
-        <Button
+        <LinearLayout
             android:id="@+id/account"
+            style="@style/title_bar_right_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/title_account" />
+            android:gravity="center" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_user" />
+        </LinearLayout>
     </RelativeLayout>
 
     <!-- 天气块 -->
@@ -115,7 +130,7 @@
                 android:text="今天 阴\n25 - 33℃" />
 
             <View
-                android:layout_width="1dp"
+                android:layout_width="1.0px"
                 android:layout_height="fill_parent"
                 android:layout_marginBottom="12dp"
                 android:layout_marginLeft="10dp"
@@ -165,6 +180,7 @@
     </RelativeLayout>
 
     <!-- 闹钟列表 -->
+
     <ListView
         android:id="@+id/alarms_list"
         android:layout_width="fill_parent"
@@ -173,8 +189,8 @@
         android:layout_below="@+id/weather_layout"
         android:background="@android:color/transparent"
         android:cacheColorHint="#00000000"
-        android:dividerHeight="1.0px"
         android:divider="#CCCCCC"
+        android:dividerHeight="1.0px"
         android:fadingEdge="none"
         android:listSelector="@android:color/transparent"
         android:scrollingCache="false" />

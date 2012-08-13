@@ -41,163 +41,163 @@ import com.jkydjk.healthier.clock.R;
  */
 public class DigitalClock extends LinearLayout {
 
-    private final static String M12 = "h:mm";
+	private final static String M12 = "h:mm";
 
-    private Calendar mCalendar;
-    private String mFormat;
-    private TextView mTimeDisplay;
-    private AmPm mAmPm;
-    private boolean mAnimate;
-    private ContentObserver mFormatChangeObserver;
-    private boolean mLive = true;
-    private boolean mAttached;
+	private Calendar mCalendar;
+	private String mFormat;
+	private TextView mTimeDisplay;
+	private AmPm mAmPm;
+	private boolean mAnimate;
+	private ContentObserver mFormatChangeObserver;
+	private boolean mLive = true;
+	private boolean mAttached;
 
-    /* called by system on minute ticks */
-    private final Handler mHandler = new Handler();
-    private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (mLive && intent.getAction().equals(
-                            Intent.ACTION_TIMEZONE_CHANGED)) {
-                    mCalendar = Calendar.getInstance();
-                }
-                updateTime();
-            }
-        };
+	/* called by system on minute ticks */
+	private final Handler mHandler = new Handler();
+	private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (mLive && intent.getAction().equals(Intent.ACTION_TIMEZONE_CHANGED)) {
+				mCalendar = Calendar.getInstance();
+			}
+			updateTime();
+		}
+	};
 
-    static class AmPm {
-        private int mColorOn, mColorOff;
+	static class AmPm {
+		private int mColorOn, mColorOff;
 
-        private LinearLayout mAmPmLayout;
-        private TextView mAm, mPm;
+		private LinearLayout mAmPmLayout;
+		private TextView mAm, mPm;
 
-        AmPm(View parent) {
-            mAmPmLayout = (LinearLayout) parent.findViewById(R.id.am_pm);
-            mAm = (TextView)mAmPmLayout.findViewById(R.id.am);
-            mPm = (TextView)mAmPmLayout.findViewById(R.id.pm);
+		AmPm(View parent) {
+			mAmPmLayout = (LinearLayout) parent.findViewById(R.id.am_pm);
+			mAm = (TextView) mAmPmLayout.findViewById(R.id.am);
+			mPm = (TextView) mAmPmLayout.findViewById(R.id.pm);
 
-            Resources r = parent.getResources();
-            mColorOn = r.getColor(R.color.ampm_on);
-            mColorOff = r.getColor(R.color.ampm_off);
-        }
+			Resources r = parent.getResources();
+			mColorOn = r.getColor(R.color.ampm_on);
+			mColorOff = r.getColor(R.color.ampm_off);
+		}
 
-        void setShowAmPm(boolean show) {
-            mAmPmLayout.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
+		void setShowAmPm(boolean show) {
+			mAmPmLayout.setVisibility(show ? View.VISIBLE : View.GONE);
+		}
 
-        void setIsMorning(boolean isMorning) {
-            mAm.setTextColor(isMorning ? mColorOn : mColorOff);
-            mPm.setTextColor(isMorning ? mColorOff : mColorOn);
-        }
-    }
+		void setIsMorning(boolean isMorning) {
+			mAm.setTextColor(isMorning ? mColorOn : mColorOff);
+			mPm.setTextColor(isMorning ? mColorOff : mColorOn);
+		}
+	}
 
-    private class FormatChangeObserver extends ContentObserver {
-        public FormatChangeObserver() {
-            super(new Handler());
-        }
-        @Override
-        public void onChange(boolean selfChange) {
-            setDateFormat();
-            updateTime();
-        }
-    }
+	private class FormatChangeObserver extends ContentObserver {
+		public FormatChangeObserver() {
+			super(new Handler());
+		}
 
-    public DigitalClock(Context context) {
-        this(context, null);
-    }
+		@Override
+		public void onChange(boolean selfChange) {
+			setDateFormat();
+			updateTime();
+		}
+	}
 
-    public DigitalClock(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+	public DigitalClock(Context context) {
+		this(context, null);
+	}
 
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
+	public DigitalClock(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
 
-        mTimeDisplay = (TextView) findViewById(R.id.timeDisplay);
-        mAmPm = new AmPm(this);
-        mCalendar = Calendar.getInstance();
+	@Override
+	protected void onFinishInflate() {
+		super.onFinishInflate();
 
-        setDateFormat();
-    }
+		mTimeDisplay = (TextView) findViewById(R.id.timeDisplay);
+		mAmPm = new AmPm(this);
+		mCalendar = Calendar.getInstance();
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
+		setDateFormat();
+	}
 
-        if (Log.LOGV) Log.v("onAttachedToWindow " + this);
+	@Override
+	protected void onAttachedToWindow() {
+		super.onAttachedToWindow();
 
-        if (mAttached) return;
-        mAttached = true;
+		if (Log.LOGV)
+			Log.v("onAttachedToWindow " + this);
 
-        if (mAnimate) {
-            setBackgroundResource(R.drawable.animate_circle);
-            /* Start the animation (looped playback by default). */
-            ((AnimationDrawable) getBackground()).start();
-        }
+		if (mAttached)
+			return;
+		mAttached = true;
 
-        if (mLive) {
-            /* monitor time ticks, time changed, timezone */
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(Intent.ACTION_TIME_TICK);
-            filter.addAction(Intent.ACTION_TIME_CHANGED);
-            filter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
-            getContext().registerReceiver(mIntentReceiver, filter, null, mHandler);
-        }
+		if (mAnimate) {
+			setBackgroundResource(R.drawable.animate_circle);
+			/* Start the animation (looped playback by default). */
+			((AnimationDrawable) getBackground()).start();
+		}
 
-        /* monitor 12/24-hour display preference */
-        mFormatChangeObserver = new FormatChangeObserver();
-        getContext().getContentResolver().registerContentObserver(
-                Settings.System.CONTENT_URI, true, mFormatChangeObserver);
+		if (mLive) {
+			/* monitor time ticks, time changed, timezone */
+			IntentFilter filter = new IntentFilter();
+			filter.addAction(Intent.ACTION_TIME_TICK);
+			filter.addAction(Intent.ACTION_TIME_CHANGED);
+			filter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
+			getContext().registerReceiver(mIntentReceiver, filter, null, mHandler);
+		}
 
-        updateTime();
-    }
+		/* monitor 12/24-hour display preference */
+		mFormatChangeObserver = new FormatChangeObserver();
+		getContext().getContentResolver().registerContentObserver(Settings.System.CONTENT_URI, true, mFormatChangeObserver);
 
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
+		updateTime();
+	}
 
-        if (!mAttached) return;
-        mAttached = false;
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
 
-        Drawable background = getBackground();
-        if (background instanceof AnimationDrawable) {
-            ((AnimationDrawable) background).stop();
-        }
+		if (!mAttached)
+			return;
+		mAttached = false;
 
-        if (mLive) {
-            getContext().unregisterReceiver(mIntentReceiver);
-        }
-        getContext().getContentResolver().unregisterContentObserver(
-                mFormatChangeObserver);
-    }
+		Drawable background = getBackground();
+		if (background instanceof AnimationDrawable) {
+			((AnimationDrawable) background).stop();
+		}
 
+		if (mLive) {
+			getContext().unregisterReceiver(mIntentReceiver);
+		}
+		getContext().getContentResolver().unregisterContentObserver(mFormatChangeObserver);
+	}
 
-    public void updateTime(Calendar c) {
-        mCalendar = c;
-        updateTime();
-    }
+	public void updateTime(Calendar c) {
+		mCalendar = c;
+		updateTime();
+	}
 
-    private void updateTime() {
-        if (mLive) {
-            mCalendar.setTimeInMillis(System.currentTimeMillis());
-        }
+	private void updateTime() {
+		if (mLive) {
+			mCalendar.setTimeInMillis(System.currentTimeMillis());
+		}
 
-        CharSequence newTime = DateFormat.format(mFormat, mCalendar);
-        mTimeDisplay.setText(newTime);
-        mAmPm.setIsMorning(mCalendar.get(Calendar.AM_PM) == 0);
-    }
+		CharSequence newTime = DateFormat.format(mFormat, mCalendar);
+		mTimeDisplay.setText(newTime);
+		mAmPm.setIsMorning(mCalendar.get(Calendar.AM_PM) == 0);
+	}
 
-    private void setDateFormat() {
-        mFormat = Alarms.get24HourMode(getContext()) ? Alarms.M24 : M12;
-        mAmPm.setShowAmPm(mFormat == M12);
-    }
+	private void setDateFormat() {
+		mFormat = Alarms.get24HourMode(getContext()) ? Alarms.M24 : M12;
+		mAmPm.setShowAmPm(mFormat == M12);
+	}
 
-    void setAnimate() {
-        mAnimate = true;
-    }
+	void setAnimate() {
+		mAnimate = true;
+	}
 
-    public void setLive(boolean live) {
-        mLive = live;
-    }
+	public void setLive(boolean live) {
+		mLive = live;
+	}
 }

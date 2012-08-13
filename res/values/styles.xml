@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Toggle Switch Style -->
+    <style name="toggle_switch_style">
+        <item name="thumb">@drawable/switch_thumb</item>
+        <item name="track">@drawable/switch_track_off</item>
+        <item name="trackOff">@drawable/switch_track_off</item>
+        <item name="trackOn">@drawable/switch_track_on</item>
+        <item name="switchTextAppearanceAttrib">@style/toggle_switch_text_appearance</item>
+        <item name="textOn">@string/open</item>
+        <item name="textOff">@string/close</item>
+        <item name="trackTextPadding">8dp</item>
+    </style>
+
+    <style name="toggle_switch_text_appearance">
+        <item name="textColor">#FF8B8B8B</item>
+        <item name="textColorOff">#FF8B8B8B</item>
+        <item name="textColorOn">#FFFFFFFF</item>
+        <item name="textSize">16sp</item>
+        <item name="textStyle">normal</item>
+    </style>
+
     <style name="clock">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
-    <!--
-         This theme is similar to the Theme.Dialog.Alert but does not rely on a
-         non-public resource.
-    -->
+    <!-- This theme is similar to the Theme.Dialog.Alert but does not rely on a non-public resource. -->
     <style name="alarm_alert" parent="android:Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
@@ -34,7 +51,20 @@
         <item name="android:shadowDy">1.5</item>
         <item name="android:shadowRadius">1</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:background">@drawable/title_bar_left_button</item>
+        <item name="android:background">@drawable/title_bar_left_button_selector</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="title_bar_right_button" parent="@android:style/Widget.Button">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/title_bar_button_text</item>
+        <item name="android:shadowColor">@color/title_bar_button_text_shadow</item>
+        <item name="android:shadowDx">1.5</item>
+        <item name="android:shadowDy">1.5</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/title_bar_right_button_selector</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
     </style>
@@ -67,6 +97,18 @@
         <item name="android:textSize">14sp</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
+    </style>
+
+    <style name="list_block_item_name" parent="@android:style/Widget.TextView">
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:textColor">#FF666666</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="list_block_item_value" parent="@android:style/Widget.TextView">
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:textColor">#FFFF0000</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
 </resources>

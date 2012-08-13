@@ -29,53 +29,50 @@ import android.util.AttributeSet;
  * we override onSaveRingtone and onRestoreRingtone to get the same behavior.
  */
 public class AlarmPreference extends RingtonePreference {
-    private Uri mAlert;
-    private boolean mChangeDefault;
+	private Uri mAlert;
+	private boolean mChangeDefault;
 
-    public AlarmPreference(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+	public AlarmPreference(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
 
-    @Override
-    protected void onSaveRingtone(Uri ringtoneUri) {
-        setAlert(ringtoneUri);
-        if (mChangeDefault) {
-            // Update the default alert in the system.
-            Settings.System.putString(getContext().getContentResolver(),
-                    Settings.System.ALARM_ALERT,
-                    ringtoneUri == null ? null : ringtoneUri.toString());
-        }
-    }
+	@Override
+	protected void onSaveRingtone(Uri ringtoneUri) {
+		setAlert(ringtoneUri);
+		if (mChangeDefault) {
+			// Update the default alert in the system.
+			Settings.System.putString(getContext().getContentResolver(), Settings.System.ALARM_ALERT, ringtoneUri == null ? null : ringtoneUri.toString());
+		}
+	}
 
-    @Override
-    protected Uri onRestoreRingtone() {
-        if (RingtoneManager.isDefault(mAlert)) {
-            return RingtoneManager.getActualDefaultRingtoneUri(getContext(),
-                    RingtoneManager.TYPE_ALARM);
-        }
-        return mAlert;
-    }
+	@Override
+	protected Uri onRestoreRingtone() {
+		if (RingtoneManager.isDefault(mAlert)) {
+			return RingtoneManager.getActualDefaultRingtoneUri(getContext(), RingtoneManager.TYPE_ALARM);
+		}
+		return mAlert;
+	}
 
-    public void setAlert(Uri alert) {
-        mAlert = alert;
-        if (alert != null) {
-            final Ringtone r = RingtoneManager.getRingtone(getContext(), alert);
-            if (r != null) {
-                setSummary(r.getTitle(getContext()));
-            }
-        } else {
-            setSummary(R.string.silent_alarm_summary);
-        }
-    }
+	public void setAlert(Uri alert) {
+		mAlert = alert;
+		if (alert != null) {
+			final Ringtone r = RingtoneManager.getRingtone(getContext(), alert);
+			if (r != null) {
+				setSummary(r.getTitle(getContext()));
+			}
+		} else {
+			setSummary(R.string.silent_alarm_summary);
+		}
+	}
 
-    public String getAlertString() {
-        if (mAlert != null) {
-            return mAlert.toString();
-        }
-        return Alarms.ALARM_ALERT_SILENT;
-    }
+	public String getAlertString() {
+		if (mAlert != null) {
+			return mAlert.toString();
+		}
+		return Alarms.ALARM_ALERT_SILENT;
+	}
 
-    public void setChangeDefault() {
-        mChangeDefault = true;
-    }
+	public void setChangeDefault() {
+		mChangeDefault = true;
+	}
 }

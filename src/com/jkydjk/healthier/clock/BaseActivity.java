@@ -2,10 +2,6 @@ package com.jkydjk.healthier.clock;
 
 import android.app.Activity;
 import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
 
 public class BaseActivity extends Activity {
 
@@ -31,24 +27,4 @@ public class BaseActivity extends Activity {
 		return context.getResources().getIdentifier(context.getPackageName() + ":string/" + name, null, null);
 	}
 	
-	/**
-	 * 调整ListView高度
-	 * @param view
-	 */
-	public static void adjustmentListViewHeightBasedOnChildren(AdapterView view) {
-		ListAdapter listAdapter = (ListAdapter) view.getAdapter();
-		if (listAdapter == null) {
-			return;
-		}
-		int totalHeight = 0;
-		for (int i = 0; i < listAdapter.getCount(); i++) {
-			View listItem = listAdapter.getView(i, null, view);
-			listItem.measure(0, 0);
-			totalHeight += listItem.getMeasuredHeight();
-		}
-		ViewGroup.LayoutParams params = view.getLayoutParams();
-		params.height = totalHeight + (view.getHeight() * (listAdapter.getCount() - 1));
-		view.setLayoutParams(params);
-		view.requestLayout();
-	}
 }

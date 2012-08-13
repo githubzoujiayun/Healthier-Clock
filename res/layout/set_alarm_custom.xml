@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/main_bg" >
+
+    <!-- 标题栏 -->
+
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/title_bar" >
+
+        <Button
+            android:id="@+id/cancel"
+            style="@style/title_bar_left_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/cancel" />
+
+        <TextView
+            android:id="@+id/title_text"
+            style="@style/title_bar_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/add_alarm" />
+
+        <Button
+            android:id="@+id/save"
+            style="@style/title_bar_right_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/save" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/title_bar"
+        android:focusable="true"
+        android:focusableInTouchMode="true" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:layout_marginTop="12.0dip"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/alarm_time_setting"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48.0dip"
+                    android:background="@drawable/list_blockbg_top_selector"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10.0dip"
+                    android:paddingRight="10.0dip" >
+
+                    <TextView
+                        style="@style/list_block_item_name"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:text="@string/time" />
+
+                    <TextView
+                        android:id="@+id/alarm_time"
+                        style="@style/list_block_item_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10.0dip"
+                        android:text="" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/setting_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.0px"
+                    android:background="@drawable/setting_line" />
+
+                <LinearLayout
+                    android:id="@+id/alarm_cycle_setting"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48.0dip"
+                    android:background="@drawable/list_blockbg_middle_selector"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10.0dip"
+                    android:paddingRight="10.0dip" >
+
+                    <TextView
+                        style="@style/list_block_item_name"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:text="@string/cycle" />
+
+                    <TextView
+                        android:id="@+id/alarm_cycle"
+                        style="@style/list_block_item_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10.0dip"
+                        android:text="" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/setting_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.0px"
+                    android:background="@drawable/setting_line" />
+
+                <LinearLayout
+                    android:id="@+id/snooze_duration_setting"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48.0dip"
+                    android:background="@drawable/list_blockbg_bottom_selector"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10.0dip"
+                    android:paddingRight="10.0dip" >
+
+                    <TextView
+                        style="@style/list_block_item_name"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:text="@string/snooze_duration_title" />
+
+                    <TextView
+                        style="@style/list_block_item_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10.0dip"
+                        android:text="" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/setting_arrow" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/alarm_vibrate_setting"
+                android:layout_width="fill_parent"
+                android:layout_height="48.0dip"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:layout_marginTop="10.0dip"
+                android:background="@drawable/list_blockbg_single_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="10.0dip"
+                android:paddingRight="10.0dip" >
+
+                <TextView
+                    style="@style/list_block_item_name"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="@string/alarm_vibrate" />
+
+                <com.jkydjk.healthier.clock.widget.ToggleSwitch
+                    android:id="@+id/alarm_vibrate"
+                    style="@style/toggle_switch_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:layout_marginTop="10.0dip"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/alarm_alert_setting"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48.0dip"
+                    android:background="@drawable/list_blockbg_top_selector"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10.0dip"
+                    android:paddingRight="10.0dip" >
+
+                    <TextView
+                        style="@style/list_block_item_name"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:text="@string/alert" />
+
+                    <TextView
+                        android:id="@+id/alarm_alert"
+                        style="@style/list_block_item_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10.0dip"
+                        android:text="" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/setting_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.0px"
+                    android:background="@drawable/setting_line" />
+
+                <LinearLayout
+                    android:id="@+id/alarm_label_setting"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48.0dip"
+                    android:background="@drawable/list_blockbg_middle_selector"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10.0dip"
+                    android:paddingRight="10.0dip" >
+
+                    <TextView
+                        style="@style/list_block_item_name"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:text="@string/label" />
+
+                    <TextView
+                        android:id="@+id/alarm_label"
+                        style="@style/list_block_item_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10.0dip"
+                        android:text="" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/setting_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.0px"
+                    android:background="@drawable/setting_line" />
+
+                <LinearLayout
+                    android:id="@+id/snooze_remark_setting"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48.0dip"
+                    android:background="@drawable/list_blockbg_bottom_selector"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10.0dip"
+                    android:paddingRight="10.0dip" >
+
+                    <TextView
+                        style="@style/list_block_item_name"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:text="@string/remark" />
+
+                    <TextView
+                        style="@style/list_block_item_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10.0dip"
+                        android:text="" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/setting_arrow" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 标题栏下阴影 -->
+
+    <View
+        android:id="@+id/title_bar_shadow"
+        android:layout_width="fill_parent"
+        android:layout_height="5dip"
+        android:layout_below="@+id/title_bar"
+        android:background="@drawable/title_bar_shadow" />
+
+</RelativeLayout>

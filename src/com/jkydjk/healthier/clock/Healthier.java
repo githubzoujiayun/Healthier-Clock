@@ -45,7 +45,6 @@ public class Healthier extends TabActivity implements OnTabChangeListener {
 
 		mTabHost.setOpenAnimation(true);
 		mTabHost.setCurrentTab(0);
-
 	}
 
 	/**

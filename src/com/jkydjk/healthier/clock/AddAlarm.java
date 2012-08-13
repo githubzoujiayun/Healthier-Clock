@@ -15,13 +15,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 public class AddAlarm extends BaseActivity implements OnClickListener, OnItemClickListener {
 
 	private String[] alarmCategory = new String[] { "work_rest", "take_medicine", "movement", "timer", "custom" };
 
-	private Button cancelButton;
+	private View cancelAction;
 	private GridView alarmGrid;
 
 	@Override
@@ -29,8 +28,8 @@ public class AddAlarm extends BaseActivity implements OnClickListener, OnItemCli
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_alarm);
 
-		cancelButton = (Button) findViewById(R.id.cancel);
-		cancelButton.setOnClickListener(this);
+		cancelAction = findViewById(R.id.cancel);
+		cancelAction.setOnClickListener(this);
 
 		alarmGrid = (GridView) findViewById(R.id.alarm_grid);
 

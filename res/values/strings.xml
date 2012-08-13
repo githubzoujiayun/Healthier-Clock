@@ -237,17 +237,17 @@
     <string name="solar_terms">节气</string>
     <string name="favorites">收藏</string>
     <string name="cancel">取消</string>
-    
+
     <!-- Welcome text -->
     <string name="welcome_good_morning">早上好</string>
     <string name="welcome_good_noon">中午好</string>
     <string name="welcome_good_afternoon">下午好</string>
     <string name="welcome_good_evening">晚上好</string>
-    
+
     <!-- Weather logo font -->
     <string name="wealther_logo_shade">`</string>
     <string name="wealther_logo_cloudy">1</string>
-    
+
     <!-- Alarm category -->
     <string name="alarm_category_image_content_description">闹钟分类图标</string>
     <string name="alarm_category_work_rest">起床睡觉</string>
@@ -256,13 +256,20 @@
     <string name="alarm_category_timer">计时器</string>
     <string name="alarm_category_custom">自定义</string>
     <string name="alarm_category_custom_alarm">闹铃</string>
-    
+
     <!-- Alarm action -->
     <string name="edit">编辑</string>
     <string name="close">关闭</string>
     <string name="open">开启</string>
     <string name="delete">删除</string>
     <string name="skip">跳过</string>
-    
     <string name="no_alarm">点击按钮添加新的闹钟\n健康生活由此开始</string>
+    <string name="save">保存</string>
+    
+    <string name="set_alarm_custom">设置闹铃</string>
+    <string name="wake_time">起床时间</string>
+    
+    <string name="cycle">周期</string>
+    <string name="remark">备注</string>
+    
 </resources>

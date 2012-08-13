@@ -17,6 +17,10 @@
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/> 
+    
+    <!-- android.permission.EXPAND_STATUS_BAR -->
 
     <application
         android:icon="@drawable/ic_launcher_alarmclock"
@@ -27,7 +31,7 @@
             android:authorities="com.jkydjk.healthier.clock" />
 
         <activity
-            android:name="Healthier"
+            android:name=".Healthier"
             android:configChanges="orientation|keyboardHidden|keyboard|navigation"
             android:label="@string/app_label"
             android:screenOrientation="portrait" >
@@ -38,11 +42,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ChineseHour" />
-        <activity android:name="SolarTerms" />
-        <activity android:name="Favorites" />
+        <activity android:name=".ChineseHour" />
+        <activity android:name=".SolarTerms" />
+        <activity android:name=".Favorites" />
         <activity
-            android:name="AlarmClock"
+            android:name=".AlarmClock"
             android:configChanges="orientation|keyboardHidden|keyboard|navigation"
             android:label="@string/app_label"
             android:screenOrientation="portrait" >
@@ -51,7 +55,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="SettingsActivity"
+            android:name=".SettingsActivity"
             android:label="@string/settings"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -59,15 +63,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="SetAlarm"
+            android:name=".SetAlarm"
             android:label="@string/set_alarm"
             android:screenOrientation="portrait" />
         <activity
-            android:name="AddAlarm"
+            android:name=".SetAlarmCustom"
+            android:label="@string/set_alarm_custom"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddAlarm"
             android:label="@string/add_alarm"
             android:screenOrientation="portrait" />
         <activity
-            android:name="AlarmAlert"
+            android:name=".AlarmAlert"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
@@ -80,7 +88,7 @@
              with the wallpaper background.
         -->
         <activity
-            android:name="AlarmAlertFullScreen"
+            android:name=".AlarmAlertFullScreen"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"

@@ -3,6 +3,8 @@ package com.jkydjk.healthier.clock;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
+import com.jkydjk.healthier.clock.util.StringUtil;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -22,10 +24,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -51,11 +62,15 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 	 */
 	static final boolean DEBUG = true;
 
+	private LayoutAnimationController controller;
+	private AnimationSet set;
+	private Animation animation;
+
 	private SharedPreferences mPrefs;
 	private LayoutInflater mFactory;
 
-	private Button settingsButton;
-	private Button addAlarmButton;
+	private View settingsButton;
+	private View addAlarmButton;
 
 	private TextView welcomeTextView;
 	private RelativeLayout noAlarmLayout;
@@ -97,22 +112,26 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
 		public void actionToggle(View v) {
 			View parentLayout = (View) v.getParent();
-			View alarmActionsLayout, arrow;
+
+			LinearLayout alarmActionsLayout;
+			ImageView arrow;
 
 			if (currentAlarmLayout != null && currentAlarmLayout != parentLayout) {
-				alarmActionsLayout = currentAlarmLayout.findViewById(R.id.alarm_actions_layout);
-				arrow = currentAlarmLayout.findViewById(R.id.arrow);
+				alarmActionsLayout = (LinearLayout) currentAlarmLayout.findViewById(R.id.alarm_actions_layout);
+				arrow = (ImageView) currentAlarmLayout.findViewById(R.id.arrow);
 				alarmActionsLayout.setVisibility(View.GONE);
 				arrow.setVisibility(View.GONE);
 				alarmActionsLayout.setEnabled(true);
 				currentAlarmLayout = null;
 			}
 
-			alarmActionsLayout = parentLayout.findViewById(R.id.alarm_actions_layout);
-			arrow = parentLayout.findViewById(R.id.arrow);
+			alarmActionsLayout = (LinearLayout) parentLayout.findViewById(R.id.alarm_actions_layout);
+			arrow = (ImageView) parentLayout.findViewById(R.id.arrow);
 
 			if (alarmActionsLayout.isEnabled() == true) {
 				currentAlarmLayout = parentLayout;
+				alarmActionsLayout.setLayoutAnimation(controller);
+
 				alarmActionsLayout.setVisibility(View.VISIBLE);
 				arrow.setVisibility(View.VISIBLE);
 				alarmActionsLayout.setEnabled(false);
@@ -134,20 +153,46 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 					actionToggle(v);
 				}
 			});
-			
-			TextView alarmName = (TextView)view.findViewById(R.id.alarm_name);
-			alarmName.setText(alarm.name);
 
-			// CheckBox onButton = (CheckBox)
-			// view.findViewById(R.id.alarmButton);
-			// onButton.setChecked(alarm.enabled);
+			TextView alarmName = (TextView) view.findViewById(R.id.alarm_name);
+			if (!StringUtil.isEmpty(alarm.name)) {
+				alarmName.setText(alarm.name);
+			}
 
+			DigitalClock digitalClock = (DigitalClock) view.findViewById(R.id.digitalClock);
+
+			// 设置闹钟文字
+			final Calendar calendar = Calendar.getInstance();
+			calendar.set(Calendar.HOUR_OF_DAY, alarm.hour);
+			calendar.set(Calendar.MINUTE, alarm.minutes);
+			digitalClock.updateTime(calendar);
+
+			// 设置重复的文字或，如果它不重复留空
+			TextView daysOfWeekView = (TextView) digitalClock.findViewById(R.id.daysOfWeek);
+
+			final String daysOfWeekStr = alarm.daysOfWeek.toString(AlarmClock.this, false);
+
+			if (daysOfWeekStr != null && daysOfWeekStr.length() != 0) {
+				daysOfWeekView.setText(daysOfWeekStr);
+				daysOfWeekView.setVisibility(View.VISIBLE);
+			} else {
+				daysOfWeekView.setVisibility(View.GONE);
+			}
+
+			// 编辑按钮
+			Button editButton = (Button) view.findViewById(R.id.edit);
+			editButton.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					Intent intent = new Intent(AlarmClock.this, SetAlarm.class);
+					intent.putExtra(Alarms.ALARM_ID, alarm.id);
+					startActivity(intent);
+				}
+			});
+
+			// 关闭/开启 切换按钮
 			Button toggle = (Button) view.findViewById(R.id.toggle);
-
 			toggle.setText(alarm.enabled ? R.string.close : R.string.open);
-
 			toggle.setOnClickListener(new OnClickListener() {
-
 				public void onClick(View v) {
 					Button button = (Button) v;
 					if (alarm.enabled == true) {
@@ -163,43 +208,7 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 				}
 			});
 
-			DigitalClock digitalClock = (DigitalClock) view.findViewById(R.id.digitalClock);
-
-			// 设置闹钟文字
-			final Calendar calendar = Calendar.getInstance();
-			calendar.set(Calendar.HOUR_OF_DAY, alarm.hour);
-			calendar.set(Calendar.MINUTE, alarm.minutes);
-			digitalClock.updateTime(calendar);
-
-			// 设置重复的文字或，如果它不重复留空
-			TextView daysOfWeekView = (TextView) digitalClock.findViewById(R.id.daysOfWeek);
-			final String daysOfWeekStr = alarm.daysOfWeek.toString(AlarmClock.this, false);
-			if (daysOfWeekStr != null && daysOfWeekStr.length() != 0) {
-				daysOfWeekView.setText(daysOfWeekStr);
-				daysOfWeekView.setVisibility(View.VISIBLE);
-			} else {
-				daysOfWeekView.setVisibility(View.GONE);
-			}
-
-			// 显示标签
-			TextView labelView = (TextView) digitalClock.findViewById(R.id.label);
-			if (alarm.label != null && alarm.label.length() != 0) {
-				labelView.setText(alarm.label);
-				labelView.setTextColor(0xff669900);
-				labelView.setVisibility(View.VISIBLE);
-			} else {
-				labelView.setVisibility(View.GONE);
-			}
-
-			Button editButton = (Button) view.findViewById(R.id.edit);
-			editButton.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					Intent intent = new Intent(AlarmClock.this, SetAlarm.class);
-					intent.putExtra(Alarms.ALARM_ID, alarm.id);
-					startActivity(intent);
-				}
-			});
-
+			// 删除按钮
 			Button deleteButton = (Button) view.findViewById(R.id.delete);
 			deleteButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
@@ -214,6 +223,16 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 				}
 			});
 
+			// 编辑按钮
+			Button skipButton = (Button) view.findViewById(R.id.skip);
+			skipButton.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					Intent intent = new Intent(AlarmClock.this, SetAlarmCustom.class);
+					intent.putExtra(Alarms.ALARM_ID, alarm.id);
+					startActivity(intent);
+				}
+			});
+
 		}
 	};
 
@@ -223,10 +242,10 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
 		setContentView(R.layout.alarm_clock);
 
-		settingsButton = (Button) findViewById(R.id.settings);
+		settingsButton = findViewById(R.id.settings);
 		settingsButton.setOnClickListener(this);
 
-		addAlarmButton = (Button) findViewById(R.id.add_alarm);
+		addAlarmButton = findViewById(R.id.add_alarm);
 		addAlarmButton.setOnClickListener(this);
 
 		welcomeTextView = (TextView) findViewById(R.id.welcome);
@@ -240,6 +259,18 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
 		mFactory = LayoutInflater.from(this);
 		mPrefs = getSharedPreferences(PREFERENCES, 0);
+
+		set = new AnimationSet(true);
+
+		animation = new AlphaAnimation(0.0f, 1.0f);
+		animation.setDuration(100);
+		set.addAnimation(animation);
+
+		animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+		animation.setDuration(100);
+		set.addAnimation(animation);
+
+		controller = new LayoutAnimationController(set, 0.5f);
 
 		updateLayout();
 
@@ -291,13 +322,13 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
 		alarmsCursor = Alarms.getAlarmsCursor(getContentResolver());
 
+		noAlarmLayout.setVisibility(alarmsCursor.getCount() > 0 ? View.GONE : View.VISIBLE);
+
 		mAlarmsList = (ListView) findViewById(R.id.alarms_list);
 		mAlarmsList.setAdapter(new AlarmTimeAdapter(this, alarmsCursor));
 		mAlarmsList.setVerticalScrollBarEnabled(true);
 		// mAlarmsList.setOnItemClickListener(this);
 		mAlarmsList.setOnCreateContextMenuListener(this);
-
-		noAlarmLayout.setVisibility(alarmsCursor.getCount() > 0 ? View.GONE : View.VISIBLE);
 	}
 
 	@Override
@@ -346,22 +377,6 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 	}
 
 	/**
-	 * 点击处理
-	 */
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.settings:
-			startActivity(new Intent(this, SettingsActivity.class));
-			break;
-
-		case R.id.add_alarm:
-			startActivity(new Intent(this, AddAlarm.class));
-			// overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-			break;
-		}
-	}
-
-	/**
 	 * 设置欢迎文字
 	 */
 	private void setWelcomeText() {
@@ -379,6 +394,22 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 			welcomeTextView.setText(getStringResourceID(getApplicationContext(), "welcome_good_evening"));
 		}
 
+	}
+
+	/**
+	 * 点击处理
+	 */
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.settings:
+			startActivity(new Intent(this, SettingsActivity.class));
+			break;
+
+		case R.id.add_alarm:
+			startActivity(new Intent(this, AddAlarm.class));
+			overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+			break;
+		}
 	}
 
 }
