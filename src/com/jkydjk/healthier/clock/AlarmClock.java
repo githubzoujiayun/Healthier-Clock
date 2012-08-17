@@ -3,8 +3,6 @@ package com.jkydjk.healthier.clock;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
-import com.jkydjk.healthier.clock.util.StringUtil;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -20,26 +18,24 @@ import android.text.format.Time;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.jkydjk.healthier.clock.util.StringUtil;
 
 /**
  * AlarmClock application.
@@ -407,7 +403,9 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
 		case R.id.add_alarm:
 			startActivity(new Intent(this, AddAlarm.class));
-			overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+//			动画失效了，貌似是受FrameLayout影响
+//			overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+//			overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
 			break;
 		}
 	}

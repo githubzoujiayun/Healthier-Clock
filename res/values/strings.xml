@@ -237,6 +237,8 @@
     <string name="solar_terms">节气</string>
     <string name="favorites">收藏</string>
     <string name="cancel">取消</string>
+    <string name="enter">确定</string>
+    <string name="back">返回</string>
 
     <!-- Welcome text -->
     <string name="welcome_good_morning">早上好</string>
@@ -265,11 +267,18 @@
     <string name="skip">跳过</string>
     <string name="no_alarm">点击按钮添加新的闹钟\n健康生活由此开始</string>
     <string name="save">保存</string>
-    
     <string name="set_alarm_custom">设置闹铃</string>
     <string name="wake_time">起床时间</string>
-    
     <string name="cycle">周期</string>
     <string name="remark">备注</string>
-    
+
+    <!-- Week -->
+    <string name="Monday">星期一</string>
+    <string name="Tuesday">星期二</string>
+    <string name="Wednesday">星期三</string>
+    <string name="Thursday">星期四</string>
+    <string name="Friday">星期五</string>
+    <string name="Saturday">星期六</string>
+    <string name="Sunday">星期日</string>
+
 </resources>

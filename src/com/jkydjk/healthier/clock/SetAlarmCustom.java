@@ -1,21 +1,35 @@
 package com.jkydjk.healthier.clock;
 
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
+
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.jkydjk.healthier.clock.widget.ToggleSwitch;
 import com.jkydjk.healthier.clock.widget.ToggleSwitch.OnChangeAttemptListener;
 
-public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnCheckedChangeListener, OnChangeAttemptListener {
+public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnCheckedChangeListener, OnChangeAttemptListener, TimePickerDialog.OnTimeSetListener {
+
+	private final int ALARM_CYCLE_SETTING_DIALOG = 1;
+	private Alarm.DaysOfWeek mDaysOfWeek = new Alarm.DaysOfWeek(0);
+	private Alarm.DaysOfWeek mNewDaysOfWeek = new Alarm.DaysOfWeek(0);
 
 	private Alarm alarm;
 	private int alarmId;
@@ -26,6 +40,9 @@ public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnC
 
 	private View cancelAction;
 	private View saveAction;
+
+	private View alarmTimeSetting;
+	private View alarmCycleSetting;
 
 	private TextView alarmTime;
 	private TextView alarmAlert;
@@ -59,15 +76,21 @@ public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnC
 		saveAction = findViewById(R.id.save);
 		saveAction.setOnClickListener(this);
 
+		alarmTimeSetting = findViewById(R.id.alarm_time_setting);
+		alarmTimeSetting.setOnClickListener(this);
+
+		alarmCycleSetting = findViewById(R.id.alarm_cycle_setting);
+		alarmCycleSetting.setOnClickListener(this);
+
 		alarmTime = (TextView) findViewById(R.id.alarm_time);
 		alarmAlert = (TextView) findViewById(R.id.alarm_alert);
 		alarmCycle = (TextView) findViewById(R.id.alarm_cycle);
 		alarmLabel = (TextView) findViewById(R.id.alarm_label);
-		
-		alarmVibrateSwitch = (ToggleSwitch)findViewById(R.id.alarm_vibrate);
+
+		alarmVibrateSwitch = (ToggleSwitch) findViewById(R.id.alarm_vibrate);
 		alarmVibrateSwitch.setChecked(alarm.vibrate);
 		alarmVibrateSwitch.setOnCheckedChangeListener(this);
-		
+
 		updateTime();
 		updateAlert();
 		updateCycle();
@@ -98,45 +121,43 @@ public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnC
 	}
 
 	private void saveAlarm() {
-        long time = Alarms.setAlarm(this, alarmId, mEnabled, mHour, mMinutes, alarm.daysOfWeek, alarm.vibrate, alarm.label, alarm.alert.toString());
+		long time = Alarms.setAlarm(this, alarmId, mEnabled, mHour, mMinutes, alarm.daysOfWeek, alarm.vibrate, alarm.label, alarm.alert.toString());
 
-        if (mEnabled) {
-            popAlarmSetToast(this, time);
-        }
+		if (mEnabled) {
+			popAlarmSetToast(this, time);
+		}
 	}
-	
+
 	private static void popAlarmSetToast(Context context, long timeInMillis) {
-        String toastText = formatToast(context, timeInMillis);
-        Toast toast = Toast.makeText(context, toastText, Toast.LENGTH_LONG);
-        ToastMaster.setToast(toast);
-        toast.show();
-    }
-	
+		String toastText = formatToast(context, timeInMillis);
+		Toast toast = Toast.makeText(context, toastText, Toast.LENGTH_LONG);
+		ToastMaster.setToast(toast);
+		toast.show();
+	}
+
 	/**
-     * format "Alarm set for 2 days 7 hours and 53 minutes from now"
-     */
-    static String formatToast(Context context, long timeInMillis) {
-        long delta = timeInMillis - System.currentTimeMillis();
-        long hours = delta / (1000 * 60 * 60);
-        long minutes = delta / (1000 * 60) % 60;
-        long days = hours / 24;
-        hours = hours % 24;
+	 * format "Alarm set for 2 days 7 hours and 53 minutes from now"
+	 */
+	static String formatToast(Context context, long timeInMillis) {
+		long delta = timeInMillis - System.currentTimeMillis();
+		long hours = delta / (1000 * 60 * 60);
+		long minutes = delta / (1000 * 60) % 60;
+		long days = hours / 24;
+		hours = hours % 24;
 
-        String daySeq = (days == 0) ? "" : (days == 1) ? context.getString(R.string.day) : context.getString(R.string.days, Long.toString(days));
+		String daySeq = (days == 0) ? "" : (days == 1) ? context.getString(R.string.day) : context.getString(R.string.days, Long.toString(days));
+		String minSeq = (minutes == 0) ? "" : (minutes == 1) ? context.getString(R.string.minute) : context.getString(R.string.minutes, Long.toString(minutes));
+		String hourSeq = (hours == 0) ? "" : (hours == 1) ? context.getString(R.string.hour) : context.getString(R.string.hours, Long.toString(hours));
 
-        String minSeq = (minutes == 0) ? "" : (minutes == 1) ? context.getString(R.string.minute) : context.getString(R.string.minutes, Long.toString(minutes));
+		boolean dispDays = days > 0;
+		boolean dispHour = hours > 0;
+		boolean dispMinute = minutes > 0;
 
-        String hourSeq = (hours == 0) ? "" : (hours == 1) ? context.getString(R.string.hour) : context.getString(R.string.hours, Long.toString(hours));
+		int index = (dispDays ? 1 : 0) | (dispHour ? 2 : 0) | (dispMinute ? 4 : 0);
 
-        boolean dispDays = days > 0;
-        boolean dispHour = hours > 0;
-        boolean dispMinute = minutes > 0;
-
-        int index = (dispDays ? 1 : 0) | (dispHour ? 2 : 0) | (dispMinute ? 4 : 0);
-
-        String[] formats = context.getResources().getStringArray(R.array.alarm_set);
-        return String.format(formats[index], daySeq, hourSeq, minSeq);
-    }
+		String[] formats = context.getResources().getStringArray(R.array.alarm_set);
+		return String.format(formats[index], daySeq, hourSeq, minSeq);
+	}
 
 	/**
 	 * 点击处理
@@ -151,6 +172,19 @@ public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnC
 			saveAlarm();
 			finish();
 			break;
+
+		case R.id.alarm_time_setting:
+			new TimePickerDialog(this, this, mHour, mMinutes, DateFormat.is24HourFormat(this)).show();
+			break;
+
+		case R.id.alarm_cycle_setting:
+//			showDialog(ALARM_CYCLE_SETTING_DIALOG);
+			Intent intent = new Intent(this, SetAlarmCycle.class);
+			intent.putExtra(Alarms.ALARM_ID, alarm.id);
+			intent.putExtras(intent);
+			startActivity(intent);
+			overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+			break;
 		}
 	}
 
@@ -162,9 +196,58 @@ public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnC
 		}
 	}
 
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		Dialog dialog = null;
+
+		switch (id) {
+		case ALARM_CYCLE_SETTING_DIALOG:
+			
+			String[] weekdays = new DateFormatSymbols().getWeekdays();
+
+			String[] values = new String[] { weekdays[Calendar.MONDAY], weekdays[Calendar.TUESDAY], weekdays[Calendar.WEDNESDAY], weekdays[Calendar.THURSDAY], weekdays[Calendar.FRIDAY],
+					weekdays[Calendar.SATURDAY], weekdays[Calendar.SUNDAY], };
+
+			Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.cycle);
+			
+			builder.setMultiChoiceItems(values, alarm.daysOfWeek.getBooleanArray(), new DialogInterface.OnMultiChoiceClickListener() {
+				public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+					mNewDaysOfWeek.set(which, isChecked);
+				}
+			});
+			
+			builder.setPositiveButton(R.string.enter, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					mDaysOfWeek = alarm.daysOfWeek;
+					mDaysOfWeek.set(mNewDaysOfWeek);
+					alarm.daysOfWeek = mDaysOfWeek;
+					updateCycle();
+				}
+			});
+			builder.setNegativeButton(R.string.cancel, null);
+
+			dialog = builder.create();
+			break;
+
+		default:
+			break;
+		}
+
+		return dialog;
+	}
+
 	public void onChangeAttempted(boolean isChecked) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+		mHour = hourOfDay;
+		mMinutes = minute;
+		updateTime();
+		// If the time has been changed, enable the alarm.
+		mEnabled = true;
 	}
 
 }
