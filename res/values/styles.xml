@@ -115,7 +115,7 @@
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:textColor">#FF666666</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:checkMark">?android:attr/listChoiceIndicatorMultiple</item>
+        <item name="android:checkMark">@drawable/checkbox_selector</item>
     </style>
     
     <style name="list_block_radio_button_title">

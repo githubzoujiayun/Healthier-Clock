@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -13,13 +14,15 @@ import android.widget.TextView;
 
 public class SetAlarmAlert extends BaseActivity implements OnClickListener {
 
+	private static final int SYSTEM_RINGTONE = 0;
+
 	private MediaPlayer mediaPlayer;
 
 	private Uri alert;
 	private Uri currentAlert;
 	private Uri defaultAlert;
 
-	private static Uri currentPlay;
+	private Uri currentPlay;
 
 	private View backlAction;
 
@@ -33,8 +36,9 @@ public class SetAlarmAlert extends BaseActivity implements OnClickListener {
 	private View currentRingtoneLayout;
 	private TextView currentRingtoneTextView;
 	private RadioButton currentRingtoneRadio;
-	
+
 	private View systemRingtones;
+	private View fileBrowser;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,7 +75,10 @@ public class SetAlarmAlert extends BaseActivity implements OnClickListener {
 
 		systemRingtones = findViewById(R.id.system_ringtones_layout);
 		systemRingtones.setOnClickListener(this);
-		
+
+		fileBrowser = findViewById(R.id.file_browser_layout);
+		fileBrowser.setOnClickListener(this);
+
 		updateRingtones();
 	}
 
@@ -99,7 +106,31 @@ public class SetAlarmAlert extends BaseActivity implements OnClickListener {
 		}
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+
+		case SYSTEM_RINGTONE:
+			if (resultCode == RESULT_OK) {
+				Uri alert = (Uri) data.getParcelableExtra("alert");
+				Intent intent = getIntent();
+				intent.putExtra("alert", alert);
+				setResult(RESULT_CANCELED, intent);
+				super.finish();
+				overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+			}
+			break;
+
+		default:
+			break;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
 	public void onClick(View v) {
+
+		Intent intent;
+
 		switch (v.getId()) {
 		case R.id.back:
 			finish();
@@ -110,6 +141,7 @@ public class SetAlarmAlert extends BaseActivity implements OnClickListener {
 			defaultRingtoneRadio.setChecked(false);
 			currentRingtoneRadio.setChecked(false);
 			stopPlayMedia();
+			alert = null;
 			break;
 
 		case R.id.default_ringtone_layout:
@@ -125,11 +157,16 @@ public class SetAlarmAlert extends BaseActivity implements OnClickListener {
 			currentRingtoneRadio.setChecked(true);
 			autoPlayMedia(currentAlert);
 			break;
-			
+
 		case R.id.system_ringtones_layout:
-			Intent intent = new Intent();
-			intent.setAction("android.intent.action.RINGTONE_PICKER");
-			startActivityForResult(intent, 3);
+			intent = new Intent(this, SystemRingtone.class);
+			intent.putExtra("alert", alert);
+			startActivityForResult(intent, SYSTEM_RINGTONE);
+			break;
+
+		case R.id.file_browser_layout:
+			intent = new Intent(this, AndroidFileBrowserExampleActivity.class);
+			startActivity(intent);
 			break;
 
 		default:
@@ -146,6 +183,13 @@ public class SetAlarmAlert extends BaseActivity implements OnClickListener {
 			mediaPlayer = MediaPlayer.create(this, uri);
 			mediaPlayer.start();
 			currentPlay = uri;
+
+			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+				public void onCompletion(MediaPlayer mp) {
+					stopPlayMedia();
+				}
+			});
+
 		} else {
 			stopPlayMedia();
 		}
@@ -157,26 +201,27 @@ public class SetAlarmAlert extends BaseActivity implements OnClickListener {
 			mediaPlayer = null;
 			currentPlay = null;
 		}
-		alert = null;
 	}
 
 	@Override
 	public void finish() {
-		 Intent intent = getIntent();
-		 intent.putExtra("alert", alert);
-		 setResult(RESULT_CANCELED, intent);
+		Intent intent = getIntent();
+		intent.putExtra("alert", alert);
+		setResult(RESULT_CANCELED, intent);
 		super.finish();
 		overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
 	}
 
 	@Override
+	protected void onPause() {
+		super.onPause();
+		stopPlayMedia();
+	}
+
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (mediaPlayer != null) {
-			mediaPlayer.release();
-			mediaPlayer = null;
-		}
-
+		stopPlayMedia();
 	}
 
 }

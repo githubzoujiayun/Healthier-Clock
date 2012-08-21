@@ -79,6 +79,10 @@
             android:label="@string/alert"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".SystemRingtone"
+            android:label="@string/system_ringtones"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".AddAlarm"
             android:label="@string/add_alarm"
             android:screenOrientation="portrait" />
@@ -89,6 +93,24 @@
             android:screenOrientation="portrait"
             android:taskAffinity=""
             android:theme="@style/alarm_alert" />
+        <activity
+            android:name=".AndroidFileBrowserExampleActivity"
+            android:label="@string/file_browser"
+            android:screenOrientation="portrait" />
+
+        <!-- This is necessary for file browser -->
+        <activity
+            android:name="FileBrowserActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="File browser"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.jkydjk.healthier.clock.SELECT_DIRECTORY_ACTION" >
+                </action>
+            </intent-filter>
+        </activity>
+        <!-- End of file browser necessity -->
+
 
         <!--
              This activity is basically the same as AlarmAlert but with a more

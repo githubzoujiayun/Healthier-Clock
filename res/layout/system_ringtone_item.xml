@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="vertical" >
+
+    <CheckedTextView
+        android:id="@+id/ringtone"
+        style="@style/list_block_checked_text_view"
+        android:layout_width="fill_parent"
+        android:layout_height="48.0dip"
+        android:background="@drawable/list_blockbg_middle_selector"
+        android:paddingLeft="10.0dip"
+        android:paddingRight="10.0dip" />
+
+</LinearLayout>
