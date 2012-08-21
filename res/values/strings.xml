@@ -215,6 +215,8 @@
 
     <!-- Title of the ringtone setting. -->
     <string name="default_ringtone_setting_title">设置默认铃声</string>
+    
+    <string name="default_ringtone">默认铃声</string>
 
     <!-- Entries listed in the setting for the side-button action. -->
     <string-array name="volume_button_setting_entries">
@@ -280,5 +282,9 @@
     <string name="Friday">星期五</string>
     <string name="Saturday">星期六</string>
     <string name="Sunday">星期日</string>
+    
+    <string name="system_ringtones">系统铃声</string>
+    <string name="current_ringtone">当前铃声</string>
+    <string name="file_browser">文件浏览</string>
 
 </resources>

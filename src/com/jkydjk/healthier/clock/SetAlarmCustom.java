@@ -1,17 +1,11 @@
 package com.jkydjk.healthier.clock;
 
-import java.text.DateFormatSymbols;
-import java.util.Calendar;
-
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -27,9 +21,8 @@ import com.jkydjk.healthier.clock.widget.ToggleSwitch.OnChangeAttemptListener;
 
 public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnCheckedChangeListener, OnChangeAttemptListener, TimePickerDialog.OnTimeSetListener {
 
-	private final int ALARM_CYCLE_SETTING_DIALOG = 1;
-	private Alarm.DaysOfWeek mDaysOfWeek = new Alarm.DaysOfWeek(0);
-	private Alarm.DaysOfWeek mNewDaysOfWeek = new Alarm.DaysOfWeek(0);
+	private static final int ALARM_CYCLE = 2;
+	private static final int ALARM_ALERT = 3;
 
 	private Alarm alarm;
 	private int alarmId;
@@ -43,6 +36,7 @@ public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnC
 
 	private View alarmTimeSetting;
 	private View alarmCycleSetting;
+	private View alarmAlertSetting;
 
 	private TextView alarmTime;
 	private TextView alarmAlert;
@@ -82,6 +76,9 @@ public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnC
 		alarmCycleSetting = findViewById(R.id.alarm_cycle_setting);
 		alarmCycleSetting.setOnClickListener(this);
 
+		alarmAlertSetting = findViewById(R.id.alarm_alert_setting);
+		alarmAlertSetting.setOnClickListener(this);
+
 		alarmTime = (TextView) findViewById(R.id.alarm_time);
 		alarmAlert = (TextView) findViewById(R.id.alarm_alert);
 		alarmCycle = (TextView) findViewById(R.id.alarm_cycle);
@@ -95,6 +92,7 @@ public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnC
 		updateAlert();
 		updateCycle();
 		updateLabel();
+		// Toast.makeText(this, "" + array.toString(), 500).show();
 	}
 
 	private void updateTime() {
@@ -163,6 +161,7 @@ public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnC
 	 * 点击处理
 	 */
 	public void onClick(View v) {
+		Intent intent;
 		switch (v.getId()) {
 		case R.id.cancel:
 			finish();
@@ -178,14 +177,41 @@ public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnC
 			break;
 
 		case R.id.alarm_cycle_setting:
-//			showDialog(ALARM_CYCLE_SETTING_DIALOG);
-			Intent intent = new Intent(this, SetAlarmCycle.class);
-			intent.putExtra(Alarms.ALARM_ID, alarm.id);
-			intent.putExtras(intent);
-			startActivity(intent);
+			intent = new Intent(this, SetAlarmCycle.class);
+			intent.putExtra("cycle", alarm.daysOfWeek.getBooleanArray());
+			startActivityForResult(intent, ALARM_CYCLE);
+			overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+			break;
+
+		case R.id.alarm_alert_setting:
+			intent = new Intent(this, SetAlarmAlert.class);
+			intent.putExtra("alert", alarm.alert);
+			startActivityForResult(intent, ALARM_ALERT);
 			overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
 			break;
 		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case ALARM_CYCLE:
+			boolean[] array = data.getBooleanArrayExtra("cycle");
+			for (int i = 0; i < array.length; i++) {
+				alarm.daysOfWeek.set(i, array[i]);
+			}
+			updateCycle();
+			break;
+
+		case ALARM_ALERT:
+			alarm.alert = (Uri) data.getParcelableExtra("alert");
+			updateAlert();
+			break;
+
+		default:
+			break;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -194,47 +220,6 @@ public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnC
 			alarm.vibrate = isChecked;
 			break;
 		}
-	}
-
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		Dialog dialog = null;
-
-		switch (id) {
-		case ALARM_CYCLE_SETTING_DIALOG:
-			
-			String[] weekdays = new DateFormatSymbols().getWeekdays();
-
-			String[] values = new String[] { weekdays[Calendar.MONDAY], weekdays[Calendar.TUESDAY], weekdays[Calendar.WEDNESDAY], weekdays[Calendar.THURSDAY], weekdays[Calendar.FRIDAY],
-					weekdays[Calendar.SATURDAY], weekdays[Calendar.SUNDAY], };
-
-			Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.cycle);
-			
-			builder.setMultiChoiceItems(values, alarm.daysOfWeek.getBooleanArray(), new DialogInterface.OnMultiChoiceClickListener() {
-				public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-					mNewDaysOfWeek.set(which, isChecked);
-				}
-			});
-			
-			builder.setPositiveButton(R.string.enter, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					mDaysOfWeek = alarm.daysOfWeek;
-					mDaysOfWeek.set(mNewDaysOfWeek);
-					alarm.daysOfWeek = mDaysOfWeek;
-					updateCycle();
-				}
-			});
-			builder.setNegativeButton(R.string.cancel, null);
-
-			dialog = builder.create();
-			break;
-
-		default:
-			break;
-		}
-
-		return dialog;
 	}
 
 	public void onChangeAttempted(boolean isChecked) {

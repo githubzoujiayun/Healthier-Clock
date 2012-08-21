@@ -75,6 +75,10 @@
             android:label="@string/cycle"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".SetAlarmAlert"
+            android:label="@string/alert"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".AddAlarm"
             android:label="@string/add_alarm"
             android:screenOrientation="portrait" />
