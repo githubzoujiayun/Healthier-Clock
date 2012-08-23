@@ -19,9 +19,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 
+import com.jkydjk.healthier.clock.entity.FileText;
 import com.jkydjk.healthier.clock.util.FileUtil;
-import com.jkydjk.healthier.clock.util.IconifiedTextListAdapter;
-import com.jkydjk.healthier.clock.widget.IconifiedText;
+import com.jkydjk.healthier.clock.util.FileListAdapter;
 
 //public class FileBrower extends ListActivity {
 public class FileBrower extends BaseActivity implements OnClickListener, OnItemClickListener {
@@ -33,7 +33,7 @@ public class FileBrower extends BaseActivity implements OnClickListener, OnItemC
 	private Uri fileUri;
 	private Uri currentPlay;
 
-	private List<IconifiedText> directoryEntries = new ArrayList<IconifiedText>();
+	private List<FileText> directoryEntries = new ArrayList<FileText>();
 
 	private File currentDirectory;
 
@@ -158,18 +158,18 @@ public class FileBrower extends BaseActivity implements OnClickListener, OnItemC
 //			new CheckedTextView(this);
 //			View view = mFactory.inflate(R.layout.system_ringtone_item, null, false);
 			
-			directoryEntries.add(new IconifiedText(file.getAbsolutePath().substring(currentPathStringLenght), currentIcon));
+			directoryEntries.add(new FileText(file.getAbsolutePath().substring(currentPathStringLenght), currentIcon));
 		}
 
 		Collections.sort(directoryEntries);
 
 		// 如果不是根目录则添加 根目录项 上一级目录项
 		if (!SDCARD.equals(currentDirectory)) {
-			directoryEntries.add(0, new IconifiedText(getString(R.string.go_root_path), getResources().getDrawable(R.drawable.goroot)));
-			directoryEntries.add(1, new IconifiedText(getString(R.string.go_parent_directory), getResources().getDrawable(R.drawable.uponelevel)));
+			directoryEntries.add(0, new FileText(getString(R.string.go_root_path), getResources().getDrawable(R.drawable.goroot)));
+			directoryEntries.add(1, new FileText(getString(R.string.go_parent_directory), getResources().getDrawable(R.drawable.uponelevel)));
 		}
 
-		IconifiedTextListAdapter itla = new IconifiedTextListAdapter(this);
+		FileListAdapter itla = new FileListAdapter(this);
 
 		itla.setListItems(directoryEntries);
 

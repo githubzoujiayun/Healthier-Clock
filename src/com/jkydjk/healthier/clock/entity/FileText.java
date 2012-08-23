@@ -1,8 +1,8 @@
-package com.jkydjk.healthier.clock.widget;
+package com.jkydjk.healthier.clock.entity;
 
 import android.graphics.drawable.Drawable;
 
-public class IconifiedText implements Comparable<IconifiedText> {
+public class FileText implements Comparable<FileText> {
 	// 文件名
 	private String mText = "";
 
@@ -12,7 +12,7 @@ public class IconifiedText implements Comparable<IconifiedText> {
 	// 能否选中
 	private boolean mSelectable = true;
 
-	public IconifiedText(String text, Drawable bullet) {
+	public FileText(String text, Drawable bullet) {
 		icon = bullet;
 		mText = text;
 	}
@@ -46,7 +46,7 @@ public class IconifiedText implements Comparable<IconifiedText> {
 	}
 
 	public void setIcon(Drawable icon) {
-		icon = icon;
+		this.icon = icon;
 	}
 
 	public Drawable getIcon() {
@@ -56,9 +56,9 @@ public class IconifiedText implements Comparable<IconifiedText> {
 	/**
 	 * 比较文件名是否相同
 	 */
-	public int compareTo(IconifiedText other) {
-		if (this.mText != null)
-			return this.mText.compareTo(other.getText());
+	public int compareTo(FileText other) {
+		if (mText != null)
+			return mText.toLowerCase().compareTo(other.getText().toLowerCase());
 		else
 			throw new IllegalArgumentException();
 	}
