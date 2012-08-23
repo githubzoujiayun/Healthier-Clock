@@ -94,23 +94,9 @@
             android:taskAffinity=""
             android:theme="@style/alarm_alert" />
         <activity
-            android:name=".AndroidFileBrowserExampleActivity"
+            android:name=".FileBrower"
             android:label="@string/file_browser"
             android:screenOrientation="portrait" />
-
-        <!-- This is necessary for file browser -->
-        <activity
-            android:name="FileBrowserActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:label="File browser"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="com.jkydjk.healthier.clock.SELECT_DIRECTORY_ACTION" >
-                </action>
-            </intent-filter>
-        </activity>
-        <!-- End of file browser necessity -->
-
 
         <!--
              This activity is basically the same as AlarmAlert but with a more

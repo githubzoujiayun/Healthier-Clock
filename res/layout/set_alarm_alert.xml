@@ -250,7 +250,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="8dip"
-                    android:src="@drawable/icon_file_browser" />
+                    android:src="@drawable/icon_folder" />
 
                 <TextView
                     style="@style/list_block_radio_button_title"

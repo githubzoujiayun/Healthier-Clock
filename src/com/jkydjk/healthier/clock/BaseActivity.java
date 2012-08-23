@@ -1,9 +1,14 @@
 package com.jkydjk.healthier.clock;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Context;
+import android.os.Environment;
 
 public class BaseActivity extends Activity {
+	
+	public static final File SDCARD = Environment.getExternalStorageDirectory().getAbsoluteFile();
 
 	/**
 	 * Android动态获取图片资源
