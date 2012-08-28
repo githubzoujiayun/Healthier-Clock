@@ -97,6 +97,11 @@
             android:name=".FileBrower"
             android:label="@string/file_browser"
             android:screenOrientation="portrait" />
+        
+        <activity
+            android:name=".FileBrowerOther"
+            android:label="@string/file_browser"
+            android:screenOrientation="portrait" />
 
         <!--
              This activity is basically the same as AlarmAlert but with a more

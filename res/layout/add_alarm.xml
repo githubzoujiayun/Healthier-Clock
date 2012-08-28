@@ -44,11 +44,12 @@
 
     <!-- 标题栏下阴影 -->
 
-    <View
+    <ImageView
         android:id="@+id/title_bar_shadow"
         android:layout_width="fill_parent"
-        android:layout_height="5dip"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/title_bar"
-        android:background="@drawable/title_bar_shadow" />
+        android:contentDescription="@string/title_bar_shadow"
+        android:src="@drawable/title_shadow" />
 
 </RelativeLayout>

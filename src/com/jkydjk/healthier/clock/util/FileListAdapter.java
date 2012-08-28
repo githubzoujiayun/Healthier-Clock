@@ -3,7 +3,9 @@ package com.jkydjk.healthier.clock.util;
 import java.util.ArrayList;
 import java.util.List;
 import com.jkydjk.healthier.clock.R;
-import com.jkydjk.healthier.clock.entity.FileText;
+import com.jkydjk.healthier.clock.entity.FileExtension;
+import com.jkydjk.healthier.clock.widget.FileItem;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,18 +20,24 @@ public class FileListAdapter extends BaseAdapter {
 
 	private Context mContext = null;
 
-	private List<FileText> mItems = new ArrayList<FileText>();
+	private List<FileExtension> mItems = new ArrayList<FileExtension>();
 
 	public FileListAdapter(Context context) {
 		mContext = context;
 		mFactory = LayoutInflater.from(context);
 	}
+	
+	public FileListAdapter(Context context, List<FileExtension> list) {
+        mContext = context;
+        mFactory = LayoutInflater.from(context);
+        mItems = list;
+    }
 
-	public void addItem(FileText it) {
+	public void addItem(FileExtension it) {
 		mItems.add(it);
 	}
 
-	public void setListItems(List<FileText> lit) {
+	public void setListItems(List<FileExtension> lit) {
 		mItems = lit;
 	}
 
@@ -54,18 +62,18 @@ public class FileListAdapter extends BaseAdapter {
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View view = convertView;
+	    FileItem fileItem = (FileItem) convertView;
 		
-		if (view == null) {
-			view = mFactory.inflate(R.layout.file_item, parent, false);
+		if (fileItem == null) {
+			fileItem = (FileItem) mFactory.inflate(R.layout.file_item, parent, false);
 		}
+		
+		FileExtension fileExtension = mItems.get(position);
+		
+		fileItem.setIcon(fileExtension.getIcon());
+		fileItem.setFileName(fileExtension.getCustomName());
+		fileItem.setStatusVisibility(fileExtension.isSelected());
 
-		ImageView icon = (ImageView) view.findViewById(R.id.icon);
-		icon.setImageDrawable(mItems.get(position).getIcon());
-
-		TextView fileName = (TextView) view.findViewById(R.id.file_name);
-		fileName.setText(mItems.get(position).getText());
-
-		return view;
+		return fileItem;
 	}
 }

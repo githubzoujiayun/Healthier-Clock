@@ -5,13 +5,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -20,35 +25,40 @@ import android.widget.ListView;
 import com.jkydjk.healthier.clock.entity.FileExtension;
 import com.jkydjk.healthier.clock.util.FileUtil;
 import com.jkydjk.healthier.clock.util.FileListAdapter;
+import com.jkydjk.healthier.clock.widget.FileView;
+import com.jkydjk.healthier.clock.widget.FilePage;
 
 //public class FileBrower extends ListActivity {
-public class FileBrower extends BaseActivity implements OnClickListener, OnItemClickListener {
+public class FileBrowerOther extends BaseActivity implements OnClickListener, OnItemClickListener {
 
     private FileExtension SDCARD_FILE_EXTENSION;
 
-    private LayoutInflater mFactory;
+    private LayoutInflater inflater;
+
+    private View contentView;
 
     private MediaPlayer mediaPlayer;
 
     private Uri fileUri;
     private Uri currentPlay;
 
-    private List<FileExtension> directoryEntries = new ArrayList<FileExtension>();
-
     private FileExtension currentFileDirectoryExtension;
 
     private View cancelAction;
     private View enterAction;
 
-    private ListView fileList;
+    private FileView scrollView;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.file_browser);
 
-        mFactory = LayoutInflater.from(this);
-        
+        inflater = LayoutInflater.from(this);
+
+        contentView = inflater.inflate(R.layout.file_browser_other, null);
+
+        setContentView(contentView);
+
         SDCARD_FILE_EXTENSION = new FileExtension(SDCARD, getString(R.string.go_root_path), R.drawable.icon_home);
 
         Intent intent = getIntent();
@@ -60,70 +70,76 @@ public class FileBrower extends BaseActivity implements OnClickListener, OnItemC
         enterAction = findViewById(R.id.enter);
         enterAction.setOnClickListener(this);
 
-        fileList = (ListView) findViewById(R.id.files);
-        
-        openOrBrowseTo(SDCARD_FILE_EXTENSION);
+        scrollView = (FileView) findViewById(R.id.scroll_view);
+
+        FilePage rootFolderPage = (FilePage) inflater.inflate(R.layout.file_page, null);
+
+        scrollView.setMainView(rootFolderPage);
+
+        ListView fileList = (ListView) rootFolderPage.findViewById(R.id.list);
+
+        openOrBrowseTo(SDCARD_FILE_EXTENSION, fileList);
+
     }
 
-    private void openOrBrowseTo(final FileExtension fileExtension) {
+    private void openOrBrowseTo(final FileExtension fileExtension, ListView fileList) {
         if (fileExtension != null) {
             if (fileExtension.isDirectory()) {
-                currentFileDirectoryExtension = fileExtension;
-                
-                Log.v("fileExtension.isDirectory() : "+ fileExtension);
-                fill(fileExtension.listFiles());
+                 currentFileDirectoryExtension = fileExtension;
+                fill(fileExtension.listFiles(), fileList);
             } else {
-                
-                Log.v("fileExtension not directory : "+ fileExtension);
                 openFile(fileExtension);
             }
         }
     }
 
-    private void fill(File[] files) {
-        directoryEntries.clear();
-        
+    private void fill(File[] files, ListView fileList) {
+        List<FileExtension> directoryEntries = new ArrayList<FileExtension>();
         for (File file : files) {
             if (file.isHidden()) {
                 continue;
             }
             directoryEntries.add(new FileExtension(file));
         }
-
         Collections.sort(directoryEntries);
 
-        // 如果不是根目录则添加 根目录项 上一级目录项
-        if (!SDCARD_FILE_EXTENSION.equals(currentFileDirectoryExtension)) {
-            directoryEntries.add(0, SDCARD_FILE_EXTENSION);
-            directoryEntries.add(1, new FileExtension(currentFileDirectoryExtension.getParentFile(), getString(R.string.go_parent_directory), R.drawable.icon_back));
-        }
-
-        FileListAdapter itla = new FileListAdapter(this, directoryEntries);
-
-        fileList.setAdapter(itla);
+        fileList.setAdapter(new FileListAdapter(this, directoryEntries));
         fileList.setOnItemClickListener(this);
     }
 
-    // 得到当前目录的绝对路径
-    public String getCurrentDirectory() {
-        return currentFileDirectoryExtension.getAbsolutePath();
-    }
-
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        
+        view.setSelected(true);
 
-        FileExtension selectedFileExtension = directoryEntries.get(position);
+        FileExtension selectedFileExtension = (FileExtension) parent.getAdapter().getItem(position);
+        
+        Log.v(SDCARD_FILE_EXTENSION+"");
+        Log.v(selectedFileExtension+"");
 
-        if (selectedFileExtension.equals(SDCARD_FILE_EXTENSION)) {
-            openOrBrowseTo(SDCARD_FILE_EXTENSION);
+        FilePage filePage = (FilePage) inflater.inflate(R.layout.file_page, null);
+        filePage.setId(selectedFileExtension.hashCode());
 
-        } else if (selectedFileExtension.equals(currentFileDirectoryExtension.getParentFile())) {
-            openOrBrowseTo(new FileExtension(currentFileDirectoryExtension.getParentFile()));
+        ListView fileList = (ListView) filePage.findViewById(R.id.list);
 
-        } else {
-            openOrBrowseTo(directoryEntries.get(position));
-        }
+        openOrBrowseTo(selectedFileExtension, fileList);
+        
+        scrollView.appendView(filePage);
+        scrollView.scrollTo(filePage);
+        
+        // if (selectedFileExtension.equals(SDCARD_FILE_EXTENSION)) {
+        // openOrBrowseTo(SDCARD_FILE_EXTENSION);
+        //
+        // } else if
+        // (selectedFileExtension.equals(currentFileDirectoryExtension.getParentFile()))
+        // {
+        // openOrBrowseTo(new
+        // FileExtension(currentFileDirectoryExtension.getParentFile()));
+        //
+        // } else {
+        // openOrBrowseTo(directoryEntries.get(position));
+        // }
     }
-    
+
     // 打开指定文件
     protected void openFile(FileExtension fileExtension) {
         File file = fileExtension;
@@ -182,7 +198,7 @@ public class FileBrower extends BaseActivity implements OnClickListener, OnItemC
             currentPlay = null;
         }
     }
-    
+
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.cancel:
