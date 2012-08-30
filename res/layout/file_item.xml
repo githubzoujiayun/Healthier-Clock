@@ -2,10 +2,7 @@
 <com.jkydjk.healthier.clock.widget.FileItem xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="48.0dip"
-    android:background="@drawable/list_blockbg_middle_line_selector"
-    android:orientation="horizontal"
-    android:paddingLeft="12dip"
-    android:paddingRight="12dip" >
+    android:background="@drawable/list_blockbg_middle_line_selector" >
 
     <ImageView
         android:id="@+id/icon"
@@ -13,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+        android:paddingLeft="12dip"
         android:src="@drawable/icon_folder" />
 
     <TextView
@@ -33,6 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:paddingRight="12dip"
         android:src="@drawable/icon_ok"
         android:visibility="gone" />
 

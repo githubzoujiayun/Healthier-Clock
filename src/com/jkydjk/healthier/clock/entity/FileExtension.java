@@ -5,12 +5,18 @@ import java.net.URI;
 
 import android.view.View;
 
+import com.jkydjk.healthier.clock.BaseActivity;
 import com.jkydjk.healthier.clock.R;
 import com.jkydjk.healthier.clock.util.FileUtil;
+import com.jkydjk.healthier.clock.widget.FileItem;
 
-public class FileExtension extends File {
+public class FileExtension implements Comparable<FileExtension> {
 
-    private static final long serialVersionUID = 1L;
+    public static FileExtension SDCARD_FILE_EXTENSION = new FileExtension(BaseActivity.SDCARD);
+
+    private FileItem fileItem;
+
+    private File file;
 
     private String customName;
 
@@ -23,33 +29,41 @@ public class FileExtension extends File {
     private View view;
 
     public FileExtension(File dir, String name) {
-        super(dir, name);
+        this.file = new File(dir, name);
     }
 
     public FileExtension(String dirPath, String name) {
-        super(dirPath, name);
+        this.file = new File(dirPath, name);
     }
 
     public FileExtension(String path) {
-        super(path);
+        this.file = new File(path);
     }
 
     public FileExtension(URI uri) {
-        super(uri);
+        this.file = new File(uri);
     }
 
     public FileExtension(File file) {
-        super(file, "");
+        this.file = file;
     }
 
     public FileExtension(File file, String customName, int icon) {
-        super(file, "");
+        this.file = file;
         this.customName = customName;
         this.icon = icon;
     }
 
+    public FileItem getFileItem() {
+        return fileItem;
+    }
+
+    public void setFileItem(FileItem fileItem) {
+        this.fileItem = fileItem;
+    }
+
     public String getCustomName() {
-        return customName == null ? super.getName() : customName;
+        return customName == null ? file.getName() : customName;
     }
 
     public void setName(String name) {
@@ -64,7 +78,7 @@ public class FileExtension extends File {
             return R.drawable.icon_folder;
         }
 
-        switch (FileUtil.fileType(this)) {
+        switch (FileUtil.fileType(file)) {
         case FileUtil.IMAGE:
             return R.drawable.image;
 
@@ -124,13 +138,35 @@ public class FileExtension extends File {
     }
 
     /**
-     * 比较文件名是否相同
+     * Return file level
+     * 
+     * @return
      */
-//    public int compareTo(FileExtension other) {
-//        if (getName() != null)
-//            return getName().toLowerCase().compareTo(other.getName().toLowerCase());
-//        else
-//            throw new IllegalArgumentException();
-//    }
+    public int getLevel() {
+        return file.toString().split("/").length - SDCARD_FILE_EXTENSION.getFile().toString().split("/").length;
+    }
+
+    /**
+     * 比较文件名是否相同 用于排序 Collections.sort(fileExtensionEntries);
+     */
+    public int compareTo(FileExtension other) {
+        if (file.getName() != null) {
+            return getCustomName().toLowerCase().compareTo(other.getCustomName().toLowerCase());
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public boolean isDirectory() {
+        return file.isDirectory();
+    }
+
+    public File[] listFiles() {
+        return file.listFiles();
+    }
+
+    public File getFile() {
+        return file;
+    }
 
 }

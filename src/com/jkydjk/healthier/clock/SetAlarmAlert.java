@@ -167,7 +167,7 @@ public class SetAlarmAlert extends BaseActivity implements OnClickListener {
 
 		case R.id.file_browser_layout:
 //		    intent = new Intent(this, FileBrower.class);
-			intent = new Intent(this, FileBrowerOther.class);
+			intent = new Intent(this, FileBrower.class);
 			intent.putExtra("file", alert);
 			startActivityForResult(intent, SYSTEM_BROWER);
 			break;

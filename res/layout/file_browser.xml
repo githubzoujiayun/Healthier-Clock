@@ -39,19 +39,21 @@
             android:text="@string/enter" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/files"
+    <com.jkydjk.healthier.clock.widget.FileView
+        android:id="@+id/scroll_view"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/title_bar"
-        android:background="#FFFFFFFF"
-        android:cacheColorHint="#00000000"
-        android:divider="#CCCCCC"
-        android:dividerHeight="1.0px"
-        android:fadingEdge="none"
-        android:listSelector="@android:color/transparent"
-        android:scrollingCache="false" />
+        android:background="@android:color/transparent"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@android:color/transparent" >
+        </LinearLayout>
+    </com.jkydjk.healthier.clock.widget.FileView>
 
     <!-- 标题栏下阴影 -->
 

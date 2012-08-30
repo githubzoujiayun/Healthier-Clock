@@ -7,10 +7,15 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.jkydjk.healthier.clock.R;
+import com.jkydjk.healthier.clock.entity.FileExtension;
 
 public class FilePage extends RelativeLayout {
-
+    
+    private FileItem selectedFileItem;
+    
     private RelativeLayout shadow;
+
+    private FileExtension fileExtension;
 
     public FilePage(Context context) {
         this(context, null);
@@ -22,6 +27,17 @@ public class FilePage extends RelativeLayout {
 
     public FilePage(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+    }
+
+    public FileExtension getFileExtension() {
+        return fileExtension;
+    }
+
+    public void setFileExtension(FileExtension fileExtension) {
+        this.fileExtension = fileExtension;
+        if (fileExtension != null) {
+            this.setId(fileExtension.getLevel());
+        }
     }
 
     public void hideShadow() {
@@ -52,7 +68,7 @@ public class FilePage extends RelativeLayout {
             shadow.setLayoutParams(layoutParams);
         }
     }
-    
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -66,4 +82,12 @@ public class FilePage extends RelativeLayout {
         this.addView(shadow);
     }
 
+    public FileItem getSelectedFileItem() {
+        return selectedFileItem;
+    }
+
+    public void setSelectedFileItem(FileItem getSelectedFileItem) {
+        this.selectedFileItem = getSelectedFileItem;
+    }
+    
 }
