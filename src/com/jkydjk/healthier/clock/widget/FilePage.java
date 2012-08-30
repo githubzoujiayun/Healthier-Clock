@@ -4,18 +4,21 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.jkydjk.healthier.clock.R;
 import com.jkydjk.healthier.clock.entity.FileExtension;
 
 public class FilePage extends RelativeLayout {
-    
+
     private FileItem selectedFileItem;
-    
-    private RelativeLayout shadow;
 
     private FileExtension fileExtension;
+
+    private RelativeLayout shadow;
 
     public FilePage(Context context) {
         this(context, null);
@@ -89,5 +92,24 @@ public class FilePage extends RelativeLayout {
     public void setSelectedFileItem(FileItem getSelectedFileItem) {
         this.selectedFileItem = getSelectedFileItem;
     }
-    
+
+    public ListView getListView() {
+        return (ListView) findViewById(R.id.list);
+    }
+
+    public void showTipLayout(boolean show, int type) {
+        View layout = findViewById(R.id.page_tip);
+        layout.setVisibility(show ? View.VISIBLE : View.GONE);
+        ImageView tip = (ImageView) findViewById(R.id.tip_icon);
+        switch (type) {
+        case FileExtension.NO_FILES_IN_THE_FLODER:
+            tip.setImageResource(R.drawable.icon_no_files);
+            break;
+
+        default:
+            tip.setImageResource(R.drawable.icon_floder_empty);
+            break;
+        }
+        
+    }
 }

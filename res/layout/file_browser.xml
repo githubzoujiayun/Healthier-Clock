@@ -39,7 +39,7 @@
             android:text="@string/enter" />
     </RelativeLayout>
 
-    <com.jkydjk.healthier.clock.widget.FileView
+    <com.jkydjk.healthier.clock.widget.FileFlipBook
         android:id="@+id/scroll_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -53,7 +53,7 @@
             android:layout_height="fill_parent"
             android:background="@android:color/transparent" >
         </LinearLayout>
-    </com.jkydjk.healthier.clock.widget.FileView>
+    </com.jkydjk.healthier.clock.widget.FileFlipBook>
 
     <!-- 标题栏下阴影 -->
 

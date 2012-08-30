@@ -46,6 +46,13 @@ public class FileUtil {
 			SUFFIXES.put(suffix, value);
 		}
 	}
+	
+	public static boolean fileFilter(File file, int filterFileType){
+	    if(fileType(file) == filterFileType){
+	        return true;
+	    }
+	    return false;
+	}
 
 	/**
 	 * Return the suffix of the passed file.
@@ -60,7 +67,7 @@ public class FileUtil {
 		}
 		int pos = file.getName().lastIndexOf('.');
 		if (pos > 0 && pos < file.getName().length() - 1) {
-			return file.getName().substring(pos + 1);
+			return file.getName().toLowerCase().substring(pos + 1);
 		}
 		return "";
 	}

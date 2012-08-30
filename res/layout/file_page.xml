@@ -18,4 +18,20 @@
         android:listSelector="@android:color/transparent"
         android:scrollingCache="false" />
 
+    <LinearLayout
+        android:id="@+id/page_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/tip_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_floder_empty" />
+    </LinearLayout>
+
 </com.jkydjk.healthier.clock.widget.FilePage>

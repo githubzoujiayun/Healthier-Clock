@@ -286,9 +286,7 @@
     <string name="system_ringtones">系统铃声</string>
     <string name="current_ringtone">当前铃声</string>
     <string name="file_browser">文件浏览</string>
-    
-    <string name="root_path">根目录</string>
-    <string name="go_root_path">.根目录</string>
-    <string name="go_parent_directory">..上一级目录</string>
+    <string name="floder_is_empty">这是一个空文件夹</string>
+    <string name="no_music_files_in_the_folder">该文件夹下没有音乐文件</string>
     
 </resources>

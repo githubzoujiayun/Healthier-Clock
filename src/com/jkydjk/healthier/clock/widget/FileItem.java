@@ -2,14 +2,11 @@ package com.jkydjk.healthier.clock.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.jkydjk.healthier.clock.Log;
 import com.jkydjk.healthier.clock.R;
 import com.jkydjk.healthier.clock.entity.FileExtension;
 

@@ -3,8 +3,6 @@ package com.jkydjk.healthier.clock.widget;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jkydjk.healthier.clock.Log;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
@@ -16,7 +14,7 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.HorizontalScrollView;
 
 @SuppressLint("UseSparseArrays")
-public class FileView extends HorizontalScrollView {
+public class FileFlipBook extends HorizontalScrollView {
 
     private float SWIPE_VERT_MIN_DISTANCE = 30;
     private float startlocation = 0;
@@ -25,17 +23,17 @@ public class FileView extends HorizontalScrollView {
 
     private Map<Integer, View> pages = new HashMap<Integer, View>();
 
-    public FileView(Context context) {
+    public FileFlipBook(Context context) {
         super(context);
         init(context);
     }
 
-    public FileView(Context context, AttributeSet attrs) {
+    public FileFlipBook(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public FileView(Context context, AttributeSet attrs, int defStyle) {
+    public FileFlipBook(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
     }
@@ -87,7 +85,7 @@ public class FileView extends HorizontalScrollView {
 
         getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
             public void onGlobalLayout() {
-                final HorizontalScrollView me = FileView.this;
+                final HorizontalScrollView me = FileFlipBook.this;
                 me.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 parent.removeView(filePage);
                 int offset = pageNumber == 0 ? 0 : 30;
