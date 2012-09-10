@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/transparent" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="12dip"
+        android:background="#FFDDDDDD"
+        android:paddingBottom="2dip"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:paddingTop="2dip"
+        android:text="1"
+        android:textColor="#FF666666"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/text"
+        style="@style/solution_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="28dip"
+        android:text="按摩太阳穴，两拇指或两中指端分别在左右两太阳穴上揉动30次。或用双手拇指按压太阳穴，然后用弯曲的食指第二节的内侧轻刮眼眶一圈，由内上→外上→外下→内下，使眼眶周围的多个穴位受到按摩。" />
+
+    <RelativeLayout
+        android:id="@+id/acupoint_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/text"
+        android:background="#FFFFFFFF"
+        android:paddingBottom="10dip"
+        android:paddingLeft="28dip"
+        android:paddingRight="12dip"
+        android:paddingTop="10dip" >
+
+        <TextView
+            android:id="@+id/acupoint"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dip"
+            android:singleLine="true"
+            android:text="看看太阳穴在哪？"
+            android:textColor="#FFFF3300"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/setting_arrow" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:background="@drawable/setting_line" />
+
+</RelativeLayout>

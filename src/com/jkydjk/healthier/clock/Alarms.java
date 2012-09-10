@@ -18,6 +18,8 @@ package com.jkydjk.healthier.clock;
 
 import java.util.Calendar;
 
+import com.jkydjk.healthier.clock.util.Log;
+
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -152,13 +154,13 @@ public class Alarms {
      *            corresponds to the ALARM_TIME column
      * @param vibrate
      *            corresponds to the VIBRATE column
-     * @param message
-     *            corresponds to the MESSAGE column
      * @param alert
      *            corresponds to the ALERT column
+     * @param remark
+     *            corresponds to the REMARK column
      * @return Time when the alarm will fire.
      */
-    public static long setAlarm(Context context, int id, boolean enabled, int hour, int minutes, Alarm.DaysOfWeek daysOfWeek, boolean vibrate, String message, String alert) {
+    public static long setAlarm(Context context, int id, String label, boolean enabled, int hour, int minutes, Alarm.DaysOfWeek daysOfWeek, boolean vibrate, String alert, String remark) {
 
         ContentValues values = new ContentValues(8);
         ContentResolver resolver = context.getContentResolver();
@@ -171,14 +173,15 @@ public class Alarms {
 
         if (Log.LOGV)
             Log.v("**  setAlarm * idx " + id + " hour " + hour + " minutes " + minutes + " enabled " + enabled + " time " + time);
-
+        
+        values.put(Alarm.Columns.LABEL, label);
         values.put(Alarm.Columns.ENABLED, enabled ? 1 : 0);
         values.put(Alarm.Columns.HOUR, hour);
         values.put(Alarm.Columns.MINUTES, minutes);
         values.put(Alarm.Columns.ALARM_TIME, time);
         values.put(Alarm.Columns.DAYS_OF_WEEK, daysOfWeek.getCoded());
         values.put(Alarm.Columns.VIBRATE, vibrate);
-        values.put(Alarm.Columns.MESSAGE, message);
+        values.put(Alarm.Columns.REMARK, remark);
         values.put(Alarm.Columns.ALERT, alert);
         resolver.update(ContentUris.withAppendedId(Alarm.Columns.CONTENT_URI, id), values, null, null);
 

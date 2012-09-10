@@ -110,24 +110,104 @@
         <item name="android:textColor">#FFFF0000</item>
         <item name="android:textSize">18sp</item>
     </style>
-    
+
+    <style name="list_block_item_tip_text" parent="@android:style/Widget.TextView">
+        <item name="android:gravity">right</item>
+        <item name="android:textColor">#FF999999</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="list_block_item_edit_text" parent="@android:style/Widget.EditText">
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:textColor">#FFFF0000</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <style name="list_block_checked_text_view">
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:textColor">#FF666666</item>
         <item name="android:textSize">18sp</item>
         <item name="android:checkMark">@drawable/checkbox_selector</item>
     </style>
-    
+
+    <style name="edit_text" parent="@android:style/Widget.EditText">
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:textColor">#FFFF0000</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <style name="list_block_radio_button_title">
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:textColor">#FF333333</item>
         <item name="android:textSize">20sp</item>
     </style>
-    
+
     <style name="list_block_radio_button_hint">
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:textColor">#FF666666</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="list_block_divider" parent="@android:style/Widget.TextView">
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:textColor">#FF999999</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">#FFDDDDDD</item>
+        <item name="android:paddingLeft">12dip</item>
+        <item name="android:paddingTop">2dip</item>
+        <item name="android:paddingBottom">2dip</item>
+        <item name="android:shadowColor">#FFFFFFFF</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <style name="hour_tip" parent="@android:style/Widget.TextView">
+        <item name="android:gravity">left</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:shadowColor">#FF333333</item>
+        <item name="android:shadowDx">1.5</item>
+        <item name="android:shadowDy">1.5</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingLeft">10dip</item>
+        <item name="android:paddingRight">5dip</item>
+    </style>
+
+    <style name="shadow" parent="@android:style/Widget.TextView">
+        <item name="android:gravity">left</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:shadowColor">#FF333333</item>
+        <item name="android:shadowDx">1.5</item>
+        <item name="android:shadowDy">1.5</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="solution_text" parent="@android:style/Widget.TextView">
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:textColor">#FF666666</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">8dp</item>
+    </style>
+
+    <style name="action_button" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/action_button_divider</item>
+        <item name="android:gravity">top|center_horizontal</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:paddingLeft">10dip</item>
+        <item name="android:paddingRight">10dip</item>
+        <item name="android:paddingTop">4dip</item>
     </style>
 
 </resources>

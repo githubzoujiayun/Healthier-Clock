@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/alarm_info_layout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dip"
         android:background="@android:color/transparent" >
 
         <ImageView
@@ -124,6 +124,27 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/icon_arrow_up"
             android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/closed"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#66333333"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableLeft="@drawable/icon_shutdown"
+                android:shadowColor="#FF000000"
+                android:shadowDx="1.0"
+                android:shadowDy="1.0"
+                android:shadowRadius="1"
+                android:text="@string/closed"
+                android:textColor="#FFFFFFFF"
+                android:textSize="16sp" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <LinearLayout

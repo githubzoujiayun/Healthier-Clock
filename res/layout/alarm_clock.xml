@@ -4,61 +4,13 @@
     android:layout_height="fill_parent"
     android:background="@drawable/main_bg" >
 
-    <!-- 标题栏 -->
-
-    <RelativeLayout
-        android:id="@+id/title_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/title_bar" >
-
-        <LinearLayout
-            android:id="@+id/settings"
-            style="@style/title_bar_left_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:gravity="center" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/icon_list" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/title_text"
-            style="@style/title_bar_title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/app_label" />
-
-        <LinearLayout
-            android:id="@+id/account"
-            style="@style/title_bar_right_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:gravity="center" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/icon_user" />
-        </LinearLayout>
-    </RelativeLayout>
-
     <!-- 天气块 -->
 
     <RelativeLayout
         android:id="@+id/weather_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title_bar" >
+        android:layout_alignParentTop="true" >
 
         <ImageView
             android:id="@+id/weather_picture"
@@ -194,17 +146,7 @@
         android:fadingEdge="none"
         android:listSelector="@android:color/transparent"
         android:scrollingCache="false" />
-
-    <!-- 标题栏下阴影 -->
-
-    <ImageView
-        android:id="@+id/title_bar_shadow"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title_bar"
-        android:contentDescription="@string/title_bar_shadow"
-        android:src="@drawable/title_shadow" />
-
+    
     <!-- 添加闹钟按钮 -->
 
     <Button

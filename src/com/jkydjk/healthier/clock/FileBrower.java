@@ -5,11 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
@@ -22,16 +18,17 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.jkydjk.healthier.clock.entity.FileExtension;
-import com.jkydjk.healthier.clock.util.FileUtil;
 import com.jkydjk.healthier.clock.util.FileListAdapter;
-import com.jkydjk.healthier.clock.widget.FileItem;
+import com.jkydjk.healthier.clock.util.FileUtil;
 import com.jkydjk.healthier.clock.widget.FileFlipBook;
+import com.jkydjk.healthier.clock.widget.FileItem;
 import com.jkydjk.healthier.clock.widget.FilePage;
 
 //public class FileBrower extends ListActivity {
 public class FileBrower extends BaseActivity implements OnClickListener, OnItemClickListener {
 
-    public static File currentFileDirectory;
+    private File currentOpenFileDirectory;
+    private File currentOpenFile;
 
     private LayoutInflater inflater;
 
@@ -58,7 +55,7 @@ public class FileBrower extends BaseActivity implements OnClickListener, OnItemC
 
         Intent intent = getIntent();
         fileUri = (Uri) intent.getParcelableExtra("file");
-        
+
         filter = true;
         filterFileType = FileUtil.AUDIO;
 
@@ -77,7 +74,6 @@ public class FileBrower extends BaseActivity implements OnClickListener, OnItemC
         fileView.appendPage(rootFolderPage, true);
 
         openOrBrowseTo(rootFolderPage);
-
     }
 
     private void openOrBrowseTo(final FilePage filePage) {
@@ -88,13 +84,10 @@ public class FileBrower extends BaseActivity implements OnClickListener, OnItemC
                 if (files.length > 0) {
                     List<FileExtension> fileExtensionEntries = new ArrayList<FileExtension>();
                     for (File file : files) {
-                        if (file.isHidden()) {
+                        if (file.isHidden())
                             continue;
-                        }
-                        if (filter && !FileUtil.fileFilter(file, filterFileType) && !file.isDirectory()) {
+                        if (filter && !FileUtil.fileFilter(file, filterFileType) && !file.isDirectory())
                             continue;
-                        }
-
                         fileExtensionEntries.add(new FileExtension(file));
                     }
                     if (fileExtensionEntries.size() > 0) {
@@ -112,7 +105,7 @@ public class FileBrower extends BaseActivity implements OnClickListener, OnItemC
             } else {
                 openFile(fileExtension);
             }
-            currentFileDirectory = fileExtension.getFile();
+            currentOpenFileDirectory = fileExtension.getFile();
         }
     }
 
@@ -128,13 +121,13 @@ public class FileBrower extends BaseActivity implements OnClickListener, OnItemC
         } else {
             openFile(selectedFileExtension);
             fileView.scrollToPage(selectedFileExtension.getLevel());
-            currentFileDirectory = selectedFileExtension.getFile();
         }
     }
 
-    // 打开指定文件
+    // 打开文件
     protected void openFile(FileExtension fileExtension) {
         File file = fileExtension.getFile();
+        currentOpenFile = file;
         switch (FileUtil.fileType(file)) {
         case FileUtil.IMAGE:
 
@@ -164,7 +157,7 @@ public class FileBrower extends BaseActivity implements OnClickListener, OnItemC
 
     private void autoPlayMedia(Uri uri) {
         fileUri = uri;
-        if (currentPlay != uri) {
+        if (!uri.equals(currentPlay)) {
             if (mediaPlayer != null) {
                 stopPlayMedia();
             }
@@ -198,9 +191,9 @@ public class FileBrower extends BaseActivity implements OnClickListener, OnItemC
             break;
 
         case R.id.enter:
-            // Intent intent = getIntent();
-            // intent.putExtra("alert", alert);
-            // setResult(RESULT_OK, intent);
+            Intent intent = getIntent();
+            intent.putExtra("alert", Uri.fromFile(currentOpenFile));
+            setResult(RESULT_OK, intent);
             finish();
             break;
 

@@ -16,6 +16,8 @@
 
 package com.jkydjk.healthier.clock;
 
+import com.jkydjk.healthier.clock.util.Log;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;

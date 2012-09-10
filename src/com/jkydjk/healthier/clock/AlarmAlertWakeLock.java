@@ -16,12 +16,14 @@
 
 package com.jkydjk.healthier.clock;
 
+import com.jkydjk.healthier.clock.util.Log;
+
 import android.content.Context;
 import android.os.PowerManager;
 
 /**
- * Hold a wakelock that can be acquired in the AlarmReceiver and
- * released in the AlarmAlert activity
+ * Hold a wakelock that can be acquired in the AlarmReceiver and released in the
+ * AlarmAlert activity
  */
 class AlarmAlertWakeLock {
 
@@ -33,13 +35,10 @@ class AlarmAlertWakeLock {
             return;
         }
 
-        PowerManager pm =
-                (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 
-        sCpuWakeLock = pm.newWakeLock(
-                PowerManager.PARTIAL_WAKE_LOCK |
-                PowerManager.ACQUIRE_CAUSES_WAKEUP |
-                PowerManager.ON_AFTER_RELEASE, Log.LOGTAG);
+        sCpuWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, Log.LOGTAG);
+        
         sCpuWakeLock.acquire();
     }
 

@@ -1,20 +1,6 @@
-/*
- * Copyright (C) 2007 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.jkydjk.healthier.clock;
+
+import com.jkydjk.healthier.clock.util.Log;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -51,11 +37,11 @@ public class AlarmProvider extends ContentProvider {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			db.execSQL("CREATE TABLE alarms (" + "_id INTEGER PRIMARY KEY," + "name TEXT, " + "hour INTEGER, " + "minutes INTEGER, " + "daysofweek INTEGER, " + "alarmtime INTEGER, "
-					+ "enabled INTEGER, " + "vibrate INTEGER, " + "message TEXT, " + "alert TEXT);");
-
+			db.execSQL("CREATE TABLE alarms (" + "_id INTEGER PRIMARY KEY," + "label TEXT, " + "hour INTEGER, " + "minutes INTEGER, " + "daysofweek INTEGER, " + "alarmtime INTEGER, "
+					+ "enabled INTEGER, " + "vibrate INTEGER, " + "alert TEXT, " + "remark TEXT);");
+			
 			// insert default alarms
-			String insertMe = "INSERT INTO alarms " + "(name, hour, minutes, daysofweek, alarmtime, enabled, vibrate, message, alert) " + "VALUES ";
+			String insertMe = "INSERT INTO alarms " + "(label, hour, minutes, daysofweek, alarmtime, enabled, vibrate, alert, remark) " + "VALUES ";
 			db.execSQL(insertMe + "('闹铃', 7, 0, 127, 0, 0, 1, '', '');");
 			db.execSQL(insertMe + "('闹铃', 8, 30, 31, 0, 0, 1, '', '');");
 			db.execSQL(insertMe + "('闹铃', 9, 00, 0, 0, 0, 1, '', '');");
@@ -177,14 +163,14 @@ public class AlarmProvider extends ContentProvider {
 		if (!values.containsKey(Alarm.Columns.VIBRATE))
 			values.put(Alarm.Columns.VIBRATE, 1);
 
-		if (!values.containsKey(Alarm.Columns.MESSAGE))
-			values.put(Alarm.Columns.MESSAGE, "");
+		if (!values.containsKey(Alarm.Columns.REMARK))
+			values.put(Alarm.Columns.REMARK, "");
 
 		if (!values.containsKey(Alarm.Columns.ALERT))
 			values.put(Alarm.Columns.ALERT, "");
 
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-		long rowId = db.insert("alarms", Alarm.Columns.MESSAGE, values);
+		long rowId = db.insert("alarms", Alarm.Columns.REMARK, values);
 		if (rowId < 0) {
 			throw new SQLException("Failed to insert row into " + url);
 		}

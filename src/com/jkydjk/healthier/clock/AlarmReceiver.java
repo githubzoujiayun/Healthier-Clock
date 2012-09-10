@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.jkydjk.healthier.clock.R;
+import com.jkydjk.healthier.clock.util.Log;
 
 /**
  * Glue class: connects AlarmAlert IntentReceiver to AlarmAlert

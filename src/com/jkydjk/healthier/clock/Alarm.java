@@ -1,23 +1,9 @@
-/*
- * Copyright (C) 2009 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.jkydjk.healthier.clock;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
+
+import com.jkydjk.healthier.clock.util.Log;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -54,7 +40,7 @@ public final class Alarm implements Parcelable {
 		p.writeInt(daysOfWeek.getCoded());
 		p.writeLong(time);
 		p.writeInt(vibrate ? 1 : 0);
-		p.writeString(label);
+		p.writeString(remark);
 		p.writeParcelable(alert, flags);
 		p.writeInt(silent ? 1 : 0);
 	}
@@ -73,12 +59,12 @@ public final class Alarm implements Parcelable {
 		public static final Uri CONTENT_URI = Uri.parse("content://com.jkydjk.healthier.clock/alarm");
 
 		/**
-		 * 闹铃的名称
+		 * 闹铃的标签
 		 * <p>
 		 * Type: STRING
 		 * </p>
 		 */
-		public static final String NAME = "name";
+		public static final String LABEL = "label";
 
 		/**
 		 * Hour in 24-hour localtime 0 - 23.
@@ -129,20 +115,20 @@ public final class Alarm implements Parcelable {
 		public static final String VIBRATE = "vibrate";
 
 		/**
-		 * Message to show when alarm triggers Note: not currently used
-		 * <p>
-		 * Type: STRING
-		 * </p>
-		 */
-		public static final String MESSAGE = "message";
-
-		/**
 		 * 响铃时的声音
 		 * <p>
 		 * Type: STRING
 		 * </p>
 		 */
 		public static final String ALERT = "alert";
+		
+		/**
+		 * Remark to show when alarm triggers Note: not currently used
+		 * <p>
+		 * Type: STRING
+		 * </p>
+		 */
+		public static final String REMARK = "remark";
 
 		/**
 		 * 默认排序顺序
@@ -152,22 +138,22 @@ public final class Alarm implements Parcelable {
 		// Used when filtering enabled alarms.
 		public static final String WHERE_ENABLED = ENABLED + "=1";
 
-		static final String[] ALARM_QUERY_COLUMNS = { _ID, NAME, HOUR, MINUTES, DAYS_OF_WEEK, ALARM_TIME, ENABLED, VIBRATE, MESSAGE, ALERT };
+		static final String[] ALARM_QUERY_COLUMNS = { _ID, LABEL, HOUR, MINUTES, DAYS_OF_WEEK, ALARM_TIME, ENABLED, VIBRATE, ALERT, REMARK };
 
 		/**
 		 * These save calls to cursor.getColumnIndexOrThrow() THEY MUST BE KEPT
 		 * IN SYNC WITH ABOVE QUERY COLUMNS
 		 */
 		public static final int ALARM_ID_INDEX = 0;
-		public static final int ALARM_NAME_INDEX = 1;
+		public static final int ALARM_LABEL_INDEX = 1;
 		public static final int ALARM_HOUR_INDEX = 2;
 		public static final int ALARM_MINUTES_INDEX = 3;
 		public static final int ALARM_DAYS_OF_WEEK_INDEX = 4;
 		public static final int ALARM_TIME_INDEX = 5;
 		public static final int ALARM_ENABLED_INDEX = 6;
 		public static final int ALARM_VIBRATE_INDEX = 7;
-		public static final int ALARM_MESSAGE_INDEX = 8;
-		public static final int ALARM_ALERT_INDEX = 9;
+		public static final int ALARM_ALERT_INDEX = 8;
+		public static final int ALARM_REMARK_INDEX = 9;
 	}
 
 	// ////////////////////////////
@@ -176,27 +162,27 @@ public final class Alarm implements Parcelable {
 
 	// Public fields
 	public int id;
-	public String name;
+	public String label;
 	public boolean enabled;
 	public int hour;
 	public int minutes;
 	public DaysOfWeek daysOfWeek;
 	public long time;
 	public boolean vibrate;
-	public String label;
+	public String remark;
 	public Uri alert;
 	public boolean silent;
 
 	public Alarm(Cursor c) {
 		id = c.getInt(Columns.ALARM_ID_INDEX);
-		name = c.getString(Columns.ALARM_NAME_INDEX);
+		label = c.getString(Columns.ALARM_LABEL_INDEX);
 		enabled = c.getInt(Columns.ALARM_ENABLED_INDEX) == 1;
 		hour = c.getInt(Columns.ALARM_HOUR_INDEX);
 		minutes = c.getInt(Columns.ALARM_MINUTES_INDEX);
 		daysOfWeek = new DaysOfWeek(c.getInt(Columns.ALARM_DAYS_OF_WEEK_INDEX));
 		time = c.getLong(Columns.ALARM_TIME_INDEX);
 		vibrate = c.getInt(Columns.ALARM_VIBRATE_INDEX) == 1;
-		label = c.getString(Columns.ALARM_MESSAGE_INDEX);
+		remark = c.getString(Columns.ALARM_REMARK_INDEX);
 		String alertString = c.getString(Columns.ALARM_ALERT_INDEX);
 
 		if (Alarms.ALARM_ALERT_SILENT.equals(alertString)) {
@@ -223,16 +209,16 @@ public final class Alarm implements Parcelable {
 		daysOfWeek = new DaysOfWeek(p.readInt());
 		time = p.readLong();
 		vibrate = p.readInt() == 1;
-		label = p.readString();
+		remark = p.readString();
 		alert = (Uri) p.readParcelable(null);
 		silent = p.readInt() == 1;
 	}
 
 	public String getLabelOrDefault(Context context) {
-		if (label == null || label.length() == 0) {
+		if (remark == null || remark.length() == 0) {
 			return context.getString(R.string.default_label);
 		}
-		return label;
+		return remark;
 	}
 
 	/*

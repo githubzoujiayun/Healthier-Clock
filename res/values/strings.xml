@@ -215,7 +215,6 @@
 
     <!-- Title of the ringtone setting. -->
     <string name="default_ringtone_setting_title">设置默认铃声</string>
-    
     <string name="default_ringtone">默认铃声</string>
 
     <!-- Entries listed in the setting for the side-button action. -->
@@ -264,6 +263,7 @@
     <!-- Alarm action -->
     <string name="edit">编辑</string>
     <string name="close">关闭</string>
+    <string name="closed">已关闭</string>
     <string name="open">开启</string>
     <string name="delete">删除</string>
     <string name="skip">跳过</string>
@@ -273,6 +273,7 @@
     <string name="wake_time">起床时间</string>
     <string name="cycle">周期</string>
     <string name="remark">备注</string>
+    <string name="more">更多</string>
 
     <!-- Week -->
     <string name="Monday">星期一</string>
@@ -288,5 +289,34 @@
     <string name="file_browser">文件浏览</string>
     <string name="floder_is_empty">这是一个空文件夹</string>
     <string name="no_music_files_in_the_folder">该文件夹下没有音乐文件</string>
+    <string name="username">用户名</string>
+    <string name="email">邮箱</string>
+    <string name="password">密码</string>
+    <string name="signup_tips">邮箱地址用于找回密码，请填写真实有效地址。\n完成注册代表你接受健康时钟的注册协议。</string>
     
+    <string name="about">关于健康时钟</string>
+	<string name="app_evaluate">评价应用</string>
+	<string name="feedback">建议反馈</string>
+	<string name="help">帮助</string>
+	<string name="clock_global_setting">闹钟设置</string>
+	<string name="account_binding">帐号绑定</string>
+	
+	<string name="account_weibo">新浪微博</string>
+	<string name="account_tencent">腾讯微博</string>
+	<string name="account_renren">人人网</string>
+	<string name="account_douban">豆瓣</string>
+	<string name="unbound">未绑定</string>
+	<string name="bounded">已绑定</string>
+    
+	<string name="special_concern">❤ 特别关注</string>
+	<string name="special_concern_tip">选择特别关注后，我们将在每\n天这个时辰给你发送提醒 :)</string>
+	
+	<!-- Solution action button -->
+	<string name="favorite">收藏</string>
+	<string name="set_solution_alarm">设置提醒</string>
+	<string name="process_management">过程管理</string>
+	<string name="evaluate">评价</string>
+	<string name="forwarding">转发</string>
+	
+	
 </resources>

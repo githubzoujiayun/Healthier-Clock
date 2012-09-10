@@ -1,22 +1,6 @@
-/*
- * Copyright (C) 2007 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.jkydjk.healthier.clock;
 
-import com.jkydjk.healthier.clock.R;
+import com.jkydjk.healthier.clock.util.Log;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -28,15 +12,8 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.text.format.DateFormat;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -102,8 +79,8 @@ public class SetAlarm extends PreferenceActivity implements TimePickerDialog.OnT
         }
         
         mEnabled = alarm.enabled;
-        mLabel.setText(alarm.label);
-        mLabel.setSummary(alarm.label);
+        mLabel.setText(alarm.remark);
+        mLabel.setSummary(alarm.remark);
         mHour = alarm.hour;
         mMinutes = alarm.minutes;
         mRepeatPref.setDaysOfWeek(alarm.daysOfWeek);
@@ -150,7 +127,7 @@ public class SetAlarm extends PreferenceActivity implements TimePickerDialog.OnT
 
     private void saveAlarm() {
         final String alert = mAlarmPref.getAlertString();
-        long time = Alarms.setAlarm(this, mId, mEnabled, mHour, mMinutes, mRepeatPref.getDaysOfWeek(), mVibratePref.isChecked(), mLabel.getText(), alert);
+        long time = Alarms.setAlarm(this, mId, mLabel.getText(), mEnabled, mHour, mMinutes, mRepeatPref.getDaysOfWeek(), mVibratePref.isChecked(), alert, "");
 
         if (mEnabled) {
             popAlarmSetToast(this, time);
@@ -166,7 +143,7 @@ public class SetAlarm extends PreferenceActivity implements TimePickerDialog.OnT
             Log.v("** saveAlarm " + id + " " + label + " " + enabled + " " + hour + " " + minute + " vibe " + vibrate);
 
         // Fix alert string first
-        long time = Alarms.setAlarm(context, id, enabled, hour, minute, daysOfWeek, vibrate, label, alert);
+        long time = Alarms.setAlarm(context, id, label, enabled, hour, minute, daysOfWeek, vibrate, alert, "");
 
         if (enabled && popToast) {
             popAlarmSetToast(context, time);
@@ -220,7 +197,7 @@ public class SetAlarm extends PreferenceActivity implements TimePickerDialog.OnT
         mDeleteAlarmItem = menu.add(0, 0, 0, R.string.delete_alarm);
         mDeleteAlarmItem.setIcon(android.R.drawable.ic_menu_delete);
 
-        if (AlarmClock.DEBUG) {
+        if (Log.DEBUG) {
             mTestAlarmItem = menu.add(0, 0, 0, "test alarm");
         }
 
@@ -233,7 +210,7 @@ public class SetAlarm extends PreferenceActivity implements TimePickerDialog.OnT
             finish();
             return true;
         }
-        if (AlarmClock.DEBUG) {
+        if (Log.DEBUG) {
             if (item == mTestAlarmItem) {
                 setTestAlarm();
                 return true;

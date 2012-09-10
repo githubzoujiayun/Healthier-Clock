@@ -41,6 +41,7 @@ import android.widget.TextView;
 import java.util.Calendar;
 
 import com.jkydjk.healthier.clock.R;
+import com.jkydjk.healthier.clock.util.Log;
 
 /**
  * Alarm Clock alarm alert: pops visible indicator and plays alarm

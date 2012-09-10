@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.jkydjk.healthier.clock.util.Log;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;

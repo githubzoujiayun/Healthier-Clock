@@ -15,7 +15,7 @@ import android.widget.TextView;
 public class SetAlarmAlert extends BaseActivity implements OnClickListener {
 
 	private static final int SYSTEM_RINGTONE = 0;
-	private static final int SYSTEM_BROWER = 2;
+	private static final int SYSTEM_FILE_BROWER = 2;
 
 	private MediaPlayer mediaPlayer;
 
@@ -121,6 +121,17 @@ public class SetAlarmAlert extends BaseActivity implements OnClickListener {
 				overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
 			}
 			break;
+			
+		case SYSTEM_FILE_BROWER:
+            if (resultCode == RESULT_OK) {
+                Uri alert = (Uri) data.getParcelableExtra("alert");
+                Intent intent = getIntent();
+                intent.putExtra("alert", alert);
+                setResult(RESULT_CANCELED, intent);
+                super.finish();
+                overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+            }
+            break;
 
 		default:
 			break;
@@ -166,10 +177,9 @@ public class SetAlarmAlert extends BaseActivity implements OnClickListener {
 			break;
 
 		case R.id.file_browser_layout:
-//		    intent = new Intent(this, FileBrower.class);
 			intent = new Intent(this, FileBrower.class);
 			intent.putExtra("file", alert);
-			startActivityForResult(intent, SYSTEM_BROWER);
+			startActivityForResult(intent, SYSTEM_FILE_BROWER);
 			break;
 
 		default:
