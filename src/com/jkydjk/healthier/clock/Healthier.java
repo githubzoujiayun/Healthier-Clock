@@ -15,7 +15,7 @@ import com.jkydjk.healthier.clock.widget.AnimationTabHost;
 
 @SuppressLint("NewApi")
 public class Healthier extends TabActivity implements OnTabChangeListener, OnClickListener {
-    
+
     private TabWidget channelTabWidget;
     private AnimationTabHost mTabHost;
 
@@ -52,10 +52,9 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
 
         more = findViewById(R.id.more);
         more.setOnClickListener(this);
-        
+
         account = findViewById(R.id.account);
         account.setOnClickListener(this);
-
     }
 
     /**
@@ -91,11 +90,10 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
         case R.id.more:
             startActivity(new Intent(this, More.class));
             break;
-            
         case R.id.account:
-          startActivity(new Intent(this, Signup.class));
-          overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
-          break;
+            startActivity(new Intent(this, Signup.class));
+            overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+            break;
         }
     }
 

@@ -25,6 +25,7 @@
     <application
         android:icon="@drawable/ic_launcher_alarmclock"
         android:label="@string/app_label"
+        android:persistent="true"
         android:theme="@android:style/Theme.NoTitleBar" >
         <provider
             android:name="AlarmProvider"
@@ -33,7 +34,7 @@
         <activity
             android:name=".Healthier"
             android:configChanges="orientation|keyboardHidden|keyboard|navigation"
-            android:label="@string/app_label"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,53 +43,49 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChineseHour" />
-        <activity android:name=".SolarTerms" />
-        <activity android:name=".Favorites" />
-        <activity android:name=".More" />
-        <activity android:name=".Signup" />
-        <activity android:name=".Help" />
         <activity
             android:name=".AlarmClock"
-            android:configChanges="orientation|keyboardHidden|keyboard|navigation"
-            android:label="@string/app_label"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChineseHour"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SolarTerms"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Favorites"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".More"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Signup"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Help"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/settings"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SetAlarm"
             android:label="@string/set_alarm"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SetAlarmCustom"
-            android:label="@string/set_alarm_custom"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name=".SetAlarmCycle"
-            android:label="@string/cycle"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SetAlarmAlert"
-            android:label="@string/alert"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SystemRingtone"
-            android:label="@string/system_ringtones"
             android:screenOrientation="portrait" />
         <activity
             android:name=".AddAlarm"
-            android:label="@string/add_alarm"
             android:screenOrientation="portrait" />
         <activity
             android:name=".AlarmAlert"
@@ -99,7 +96,6 @@
             android:theme="@style/alarm_alert" />
         <activity
             android:name=".FileBrower"
-            android:label="@string/file_browser"
             android:screenOrientation="portrait" />
 
         <!--

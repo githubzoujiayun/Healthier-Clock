@@ -3,8 +3,11 @@ package com.jkydjk.healthier.clock;
 import java.util.ArrayList;
 
 import com.jkydjk.healthier.clock.R;
+import com.jkydjk.healthier.clock.util.Log;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -38,6 +41,20 @@ public class ChineseHour extends Activity implements OnClickListener, OnPageChan
 
         pager.setAdapter(new GuidePageAdapter());
         pager.setOnPageChangeListener(this);
+        
+        Log.v(getCurrentFocus()+"");
+        
+//        try {
+//            Context context = createPackageContext("com.jkydjk.healthier.clock", CONTEXT_INCLUDE_CODE | CONTEXT_IGNORE_SECURITY);
+//            Class clazz = context.getClassLoader().loadClass("com.jkydjk.healthier.clock.Healthier");
+//            BaseActivity owner = (BaseActivity)clazz.newInstance();
+//            Log.v(owner+"");
+//            
+////            this.getCurrentActivity().findViewById(id)
+////            owner.getCurrentFocus().findViewById(id)
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void onClick(View v) {

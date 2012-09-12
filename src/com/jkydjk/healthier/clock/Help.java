@@ -65,7 +65,7 @@ public class Help extends BaseActivity implements OnClickListener, OnPageChangeL
 
             group.addView(imageViews[i]);
         }
-
+        
         pager.setAdapter(new GuidePageAdapter());
         pager.setOnPageChangeListener(this);
 

@@ -69,17 +69,66 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:gravity="center"
-                android:paddingBottom="4.0px" />
+                android:gravity="center" />
 
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4.0px"
                 android:layout_weight="0.0"
                 android:background="@drawable/channel_background" />
         </LinearLayout>
     </com.jkydjk.healthier.clock.widget.AnimationTabHost>
+
+    <!--
+    <LinearLayout
+        android:id="@+id/channel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/channel_buttons_on_alarm"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/alarm"
+            style="@style/channel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/default_label" >
+        </Button>
+
+        <Button
+            android:id="@+id/chinese_hour"
+            style="@style/channel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/chinese_hour" >
+        </Button>
+
+        <Button
+            android:id="@+id/solar_terms"
+            style="@style/channel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/solar_terms" >
+        </Button>
+
+        <Button
+            android:id="@+id/favorites"
+            style="@style/channel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/favorites" >
+        </Button>
+    </LinearLayout>
+    -->
+
 
     <!-- 标题栏下阴影 -->
 
