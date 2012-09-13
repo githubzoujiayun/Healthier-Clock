@@ -283,7 +283,6 @@
     <string name="Friday">星期五</string>
     <string name="Saturday">星期六</string>
     <string name="Sunday">星期日</string>
-    
     <string name="system_ringtones">系统铃声</string>
     <string name="current_ringtone">当前铃声</string>
     <string name="file_browser">文件浏览</string>
@@ -292,31 +291,33 @@
     <string name="username">用户名</string>
     <string name="email">邮箱</string>
     <string name="password">密码</string>
+    <string name="signup">帐户注册</string>
     <string name="signup_tips">邮箱地址用于找回密码，请填写真实有效地址。\n完成注册代表你接受健康时钟的注册协议。</string>
-    
     <string name="about">关于健康时钟</string>
-	<string name="app_evaluate">评价应用</string>
-	<string name="feedback">建议反馈</string>
-	<string name="help">帮助</string>
-	<string name="clock_global_setting">闹钟设置</string>
-	<string name="account_binding">帐号绑定</string>
-	
-	<string name="account_weibo">新浪微博</string>
-	<string name="account_tencent">腾讯微博</string>
-	<string name="account_renren">人人网</string>
-	<string name="account_douban">豆瓣</string>
-	<string name="unbound">未绑定</string>
-	<string name="bounded">已绑定</string>
-    
-	<string name="special_concern">❤ 特别关注</string>
-	<string name="special_concern_tip">选择特别关注后，我们将在每\n天这个时辰给你发送提醒 :)</string>
-	
-	<!-- Solution action button -->
-	<string name="favorite">收藏</string>
-	<string name="set_solution_alarm">设置提醒</string>
-	<string name="process_management">过程管理</string>
-	<string name="evaluate">评价</string>
-	<string name="forwarding">转发</string>
-	
-	
+    <string name="app_evaluate">评价应用</string>
+    <string name="feedback">建议反馈</string>
+    <string name="help">帮助</string>
+    <string name="clock_global_setting">闹钟设置</string>
+    <string name="account_binding">帐号绑定</string>
+    <string name="account_weibo">新浪微博</string>
+    <string name="account_tencent">腾讯微博</string>
+    <string name="account_renren">人人网</string>
+    <string name="account_douban">豆瓣</string>
+    <string name="unbound">未绑定</string>
+    <string name="bounded">已绑定</string>
+    <string name="special_concern">❤ 特别关注</string>
+    <string name="special_concern_tip">选择特别关注后，我们将在每\n天这个时辰给你发送提醒 :)</string>
+
+    <!-- Solution action button -->
+    <string name="favorite">收藏</string>
+    <string name="set_solution_alarm">设置提醒</string>
+    <string name="process_management">过程管理</string>
+    <string name="evaluate">评价</string>
+    <string name="forwarding">转发</string>
+    <string name="arrow_down">▼</string>
+    <string name="help_page_text_app">健康从一点一时开始</string>
+    <string name="help_page_text_alarm">健康闹钟，给您安个随身秘书！</string>
+    <string name="help_page_text_chinese_hour">子丑寅卯辰，从时辰里看养生哲学。</string>
+    <string name="help_page_text_solar_terms">生长化收藏，从节气里悟养生心语。</string>
+
 </resources>

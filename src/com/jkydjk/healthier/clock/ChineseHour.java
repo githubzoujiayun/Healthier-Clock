@@ -10,18 +10,34 @@ import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 
-public class ChineseHour extends Activity implements OnClickListener, OnPageChangeListener {
+public class ChineseHour extends FragmentActivity implements OnPageChangeListener {
+
+    static final int NUM_ITEMS = 10;
 
     private LayoutInflater inflater;
     private ViewPager pager;
     private ArrayList<View> pages;
+
+    private MyAdapter mAdapter;
+
+    private Activity main;
+    private View titleBar;
+    private View tabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,37 +46,39 @@ public class ChineseHour extends Activity implements OnClickListener, OnPageChan
 
         pager = (ViewPager) findViewById(R.id.pager);
 
+        mAdapter = new MyAdapter(getSupportFragmentManager());
+
+        pager.setAdapter(mAdapter);
+        
         inflater = getLayoutInflater();
-        
-        View page01 = inflater.inflate(R.layout.hour_solution, null);
-        View page02 = inflater.inflate(R.layout.hour_solution, null);
 
-        pages = new ArrayList<View>();
-        pages.add(page01);
-        pages.add(page02);
-
-        pager.setAdapter(new GuidePageAdapter());
         pager.setOnPageChangeListener(this);
+
+        main = getParent();
+        tabs = main.findViewById(android.R.id.tabs);
+        titleBar = main.findViewById(R.id.title_bar);
         
-        Log.v(getCurrentFocus()+"");
         
-//        try {
-//            Context context = createPackageContext("com.jkydjk.healthier.clock", CONTEXT_INCLUDE_CODE | CONTEXT_IGNORE_SECURITY);
-//            Class clazz = context.getClassLoader().loadClass("com.jkydjk.healthier.clock.Healthier");
-//            BaseActivity owner = (BaseActivity)clazz.newInstance();
-//            Log.v(owner+"");
-//            
-////            this.getCurrentActivity().findViewById(id)
-////            owner.getCurrentFocus().findViewById(id)
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.back:
-//            finish();
+    private void toggleFullScreen(int type) {
+        switch (type) {
+        case Healthier.FULL_SCREEN_NO:
+            tabs.setVisibility(View.GONE);
+            titleBar.setVisibility(View.GONE);
+            break;
+
+        case Healthier.FULL_SCREEN_YES:
+            tabs.setVisibility(View.VISIBLE);
+            titleBar.setVisibility(View.VISIBLE);
+            break;
+
+        case Healthier.FULL_SCREEN_AUTO:
+            tabs.setVisibility(tabs.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+            titleBar.setVisibility(titleBar.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+            break;
+
+        default:
             break;
         }
     }
@@ -71,7 +89,8 @@ public class ChineseHour extends Activity implements OnClickListener, OnPageChan
     }
 
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        // TODO Auto-generated method stub
+        tabs.setVisibility(View.GONE);
+        titleBar.setVisibility(View.GONE);
     }
 
     public void onPageSelected(int position) {
@@ -84,55 +103,63 @@ public class ChineseHour extends Activity implements OnClickListener, OnPageChan
         // }
     }
 
-    // 指引页面数据适配器
-    private class GuidePageAdapter extends PagerAdapter {
+    public static class MyAdapter extends FragmentPagerAdapter {
+        public MyAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
         @Override
         public int getCount() {
-            return pages.size();
+            return NUM_ITEMS;
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
+        public Fragment getItem(int position) {
+            return SolutionFragment.newInstance(position);
+        }
+    }
+
+    public static class SolutionFragment extends Fragment {
+
+        int mNum;
+
+        static SolutionFragment newInstance(int num) {
+            SolutionFragment fragment = new SolutionFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("num", num);
+            fragment.setArguments(bundle);
+            return fragment;
         }
 
         @Override
-        public int getItemPosition(Object object) {
-            return super.getItemPosition(object);
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            mNum = getArguments() != null ? getArguments().getInt("num") : 1;
         }
 
         @Override
-        public void destroyItem(View container, int position, Object object) {
-            ((ViewPager) container).removeView(pages.get(position));
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.hour_solution, container, false);
+            return view;
         }
 
         @Override
-        public Object instantiateItem(View container, int position) {
-            ((ViewPager) container).addView(pages.get(position));
-            return pages.get(position);
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+            FragmentActivity activity = getActivity();
+            
+//            activity.setContentView(layoutResID)
+            
+            View content = activity.findViewById(R.id.content);
+            content.setOnTouchListener(new OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    Log.v("solution Fragment onTouch");
+                    return false;
+                }
+            });
+            
         }
 
-        @Override
-        public void restoreState(Parcelable state, ClassLoader loader) {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public Parcelable saveState() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public void startUpdate(View container) {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public void finishUpdate(View container) {
-            // TODO Auto-generated method stub
-        }
     }
 
 }

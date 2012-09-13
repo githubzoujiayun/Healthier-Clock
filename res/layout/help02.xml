@@ -4,9 +4,33 @@
     android:layout_height="fill_parent"
     android:background="@drawable/main_bg" >
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Help page 1" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dip"
+        android:src="@drawable/app_screenshot_alarm" />
+
+    <LinearLayout
+        android:id="@+id/text"
+        android:layout_width="fill_parent"
+        android:layout_height="180dip"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/help_page_bg_02"
+        android:orientation="vertical"
+        android:padding="25dip" >
+
+        <TextView
+            style="@style/help_page_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/default_label" />
+
+        <TextView
+            style="@style/help_page_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/help_page_text_alarm" />
+    </LinearLayout>
 
 </RelativeLayout>

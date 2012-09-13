@@ -26,7 +26,7 @@
         android:icon="@drawable/ic_launcher_alarmclock"
         android:label="@string/app_label"
         android:persistent="true"
-        android:theme="@android:style/Theme.NoTitleBar" >
+        android:theme="@style/Theme.Dialog" >
         <provider
             android:name="AlarmProvider"
             android:authorities="com.jkydjk.healthier.clock" />
@@ -57,13 +57,20 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".More"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.InputMethod" />
         <activity
             android:name=".Signup"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent" />
         <activity
             android:name=".Help"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".Feedback"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.InputMethod"
+            android:windowSoftInputMode="adjustUnspecified|stateAlwaysVisible" />
         <activity
             android:name=".SettingsActivity"
             android:screenOrientation="portrait" />
@@ -86,7 +93,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".AddAlarm"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent" />
         <activity
             android:name=".AlarmAlert"
             android:excludeFromRecents="true"

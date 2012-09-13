@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Base application theme is the default theme. -->
+    <style name="Theme" parent="android:Theme"></style>
+
+    <style name="Theme.InputMethod">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.InputMethod</item>
+        <!-- <item name="android:windowBackground">@drawable/transparent_background</item> -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- <item name="android:colorForeground">#fff</item> -->
+    </style>
+    
+    <style name="Theme.Toast">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Toast</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    
+    <style name="Theme.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    
+    <style name="Theme.Transparent">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <!-- Toggle Switch Style -->
     <style name="toggle_switch_style">
         <item name="thumb">@drawable/switch_thumb</item>
@@ -209,7 +238,7 @@
         <item name="android:paddingRight">10dip</item>
         <item name="android:paddingTop">4dip</item>
     </style>
-    
+
     <style name="channel_button" parent="@android:style/Widget.Button">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:gravity">center</item>
@@ -217,6 +246,18 @@
         <item name="android:textSize">16sp</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
+    </style>
+    
+    <style name="help_page_title" parent="@android:style/Widget.TextView">
+        <item name="android:gravity">left</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+    
+    <style name="help_page_text" parent="@android:style/Widget.TextView">
+        <item name="android:gravity">left</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
 </resources>

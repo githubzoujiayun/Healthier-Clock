@@ -52,9 +52,4 @@ public class Signup extends BaseActivity implements OnClickListener {
         }
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
-    }
 }

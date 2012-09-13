@@ -37,14 +37,12 @@ public class Help extends BaseActivity implements OnClickListener, OnPageChangeL
         View page02 = inflater.inflate(R.layout.help02, null);
         View page03 = inflater.inflate(R.layout.help03, null);
         View page04 = inflater.inflate(R.layout.help04, null);
-        View page05 = inflater.inflate(R.layout.help05, null);
 
         pages = new ArrayList<View>();
         pages.add(page01);
         pages.add(page02);
         pages.add(page03);
         pages.add(page04);
-        pages.add(page05);
 
         imageViews = new ImageView[pages.size()];
 
@@ -79,11 +77,11 @@ public class Help extends BaseActivity implements OnClickListener, OnPageChangeL
         }
     }
     
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
-    }
+//    @Override
+//    public void finish() {
+//        super.finish();
+//        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+//    }
 
     // 指引页面更改事件监听器
     public void onPageScrollStateChanged(int state) {

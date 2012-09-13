@@ -5,6 +5,7 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TabHost.OnTabChangeListener;
@@ -15,6 +16,10 @@ import com.jkydjk.healthier.clock.widget.AnimationTabHost;
 
 @SuppressLint("NewApi")
 public class Healthier extends TabActivity implements OnTabChangeListener, OnClickListener {
+
+    public final static int FULL_SCREEN_NO = 0;
+    public final static int FULL_SCREEN_YES = 1;
+    public final static int FULL_SCREEN_AUTO = 2;
 
     private TabWidget channelTabWidget;
     private AnimationTabHost mTabHost;
@@ -92,9 +97,15 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
             break;
         case R.id.account:
             startActivity(new Intent(this, Signup.class));
-            overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
             break;
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+         startActivity(new Intent(this, More.class));
+        return false;
+    }
+
 
 }
