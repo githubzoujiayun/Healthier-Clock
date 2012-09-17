@@ -291,8 +291,9 @@
     <string name="username">用户名</string>
     <string name="email">邮箱</string>
     <string name="password">密码</string>
-    <string name="signup">帐户注册</string>
+    <string name="signup">注册</string>
     <string name="signup_tips">邮箱地址用于找回密码，请填写真实有效地址。\n完成注册代表你接受健康时钟的注册协议。</string>
+    <string name="signin">登录</string>
     <string name="about">关于健康时钟</string>
     <string name="app_evaluate">评价应用</string>
     <string name="feedback">建议反馈</string>
