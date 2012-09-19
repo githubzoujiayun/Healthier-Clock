@@ -288,8 +288,10 @@
     <string name="file_browser">文件浏览</string>
     <string name="floder_is_empty">这是一个空文件夹</string>
     <string name="no_music_files_in_the_folder">该文件夹下没有音乐文件</string>
+    <string name="my_account">我的帐户</string>
     <string name="username">用户名</string>
     <string name="email">邮箱</string>
+    <string name="username_email">用户名/邮箱</string>
     <string name="password">密码</string>
     <string name="signup">注册</string>
     <string name="signup_tips">邮箱地址用于找回密码，请填写真实有效地址。\n完成注册代表你接受健康时钟的注册协议。</string>

@@ -1,10 +1,12 @@
 package com.jkydjk.healthier.clock;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
+import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.widget.AnimationTabHost;
 import com.jkydjk.healthier.clock.widget.CustomDialog;
 
@@ -100,12 +103,31 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
     case R.id.more:
       startActivity(new Intent(this, More.class));
       break;
+      
     case R.id.account:
-      // startActivity(new Intent(this, Signup.class));
-      CustomDialog cd = CustomDialog.accountDialog(this);
-      cd.show();
+      
+      final CustomDialog dialog = new CustomDialog(this);
+      
+      dialog.setTitle(R.string.my_account);
+      
+      dialog.setPositiveButton(R.string.signup, new OnClickListener() {
+        public void onClick(View v) {
+          dialog.dismiss();
+          startActivity(new Intent(Healthier.this, Signup.class));
+        }
+      });
+      
+      dialog.setNegativeButton(R.string.signin, new OnClickListener() {
+        public void onClick(View v) {
+          dialog.dismiss();
+          startActivity(new Intent(Healthier.this, Signin.class));
+        }
+      });
+      dialog.show();
       break;
+      
     }
+    
   }
 
   @Override

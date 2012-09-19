@@ -2,38 +2,37 @@ package com.jkydjk.healthier.clock;
 
 import java.util.ArrayList;
 
-import com.jkydjk.healthier.clock.R;
 import com.jkydjk.healthier.clock.util.Log;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.ListFragment;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
 
 public class ChineseHour extends FragmentActivity implements OnPageChangeListener {
 
   static final int NUM_ITEMS = 10;
 
+  private boolean isFullScreen = false;
+
   private LayoutInflater inflater;
   private ViewPager pager;
   private ArrayList<View> pages;
 
-  private MyAdapter mAdapter;
+  private SolutionFragmentPagerAdapter pagerAdapter;
 
   private Activity main;
   private View titleBar;
@@ -47,9 +46,9 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
     pager = (ViewPager) findViewById(R.id.pager);
 
-    mAdapter = new MyAdapter(getSupportFragmentManager());
+    pagerAdapter = new SolutionFragmentPagerAdapter(getSupportFragmentManager());
 
-    pager.setAdapter(mAdapter);
+    pager.setAdapter(pagerAdapter);
 
     inflater = getLayoutInflater();
 
@@ -61,11 +60,30 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
     tabs = main.findViewById(android.R.id.tabs);
   }
 
+  private void titlebarSlideUp(){
+//    Animation titlebarSlideUp = AnimationUtils.loadAnimation(this, R.anim.titlebar_slide_up);
+//    titlebarSlideUp.setAnimationListener(new AnimationListener() {
+//      public void onAnimationStart(Animation animation) {
+//
+//      }
+//
+//      public void onAnimationRepeat(Animation animation) {
+//        
+//      }
+//
+//      public void onAnimationEnd(Animation animation) {
+//        titleBar.setVisibility(View.GONE);
+//      }
+//    });
+//
+//    titleBar.startAnimation(titlebarSlideUp);
+  }
+  
   private void toggleFullScreen(int type) {
     switch (type) {
     case Healthier.FULL_SCREEN_NO:
       tabs.setVisibility(View.GONE);
-      titleBar.setVisibility(View.GONE);
+      titlebarSlideUp();
       titleBarShadow.setVisibility(View.GONE);
       break;
 
@@ -77,7 +95,14 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
     case Healthier.FULL_SCREEN_AUTO:
       tabs.setVisibility(tabs.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-      titleBar.setVisibility(titleBar.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+      
+      if(titleBar.getVisibility() == View.VISIBLE){
+        titlebarSlideUp();
+      }else{
+        titleBar.setVisibility(View.VISIBLE);
+      }
+      
+      
       titleBarShadow.setVisibility(titleBarShadow.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
       break;
 
@@ -92,7 +117,7 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
   }
 
   public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    toggleFullScreen(Healthier.FULL_SCREEN_NO);
+    // toggleFullScreen(Healthier.FULL_SCREEN_YES);
   }
 
   public void onPageSelected(int position) {
@@ -105,8 +130,8 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
     // }
   }
 
-  public static class MyAdapter extends FragmentPagerAdapter {
-    public MyAdapter(FragmentManager fm) {
+  public static class SolutionFragmentPagerAdapter extends FragmentPagerAdapter {
+    public SolutionFragmentPagerAdapter(FragmentManager fm) {
       super(fm);
     }
 
@@ -136,33 +161,49 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      mNum = getArguments() != null ? getArguments().getInt("num") : 1;
+      // mNum = getArguments() != null ? getArguments().getInt("num") : 1;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
       View view = inflater.inflate(R.layout.hour_solution, container, false);
+
+      final ChineseHour activity = (ChineseHour) getActivity();
+
+      View content = view.findViewById(R.id.content);
+
+      content.setOnTouchListener(new OnTouchListener() {
+        public boolean onTouch(View v, MotionEvent event) {
+
+          switch (event.getAction()) {
+          case MotionEvent.ACTION_DOWN:
+            activity.isFullScreen = true;
+            break;
+
+          case MotionEvent.ACTION_MOVE:
+            activity.isFullScreen = false;
+            activity.toggleFullScreen(Healthier.FULL_SCREEN_NO);
+            break;
+
+          case MotionEvent.ACTION_UP:
+            activity.toggleFullScreen(activity.isFullScreen == true ? Healthier.FULL_SCREEN_AUTO : Healthier.FULL_SCREEN_NO);
+            break;
+
+          default:
+            break;
+          }
+
+          return false;
+        }
+      });
+
       return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
       super.onActivityCreated(savedInstanceState);
-      FragmentActivity activity = getActivity();
-
-      // activity.setContentView(layoutResID)
-      
-//      ChineseHour.
-      
-
-      View content = activity.findViewById(R.id.content);
-      content.setOnTouchListener(new OnTouchListener() {
-        public boolean onTouch(View v, MotionEvent event) {
-          
-          //.toggleFullScreen(Healthier.FULL_SCREEN_AUTO);
-          return false;
-        }
-      });
 
     }
 
