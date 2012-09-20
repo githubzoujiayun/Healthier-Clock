@@ -36,7 +36,7 @@
                     style="@style/shadow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/weather_shadow"
+                    android:layout_above="@+id/shadow"
                     android:layout_alignLeft="@+id/hour"
                     android:layout_marginBottom="5dip"
                     android:drawableRight="@drawable/icon_refresh"
@@ -46,9 +46,12 @@
                     android:id="@+id/concern"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_above="@+id/shadow"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_margin="10dip"
+                    android:layout_marginBottom="15dip"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginRight="10dip"
+                    android:layout_marginTop="10dip"
                     android:background="@drawable/shadow_background"
                     android:paddingBottom="5dip"
                     android:paddingLeft="8dip"
@@ -72,7 +75,7 @@
                     android:visibility="gone" />
 
                 <ImageView
-                    android:id="@+id/weather_shadow"
+                    android:id="@+id/shadow"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/weather_picture"
@@ -82,7 +85,7 @@
                     android:id="@+id/hour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/weather_shadow"
+                    android:layout_alignTop="@+id/shadow"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="8dp"
                     CoustomFontTextView:font="FZDBSJW_0.TTF"
@@ -228,7 +231,7 @@
 
         <Button
             android:id="@+id/favorite"
-            style="@style/action_button"
+            style="@style/solution_action_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/icon_heart"
@@ -236,7 +239,7 @@
 
         <Button
             android:id="@+id/alarm"
-            style="@style/action_button"
+            style="@style/solution_action_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/icon_heart"
@@ -244,7 +247,7 @@
 
         <Button
             android:id="@+id/process"
-            style="@style/action_button"
+            style="@style/solution_action_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/icon_heart"
@@ -252,7 +255,7 @@
 
         <Button
             android:id="@+id/evaluate"
-            style="@style/action_button"
+            style="@style/solution_action_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/icon_heart"
@@ -260,7 +263,7 @@
 
         <Button
             android:id="@+id/forwarding"
-            style="@style/action_button"
+            style="@style/solution_action_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"

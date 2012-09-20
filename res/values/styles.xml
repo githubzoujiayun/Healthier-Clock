@@ -238,7 +238,7 @@
         <item name="android:paddingTop">8dp</item>
     </style>
 
-    <style name="action_button" parent="@android:style/Widget.Button">
+    <style name="solution_action_button" parent="@android:style/Widget.Button">
         <item name="android:background">@drawable/action_button_divider</item>
         <item name="android:gravity">top|center_horizontal</item>
         <item name="android:textColor">#FFFFFFFF</item>

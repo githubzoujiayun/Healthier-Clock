@@ -4,63 +4,14 @@
     android:layout_height="fill_parent"
     android:background="@drawable/main_bg" >
 
-    <!-- 标题栏 -->
-
-    <RelativeLayout
-        android:id="@+id/title_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="-30dip"
-        android:background="@drawable/title_bar" >
-
-        <LinearLayout
-            android:id="@+id/more"
-            style="@style/title_bar_left_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:gravity="center" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/icon_list" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/title_text"
-            style="@style/title_bar_title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/app_label" />
-
-        <LinearLayout
-            android:id="@+id/account"
-            style="@style/title_bar_right_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:gravity="center" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/icon_user" />
-        </LinearLayout>
-    </RelativeLayout>
-
     <com.jkydjk.healthier.clock.widget.AnimationTabHost
         android:id="@android:id/tabhost"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/title_bar"
+        android:layout_alignParentTop="true"
         android:background="@drawable/main_bg" >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical" >
@@ -68,28 +19,90 @@
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_above="@+id/footer_filling"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:paddingBottom="4.0px" />
+
+            <ImageView
+                android:id="@+id/footer_filling"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:gravity="center" />
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/channel_background"
+                android:visibility="invisible" />
 
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4.0px"
-                android:layout_weight="0.0"
+                android:layout_alignParentBottom="true"
                 android:background="@drawable/channel_background" />
-        </LinearLayout>
+        </RelativeLayout>
     </com.jkydjk.healthier.clock.widget.AnimationTabHost>
 
-    <!-- 标题栏下阴影 -->
+    <!-- 标题栏 -->
 
-    <ImageView
-        android:id="@+id/title_bar_shadow"
+    <LinearLayout
+        android:id="@+id/titlebar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title_bar"
-        android:contentDescription="@string/title_bar_shadow"
-        android:src="@drawable/title_shadow" />
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/title_bar" >
+
+            <LinearLayout
+                android:id="@+id/more"
+                style="@style/title_bar_left_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_list" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/title_text"
+                style="@style/title_bar_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/app_label" />
+
+            <LinearLayout
+                android:id="@+id/account"
+                style="@style/title_bar_right_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_user" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- 标题栏下阴影 -->
+
+        <ImageView
+            android:id="@+id/titlebar_shadow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/title_bar_shadow"
+            android:src="@drawable/title_shadow" />
+    </LinearLayout>
 
 </RelativeLayout>

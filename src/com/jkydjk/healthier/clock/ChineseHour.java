@@ -2,6 +2,7 @@ package com.jkydjk.healthier.clock;
 
 import java.util.ArrayList;
 
+import com.jkydjk.healthier.clock.Healthier.ToggleFullScreenListener;
 import com.jkydjk.healthier.clock.util.Log;
 
 import android.app.Activity;
@@ -16,17 +17,17 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 public class ChineseHour extends FragmentActivity implements OnPageChangeListener {
 
-  static final int NUM_ITEMS = 10;
-
-  private boolean isFullScreen = false;
+  static final int NUM_ITEMS = 12;
 
   private LayoutInflater inflater;
   private ViewPager pager;
@@ -35,9 +36,6 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
   private SolutionFragmentPagerAdapter pagerAdapter;
 
   private Activity main;
-  private View titleBar;
-  private View titleBarShadow;
-  private View tabs;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -54,61 +52,6 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
     pager.setOnPageChangeListener(this);
 
-    main = getParent();
-    titleBar = main.findViewById(R.id.title_bar);
-    titleBarShadow = main.findViewById(R.id.title_bar_shadow);
-    tabs = main.findViewById(android.R.id.tabs);
-  }
-
-  private void titlebarSlideUp(){
-//    Animation titlebarSlideUp = AnimationUtils.loadAnimation(this, R.anim.titlebar_slide_up);
-//    titlebarSlideUp.setAnimationListener(new AnimationListener() {
-//      public void onAnimationStart(Animation animation) {
-//
-//      }
-//
-//      public void onAnimationRepeat(Animation animation) {
-//        
-//      }
-//
-//      public void onAnimationEnd(Animation animation) {
-//        titleBar.setVisibility(View.GONE);
-//      }
-//    });
-//
-//    titleBar.startAnimation(titlebarSlideUp);
-  }
-  
-  private void toggleFullScreen(int type) {
-    switch (type) {
-    case Healthier.FULL_SCREEN_NO:
-      tabs.setVisibility(View.GONE);
-      titlebarSlideUp();
-      titleBarShadow.setVisibility(View.GONE);
-      break;
-
-    case Healthier.FULL_SCREEN_YES:
-      tabs.setVisibility(View.VISIBLE);
-      titleBar.setVisibility(View.VISIBLE);
-      titleBarShadow.setVisibility(View.VISIBLE);
-      break;
-
-    case Healthier.FULL_SCREEN_AUTO:
-      tabs.setVisibility(tabs.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-      
-      if(titleBar.getVisibility() == View.VISIBLE){
-        titlebarSlideUp();
-      }else{
-        titleBar.setVisibility(View.VISIBLE);
-      }
-      
-      
-      titleBarShadow.setVisibility(titleBarShadow.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-      break;
-
-    default:
-      break;
-    }
   }
 
   // 指引页面更改事件监听器
@@ -166,28 +109,62 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+      Log.v("onCreateView:" + this);
       View view = inflater.inflate(R.layout.hour_solution, container, false);
 
-      final ChineseHour activity = (ChineseHour) getActivity();
+      final Healthier activity = (Healthier) getActivity().getParent();
 
       View content = view.findViewById(R.id.content);
+      final View actionsLayout = view.findViewById(R.id.actions);
 
       content.setOnTouchListener(new OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-
           switch (event.getAction()) {
           case MotionEvent.ACTION_DOWN:
-            activity.isFullScreen = true;
+            activity.moveDown = true;
             break;
 
           case MotionEvent.ACTION_MOVE:
-            activity.isFullScreen = false;
-            activity.toggleFullScreen(Healthier.FULL_SCREEN_NO);
+            if (activity.moveMove != true) {
+              activity.toggleFullScreen(Healthier.FULL_SCREEN_YES, new ToggleFullScreenListener() {
+                public void isFullScreenOnAnimationStart() {
+                  actionsLayout.setVisibility(View.VISIBLE);
+                }
+
+                public void isFullScreenOnAnimationEnd() {
+                }
+
+                public void unFullScreenOnAnimationStart() {
+                }
+
+                public void unFullScreenOnAnimationEnd() {
+                }
+
+              });
+              activity.moveMove = true;
+            }
             break;
 
           case MotionEvent.ACTION_UP:
-            activity.toggleFullScreen(activity.isFullScreen == true ? Healthier.FULL_SCREEN_AUTO : Healthier.FULL_SCREEN_NO);
+            if (activity.moveDown == true && activity.moveMove == false) {
+              activity.toggleFullScreen(Healthier.FULL_SCREEN_AUTO, new ToggleFullScreenListener() {
+                public void isFullScreenOnAnimationStart() {
+                  actionsLayout.setVisibility(View.VISIBLE);
+                }
+
+                public void isFullScreenOnAnimationEnd() {
+                }
+
+                public void unFullScreenOnAnimationStart() {
+                  actionsLayout.setVisibility(View.GONE);
+                }
+
+                public void unFullScreenOnAnimationEnd() {
+                }
+              });
+            }
+            activity.moveDown = false;
+            activity.moveMove = false;
             break;
 
           default:
@@ -197,14 +174,21 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
           return false;
         }
       });
-
+      
+      Button favorite = (Button)view.findViewById(R.id.favorite);
+      favorite.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+          Log.v("favorite on click");
+        }
+      });
+      
       return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
       super.onActivityCreated(savedInstanceState);
-
+      Log.v("onActivityCreated:" + this);
     }
 
   }
