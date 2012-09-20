@@ -69,7 +69,8 @@
             android:theme="@style/Theme.Transparent" />
         <activity
             android:name=".Help"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Toast" />
         <activity
             android:name=".Feedback"
             android:screenOrientation="portrait"

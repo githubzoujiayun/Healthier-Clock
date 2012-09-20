@@ -81,8 +81,12 @@
     <!-- Default style for the Switch widget. -->
     <attr name="ToggleSwitchStyleAttr" format="reference" />
 
-    <declare-styleable name="CoustomFontTextView">
+    <declare-styleable name="CoustomTextView">
         <attr name="font" format="reference|string" />
+    </declare-styleable>
+    <declare-styleable name="TextViewVertical">
+        <attr name="font" />
+        <attr name="lineWidth" format="dimension" />
     </declare-styleable>
 
 </resources>

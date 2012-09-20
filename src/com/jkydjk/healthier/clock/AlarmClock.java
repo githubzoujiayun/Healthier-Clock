@@ -264,6 +264,7 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
     controller = new LayoutAnimationController(set, 0.5f);
 
+    mAlarmsList = (ListView) findViewById(R.id.alarms_list);
     updateLayout();
 
     timer = new Handler() {
@@ -279,7 +280,6 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
     };
     timerThread = new LooperThread();
     timerThread.start();
-
   }
 
   class LooperThread extends Thread {
@@ -315,8 +315,7 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
     alarmsCursor = Alarms.getAlarmsCursor(getContentResolver());
 
     noAlarmLayout.setVisibility(alarmsCursor.getCount() > 0 ? View.GONE : View.VISIBLE);
-
-    mAlarmsList = (ListView) findViewById(R.id.alarms_list);
+    
     mAlarmsList.setAdapter(new AlarmTimeAdapter(this, alarmsCursor));
     mAlarmsList.setVerticalScrollBarEnabled(true);
     // mAlarmsList.setOnItemClickListener(this);

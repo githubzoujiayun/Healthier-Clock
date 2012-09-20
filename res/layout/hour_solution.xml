@@ -81,7 +81,7 @@
                     android:layout_alignBottom="@+id/weather_picture"
                     android:src="@drawable/weather_shadow" />
 
-                <com.jkydjk.healthier.clock.widget.CustomFontTextView
+                <com.jkydjk.healthier.clock.widget.CustomTextView
                     android:id="@+id/hour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
