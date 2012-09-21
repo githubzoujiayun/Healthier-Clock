@@ -12,5 +12,18 @@ public class StringUtil {
 	public static boolean isEmpty(String str) {
 		return str == null || "".equals(str.trim());
 	}
-
+	
+	public static int maxLength(String[] array){
+	  int maxLength = 0;
+	  int tempLength = 0; 
+	  
+	  for (int i = 0; i < array.length; i++) {
+      tempLength = array[i].length();
+      if(tempLength > maxLength){
+        maxLength = tempLength;
+      }
+    }
+	  
+	  return maxLength;
+	}
 }

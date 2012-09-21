@@ -16,7 +16,5 @@ public class SolarTerms extends BaseActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.solar_terms);
 
-    tv = (TextViewVertical) findViewById(R.id.tv);
-
   }
 }

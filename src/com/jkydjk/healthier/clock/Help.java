@@ -76,7 +76,10 @@ public class Help extends BaseActivity implements OnPageChangeListener {
   }
 
   public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    // TODO Auto-generated method stub
+    if (position == pages.size() - 1) {
+      number.setVisibility(View.GONE);
+      finish();
+    }
   }
 
   public void onPageSelected(int position) {
@@ -86,10 +89,6 @@ public class Help extends BaseActivity implements OnPageChangeListener {
       if (position != i) {
         imageViews[i].setBackgroundResource(R.drawable.page_indicator);
       }
-    }
-    if (position == pages.size() - 1) {
-      number.setVisibility(View.GONE);
-      finish();
     }
   }
 

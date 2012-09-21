@@ -39,32 +39,38 @@
             android:text="更新于2012/7/5 " />
 
         <com.jkydjk.healthier.clock.widget.TextViewVertical
-            android:id="@+id/tv"
+            android:id="@+id/solar_terms_intro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dip"
+            android:layout_marginTop="10dip"
             TextViewVertical:font="FZDBSJW_0.TTF"
             TextViewVertical:lineWidth="5dip"
             android:shadowColor="#FF333333"
             android:shadowDx="1.5"
             android:shadowDy="1.5"
             android:shadowRadius="1"
-            android:text="大暑\n这\n是一段测试文字"
-            android:textColor="#FFFF0000"
-            android:textSize="42sp" />
+            android:text="一候腐草为萤\n二候土润溽暑\n三候大雨时行"
+            android:textColor="#FFFFFFFF"
+            android:textSize="12sp" />
 
-        <com.jkydjk.healthier.clock.widget.CustomTextView
+        <com.jkydjk.healthier.clock.widget.TextViewVertical
             android:id="@+id/solar_terms_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="8dp"
-            CoustomTextView:font="FZDBSJW_0.TTF"
+            android:layout_marginRight="5dip"
+            android:layout_marginTop="10dip"
+            android:layout_toLeftOf="@+id/solar_terms_intro"
+            TextViewVertical:font="FZDBSJW_0.TTF"
+            TextViewVertical:lineWidth="5dip"
             android:shadowColor="#FF333333"
             android:shadowDx="1.5"
             android:shadowDy="1.5"
             android:shadowRadius="1"
-            android:text="辰时"
+            android:text="大暑"
             android:textColor="#FFFFFFFF"
             android:textSize="42sp" />
 
@@ -76,6 +82,27 @@
             android:src="@drawable/picture_bottom_inner_shadow" />
     </RelativeLayout>
 
+    <include layout="@layout/solution_list_item" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:background="#FFCCCCCC" />
+
+    <include layout="@layout/solution_list_item" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:background="#FFCCCCCC" />
+
+    <include layout="@layout/solution_list_item" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:background="#FFCCCCCC" />
+
     <ListView
         android:id="@+id/list"
         android:layout_width="fill_parent"
@@ -83,7 +110,7 @@
         android:layout_weight="1.0"
         android:background="@android:color/transparent"
         android:cacheColorHint="#00000000"
-        android:divider="#CCCCCC"
+        android:divider="#FFCCCCCC"
         android:dividerHeight="1.0px"
         android:fadingEdge="none"
         android:listSelector="@android:color/transparent"

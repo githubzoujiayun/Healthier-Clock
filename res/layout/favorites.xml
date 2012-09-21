@@ -1,15 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center_vertical" >
+    android:background="@drawable/main_bg"
+    android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/imageTest"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/top_filling"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="fourth" />
+        android:layout_weight="0.0"
+        android:src="@drawable/title_bar"
+        android:visibility="invisible" />
 
+    <include layout="@layout/solution_list_item" />
 
-</RelativeLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:background="#FFCCCCCC" />
+
+    <include layout="@layout/solution_list_item" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:background="#FFCCCCCC" />
+
+    <include layout="@layout/solution_list_item" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:background="#FFCCCCCC" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:background="@android:color/transparent"
+        android:cacheColorHint="#00000000"
+        android:divider="#FFCCCCCC"
+        android:dividerHeight="1.0px"
+        android:fadingEdge="none"
+        android:listSelector="@android:color/transparent"
+        android:scrollingCache="false" />
+
+</LinearLayout>

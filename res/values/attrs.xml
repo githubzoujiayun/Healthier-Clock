@@ -88,5 +88,5 @@
         <attr name="font" />
         <attr name="lineWidth" format="dimension" />
     </declare-styleable>
-
+	
 </resources>
