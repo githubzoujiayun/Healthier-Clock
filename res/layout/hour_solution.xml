@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:CoustomFontTextView="http://schemas.android.com/apk/res-auto"
+    xmlns:CoustomTextView="http://schemas.android.com/apk/res-auto"
     android:id="@+id/solution"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -88,7 +88,7 @@
                     android:layout_alignTop="@+id/shadow"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="8dp"
-                    CoustomFontTextView:font="FZDBSJW_0.TTF"
+                    CoustomTextView:font="FZDBSJW_0.TTF"
                     android:gravity="left"
                     android:shadowColor="#FF333333"
                     android:shadowDx="1.5"

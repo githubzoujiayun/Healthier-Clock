@@ -1,84 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2007 The Android Open Source Project
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:CoustomTextView="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FF66CCCC"
+    android:orientation="vertical" >
 
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/halo" >
 
-          http://www.apache.org/licenses/LICENSE-2.0
+        <RelativeLayout
+            android:id="@+id/weather"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical" >
 
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
+            <com.jkydjk.healthier.clock.widget.CustomTextView
+                android:id="@+id/weather_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                CoustomTextView:font="Climacons.ttf"
+                android:gravity="center_horizontal"
+                android:paddingLeft="45sp"
+                android:text="0"
+                android:textColor="#FFFFFFFF"
+                android:textSize="180sp" />
+            <!-- @string/wealther_logo_shade -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/weather_logo"
+                android:layout_centerHorizontal="true"
+                android:gravity="clip_vertical" >
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="10dip"
+                    android:gravity="center_vertical"
+                    android:text="上海"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="36sp" />
+
+                <TextView
+                    android:id="@+id/weather_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dip"
+                    android:gravity="center_vertical"
+                    android:text="今天 阴\n25 - 33℃"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/welcome"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/weather"
+            android:gravity="center"
+            android:padding="10dip"
+            android:text="刘锐，早上好，该起床啦～"
+            android:textColor="#FFFFFFFF"
+            android:textSize="22sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:background="@drawable/alarm_alert_time_shadow" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/time"
+            android:layout_toLeftOf="@+id/time"
+            android:text="现在"
+            android:textColor="#FFFFFFFF"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:text="08:00"
+            android:textColor="#FFFFFFFF"
+            android:textSize="52sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/time"
+            android:layout_toRightOf="@+id/time"
+            android:text="AM"
+            android:textColor="#FFFFFFFF"
+            android:textSize="28sp" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:background="@drawable/dialog"
-        android:orientation="vertical">
+        android:layout_weight="0"
+        android:orientation="horizontal" >
 
-        <TextView android:id="@+id/alertTitle"
-            style="?android:attr/textAppearanceLarge"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="1dip"
-            android:scaleType="fitXY"
-            android:gravity="fill_horizontal"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"/>
-<!--             android:src="@*android:drawable/dialog_divider_horizontal_light" -->
-
-        <LinearLayout
-            android:id="@+id/clockView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.jkydjk.healthier.clock.widget.SlideView
+            android:id="@+id/snooze_slider"
+            android:layout_width="fill_parent"
+            android:layout_height="80dip"
             android:layout_weight="1"
-            android:layout_gravity="fill_vertical|center"/>
+            android:background="#66FF0000" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@android:style/ButtonBar">
-
-            <Button
-                android:id="@+id/snooze"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:text="@string/alarm_alert_snooze_text" />
-
-            <!-- blank stretchable view -->
-            <View
-                android:layout_width="2dip"
-                android:layout_height="2dip"
-                android:layout_gravity="fill_horizontal"
-                android:layout_weight="1"/>
-
-            <Button
-                android:id="@+id/dismiss"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:text="@string/alarm_alert_dismiss_text" />
-
-        </LinearLayout>
-
+        <android.support.v4.view.ViewPager
+            android:id="@+id/dismiss_slider"
+            android:layout_width="fill_parent"
+            android:layout_height="80dip"
+            android:layout_weight="1"
+            android:background="#66000000" />
     </LinearLayout>
 
 </LinearLayout>

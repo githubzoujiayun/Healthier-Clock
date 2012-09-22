@@ -116,6 +116,10 @@
              generic theme. It also shows as full screen (with status bar) but
              with the wallpaper background.
         -->
+
+        <activity
+            android:name=".AlarmAlertTest"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AlarmAlertFullScreen"
             android:excludeFromRecents="true"

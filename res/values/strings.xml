@@ -48,7 +48,7 @@
     <string name="time">时间</string>
 
     <!-- Button labels on the alarm dialog: Dismiss -->
-    <string name="alarm_alert_dismiss_text">取消</string>
+    <string name="alarm_alert_dismiss_text">关闭提醒</string>
 
     <!--
          Alarm Alert screen: this message is shown after an alarm rung
@@ -58,7 +58,7 @@
     <string name="alarm_alert_alert_silenced">闹钟响铃时间为 <xliff:g id="minutes">%d</xliff:g> 分钟</string>
 
     <!-- Button labels on the alarm dialog: Snooze -->
-    <string name="alarm_alert_snooze_text">暂停再响</string>
+    <string name="alarm_alert_snooze_text">推迟提醒</string>
 
     <!--
          Toast that appears after Alarm is snoozed from the Alarm

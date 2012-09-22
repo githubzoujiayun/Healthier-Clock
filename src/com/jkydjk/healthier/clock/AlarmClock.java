@@ -218,15 +218,15 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
       });
 
       // 跳过按钮
-      // Button skipButton = (Button) view.findViewById(R.id.skip);
-      // skipButton.setOnClickListener(new OnClickListener() {
-      // public void onClick(View v) {
-      // Intent intent = new Intent(AlarmClock.this,
-      // SetAlarmCustom.class);
-      // intent.putExtra(Alarms.ALARM_ID, alarm.id);
-      // startActivity(intent);
-      // }
-      // });
+      Button skipButton = (Button) view.findViewById(R.id.skip);
+      skipButton.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+          Intent intent = new Intent(AlarmClock.this, AlarmAlertTest.class);
+          // intent.putExtra(Alarms.ALARM_ID, alarm.id);
+          startActivity(intent);
+
+        }
+      });
 
     }
   };
@@ -315,7 +315,7 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
     alarmsCursor = Alarms.getAlarmsCursor(getContentResolver());
 
     noAlarmLayout.setVisibility(alarmsCursor.getCount() > 0 ? View.GONE : View.VISIBLE);
-    
+
     mAlarmsList.setAdapter(new AlarmTimeAdapter(this, alarmsCursor));
     mAlarmsList.setVerticalScrollBarEnabled(true);
     // mAlarmsList.setOnItemClickListener(this);
@@ -415,10 +415,10 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
     super.onPause();
   }
 
-//  @Override
-//  protected void onStop() {
-//    Log.v("OnStop");
-//    super.onStop();
-//  }
+  // @Override
+  // protected void onStop() {
+  // Log.v("OnStop");
+  // super.onStop();
+  // }
 
 }
