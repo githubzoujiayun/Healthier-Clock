@@ -217,16 +217,16 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
         }
       });
 
-      // 跳过按钮
-      Button skipButton = (Button) view.findViewById(R.id.skip);
-      skipButton.setOnClickListener(new OnClickListener() {
-        public void onClick(View v) {
-          Intent intent = new Intent(AlarmClock.this, AlarmAlertTest.class);
-          // intent.putExtra(Alarms.ALARM_ID, alarm.id);
-          startActivity(intent);
-
-        }
-      });
+//      // 跳过按钮
+//      Button skipButton = (Button) view.findViewById(R.id.skip);
+//      skipButton.setOnClickListener(new OnClickListener() {
+//        public void onClick(View v) {
+//          Intent intent = new Intent(AlarmClock.this, AlarmAlertTest.class);
+//          // intent.putExtra(Alarms.ALARM_ID, alarm.id);
+//          startActivity(intent);
+//
+//        }
+//      });
 
     }
   };

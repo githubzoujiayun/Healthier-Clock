@@ -118,15 +118,12 @@
         -->
 
         <activity
-            android:name=".AlarmAlertTest"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".AlarmAlertFullScreen"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:taskAffinity=""
-            android:theme="@android:style/Theme.Wallpaper.NoTitleBar" />
+            android:theme="@style/Theme.Wallpaper" />
         <activity android:name="ClockPicker" />
 
         <receiver android:name="AlarmReceiver" >

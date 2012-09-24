@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Chewie... the hyperdrive ain't working -->
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false"
+    android:visible="true" >
+
+    <item
+        android:drawable="@drawable/arrows_right_drawable"
+        android:duration="350"/>
+    <item
+        android:drawable="@drawable/arrows_right_01_drawable"
+        android:duration="50"/>
+    <item
+        android:drawable="@drawable/arrows_right_02_drawable"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/arrows_right_03_drawable"
+        android:duration="250"/>
+
+</animation-list>

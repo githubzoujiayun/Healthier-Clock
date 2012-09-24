@@ -1,21 +1,6 @@
-/*
- * Copyright (C) 2009 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.jkydjk.healthier.clock;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Notification;
@@ -26,16 +11,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jkydjk.healthier.clock.util.Log;
@@ -45,16 +32,21 @@ import com.jkydjk.healthier.clock.util.Log;
  * activity is the full screen version which shows over the lock screen with the
  * wallpaper as the background.
  */
-public class AlarmAlertFullScreen extends BaseActivity {
+public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeListener {
 
   // These defaults must match the values in res/xml/settings.xml
-  
-  private static final String DEFAULT_SNOOZE = "1";     //间隔时间为1分钟，方便测试
+
+  private static final String DEFAULT_SNOOZE = "5"; // 间隔时间为1分钟，方便测试
   private static final String DEFAULT_VOLUME_BEHAVIOR = "2";
   protected static final String SCREEN_OFF = "screen_off";
 
   protected Alarm mAlarm;
   private int mVolumeBehavior;
+
+  ArrayList<View> pages = new ArrayList<View>();
+  
+  private Button snooze;
+  private Button dismiss;
 
   // Receives the ALARM_KILLED action from the AlarmKlaxon.
   private BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -93,12 +85,6 @@ public class AlarmAlertFullScreen extends BaseActivity {
     registerReceiver(mReceiver, new IntentFilter(Alarms.ALARM_KILLED));
   }
 
-  private void setTitle() {
-//    String label = mAlarm.getLabelOrDefault(this);
-//    TextView title = (TextView) findViewById(R.id.alertTitle);
-//    title.setText(label);
-  }
-
   private void updateLayout() {
     LayoutInflater inflater = LayoutInflater.from(this);
 
@@ -106,43 +92,80 @@ public class AlarmAlertFullScreen extends BaseActivity {
 
     /* set clock face */
     SharedPreferences settings = getSharedPreferences(AlarmClock.PREFERENCES, 0);
-    
+
     int face = settings.getInt(AlarmClock.PREF_CLOCK_FACE, 0);
-    
+
     if (face < 0 || face >= AlarmClock.CLOCKS.length) {
       face = 0;
     }
+
+    ViewPager slider = (ViewPager) findViewById(R.id.slider);
+
+    View actions = inflater.inflate(R.layout.alarm_alert_page, null);
+
+    pages.add(inflater.inflate(R.layout.transparent, null));
+    pages.add(actions);
+    pages.add(inflater.inflate(R.layout.transparent, null));
+
+    slider.setAdapter(new SlidePageAdapter());
+    slider.setCurrentItem(1);
+
+    slider.setOnPageChangeListener(this);
     
-//    ViewGroup clockView = (ViewGroup) findViewById(R.id.clockView);
-    
-//    inflater.inflate(AlarmClock.CLOCKS[face], clockView);
-    
-//    View clockLayout = findViewById(R.id.clock);
-//    
-//    if (clockLayout instanceof DigitalClock) {
-//      ((DigitalClock) clockLayout).setAnimate();
-//    }
+    snooze = (Button) actions.findViewById(R.id.snooze);
+    snooze.setBackgroundResource(R.drawable.animate_arrow_left);
+    ((AnimationDrawable) snooze.getBackground()).start();
+
+    dismiss = (Button) actions.findViewById(R.id.dismiss);
+    dismiss.setBackgroundResource(R.drawable.animate_arrow_right);
+    ((AnimationDrawable) dismiss.getBackground()).start();
+
+    // ViewGroup clockView = (ViewGroup) findViewById(R.id.clockView);
+
+    // inflater.inflate(AlarmClock.CLOCKS[face], clockView);
+
+    // View clockLayout = findViewById(R.id.clock);
+    //
+    // if (clockLayout instanceof DigitalClock) {
+    // ((DigitalClock) clockLayout).setAnimate();
+    // }
 
     /*
      * snooze behavior: pop a snooze confirmation view, kick alarm manager.
      */
-//    Button snooze = (Button) findViewById(R.id.snooze);
-//    snooze.requestFocus();
-//    snooze.setOnClickListener(new Button.OnClickListener() {
-//      public void onClick(View v) {
-//        snooze();
-//      }
-//    });
-//
-//    /* dismiss button: close notification */
-//    findViewById(R.id.dismiss).setOnClickListener(new Button.OnClickListener() {
-//      public void onClick(View v) {
-//        dismiss(false);
-//      }
-//    });
+    // Button snooze = (Button) findViewById(R.id.snooze);
+    // snooze.requestFocus();
+    // snooze.setOnClickListener(new Button.OnClickListener() {
+    // public void onClick(View v) {
+    // snooze();
+    // }
+    // });
+    //
+    // /* dismiss button: close notification */
+    // findViewById(R.id.dismiss).setOnClickListener(new
+    // Button.OnClickListener() {
+    // public void onClick(View v) {
+    // dismiss(false);
+    // }
+    // });
 
-    /* Set the title from the passed in alarm */
-    setTitle();
+  }
+
+  // 指引页面更改事件监听器
+  public void onPageScrollStateChanged(int state) {
+  }
+
+  public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    if (position == 0) {
+      dismiss(false);
+    }
+    if (position == pages.size() - 1) {
+      snooze();
+    }
+  }
+
+  public void onPageSelected(int position) {
+
   }
 
   // Attempt to snooze this alert.
@@ -206,13 +229,9 @@ public class AlarmAlertFullScreen extends BaseActivity {
   @Override
   protected void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
-
     if (Log.LOGV)
       Log.v("AlarmAlert.OnNewIntent()");
-
     mAlarm = intent.getParcelableExtra(Alarms.ALARM_INTENT_EXTRA);
-
-    setTitle();
   }
 
   @Override
@@ -270,4 +289,40 @@ public class AlarmAlertFullScreen extends BaseActivity {
     // so that the dialog is dismissed.
     return;
   }
+
+  // 指引页面数据适配器
+  private class SlidePageAdapter extends PagerAdapter {
+
+    public SlidePageAdapter() {
+      super();
+    }
+
+    @Override
+    public int getCount() {
+      return pages.size();
+    }
+
+    @Override
+    public boolean isViewFromObject(View view, Object object) {
+      return view == object;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+      return super.getItemPosition(object);
+    }
+
+    @Override
+    public void destroyItem(View container, int position, Object object) {
+      ((ViewPager) container).removeView(pages.get(position));
+    }
+
+    @Override
+    public Object instantiateItem(View container, int position) {
+      ((ViewPager) container).addView(pages.get(position));
+      return pages.get(position);
+    }
+
+  }
+
 }
