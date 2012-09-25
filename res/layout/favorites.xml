@@ -34,12 +34,6 @@
         android:layout_height="1.0px"
         android:background="#FFCCCCCC" />
 
-    <com.jkydjk.healthier.clock.widget.Loading
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        automatic="false"
-        android:background="@drawable/animate_loading" />
-
     <ListView
         android:id="@+id/list"
         android:layout_width="fill_parent"

@@ -156,16 +156,16 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
   }
 
   public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    
+  }
+
+  public void onPageSelected(int position) {
     if (position == 0) {
       dismiss(false);
     }
     if (position == pages.size() - 1) {
       snooze();
     }
-  }
-
-  public void onPageSelected(int position) {
-
   }
 
   // Attempt to snooze this alert.

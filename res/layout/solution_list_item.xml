@@ -37,7 +37,7 @@
         android:layout_marginBottom="3dip"
         android:text="节气方案具体内容，选取一部分显示在这里，长度不超过2行..."
         android:textColor="#FF999999"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 
     <ImageView
         android:id="@+id/arrow"

@@ -1,29 +1,25 @@
 package com.jkydjk.healthier.clock.widget;
 
 import com.jkydjk.healthier.clock.R;
-import com.jkydjk.healthier.clock.util.Log;
 
+import android.R.style;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.AttributeSet;
-import android.widget.Button;
+import android.widget.ProgressBar;
 
 /**
- * <ProgressBar style="@android:style/Widget.ProgressBar.Small.Inverse"
- * android:layout_width="wrap_content" android:layout_height="wrap_content"
- * android:indeterminateDrawable="@drawable/animate_loading" />
  * 
  * <com.jkydjk.healthier.clock.widget.Loading
  * android:layout_width="wrap_content" android:layout_height="wrap_content"
- * automatic="false" android:background="@drawable/animate_loading" />
+ * automatic="false" />
  * 
  * @author miclle
  * 
  */
 
-public class Loading extends Button {
+public class Loading extends ProgressBar {
 
-  private AnimationDrawable animateLoading;
   private boolean automatic;
 
   public Loading(Context context) {
@@ -34,7 +30,6 @@ public class Loading extends Button {
     super(context, attrs);
     automatic = attrs.getAttributeBooleanValue(null, "automatic", false);
     init();
-
   }
 
   public Loading(Context context, AttributeSet attrs, int paramInt) {
@@ -44,22 +39,22 @@ public class Loading extends Button {
   }
 
   private void init() {
-
-    setBackgroundResource(R.drawable.animate_loading);
-    animateLoading = (AnimationDrawable) getBackground();
+    
+//    style="@android:style/Widget.ProgressBar.Small"
+    
     if (automatic) {
-      animateLoading.start();
+      startLoading();
     } else {
-      animateLoading.stop();
+      stopLoading();
     }
   }
 
   public void startLoading() {
-    animateLoading.start();
+    setIndeterminateDrawable(getResources().getDrawable(R.drawable.animate_loading));
   }
 
   public void stopLoading() {
-    animateLoading.stop();
+    setIndeterminateDrawable(getResources().getDrawable(R.drawable.icon_refresh));
   }
 
 }
