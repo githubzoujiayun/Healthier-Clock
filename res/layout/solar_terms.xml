@@ -27,16 +27,29 @@
             android:layout_height="wrap_content"
             android:src="@drawable/solar_terms_01" />
 
-        <TextView
-            style="@style/shadow"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/shadow"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="8dip"
-            android:layout_marginRight="12dip"
-            android:drawableRight="@drawable/icon_refresh"
-            android:text="更新于2012/7/5 " />
+            android:paddingBottom="8dip"
+            android:paddingRight="12dip" >
+
+            <TextView
+                style="@style/shadow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawableRight="@drawable/icon_refresh"
+                android:text="更新于2012/7/5 " />
+
+            <com.jkydjk.healthier.clock.widget.Loading
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                automatic="false"
+                android:background="@drawable/animate_loading" />
+        </LinearLayout>
 
         <com.jkydjk.healthier.clock.widget.TextViewVertical
             android:id="@+id/solar_terms_intro"
