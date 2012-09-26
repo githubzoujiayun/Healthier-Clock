@@ -256,8 +256,8 @@
         <item name="android:textSize">14sp</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
-        <item name="android:paddingLeft">10dip</item>
-        <item name="android:paddingRight">10dip</item>
+        <item name="android:paddingLeft">8dip</item>
+        <item name="android:paddingRight">8dip</item>
         <item name="android:paddingTop">4dip</item>
     </style>
 

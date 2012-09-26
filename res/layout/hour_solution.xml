@@ -226,6 +226,7 @@
         android:layout_marginLeft="12dip"
         android:layout_marginRight="10dip"
         android:background="@drawable/action_bar"
+        android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:visibility="gone" >
 
@@ -242,6 +243,7 @@
             style="@style/solution_action_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1.0"
             android:drawableTop="@drawable/icon_heart"
             android:text="@string/set_solution_alarm" />
 
@@ -250,6 +252,7 @@
             style="@style/solution_action_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1.0"
             android:drawableTop="@drawable/icon_heart"
             android:text="@string/process_management" />
 

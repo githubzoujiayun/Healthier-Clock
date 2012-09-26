@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.TabHost;
 
 public class AnimationTabHost extends TabHost {
+  
 	private Animation slideLeftIn;
 	private Animation slideLeftOut;
 	private Animation slideRightIn;
@@ -18,11 +19,11 @@ public class AnimationTabHost extends TabHost {
 
 	public AnimationTabHost(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		slideLeftIn = AnimationUtils.loadAnimation(context, R.anim.slide_left_in);
-		slideLeftOut = AnimationUtils.loadAnimation(context, R.anim.slide_left_out);
-		slideRightIn = AnimationUtils.loadAnimation(context, R.anim.slide_right_in);
-		slideRightOut = AnimationUtils.loadAnimation(context, R.anim.slide_right_out);
-		isOpenAnimation = false;
+//		slideLeftIn = AnimationUtils.loadAnimation(context, R.anim.slide_left_in);
+//		slideLeftOut = AnimationUtils.loadAnimation(context, R.anim.slide_left_out);
+//		slideRightIn = AnimationUtils.loadAnimation(context, R.anim.slide_right_in);
+//		slideRightOut = AnimationUtils.loadAnimation(context, R.anim.slide_right_out);
+//		isOpenAnimation = false;
 	}
 
 	public void setOpenAnimation(boolean isOpenAnimation) {
@@ -46,37 +47,38 @@ public class AnimationTabHost extends TabHost {
 		return mTabCount;
 	}
 
-	@Override
-	public void setCurrentTab(int index) {
-		int mCurrentTabID = getCurrentTab();
-
-		if (null != getCurrentView()) {
-
-			if (isOpenAnimation) {
-				if (mCurrentTabID == (mTabCount - 1) && index == 0) {
-					getCurrentView().startAnimation(slideLeftOut);
-				} else if (mCurrentTabID == 0 && index == (mTabCount - 1)) {
-					getCurrentView().startAnimation(slideRightOut);
-				} else if (index > mCurrentTabID) {
-					getCurrentView().startAnimation(slideLeftOut);
-				} else if (index < mCurrentTabID) {
-					getCurrentView().startAnimation(slideRightOut);
-				}
-			}
-		}
-
-		super.setCurrentTab(index);
-
-		if (isOpenAnimation) {
-			if (mCurrentTabID == (mTabCount - 1) && index == 0) {
-				getCurrentView().startAnimation(slideLeftIn);
-			} else if (mCurrentTabID == 0 && index == (mTabCount - 1)) {
-				getCurrentView().startAnimation(slideRightIn);
-			} else if (index > mCurrentTabID) {
-				getCurrentView().startAnimation(slideLeftIn);
-			} else if (index < mCurrentTabID) {
-				getCurrentView().startAnimation(slideRightIn);
-			}
-		}
-	}
+//	@Override
+//	public void setCurrentTab(int index) {
+//		int mCurrentTabID = getCurrentTab();
+//
+//		if (null != getCurrentView()) {
+//
+//			if (isOpenAnimation) {
+//				if (mCurrentTabID == (mTabCount - 1) && index == 0) {
+//					getCurrentView().startAnimation(slideLeftOut);
+//				} else if (mCurrentTabID == 0 && index == (mTabCount - 1)) {
+//					getCurrentView().startAnimation(slideRightOut);
+//				} else if (index > mCurrentTabID) {
+//					getCurrentView().startAnimation(slideLeftOut);
+//				} else if (index < mCurrentTabID) {
+//					getCurrentView().startAnimation(slideRightOut);
+//				}
+//			}
+//		}
+//
+//		super.setCurrentTab(index);
+//
+//		if (isOpenAnimation) {
+//			if (mCurrentTabID == (mTabCount - 1) && index == 0) {
+//				getCurrentView().startAnimation(slideLeftIn);
+//			} else if (mCurrentTabID == 0 && index == (mTabCount - 1)) {
+//				getCurrentView().startAnimation(slideRightIn);
+//			} else if (index > mCurrentTabID) {
+//				getCurrentView().startAnimation(slideLeftIn);
+//			} else if (index < mCurrentTabID) {
+//				getCurrentView().startAnimation(slideRightIn);
+//			}
+//		}
+//	}
+	
 }

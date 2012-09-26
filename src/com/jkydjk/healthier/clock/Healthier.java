@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -36,7 +37,7 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
   public boolean moveMove = false;
 
   private TabWidget channelTabWidget;
-  private AnimationTabHost mTabHost;
+  private TabHost mTabHost;
 
   private Intent intentAlarmClock;
   private Intent intentChineseHour;
@@ -55,7 +56,7 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
 
-    mTabHost = (AnimationTabHost) findViewById(android.R.id.tabhost);
+    mTabHost = (TabHost) findViewById(android.R.id.tabhost);
     mTabHost.setOnTabChangedListener(this);
 
     channelTabWidget = (TabWidget) findViewById(android.R.id.tabs);
@@ -70,7 +71,6 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
     mTabHost.addTab(mTabHost.newTabSpec("solar_terms").setIndicator(getIndicator(R.string.solar_terms)).setContent(intentSolarTerms));
     mTabHost.addTab(mTabHost.newTabSpec("favorites").setIndicator(getIndicator(R.string.favorites)).setContent(intentFavorites));
 
-    mTabHost.setOpenAnimation(true);
     mTabHost.setCurrentTab(0);
 
     more = findViewById(R.id.more);

@@ -27,7 +27,7 @@ import android.widget.Button;
 
 public class ChineseHour extends FragmentActivity implements OnPageChangeListener {
 
-  static final int NUM_ITEMS = 12;
+  static final int NUM_ITEMS = 1;
 
   private LayoutInflater inflater;
   private ViewPager pager;
@@ -43,34 +43,23 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
     setContentView(R.layout.chinese_hour);
 
     pager = (ViewPager) findViewById(R.id.pager);
-
     pagerAdapter = new SolutionFragmentPagerAdapter(getSupportFragmentManager());
-
     pager.setAdapter(pagerAdapter);
-
     inflater = getLayoutInflater();
-
     pager.setOnPageChangeListener(this);
-
   }
 
   // 指引页面更改事件监听器
   public void onPageScrollStateChanged(int state) {
-    // TODO Auto-generated method stub
+
   }
 
   public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    // toggleFullScreen(Healthier.FULL_SCREEN_YES);
+    Log.v("position: " + position);
   }
 
   public void onPageSelected(int position) {
-    // for (int i = 0; i < imageViews.length; i++) {
-    // imageViews[position].setBackgroundResource(R.drawable.page_indicator_focused);
-    //
-    // if (position != i) {
-    // imageViews[i].setBackgroundResource(R.drawable.page_indicator);
-    // }
-    // }
+
   }
 
   public static class SolutionFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -109,7 +98,21 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-      Log.v("onCreateView:" + this);
+
+      View view = inflater.inflate(R.layout.loading_page, container, false);
+
+      // return buildSolutionPage(inflater, container, savedInstanceState);
+      return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+      super.onActivityCreated(savedInstanceState);
+      Log.v("onActivityCreated:" + this);
+    }
+
+    public View buildSolutionPage(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
       View view = inflater.inflate(R.layout.hour_solution, container, false);
 
       final Healthier activity = (Healthier) getActivity().getParent();
@@ -174,21 +177,15 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
           return false;
         }
       });
-      
-      Button favorite = (Button)view.findViewById(R.id.favorite);
+
+      Button favorite = (Button) view.findViewById(R.id.favorite);
       favorite.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
           Log.v("favorite on click");
         }
       });
-      
-      return view;
-    }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-      super.onActivityCreated(savedInstanceState);
-      Log.v("onActivityCreated:" + this);
+      return view;
     }
 
   }

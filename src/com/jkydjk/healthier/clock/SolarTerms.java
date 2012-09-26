@@ -1,20 +1,24 @@
 package com.jkydjk.healthier.clock;
 
-import com.jkydjk.healthier.clock.R;
-import com.jkydjk.healthier.clock.util.Log;
-import com.jkydjk.healthier.clock.widget.TextViewVertical;
+import com.jkydjk.healthier.clock.util.TaskHandler;
+import com.jkydjk.healthier.clock.util.TaskHandler.ThreadTask;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 public class SolarTerms extends BaseActivity {
 
-  private TextViewVertical tv;
+//  TaskHandler taskHandler;
 
-  @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.solar_terms);
 
+//    taskHandler = new TaskHandler(this, new ThreadTask() {
+//      public void run() {
+//         SolarTerms.this.setContentView(R.layout.solar_terms);
+//      }
+//    });
+
   }
+
 }
