@@ -336,37 +336,6 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
     alarmsCursor.deactivate();
   }
 
-  @Override
-  public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
-    // Inflate the menu from xml.
-    getMenuInflater().inflate(R.menu.context_menu, menu);
-
-    // Use the current item to create a custom view for the header.
-    final AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-    final Cursor c = (Cursor) mAlarmsList.getAdapter().getItem((int) info.position);
-    final Alarm alarm = new Alarm(c);
-
-    // Construct the Calendar to compute the time.
-    final Calendar cal = Calendar.getInstance();
-    cal.set(Calendar.HOUR_OF_DAY, alarm.hour);
-    cal.set(Calendar.MINUTE, alarm.minutes);
-    final String time = Alarms.formatTime(this, cal);
-
-    // Inflate the custom view and set each TextView's text.
-    final View v = mFactory.inflate(R.layout.context_menu_header, null);
-    TextView textView = (TextView) v.findViewById(R.id.header_time);
-    textView.setText(time);
-    textView = (TextView) v.findViewById(R.id.header_label);
-    textView.setText(alarm.remark);
-
-    // 设置菜单上的自定义视图
-    menu.setHeaderView(v);
-    // Change the text to "disable" if the alarm is already enabled.
-    if (alarm.enabled) {
-      menu.findItem(R.id.enable_alarm).setTitle(R.string.disable_alarm);
-    }
-  }
-
   /**
    * 设置欢迎文字
    */
@@ -394,10 +363,6 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
     switch (v.getId()) {
     case R.id.add_alarm:
       startActivity(new Intent(this, AddAlarm.class));
-      // 动画失效了，貌似是受FrameLayout影响
-      // overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
-      // overridePendingTransition(R.anim.slide_left_in,
-      // R.anim.slide_left_out);
       break;
     }
   }

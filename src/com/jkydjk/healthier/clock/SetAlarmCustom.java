@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.format.DateFormat;
+import android.text.format.Time;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -19,240 +20,260 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.jkydjk.healthier.clock.Alarm.DaysOfWeek;
+import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 import com.jkydjk.healthier.clock.widget.ToggleSwitch;
 import com.jkydjk.healthier.clock.widget.ToggleSwitch.OnChangeAttemptListener;
 
 public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnCheckedChangeListener, OnChangeAttemptListener, TimePickerDialog.OnTimeSetListener {
 
-    private static final int ALARM_CYCLE = 2;
-    private static final int ALARM_ALERT = 3;
+  private static final int ALARM_CYCLE = 2;
+  private static final int ALARM_ALERT = 3;
 
-    private Alarm alarm;
-    private int alarmId;
+  private int alarmId;
+  private boolean alarmEnabled = true;
+  private int alarmHour;
+  private int alarmMinutes;
+  private DaysOfWeek alarmDaysOfWeek;
+  private Uri alarmAlert;
+  private String alarmLabel;
+  private String alarmRemark;
+  private boolean alarmVibrate = true;
 
-    private boolean mEnabled;
-    private int mHour;
-    private int mMinutes;
+  private View cancelAction;
+  private View saveAction;
 
-    private View cancelAction;
-    private View saveAction;
+  private View alarmTimeSetting;
+  private View alarmCycleSetting;
+  private View alarmAlertSetting;
 
-    private View alarmTimeSetting;
-    private View alarmCycleSetting;
-    private View alarmAlertSetting;
+  private TextView alarmTimeTextView;
+  private TextView alarmAlertTextView;
+  private TextView alarmCycleTextView;
+  private EditText alarmLabelEditText;
+  private EditText alarmRemarkEditText;
+  private ToggleSwitch alarmVibrateToggleSwitch;
 
-    private TextView alarmTime;
-    private TextView alarmAlert;
-    private TextView alarmCycle;
-    private EditText alarmLabel;
-    private EditText alarmRemark;
-    private ToggleSwitch alarmVibrateSwitch;
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.set_alarm_custom);
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.set_alarm_custom);
+    Intent intent = getIntent();
 
-        Intent i = getIntent();
-        alarmId = i.getIntExtra(Alarms.ALARM_ID, -1);
+    alarmId = intent.getIntExtra(Alarms.ALARM_ID, -1);
 
-        /* load alarm details from database */
-        alarm = Alarms.getAlarm(getContentResolver(), alarmId);
-        // Bad alarm, bail to avoid a NPE.
-        if (alarm == null) {
-            finish();
-            return;
-        }
+    if (alarmId != -1) {
+      /* load alarm details from database */
+      Alarm alarm = Alarms.getAlarm(getContentResolver(), alarmId);
+      if (alarm != null) {
+        alarmEnabled = alarm.enabled;
+        alarmHour = alarm.hour;
+        alarmMinutes = alarm.minutes;
+        alarmDaysOfWeek = alarm.daysOfWeek;
+        alarmLabel = alarm.label;
+        alarmAlert = alarm.alert;
+        alarmRemark = alarm.remark;
+        alarmVibrate = alarm.vibrate;
+      }
+    } else {
+      Time t = new Time();
+      t.setToNow();
 
-        mEnabled = alarm.enabled;
-        mHour = alarm.hour;
-        mMinutes = alarm.minutes;
-
-        cancelAction = findViewById(R.id.cancel);
-        cancelAction.setOnClickListener(this);
-
-        saveAction = findViewById(R.id.save);
-        saveAction.setOnClickListener(this);
-
-        alarmTimeSetting = findViewById(R.id.alarm_time_setting);
-        alarmTimeSetting.setOnClickListener(this);
-
-        alarmCycleSetting = findViewById(R.id.alarm_cycle_setting);
-        alarmCycleSetting.setOnClickListener(this);
-
-        alarmAlertSetting = findViewById(R.id.alarm_alert_setting);
-        alarmAlertSetting.setOnClickListener(this);
-
-        alarmTime = (TextView) findViewById(R.id.alarm_time);
-        alarmAlert = (TextView) findViewById(R.id.alarm_alert);
-        alarmCycle = (TextView) findViewById(R.id.alarm_cycle);
-        alarmLabel = (EditText) findViewById(R.id.alarm_label);
-
-        alarmRemark = (EditText) findViewById(R.id.alarm_remark);
-        alarmRemark.setHintTextColor(0xFF666666);
-
-        alarmVibrateSwitch = (ToggleSwitch) findViewById(R.id.alarm_vibrate);
-        alarmVibrateSwitch.setChecked(alarm.vibrate);
-        alarmVibrateSwitch.setOnCheckedChangeListener(this);
-
-        updateTime();
-        updateAlert();
-        updateCycle();
-        updateLabel();
-        updateRemark();
-        // Toast.makeText(this, "" + array.toString(), 500).show();
-
-        alarmLabel.clearFocus();
-        alarmRemark.clearFocus();
+      alarmHour = t.hour;
+      alarmMinutes = t.minute;
+      alarmDaysOfWeek = new DaysOfWeek(0);
+      alarmAlert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
     }
 
-    private void updateTime() {
-        alarmTime.setText(Alarms.formatTime(this, mHour, mMinutes, alarm.daysOfWeek));
+    cancelAction = findViewById(R.id.cancel);
+    cancelAction.setOnClickListener(this);
+
+    saveAction = findViewById(R.id.save);
+    saveAction.setOnClickListener(this);
+
+    alarmTimeSetting = findViewById(R.id.alarm_time_setting);
+    alarmTimeSetting.setOnClickListener(this);
+
+    alarmCycleSetting = findViewById(R.id.alarm_cycle_setting);
+    alarmCycleSetting.setOnClickListener(this);
+
+    alarmAlertSetting = findViewById(R.id.alarm_alert_setting);
+    alarmAlertSetting.setOnClickListener(this);
+
+    alarmTimeTextView = (TextView) findViewById(R.id.alarm_time);
+    alarmAlertTextView = (TextView) findViewById(R.id.alarm_alert);
+    alarmCycleTextView = (TextView) findViewById(R.id.alarm_cycle);
+    alarmLabelEditText = (EditText) findViewById(R.id.alarm_label);
+
+    alarmRemarkEditText = (EditText) findViewById(R.id.alarm_remark);
+    alarmRemarkEditText.setHintTextColor(0xFF666666);
+
+    alarmVibrateToggleSwitch = (ToggleSwitch) findViewById(R.id.alarm_vibrate);
+    alarmVibrateToggleSwitch.setChecked(alarmVibrate);
+    alarmVibrateToggleSwitch.setOnCheckedChangeListener(this);
+
+    updateTime();
+    updateAlert();
+    updateCycle();
+    updateLabel();
+    updateRemark();
+
+    alarmLabelEditText.clearFocus();
+    alarmRemarkEditText.clearFocus();
+  }
+
+  private void updateTime() {
+    alarmTimeTextView.setText(Alarms.formatTime(this, alarmHour, alarmMinutes, alarmDaysOfWeek));
+  }
+
+  private void updateAlert() {
+    if (alarmAlert != null) {
+      final Ringtone r = RingtoneManager.getRingtone(this, alarmAlert);
+      if (r != null) {
+        alarmAlertTextView.setText(r.getTitle(this));
+      }
+    } else {
+      alarmAlertTextView.setText(R.string.silent_alarm_summary);
     }
+  }
 
-    private void updateAlert() {
-        if (alarm.alert != null) {
-            final Ringtone r = RingtoneManager.getRingtone(this, alarm.alert);
-            if (r != null) {
-                alarmAlert.setText(r.getTitle(this));
-            }
-        } else {
-            alarmAlert.setText(R.string.silent_alarm_summary);
-        }
+  private void updateCycle() {
+    alarmCycleTextView.setText(alarmDaysOfWeek.toString(this, true));
+  }
+
+  private void updateLabel() {
+    if (!StringUtil.isEmpty(alarmLabel))
+      alarmLabelEditText.setText(alarmLabel);
+  }
+
+  private void updateRemark() {
+    if (!StringUtil.isEmpty(alarmRemark))
+      alarmRemarkEditText.setText(alarmRemark);
+  }
+
+  private void saveAlarm() {
+    alarmLabel = alarmLabelEditText.getText().toString();
+    alarmRemark = alarmRemarkEditText.getText().toString();
+    long time;
+    if (alarmId == -1) {
+      time = Alarms.addAlarm(this, alarmLabel, alarmHour, alarmMinutes, alarmDaysOfWeek, alarmVibrate, alarmAlert.toString(), alarmRemark);
+    } else {
+      time = Alarms.setAlarm(this, alarmId, alarmLabel, alarmEnabled, alarmHour, alarmMinutes, alarmDaysOfWeek, alarmVibrate, alarmAlert.toString(), alarmRemark);
     }
-
-    private void updateCycle() {
-        alarmCycle.setText(alarm.daysOfWeek.toString(this, true));
+    if (alarmEnabled) {
+      popAlarmSetToast(this, time);
     }
+  }
 
-    private void updateLabel() {
-        if (!StringUtil.isEmpty(alarm.label))
-            alarmLabel.setText(alarm.label);
+  private static void popAlarmSetToast(Context context, long timeInMillis) {
+    String toastText = formatToast(context, timeInMillis);
+    Toast toast = Toast.makeText(context, toastText, Toast.LENGTH_LONG);
+    ToastMaster.setToast(toast);
+    toast.show();
+  }
+
+  /**
+   * format "Alarm set for 2 days 7 hours and 53 minutes from now"
+   */
+  static String formatToast(Context context, long timeInMillis) {
+    long delta = timeInMillis - System.currentTimeMillis();
+    long hours = delta / (1000 * 60 * 60);
+    long minutes = delta / (1000 * 60) % 60;
+    long days = hours / 24;
+    hours = hours % 24;
+
+    String daySeq = (days == 0) ? "" : (days == 1) ? context.getString(R.string.day) : context.getString(R.string.days, Long.toString(days));
+    String minSeq = (minutes == 0) ? "" : (minutes == 1) ? context.getString(R.string.minute) : context.getString(R.string.minutes, Long.toString(minutes));
+    String hourSeq = (hours == 0) ? "" : (hours == 1) ? context.getString(R.string.hour) : context.getString(R.string.hours, Long.toString(hours));
+
+    boolean dispDays = days > 0;
+    boolean dispHour = hours > 0;
+    boolean dispMinute = minutes > 0;
+
+    int index = (dispDays ? 1 : 0) | (dispHour ? 2 : 0) | (dispMinute ? 4 : 0);
+
+    String[] formats = context.getResources().getStringArray(R.array.alarm_set);
+    return String.format(formats[index], daySeq, hourSeq, minSeq);
+  }
+
+  /**
+   * 点击处理
+   */
+  public void onClick(View v) {
+    Intent intent;
+    switch (v.getId()) {
+    case R.id.cancel:
+      finish();
+      break;
+
+    case R.id.save:
+      saveAlarm();
+      finish();
+      break;
+
+    case R.id.alarm_time_setting:
+      new TimePickerDialog(this, this, alarmHour, alarmMinutes, DateFormat.is24HourFormat(this)).show();
+      break;
+
+    case R.id.alarm_cycle_setting:
+      intent = new Intent(this, SetAlarmCycle.class);
+      intent.putExtra("cycle", alarmDaysOfWeek.getBooleanArray());
+      startActivityForResult(intent, ALARM_CYCLE);
+      overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+      break;
+
+    case R.id.alarm_alert_setting:
+      intent = new Intent(this, SetAlarmAlert.class);
+      intent.putExtra("alert", alarmAlert);
+      startActivityForResult(intent, ALARM_ALERT);
+      overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+      break;
     }
+  }
 
-    private void updateRemark() {
-        if (!StringUtil.isEmpty(alarm.remark))
-            alarmRemark.setText(alarm.remark);
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    switch (requestCode) {
+    case ALARM_CYCLE:
+      boolean[] array = data.getBooleanArrayExtra("cycle");
+      for (int i = 0; i < array.length; i++) {
+        alarmDaysOfWeek.set(i, array[i]);
+      }
+      updateCycle();
+      break;
+
+    case ALARM_ALERT:
+      alarmAlert = (Uri) data.getParcelableExtra("alert");
+      updateAlert();
+      break;
+
+    default:
+      break;
     }
+    super.onActivityResult(requestCode, resultCode, data);
+  }
 
-    private void saveAlarm() {
-        alarm.label = alarmLabel.getText().toString();
-        alarm.remark = alarmRemark.getText().toString();
-        long time = Alarms.setAlarm(this, alarmId, alarm.label, mEnabled, mHour, mMinutes, alarm.daysOfWeek, alarm.vibrate, alarm.alert.toString(), alarm.remark);
-
-        if (mEnabled) {
-            popAlarmSetToast(this, time);
-        }
+  public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    switch (buttonView.getId()) {
+    case R.id.alarm_vibrate:
+      alarmVibrate = isChecked;
+      break;
     }
+  }
 
-    private static void popAlarmSetToast(Context context, long timeInMillis) {
-        String toastText = formatToast(context, timeInMillis);
-        Toast toast = Toast.makeText(context, toastText, Toast.LENGTH_LONG);
-        ToastMaster.setToast(toast);
-        toast.show();
-    }
+  public void onChangeAttempted(boolean isChecked) {
+    // TODO Auto-generated method stub
 
-    /**
-     * format "Alarm set for 2 days 7 hours and 53 minutes from now"
-     */
-    static String formatToast(Context context, long timeInMillis) {
-        long delta = timeInMillis - System.currentTimeMillis();
-        long hours = delta / (1000 * 60 * 60);
-        long minutes = delta / (1000 * 60) % 60;
-        long days = hours / 24;
-        hours = hours % 24;
+  }
 
-        String daySeq = (days == 0) ? "" : (days == 1) ? context.getString(R.string.day) : context.getString(R.string.days, Long.toString(days));
-        String minSeq = (minutes == 0) ? "" : (minutes == 1) ? context.getString(R.string.minute) : context.getString(R.string.minutes, Long.toString(minutes));
-        String hourSeq = (hours == 0) ? "" : (hours == 1) ? context.getString(R.string.hour) : context.getString(R.string.hours, Long.toString(hours));
-
-        boolean dispDays = days > 0;
-        boolean dispHour = hours > 0;
-        boolean dispMinute = minutes > 0;
-
-        int index = (dispDays ? 1 : 0) | (dispHour ? 2 : 0) | (dispMinute ? 4 : 0);
-
-        String[] formats = context.getResources().getStringArray(R.array.alarm_set);
-        return String.format(formats[index], daySeq, hourSeq, minSeq);
-    }
-
-    /**
-     * 点击处理
-     */
-    public void onClick(View v) {
-        Intent intent;
-        switch (v.getId()) {
-        case R.id.cancel:
-            finish();
-            break;
-
-        case R.id.save:
-            saveAlarm();
-            finish();
-            break;
-
-        case R.id.alarm_time_setting:
-            new TimePickerDialog(this, this, mHour, mMinutes, DateFormat.is24HourFormat(this)).show();
-            break;
-
-        case R.id.alarm_cycle_setting:
-            intent = new Intent(this, SetAlarmCycle.class);
-            intent.putExtra("cycle", alarm.daysOfWeek.getBooleanArray());
-            startActivityForResult(intent, ALARM_CYCLE);
-            overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
-            break;
-
-        case R.id.alarm_alert_setting:
-            intent = new Intent(this, SetAlarmAlert.class);
-            intent.putExtra("alert", alarm.alert);
-            startActivityForResult(intent, ALARM_ALERT);
-            overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
-            break;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-        case ALARM_CYCLE:
-            boolean[] array = data.getBooleanArrayExtra("cycle");
-            for (int i = 0; i < array.length; i++) {
-                alarm.daysOfWeek.set(i, array[i]);
-            }
-            updateCycle();
-            break;
-
-        case ALARM_ALERT:
-            alarm.alert = (Uri) data.getParcelableExtra("alert");
-            updateAlert();
-            break;
-
-        default:
-            break;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch (buttonView.getId()) {
-        case R.id.alarm_vibrate:
-            alarm.vibrate = isChecked;
-            break;
-        }
-    }
-
-    public void onChangeAttempted(boolean isChecked) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        mHour = hourOfDay;
-        mMinutes = minute;
-        updateTime();
-        // If the time has been changed, enable the alarm.
-        mEnabled = true;
-    }
+  public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+    alarmHour = hourOfDay;
+    alarmMinutes = minute;
+    updateTime();
+    // If the time has been changed, enable the alarm.
+    alarmEnabled = true;
+  }
 
 }

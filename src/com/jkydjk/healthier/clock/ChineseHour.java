@@ -27,7 +27,7 @@ import android.widget.Button;
 
 public class ChineseHour extends FragmentActivity implements OnPageChangeListener {
 
-  static final int NUM_ITEMS = 1;
+  static final int NUM_ITEMS = 12;
 
   private LayoutInflater inflater;
   private ViewPager pager;
@@ -55,7 +55,7 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
   }
 
   public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    Log.v("position: " + position);
+//    Log.v("position: " + position);
   }
 
   public void onPageSelected(int position) {
@@ -99,10 +99,10 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-      View view = inflater.inflate(R.layout.loading_page, container, false);
+//      View view = inflater.inflate(R.layout.loading_page, container, false);
+//      return view;
 
-      // return buildSolutionPage(inflater, container, savedInstanceState);
-      return view;
+       return buildSolutionPage(inflater, container, savedInstanceState);
     }
 
     @Override

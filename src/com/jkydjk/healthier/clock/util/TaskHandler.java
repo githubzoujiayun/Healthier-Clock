@@ -2,6 +2,7 @@ package com.jkydjk.healthier.clock.util;
 
 import com.jkydjk.healthier.clock.BaseActivity;
 import com.jkydjk.healthier.clock.R;
+import com.jkydjk.healthier.clock.SolarTerms;
 
 import android.app.Activity;
 import android.os.Handler;
@@ -13,7 +14,7 @@ public class TaskHandler extends Handler {
   private Activity activity;
   private ThreadTask task;
 
-  public TaskHandler(Activity activity, ThreadTask task) {
+  public TaskHandler(Activity activity, final ThreadTask task) {
     this.activity = activity;
     this.task = task;
 
@@ -21,6 +22,7 @@ public class TaskHandler extends Handler {
       public void run() {
         Message msg = new Message();
         msg.what = BaseActivity.COMPLETE;
+        task.run();
         TaskHandler.this.sendMessage(msg);
       }
     };
@@ -37,13 +39,17 @@ public class TaskHandler extends Handler {
     super.handleMessage(msg);
     switch (msg.what) {
     case BaseActivity.COMPLETE:
-      task.run();
+//      SolarTerms.this.runOnUiThread(null);
       break;
     }
   }
   
   public interface ThreadTask{
     void run();
+  }
+  
+  public interface Receive {
+    public void onReceived(Runnable runnable);
   }
   
 }

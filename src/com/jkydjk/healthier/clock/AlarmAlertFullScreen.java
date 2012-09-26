@@ -171,9 +171,11 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
   // Attempt to snooze this alert.
   private void snooze() {
     final String snooze = PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.KEY_ALARM_SNOOZE, DEFAULT_SNOOZE);
+    
     int snoozeMinutes = Integer.parseInt(snooze);
 
     final long snoozeTime = System.currentTimeMillis() + (1000 * 60 * snoozeMinutes);
+    
     Alarms.saveSnoozeAlert(AlarmAlertFullScreen.this, mAlarm.id, snoozeTime);
 
     // Get the display time for the snooze and update the notification.
@@ -188,7 +190,9 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
     Intent cancelSnooze = new Intent(this, AlarmReceiver.class);
     cancelSnooze.setAction(Alarms.CANCEL_SNOOZE);
     cancelSnooze.putExtra(Alarms.ALARM_ID, mAlarm.id);
+    
     PendingIntent broadcast = PendingIntent.getBroadcast(this, mAlarm.id, cancelSnooze, 0);
+    
     NotificationManager nm = getNotificationManager();
     Notification n = new Notification(R.drawable.stat_notify_alarm, label, 0);
     n.setLatestEventInfo(this, label, getString(R.string.alarm_notify_snooze_text, Alarms.formatTime(this, c)), broadcast);
@@ -201,7 +205,9 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
 
     // Display the snooze minutes in a toast.
     Toast.makeText(AlarmAlertFullScreen.this, displayTime, Toast.LENGTH_LONG).show();
+    
     stopService(new Intent(Alarms.ALARM_ALERT_ACTION));
+    
     finish();
   }
 

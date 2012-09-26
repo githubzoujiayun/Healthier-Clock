@@ -72,19 +72,20 @@ public class AddAlarm extends BaseActivity implements OnClickListener, OnItemCli
 
 		switch (alarm_cate) {
 		case R.drawable.alarm_category_custom:
-//			Toast.makeText(this, (String) item.get("category"), Toast.LENGTH_SHORT).show();
-			Uri uri = Alarms.addAlarm(getContentResolver());
-			// TODO: Create new alarm _after_ SetAlarm so the user has the
-			// chance to cancel alarm creation.
-			String segment = uri.getPathSegments().get(1);
-			int newId = Integer.parseInt(segment);
-			if (Log.LOGV) {
-				Log.v("In AlarmClock, new alarm id = " + newId);
-			}
+		  
+//		  Uri uri = Alarms.addAlarm(getContentResolver());
+//
+//			String segment = uri.getPathSegments().get(1);
+//			
+//			int newId = Integer.parseInt(segment);
+//			
+//			if (Log.LOGV) {
+//				Log.v("In AlarmClock, new alarm id = " + newId);
+//			}
 			
-			Intent intent = new Intent(this, SetAlarm.class);
+			Intent intent = new Intent(this, SetAlarmCustom.class);
 			
-			intent.putExtra(Alarms.ALARM_ID, newId);
+//			intent.putExtra(Alarms.ALARM_ID, newId);
 			
 			startActivity(intent);
 			break;
