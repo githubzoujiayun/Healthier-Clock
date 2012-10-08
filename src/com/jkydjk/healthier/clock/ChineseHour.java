@@ -2,11 +2,9 @@ package com.jkydjk.healthier.clock;
 
 import java.util.ArrayList;
 
-import com.jkydjk.healthier.clock.Healthier.ToggleFullScreenListener;
 import com.jkydjk.healthier.clock.util.Log;
 
 import android.app.Activity;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -119,64 +117,6 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
       View content = view.findViewById(R.id.content);
       final View actionsLayout = view.findViewById(R.id.actions);
-
-      content.setOnTouchListener(new OnTouchListener() {
-        public boolean onTouch(View v, MotionEvent event) {
-          switch (event.getAction()) {
-          case MotionEvent.ACTION_DOWN:
-            activity.moveDown = true;
-            break;
-
-          case MotionEvent.ACTION_MOVE:
-            if (activity.moveMove != true) {
-              activity.toggleFullScreen(Healthier.FULL_SCREEN_YES, new ToggleFullScreenListener() {
-                public void isFullScreenOnAnimationStart() {
-                  actionsLayout.setVisibility(View.VISIBLE);
-                }
-
-                public void isFullScreenOnAnimationEnd() {
-                }
-
-                public void unFullScreenOnAnimationStart() {
-                }
-
-                public void unFullScreenOnAnimationEnd() {
-                }
-
-              });
-              activity.moveMove = true;
-            }
-            break;
-
-          case MotionEvent.ACTION_UP:
-            if (activity.moveDown == true && activity.moveMove == false) {
-              activity.toggleFullScreen(Healthier.FULL_SCREEN_AUTO, new ToggleFullScreenListener() {
-                public void isFullScreenOnAnimationStart() {
-                  actionsLayout.setVisibility(View.VISIBLE);
-                }
-
-                public void isFullScreenOnAnimationEnd() {
-                }
-
-                public void unFullScreenOnAnimationStart() {
-                  actionsLayout.setVisibility(View.GONE);
-                }
-
-                public void unFullScreenOnAnimationEnd() {
-                }
-              });
-            }
-            activity.moveDown = false;
-            activity.moveMove = false;
-            break;
-
-          default:
-            break;
-          }
-
-          return false;
-        }
-      });
 
       Button favorite = (Button) view.findViewById(R.id.favorite);
       favorite.setOnClickListener(new OnClickListener() {

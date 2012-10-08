@@ -33,9 +33,6 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
 
   private boolean ifFullScreen = false;
 
-  public boolean moveDown = false;
-  public boolean moveMove = false;
-
   private TabWidget channelTabWidget;
   private TabHost mTabHost;
 
@@ -149,94 +146,6 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
   public boolean onCreateOptionsMenu(Menu menu) {
     startActivity(new Intent(this, More.class));
     return false;
-  }
-
-  private void titlebarSlideToggle(final int type, ToggleFullScreenListener toggleFullScreenListener) {
-    final Animation titleBarAnimation = AnimationUtils.loadAnimation(this, ifFullScreen == true ? R.anim.titlebar_slide_up : R.anim.titlebar_slide_down);
-    titleBarAnimation.setFillAfter(true);
-    new Handler().post(new Runnable() {
-      public void run() {
-        titlebar.startAnimation(titleBarAnimation);
-      }
-    });
-  }
-
-  private void tabsSlideToggle(final int type, final ToggleFullScreenListener toggleFullScreenListener) {
-    final Animation tabsAnimation = AnimationUtils.loadAnimation(this, ifFullScreen == true ? R.anim.tabs_slide_down : R.anim.tabs_slide_up);
-//    tabsAnimation.setFillAfter(true);
-    tabsAnimation.setAnimationListener(new AnimationListener() {
-      public void onAnimationStart(Animation animation) {
-        if (ifFullScreen == true){
-          footerFilling.setVisibility(View.GONE);
-          toggleFullScreenListener.isFullScreenOnAnimationStart();
-        }else{
-          toggleFullScreenListener.unFullScreenOnAnimationStart();
-        }
-      }
-
-      public void onAnimationRepeat(Animation animation) {
-      }
-
-      public void onAnimationEnd(Animation animation) {
-        if (ifFullScreen == true){
-          tabs.setVisibility(View.GONE);
-          toggleFullScreenListener.isFullScreenOnAnimationEnd();
-        }else{
-          footerFilling.setVisibility(View.INVISIBLE);
-          tabs.setVisibility(View.VISIBLE);
-          toggleFullScreenListener.unFullScreenOnAnimationEnd();
-        }
-      }
-    });
-
-    new Handler().post(new Runnable() {
-      public void run() {
-        tabs.startAnimation(tabsAnimation);
-      }
-    });
-  }
-
-  public void toggleFullScreen(int type, ToggleFullScreenListener toggleFullScreenListener) {
-    switch (type) {
-    case Healthier.FULL_SCREEN_NO:
-      if (ifFullScreen == true) {
-        ifFullScreen = false;
-        titlebarSlideToggle(SLIDE_DOWN, toggleFullScreenListener);
-        tabsSlideToggle(SLIDE_UP, toggleFullScreenListener);
-      }
-      break;
-
-    case Healthier.FULL_SCREEN_YES:
-      if (ifFullScreen == false) {
-        ifFullScreen = true;
-        titlebarSlideToggle(SLIDE_UP, toggleFullScreenListener);
-        tabsSlideToggle(SLIDE_DOWN, toggleFullScreenListener);
-      }
-      break;
-
-    case Healthier.FULL_SCREEN_AUTO:
-      if (ifFullScreen == false) {
-        ifFullScreen = true;
-        titlebarSlideToggle(SLIDE_UP, toggleFullScreenListener);
-        tabsSlideToggle(SLIDE_DOWN, toggleFullScreenListener);
-      } else {
-        ifFullScreen = false;
-        titlebarSlideToggle(SLIDE_DOWN, toggleFullScreenListener);
-        tabsSlideToggle(SLIDE_UP, toggleFullScreenListener);
-      }
-      break;
-
-    default:
-      break;
-    }
-  }
-  
-  interface ToggleFullScreenListener{
-    void isFullScreenOnAnimationStart();
-    void isFullScreenOnAnimationEnd();
-    
-    void unFullScreenOnAnimationStart();
-    void unFullScreenOnAnimationEnd();
   }
 
 }

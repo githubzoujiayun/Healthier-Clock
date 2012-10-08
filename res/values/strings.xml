@@ -315,6 +315,7 @@
     <string name="favorite">收藏</string>
     <string name="set_solution_alarm">设置提醒</string>
     <string name="process_management">过程管理</string>
+    <string name="todo">TODO</string>
     <string name="evaluate">评价</string>
     <string name="forwarding">转发</string>
     <string name="arrow_down">▼</string>

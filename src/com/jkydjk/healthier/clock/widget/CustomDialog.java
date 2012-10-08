@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.jkydjk.healthier.clock.R;
-import com.jkydjk.healthier.clock.util.Log;
 
 public class CustomDialog extends Dialog {
 
@@ -97,8 +96,7 @@ public class CustomDialog extends Dialog {
   }
 
   // called when this dialog is dismissed
-  protected void onStop() {
-    Log.v("TAG");
-  }
+  // protected void onStop() {
+  // }
 
 }

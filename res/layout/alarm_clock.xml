@@ -4,21 +4,13 @@
     android:layout_height="fill_parent"
     android:background="@drawable/main_bg" >
 
-    <ImageView
-        android:id="@+id/top_filling"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/title_bar"
-        android:visibility="invisible" />
-
     <!-- 天气块 -->
 
     <RelativeLayout
         android:id="@+id/weather_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/top_filling" >
+        android:layout_alignParentTop="true" >
 
         <ImageView
             android:id="@+id/weather_picture"

@@ -1,7 +1,6 @@
 package com.jkydjk.healthier.clock.widget;
 
 import com.jkydjk.healthier.clock.R;
-import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 
 import android.content.Context;
@@ -58,8 +57,6 @@ public class TextViewVertical extends TextView {
 
   @Override
   protected void onDraw(Canvas canvas) {
-    Log.v("onDraw");
-
     Paint paint = getPaint();
     paint.setColor(getCurrentTextColor());
 
