@@ -18,7 +18,8 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingBottom="50dip" >
 
             <RelativeLayout
                 android:id="@+id/weather_layout"
@@ -154,18 +155,6 @@
                 style="@style/solution_text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="一双明亮的眼睛往往会说话，会为你保守年龄的秘密。当周日面对电脑、熬夜工作的时候，如何保养眼睛才能再次恢复神采飞扬呢？按摩眼周穴位，可以帮你“点”亮双眸，这些穴位分别为太阳穴、睛明穴和攒竹穴。经常按摩这几个穴位，有助于缓解眼疲劳，缓解视力。" />
-
-            <TextView
-                style="@style/list_block_divider"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="功效" />
-
-            <TextView
-                style="@style/solution_text"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
                 android:text="有效缓解眼睛的疲劳，更可防止近视、眼睛流泪等症状，使双眼闪亮有神。" />
 
             <RelativeLayout
@@ -217,71 +206,60 @@
         </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout
+    <ImageButton
+        android:id="@+id/todo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dip"
+        android:layout_marginLeft="10dip"
+        android:background="@android:color/transparent"
+        android:src="@drawable/todo" />
+
+    <LinearLayout
+        android:id="@+id/actions"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dip" >
+        android:layout_marginBottom="5dip"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <ImageButton
+            android:id="@+id/favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/action_favorite_on" />
+
+        <ImageButton
+            android:id="@+id/alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/action_alarm_on" />
 
         <ImageButton
             android:id="@+id/process"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:src="@drawable/todo" />
+            android:src="@drawable/action_process" />
 
-        <LinearLayout
-            android:id="@+id/actions"
-            android:layout_width="fill_parent"
+        <ImageButton
+            android:id="@+id/evaluate"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/action_bar"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:visibility="gone" >
+            android:background="@android:color/transparent"
+            android:src="@drawable/action_evaluate" />
 
-            <Button
-                android:id="@+id/favorite"
-                style="@style/solution_action_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableTop="@drawable/icon_heart"
-                android:text="@string/favorites" />
-
-            <Button
-                android:id="@+id/alarm"
-                style="@style/solution_action_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:drawableTop="@drawable/icon_clock_white"
-                android:text="@string/set_solution_alarm" />
-
-            <Button
-                android:id="@+id/process"
-                style="@style/solution_action_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:drawableTop="@drawable/icon_list_todo"
-                android:text="@string/process_management" />
-
-            <Button
-                android:id="@+id/evaluate"
-                style="@style/solution_action_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableTop="@drawable/icon_hand_white"
-                android:text="@string/evaluate" />
-
-            <Button
-                android:id="@+id/forwarding"
-                style="@style/solution_action_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:drawableTop="@drawable/icon_export"
-                android:text="@string/forwarding" />
-        </LinearLayout>
-    </RelativeLayout>
+        <ImageButton
+            android:id="@+id/forwarding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/action_forwarding" />
+    </LinearLayout>
 
 </RelativeLayout>

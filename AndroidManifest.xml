@@ -110,6 +110,10 @@
         <activity
             android:name=".FileBrower"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".Process"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.InputMethod" />
 
         <!--
              This activity is basically the same as AlarmAlert but with a more

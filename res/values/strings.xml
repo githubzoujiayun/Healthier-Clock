@@ -240,6 +240,8 @@
     <string name="cancel">取消</string>
     <string name="enter">确定</string>
     <string name="back">返回</string>
+    <string name="comply">遵从</string>
+    <string name="custom">自定</string>
 
     <!-- Welcome text -->
     <string name="welcome_good_morning">早上好</string>
@@ -323,5 +325,8 @@
     <string name="help_page_text_alarm">健康闹钟，给您安个随身秘书！</string>
     <string name="help_page_text_chinese_hour">子丑寅卯辰，从时辰里看养生哲学。</string>
     <string name="help_page_text_solar_terms">生长化收藏，从节气里悟养生心语。</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_process">Process</string>
 
 </resources>
