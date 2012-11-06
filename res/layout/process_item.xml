@@ -9,18 +9,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="12dip" >
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="12dip"
+        android:orientation="horizontal" >
 
         <RadioButton
             android:id="@+id/comply"
+            style="@style/button_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="1.0px"
+            android:background="@drawable/button_radio_first_selector"
             android:text="@string/comply" />
 
         <RadioButton
             android:id="@+id/custom"
+            style="@style/button_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/button_radio_last_selector"
             android:text="@string/custom" />
     </RadioGroup>
 
@@ -44,8 +51,8 @@
         style="@style/solution_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/radios"
         android:paddingLeft="28dip"
         android:text="按摩太阳穴，两拇指或两中指端分别在左右两太阳穴上揉动30次。或用双手拇指按压太阳穴，然后用弯曲的食指第二节的内侧轻刮眼眶一圈，由内上→外上→外下→内下，使眼眶周围的多个穴位受到按摩。" />
 

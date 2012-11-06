@@ -114,6 +114,18 @@
             android:name=".Process"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.InputMethod" />
+        <activity
+            android:name=".SolutionEvaluate"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.InputMethod" />
+        <activity
+            android:name=".HourRemind"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent" />
+        <activity
+            android:name=".Acupoint"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent" />
 
         <!--
              This activity is basically the same as AlarmAlert but with a more

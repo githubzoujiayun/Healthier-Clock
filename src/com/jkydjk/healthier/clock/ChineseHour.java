@@ -84,6 +84,7 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
   public static class SolutionFragment extends Fragment implements OnClickListener {
     
     ScrollView content;
+    View hourRemind;
     View actions;
 
     int mNum;
@@ -109,8 +110,10 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 //      final Healthier activity = (Healthier) getActivity().getParent();
 
       content = (ScrollView)view.findViewById(R.id.content);
-      
       actions = view.findViewById(R.id.actions);
+      
+      hourRemind = view.findViewById(R.id.hour_remind);
+      hourRemind.setOnClickListener(this);
       
       final ImageButton todo = (ImageButton) view.findViewById(R.id.todo);
       todo.setOnClickListener(this);
@@ -132,8 +135,8 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
       
       content.setOnTouchListener(new OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-          actions.setVisibility(View.GONE);
           todo.setVisibility(View.VISIBLE);
+          actions.setVisibility(View.INVISIBLE);
           return false;
         }
       });
@@ -149,6 +152,10 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
     public void onClick(View v) {
       switch (v.getId()) {
+      case R.id.hour_remind:
+        startActivity(new Intent(getActivity(), HourRemind.class));
+        break;
+      
       case R.id.todo:
         v.setVisibility(View.GONE);
         actions.setVisibility(View.VISIBLE);
@@ -167,7 +174,7 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
         break;
         
       case R.id.evaluate:
-
+        startActivity(new Intent(getActivity(), SolutionEvaluate.class));
         break;
 
       case R.id.forwarding:

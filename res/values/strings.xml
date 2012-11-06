@@ -242,6 +242,11 @@
     <string name="back">返回</string>
     <string name="comply">遵从</string>
     <string name="custom">自定</string>
+    
+    <string name="cure">治愈</string>
+    <string name="improvement">改善</string>
+    <string name="invalid">无效</string>
+    <string name="aggravating">加重</string>
 
     <!-- Welcome text -->
     <string name="welcome_good_morning">早上好</string>

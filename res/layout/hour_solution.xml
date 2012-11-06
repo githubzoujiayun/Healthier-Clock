@@ -115,9 +115,8 @@
                     android:textColor="#FFFFFFFF"
                     android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/restore"
-                    style="@style/hour_tip"
+                <LinearLayout
+                    android:id="@+id/hour_remind"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -125,19 +124,24 @@
                     android:layout_marginLeft="15dip"
                     android:layout_marginTop="10dip"
                     android:layout_toRightOf="@+id/hour"
-                    android:background="#B3669900"
-                    android:text="宜：进食温热早餐，保养胃气" />
+                    android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/taboo"
-                    style="@style/hour_tip"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/restore"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/restore"
-                    android:background="#B3CC0000"
-                    android:text="忌：不食早餐或冷食，饮酒" />
+                    <TextView
+                        android:id="@+id/restore"
+                        style="@style/hour_tip"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#B3669900"
+                        android:text="宜：进食温热早餐，保养胃气" />
+
+                    <TextView
+                        android:id="@+id/taboo"
+                        style="@style/hour_tip"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#B3CC0000"
+                        android:text="忌：不食早餐或冷食，饮酒" />
+                </LinearLayout>
             </RelativeLayout>
 
             <TextView
@@ -210,21 +214,21 @@
         android:id="@+id/todo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dip"
-        android:layout_marginLeft="10dip"
+        android:layout_alignLeft="@+id/actions"
+        android:layout_alignTop="@+id/actions"
         android:background="@android:color/transparent"
         android:src="@drawable/todo" />
 
     <LinearLayout
         android:id="@+id/actions"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dip"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:visibility="gone" >
+        android:visibility="invisible" >
 
         <ImageButton
             android:id="@+id/favorite"

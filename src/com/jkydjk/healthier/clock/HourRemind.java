@@ -6,14 +6,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RadioButton;
 
-public class Process extends BaseActivity implements OnClickListener {
+public class HourRemind extends BaseActivity implements OnClickListener {
   
   private Button back;
   
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.process);
+    setContentView(R.layout.hour_remind);
     
     back = (Button)findViewById(R.id.back);
     back.setOnClickListener(this);
