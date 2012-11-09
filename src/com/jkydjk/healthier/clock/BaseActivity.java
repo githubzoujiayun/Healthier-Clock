@@ -2,8 +2,11 @@ package com.jkydjk.healthier.clock;
 
 import java.io.File;
 
+import com.jkydjk.healthier.clock.util.StringUtil;
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
 
 public class BaseActivity extends Activity {

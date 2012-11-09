@@ -74,7 +74,7 @@
                     android:text="@string/username_email" />
 
                 <EditText
-                    android:id="@+id/username"
+                    android:id="@+id/login"
                     style="@style/list_block_item_edit_text"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"

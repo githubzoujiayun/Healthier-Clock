@@ -1,17 +1,21 @@
 package com.jkydjk.healthier.clock.entity;
 
 import java.io.Serializable;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 
 public class User implements Serializable {
 
+  private static final long serialVersionUID = 4918606834770319507L;
+  
   public int id;
+  public String token;
   public String username;
   public String email;
-  public String password;
   public int gender;
-  public int birth_year;
-  public int birth_month;
-  public int birth_day;
+  public int birthYear;
+  public int birthMonth;
+  public int birthDay;
 
   public int getId() {
     return id;
@@ -19,6 +23,14 @@ public class User implements Serializable {
 
   public void setId(int id) {
     this.id = id;
+  }
+  
+  public String getToken() {
+    return token;
+  }
+
+  public void setToken(String token) {
+    this.token = token;
   }
 
   public String getUsername() {
@@ -37,14 +49,6 @@ public class User implements Serializable {
     this.email = email;
   }
 
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
   public int getGender() {
     return gender;
   }
@@ -53,49 +57,54 @@ public class User implements Serializable {
     this.gender = gender;
   }
 
-  public int getBirth_year() {
-    return birth_year;
+  public int getBirthYear() {
+    return birthYear;
   }
 
-  public void setBirth_year(int birth_year) {
-    this.birth_year = birth_year;
+  public void setBirthYear(int birthYear) {
+    this.birthYear = birthYear;
   }
 
-  public int getBirth_month() {
-    return birth_month;
+  public int getBirthMonth() {
+    return birthMonth;
   }
 
-  public void setBirth_month(int birth_month) {
-    this.birth_month = birth_month;
+  public void setBirthMonth(int birthMonth) {
+    this.birthMonth = birthMonth;
   }
 
-  public int getBirth_day() {
-    return birth_day;
+  public int getBirthDay() {
+    return birthDay;
   }
 
-  public void setBirth_day(int birth_day) {
-    this.birth_day = birth_day;
+  public void setBirthDay(int birthDay) {
+    this.birthDay = birthDay;
   }
 
   public User() {
 
   }
 
-  public User(String username, String email, String password, int gender, int birth_year, int birth_month, int birth_day) {
+  public User(String username, String email, int gender, int birthYear, int birthMonth, int birthDay) {
     super();
     this.username = username;
     this.email = email;
-    this.password = password;
     this.gender = gender;
-    this.birth_year = birth_year;
-    this.birth_month = birth_month;
-    this.birth_day = birth_day;
+    this.birthYear = birthYear;
+    this.birthMonth = birthMonth;
+    this.birthDay = birthDay;
   }
 
-  public User(String username, String email, String password) {
-    super();
-    this.username = username;
-    this.email = email;
-    this.password = password;
+  public static void serializable(SharedPreferences sharedPreference, User user) {
+    Editor edit = sharedPreference.edit();
+    edit.putString("token", user.getToken());
+    edit.putString("username", user.getUsername());
+    edit.putString("email", user.getEmail());
+    edit.putInt("gender", user.getGender());
+    edit.putInt("birthYear", user.getBirthYear());
+    edit.putInt("birthMonth", user.getBirthMonth());
+    edit.putInt("birthDay", user.getBirthDay());
+    edit.commit();
   }
+
 }

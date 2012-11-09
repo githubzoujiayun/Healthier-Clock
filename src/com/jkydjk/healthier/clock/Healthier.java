@@ -2,7 +2,10 @@ package com.jkydjk.healthier.clock;
 
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -17,7 +20,9 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
+import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
+import com.jkydjk.healthier.clock.util.StringUtil;
 import com.jkydjk.healthier.clock.widget.AnimationTabHost;
 import com.jkydjk.healthier.clock.widget.CustomDialog;
 
@@ -30,6 +35,8 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
 
   public final static int SLIDE_UP = 0x0;
   public final static int SLIDE_DOWN = 0x1;
+
+  private SharedPreferences sharedPreference = null;
 
   private boolean ifFullScreen = false;
 
@@ -52,6 +59,8 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
+
+    sharedPreference = this.getSharedPreferences("configure", Context.MODE_PRIVATE);
 
     mTabHost = (TabHost) findViewById(android.R.id.tabhost);
     mTabHost.setOnTabChangedListener(this);
@@ -118,28 +127,30 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
 
     case R.id.account:
 
-      final CustomDialog dialog = new CustomDialog(this);
+      if (ActivityHelper.isLogged(this)) {
+        startActivity(new Intent(Healthier.this, Resume.class));
+      } else {
+        final CustomDialog dialog = new CustomDialog(this);
 
-      dialog.setTitle(R.string.my_account);
+        dialog.setTitle(R.string.my_account);
 
-      dialog.setPositiveButton(R.string.signup, new OnClickListener() {
-        public void onClick(View v) {
-          dialog.dismiss();
-          startActivity(new Intent(Healthier.this, Signup.class));
-        }
-      });
+        dialog.setPositiveButton(R.string.signup, new OnClickListener() {
+          public void onClick(View v) {
+            dialog.dismiss();
+            startActivity(new Intent(Healthier.this, Signup.class));
+          }
+        });
 
-      dialog.setNegativeButton(R.string.signin, new OnClickListener() {
-        public void onClick(View v) {
-          dialog.dismiss();
-          startActivity(new Intent(Healthier.this, Signin.class));
-        }
-      });
-      dialog.show();
+        dialog.setNegativeButton(R.string.signin, new OnClickListener() {
+          public void onClick(View v) {
+            dialog.dismiss();
+            startActivity(new Intent(Healthier.this, Signin.class));
+          }
+        });
+        dialog.show();
+      }
       break;
-
     }
-
   }
 
   @Override

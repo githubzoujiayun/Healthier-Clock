@@ -105,16 +105,16 @@ public class Signup extends BaseActivity implements OnClickListener {
   }
 
   private User submit() {
-    String strName = username.getText().toString();
+    String strUsername = username.getText().toString();
     String strEmail = email.getText().toString();
     String strPassword = password.getText().toString();
 
-    User user = new User(strName, strEmail, strPassword);
+    User user = null;
 
     HttpClientManager httpClientManager = new HttpClientManager(this, HttpClientManager.REQUEST_PATH + "user/signup");
-    httpClientManager.addParam("username", user.username);
-    httpClientManager.addParam("email", user.email);
-    httpClientManager.addParam("password", user.password);
+    httpClientManager.addParam("username", strUsername);
+    httpClientManager.addParam("email", strEmail);
+    httpClientManager.addParam("password", strPassword);
 
     try {
       httpClientManager.execute(ResuestMethod.POST);

@@ -303,6 +303,15 @@
     <string name="signup">注册</string>
     <string name="signup_tips">邮箱地址用于找回密码，请填写真实有效地址。\n完成注册代表你接受健康时钟的注册协议。</string>
     <string name="signin">登录</string>
+    <string name="resume">个人信息</string>
+    <string name="realname">姓名</string>
+    <string name="gender">性别</string>
+    <string name="birthday">生日</string>
+    <string name="location">所在地</string>
+    <string name="constitution">体质</string>
+    <string name="constitution_tip">了解自己的体质，让我们给你提供更个性化的健康方案。</string>
+    <string name="unset">未设置</string>
+    <string name="not_logged_in">未登录!</string>
     <string name="about">关于健康时钟</string>
     <string name="app_evaluate">评价应用</string>
     <string name="feedback">建议反馈</string>
