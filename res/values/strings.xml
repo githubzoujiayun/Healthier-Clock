@@ -359,6 +359,7 @@
     <string name="your_constitution_is">你的主要体质是:</string>
     <string name="retest">重新测试</string>
     <string name="constitution_test">体质测试</string>
+    <string name="constitution_calculate">计算结果</string>
     
     <string name="constitution_test_tip">请根据近一年的体验和感觉回答以下问题，孕妇及16岁以下青少年不建议使用本测试。</string>
     <string name="constitution_option_no">没有</string>

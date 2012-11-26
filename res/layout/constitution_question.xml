@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/alarm_time_layout"
+    android:id="@+id/question_layout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
@@ -23,7 +23,7 @@
         android:visibility="gone" >
 
         <RadioButton
-            android:id="@+id/no"
+            android:id="@+id/question_option_no"
             style="@style/button_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:text="@string/constitution_option_no" />
 
         <RadioButton
-            android:id="@+id/seldom"
+            android:id="@+id/question_option_seldom"
             style="@style/button_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
             android:text="@string/constitution_option_seldom" />
 
         <RadioButton
-            android:id="@+id/sometimes"
+            android:id="@+id/question_option_sometimes"
             style="@style/button_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             android:text="@string/constitution_option_sometimes" />
 
         <RadioButton
-            android:id="@+id/often"
+            android:id="@+id/question_option_often"
             style="@style/button_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             android:text="@string/constitution_option_often" />
 
         <RadioButton
-            android:id="@+id/always"
+            android:id="@+id/question_option_always"
             style="@style/button_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

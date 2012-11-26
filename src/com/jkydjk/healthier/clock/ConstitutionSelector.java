@@ -89,7 +89,7 @@ public class ConstitutionSelector extends BaseActivity implements OnClickListene
 
       if (resultCode == GOTOTEST) {
         startActivity(new Intent(this, ConstitutionTest.class));
-//        finish();
+        finish();
       }
       break;
 
