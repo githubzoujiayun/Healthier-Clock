@@ -14,227 +14,227 @@ import android.widget.TextView;
 
 public class SetAlarmAlert extends BaseActivity implements OnClickListener {
 
-	private static final int SYSTEM_RINGTONE = 0;
-	private static final int SYSTEM_FILE_BROWER = 2;
+  private static final int SYSTEM_RINGTONE = 0;
+  private static final int SYSTEM_FILE_BROWER = 2;
 
-	private MediaPlayer mediaPlayer;
+  private MediaPlayer mediaPlayer;
 
-	private Uri alert;
-	private Uri currentAlert;
-	private Uri defaultAlert;
+  private Uri alert;
+  private Uri currentAlert;
+  private Uri defaultAlert;
 
-	private Uri currentPlay;
+  private Uri currentPlay;
 
-	private View backlAction;
+  private View backlAction;
 
-	private View silentLayout;
-	private RadioButton silentRadio;
+  private View silentLayout;
+  private RadioButton silentRadio;
 
-	private View defaultRingtoneLayout;
-	private TextView defaultRingtoneTextView;
-	private RadioButton defaultRingtoneRadio;
+  private View defaultRingtoneLayout;
+  private TextView defaultRingtoneTextView;
+  private RadioButton defaultRingtoneRadio;
 
-	private View currentRingtoneLayout;
-	private TextView currentRingtoneTextView;
-	private RadioButton currentRingtoneRadio;
+  private View currentRingtoneLayout;
+  private TextView currentRingtoneTextView;
+  private RadioButton currentRingtoneRadio;
 
-	private View systemRingtones;
-	private View fileBrowser;
+  private View systemRingtones;
+  private View fileBrowser;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.set_alarm_alert);
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.set_alarm_alert);
 
-		Intent intent = getIntent();
-		currentAlert = (Uri) intent.getParcelableExtra("alert");
-		alert = currentAlert;
+    Intent intent = getIntent();
+    currentAlert = (Uri) intent.getParcelableExtra("alert");
+    alert = currentAlert;
 
-		defaultAlert = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_ALARM);
+    defaultAlert = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_ALARM);
 
-		backlAction = findViewById(R.id.back);
-		backlAction.setOnClickListener(this);
+    backlAction = findViewById(R.id.back);
+    backlAction.setOnClickListener(this);
 
-		silentLayout = findViewById(R.id.silent_layout);
-		silentLayout.setOnClickListener(this);
+    silentLayout = findViewById(R.id.silent_layout);
+    silentLayout.setOnClickListener(this);
 
-		silentRadio = (RadioButton) findViewById(R.id.silent_radio);
+    silentRadio = (RadioButton) findViewById(R.id.silent_radio);
 
-		defaultRingtoneLayout = findViewById(R.id.default_ringtone_layout);
-		defaultRingtoneLayout.setOnClickListener(this);
+    defaultRingtoneLayout = findViewById(R.id.default_ringtone_layout);
+    defaultRingtoneLayout.setOnClickListener(this);
 
-		defaultRingtoneTextView = (TextView) findViewById(R.id.default_ringtone);
+    defaultRingtoneTextView = (TextView) findViewById(R.id.default_ringtone);
 
-		defaultRingtoneRadio = (RadioButton) findViewById(R.id.default_ringtone_radio);
+    defaultRingtoneRadio = (RadioButton) findViewById(R.id.default_ringtone_radio);
 
-		currentRingtoneLayout = findViewById(R.id.current_ringtone_layout);
-		currentRingtoneLayout.setOnClickListener(this);
+    currentRingtoneLayout = findViewById(R.id.current_ringtone_layout);
+    currentRingtoneLayout.setOnClickListener(this);
 
-		currentRingtoneTextView = (TextView) findViewById(R.id.current_ringtone);
+    currentRingtoneTextView = (TextView) findViewById(R.id.current_ringtone);
 
-		currentRingtoneRadio = (RadioButton) findViewById(R.id.current_ringtone_radio);
+    currentRingtoneRadio = (RadioButton) findViewById(R.id.current_ringtone_radio);
 
-		systemRingtones = findViewById(R.id.system_ringtones_layout);
-		systemRingtones.setOnClickListener(this);
+    systemRingtones = findViewById(R.id.system_ringtones_layout);
+    systemRingtones.setOnClickListener(this);
 
-		fileBrowser = findViewById(R.id.file_browser_layout);
-		fileBrowser.setOnClickListener(this);
+    fileBrowser = findViewById(R.id.file_browser_layout);
+    fileBrowser.setOnClickListener(this);
 
-		updateRingtones();
-	}
+    updateRingtones();
+  }
 
-	private void updateRingtones() {
-		Ringtone defaultRingtone = RingtoneManager.getRingtone(this, defaultAlert);
+  private void updateRingtones() {
+    Ringtone defaultRingtone = RingtoneManager.getRingtone(this, defaultAlert);
 
-		if (defaultRingtone != null) {
-			defaultRingtoneTextView.setText(defaultRingtone.getTitle(this));
-		}
+    if (defaultRingtone != null) {
+      defaultRingtoneTextView.setText(defaultRingtone.getTitle(this));
+    }
 
-		if (currentAlert == null) {
-			silentRadio.setChecked(true);
-			currentRingtoneLayout.setVisibility(View.GONE);
-		} else {
-			if (currentAlert.equals(defaultAlert)) {
-				currentRingtoneLayout.setVisibility(View.GONE);
-				defaultRingtoneRadio.setChecked(true);
-			} else {
-				Ringtone currentRingtone = RingtoneManager.getRingtone(this, currentAlert);
-				if (currentRingtone != null) {
-					currentRingtoneTextView.setText(currentRingtone.getTitle(this));
-					currentRingtoneRadio.setChecked(true);
-				}
-			}
-		}
-	}
+    if (currentAlert == null) {
+      silentRadio.setChecked(true);
+      currentRingtoneLayout.setVisibility(View.GONE);
+    } else {
+      if (currentAlert.equals(defaultAlert)) {
+        currentRingtoneLayout.setVisibility(View.GONE);
+        defaultRingtoneRadio.setChecked(true);
+      } else {
+        Ringtone currentRingtone = RingtoneManager.getRingtone(this, currentAlert);
+        if (currentRingtone != null) {
+          currentRingtoneTextView.setText(currentRingtone.getTitle(this));
+          currentRingtoneRadio.setChecked(true);
+        }
+      }
+    }
+  }
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    switch (requestCode) {
 
-		case SYSTEM_RINGTONE:
-			if (resultCode == RESULT_OK) {
-				Uri alert = (Uri) data.getParcelableExtra("alert");
-				Intent intent = getIntent();
-				intent.putExtra("alert", alert);
-				setResult(RESULT_CANCELED, intent);
-				super.finish();
-				overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
-			}
-			break;
-			
-		case SYSTEM_FILE_BROWER:
-            if (resultCode == RESULT_OK) {
-                Uri alert = (Uri) data.getParcelableExtra("alert");
-                Intent intent = getIntent();
-                intent.putExtra("alert", alert);
-                setResult(RESULT_CANCELED, intent);
-                super.finish();
-                overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
-            }
-            break;
+    case SYSTEM_RINGTONE:
+      if (resultCode == RESULT_OK) {
+        Uri alert = (Uri) data.getParcelableExtra("alert");
+        Intent intent = getIntent();
+        intent.putExtra("alert", alert);
+        setResult(RESULT_CANCELED, intent);
+        super.finish();
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+      }
+      break;
 
-		default:
-			break;
-		}
-		super.onActivityResult(requestCode, resultCode, data);
-	}
+    case SYSTEM_FILE_BROWER:
+      if (resultCode == RESULT_OK) {
+        Uri alert = (Uri) data.getParcelableExtra("alert");
+        Intent intent = getIntent();
+        intent.putExtra("alert", alert);
+        setResult(RESULT_CANCELED, intent);
+        super.finish();
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+      }
+      break;
 
-	public void onClick(View v) {
+    default:
+      break;
+    }
+    super.onActivityResult(requestCode, resultCode, data);
+  }
 
-		Intent intent;
+  public void onClick(View v) {
 
-		switch (v.getId()) {
-		case R.id.back:
-			finish();
-			break;
+    Intent intent;
 
-		case R.id.silent_layout:
-			silentRadio.setChecked(true);
-			defaultRingtoneRadio.setChecked(false);
-			currentRingtoneRadio.setChecked(false);
-			stopPlayMedia();
-			alert = null;
-			break;
+    switch (v.getId()) {
+    case R.id.back:
+      finish();
+      break;
 
-		case R.id.default_ringtone_layout:
-			silentRadio.setChecked(false);
-			defaultRingtoneRadio.setChecked(true);
-			currentRingtoneRadio.setChecked(false);
-			autoPlayMedia(defaultAlert);
-			break;
+    case R.id.silent_layout:
+      silentRadio.setChecked(true);
+      defaultRingtoneRadio.setChecked(false);
+      currentRingtoneRadio.setChecked(false);
+      stopPlayMedia();
+      alert = null;
+      break;
 
-		case R.id.current_ringtone_layout:
-			silentRadio.setChecked(false);
-			defaultRingtoneRadio.setChecked(false);
-			currentRingtoneRadio.setChecked(true);
-			autoPlayMedia(currentAlert);
-			break;
+    case R.id.default_ringtone_layout:
+      silentRadio.setChecked(false);
+      defaultRingtoneRadio.setChecked(true);
+      currentRingtoneRadio.setChecked(false);
+      autoPlayMedia(defaultAlert);
+      break;
 
-		case R.id.system_ringtones_layout:
-			intent = new Intent(this, SystemRingtone.class);
-			intent.putExtra("alert", alert);
-			startActivityForResult(intent, SYSTEM_RINGTONE);
-			break;
+    case R.id.current_ringtone_layout:
+      silentRadio.setChecked(false);
+      defaultRingtoneRadio.setChecked(false);
+      currentRingtoneRadio.setChecked(true);
+      autoPlayMedia(currentAlert);
+      break;
 
-		case R.id.file_browser_layout:
-			intent = new Intent(this, FileBrower.class);
-			intent.putExtra("file", alert);
-			startActivityForResult(intent, SYSTEM_FILE_BROWER);
-			break;
+    case R.id.system_ringtones_layout:
+      intent = new Intent(this, SystemRingtone.class);
+      intent.putExtra("alert", alert);
+      startActivityForResult(intent, SYSTEM_RINGTONE);
+      break;
 
-		default:
-			break;
-		}
-	}
+    case R.id.file_browser_layout:
+      intent = new Intent(this, FileBrower.class);
+      intent.putExtra("file", alert);
+      startActivityForResult(intent, SYSTEM_FILE_BROWER);
+      break;
 
-	private void autoPlayMedia(Uri uri) {
-		alert = uri;
-		if (currentPlay != uri) {
-			if (mediaPlayer != null) {
-				stopPlayMedia();
-			}
-			mediaPlayer = MediaPlayer.create(this, uri);
-			mediaPlayer.start();
-			currentPlay = uri;
+    default:
+      break;
+    }
+  }
 
-			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
-				public void onCompletion(MediaPlayer mp) {
-					stopPlayMedia();
-				}
-			});
+  private void autoPlayMedia(Uri uri) {
+    alert = uri;
+    if (currentPlay != uri) {
+      if (mediaPlayer != null) {
+        stopPlayMedia();
+      }
+      mediaPlayer = MediaPlayer.create(this, uri);
+      mediaPlayer.start();
+      currentPlay = uri;
 
-		} else {
-			stopPlayMedia();
-		}
-	}
+      mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+        public void onCompletion(MediaPlayer mp) {
+          stopPlayMedia();
+        }
+      });
 
-	private void stopPlayMedia() {
-		if (mediaPlayer != null) {
-			mediaPlayer.release();
-			mediaPlayer = null;
-			currentPlay = null;
-		}
-	}
+    } else {
+      stopPlayMedia();
+    }
+  }
 
-	@Override
-	public void finish() {
-		Intent intent = getIntent();
-		intent.putExtra("alert", alert);
-		setResult(RESULT_CANCELED, intent);
-		super.finish();
-		overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
-	}
+  private void stopPlayMedia() {
+    if (mediaPlayer != null) {
+      mediaPlayer.release();
+      mediaPlayer = null;
+      currentPlay = null;
+    }
+  }
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		stopPlayMedia();
-	}
+  @Override
+  public void finish() {
+    Intent intent = getIntent();
+    intent.putExtra("alert", alert);
+    setResult(RESULT_CANCELED, intent);
+    super.finish();
+    overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+  }
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		stopPlayMedia();
-	}
+  @Override
+  protected void onPause() {
+    super.onPause();
+    stopPlayMedia();
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    stopPlayMedia();
+  }
 
 }

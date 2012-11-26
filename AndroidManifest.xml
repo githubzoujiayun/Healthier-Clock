@@ -72,6 +72,22 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent" />
         <activity
+            android:name=".ConstitutionSelector"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent" />
+        <activity
+            android:name=".ConstitutionIntro"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent" />
+        <activity
+            android:name=".Constitution"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.InputMethod" />
+        <activity
+            android:name=".ConstitutionTest"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.InputMethod" />
+        <activity
             android:name=".Help"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Toast" />

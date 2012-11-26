@@ -303,13 +303,70 @@
     <string name="signup">注册</string>
     <string name="signup_tips">邮箱地址用于找回密码，请填写真实有效地址。\n完成注册代表你接受健康时钟的注册协议。</string>
     <string name="signin">登录</string>
+    <string name="logout">注销</string>
     <string name="resume">个人信息</string>
     <string name="realname">姓名</string>
     <string name="gender">性别</string>
     <string name="birthday">生日</string>
     <string name="location">所在地</string>
+    
     <string name="constitution">体质</string>
     <string name="constitution_tip">了解自己的体质，让我们给你提供更个性化的健康方案。</string>
+    <string name="constitution_intro">“世界上没有两片完全相同的叶子”，更没有相同的人。传统中医理论将不同人的体质分为九种，看看以下哪种情况和你最为贴近：</string>
+    
+    <string name="constitution_a">平和质</string>
+    <string name="constitution_a_intro">精力充沛\n健康乐观</string>
+    <string name="constitution_a_desc">平和体质的人形体匀称，健康，面色、肤色润泽，头发茂密有光泽，目光有神，鼻色明润，嗅觉通利，味觉正常，唇色红润；精力充沛，不易疲劳，耐受寒热，睡眠安和，胃纳良好，二便正常，舌色淡红，舌苔薄白；性格随和开朗、阳光，不会为小事斤斤计较，也不会轻易郁闷或动怒。这种人平素患病较少，对自然环境和社会环境适应能力较强。</string>
+    
+    <string name="constitution_b">气虚质</string>
+    <string name="constitution_b_intro">气短力少\n容易疲乏</string>
+    <string name="constitution_b_desc">气虚体质的人形体特征有肌肉不健壮，气短；平素语言低怯，气短懒言，肢体容易疲乏，精神不振，易出汗，舌淡红，舌体胖大，边有齿痕；面色偏黄或白，目光少神，口淡，唇色少华，毛发不华，头晕，健忘，大便正常，或有便秘但不结硬，或不成形，小便正常或便多；性格内向，情绪不稳定，健忘胆小，不喜欢冒险；平素体质虚弱，易患感冒，或抗病能力弱，病后易迁延不愈；不耐受寒邪、风邪，暑邪等。</string>
+    
+    <string name="constitution_c">阳虚质</string>
+    <string name="constitution_c_intro">手脚发凉\n身体怕冷</string>
+    <string name="constitution_c_desc">阳虚体质的人多形体白胖，肌肉不壮，怕冷。平素手足不温，喜食热饮，精神不振，睡眠偏多，舌润。面色柔白，目胞晦暗，口唇色淡，毛发易落，易出汗，小便清长，大便溏薄；性格沉静，内向，平素不耐寒邪，耐夏不耐冬，易感湿邪。</string>
+    
+    <string name="constitution_d">阴虚质</string>
+    <string name="constitution_d_intro">手心发热\n阴虚火旺</string>
+    <string name="constitution_d_desc">阴虚体质的人体形瘦长，缺水。手足心热，平素易口燥咽干，鼻微干，口渴喜冷饮，大便干燥，小便短涩，舌红少津少苔；面色潮红、有烘热感，目干涩，视物花，唇红微干，皮肤偏干、易生皱纹，眩晕耳鸣；睡眠差，性情急躁，外向好动，活泼；易患阴亏燥热的病变，或病后易表现为阴亏症状；平素不耐受热邪，耐冬不耐夏，不耐受燥邪。</string>
+    
+    <string name="constitution_e">痰湿质</string>
+    <string name="constitution_e_intro">身体肥胖\n大腹便便</string>
+    <string name="constitution_e_desc">痰湿体质的人肥胖，腹部肥满松软；面部皮肤油脂较多，多汗且黏，胸闷，痰多，面色暗黄而暗，眼睑浮肿，容易困倦，口黏腻或甜，身体不爽；喜食肥甘甜黏，大便正常、不干，小便不多或微混，平素舌体胖大，舌苔白腻；性格偏温和，稳重恭谦，多善于忍耐；易患消渴、中风、胸痹等病症，对梅雨季节及潮湿环境适应能力差。</string>
+    
+    <string name="constitution_f">湿热质</string>
+    <string name="constitution_f_intro">面色油腻\n长痘长疮</string>
+    <string name="constitution_f_desc">湿热体质的人偏胖或苍瘦，性格多急躁易怒；平素面垢油光，易口苦口干，身重困倦，易生痤疮粉刺，舌质偏约，苔黄腻，心烦懈怠，眼睛红赤，大便短赤，带下增多；易患疮疖、黄疸等病症，对潮湿的气温偏高的环境，尤其是夏末秋初，湿热交蒸的天气较难适应。</string>
+    
+    <string name="constitution_g">血瘀质</string>
+    <string name="constitution_g_intro">面色晦暗\n脸上长斑</string>
+    <string name="constitution_g_desc">血淤体质的人多偏瘦，爱长斑，平素面色晦暗，皮肤偏暗或色素沉着，容易出现瘀斑，易患疼痛。口唇暗淡或紫，舌质暗，有点、片状瘀斑，舌下静脉曲张。眼眶暗黑，鼻部暗滞，发易脱落，肌肤干，或有出血倾向、吐血，多见痛经、闭经，或经血中多凝血块，或经色紫黑有块、崩漏。性情急躁，心情易烦，健忘，不耐受寒邪、风邪。</string>
+    
+    <string name="constitution_h">气郁质</string>
+    <string name="constitution_h_intro">多愁善感\n郁郁不乐</string>
+    <string name="constitution_h_desc">气郁体持贩人形偏瘦者居多，性格内向不稳定，忧郁脆弱，敏感多疑，对精神刺激适应能力比较差，平时面貌忧郁，神情时常烦闷不乐，胸肋部胀满或走窜疼痛，多善太息，或嗳气呃逆，或咽间有异物感，或乳房胀痛；睡眠较差，食欲减退，容易受到惊吓，健忘，痰多，大便多干，小便正常，舌淡红、苔薄白；对精神刺激适应能力较差，不喜欢阴雨天气。</string>
+    
+    <string name="constitution_i">特禀质</string>
+    <string name="constitution_i_intro">容易过敏\n喷嚏流泪</string>
+    <string name="constitution_i_desc">特禀体质的人无特殊体型，适应能力差，易过敏，且易复发。</string>
+    
+    <string name="constitution_color">体质颜色</string>
+    
+    <string name="select_constitution">选择体质</string>
+    <string name="my_constitution">我的体质</string>
+    <string name="setted_constitution">设置为我的体质!</string>
+    <string name="uncertainty_do_a_test_to_confirm">不确定?做个测试确认一下!</string>
+    <string name="your_constitution_is">你的主要体质是:</string>
+    <string name="retest">重新测试</string>
+    <string name="constitution_test">体质测试</string>
+    
+    <string name="constitution_test_tip">请根据近一年的体验和感觉回答以下问题，孕妇及16岁以下青少年不建议使用本测试。</string>
+    <string name="constitution_option_no">没有</string>
+    <string name="constitution_option_seldom">很少</string>
+    <string name="constitution_option_sometimes">有时</string>
+    <string name="constitution_option_often">经常</string>
+    <string name="constitution_option_always">总是</string>
+    
     <string name="unset">未设置</string>
     <string name="not_logged_in">未登录!</string>
     <string name="about">关于健康时钟</string>

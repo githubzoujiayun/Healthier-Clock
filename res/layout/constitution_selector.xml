@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/main_bg" >
+
+    <!-- 标题栏 -->
+
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/title_bar" >
+
+        <Button
+            android:id="@+id/cancel"
+            style="@style/title_bar_left_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/cancel" />
+
+        <TextView
+            android:id="@+id/title_text"
+            style="@style/title_bar_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/select_constitution" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/constitution_intro"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_bar"
+        android:layout_marginBottom="10dip"
+        android:background="@drawable/banner_title_large_bg"
+        android:paddingLeft="12dp"
+        android:paddingTop="8dp"
+        android:text="@string/constitution_intro"
+        android:textColor="#FF333333"
+        android:textSize="16sp" />
+
+    <GridView
+        android:id="@+id/constitution_grid"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/constitution_intro"
+        android:gravity="center_horizontal|center_vertical"
+        android:numColumns="3"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:verticalSpacing="10dp" >
+    </GridView>
+
+    <!-- 标题栏下阴影 -->
+
+    <ImageView
+        android:id="@+id/title_bar_shadow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_bar"
+        android:contentDescription="@string/title_bar_shadow"
+        android:src="@drawable/title_shadow" />
+
+</RelativeLayout>

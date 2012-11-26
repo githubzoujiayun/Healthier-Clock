@@ -29,6 +29,14 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/resume" />
+        
+        <Button
+            android:id="@+id/logout"
+            style="@style/title_bar_right_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/logout" />
     </RelativeLayout>
 
     <ScrollView
@@ -287,6 +295,7 @@
                         android:background="@drawable/setting_line" />
 
                     <LinearLayout
+                        android:id="@+id/constitution_layout"
                         android:layout_width="fill_parent"
                         android:layout_height="48.0dip"
                         android:background="@drawable/list_blockbg_bottom_selector"

@@ -1,6 +1,6 @@
 package com.jkydjk.healthier.clock;
 
-import com.jkydjk.healthier.clock.database.DatabaseHelper;
+import com.jkydjk.healthier.clock.database.AlarmDatabaseHelper;
 import com.jkydjk.healthier.clock.util.Log;
 
 import android.content.ContentProvider;
@@ -34,7 +34,7 @@ public class AlarmProvider extends ContentProvider {
 
   @Override
   public boolean onCreate() {
-    mOpenHelper = new DatabaseHelper(getContext());
+    mOpenHelper = new AlarmDatabaseHelper(getContext());
     return true;
   }
 

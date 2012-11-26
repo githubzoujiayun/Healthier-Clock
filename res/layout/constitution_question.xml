@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/alarm_time_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/question_text"
+        style="@style/list_block_item_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dip" />
+
+    <RadioGroup
+        android:id="@+id/options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="12dip"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <RadioButton
+            android:id="@+id/no"
+            style="@style/button_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1.0px"
+            android:background="@drawable/button_radio_first_selector"
+            android:text="@string/constitution_option_no" />
+
+        <RadioButton
+            android:id="@+id/seldom"
+            style="@style/button_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1.0px"
+            android:text="@string/constitution_option_seldom" />
+
+        <RadioButton
+            android:id="@+id/sometimes"
+            style="@style/button_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1.0px"
+            android:text="@string/constitution_option_sometimes" />
+
+        <RadioButton
+            android:id="@+id/often"
+            style="@style/button_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1.0px"
+            android:text="@string/constitution_option_often" />
+
+        <RadioButton
+            android:id="@+id/always"
+            style="@style/button_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_radio_last_selector"
+            android:text="@string/constitution_option_always" />
+    </RadioGroup>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:background="@drawable/setting_line" />
+
+</LinearLayout>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/main_bg" >
+
+    <!-- 标题栏 -->
+
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/title_bar" >
+
+        <Button
+            android:id="@+id/back"
+            style="@style/title_bar_left_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/back" />
+
+        <TextView
+            android:id="@+id/title_text"
+            style="@style/title_bar_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/constitution" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/title_bar"
+        android:background="@android:color/transparent"
+        android:fadingEdge="none"
+        android:listSelector="@android:color/transparent"
+        android:scrollingCache="false" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="50dip" >
+
+            <TextView
+                android:id="@+id/intro"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/banner_title_bg"
+                android:paddingLeft="12dp"
+                android:paddingTop="8dp"
+                android:text=""
+                android:textColor="#FF333333"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/solution_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1.0px"
+                android:background="@drawable/setting_line" />
+
+            <RelativeLayout
+                android:id="@+id/setted_constitution"
+                android:layout_width="fill_parent"
+                android:layout_height="48.0dip"
+                android:background="@drawable/list_blockbg_middle_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="10.0dip"
+                android:paddingRight="10.0dip" >
+
+                <TextView
+                    style="@style/list_block_radio_button_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:singleLine="true"
+                    android:text="@string/setted_constitution"
+                    android:textColor="#FFFF3300"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/setting_arrow" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1.0px"
+                android:background="@drawable/setting_line" />
+
+            <RelativeLayout
+                android:id="@+id/goto_test"
+                android:layout_width="fill_parent"
+                android:layout_height="48.0dip"
+                android:background="@drawable/list_blockbg_middle_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="10.0dip"
+                android:paddingRight="10.0dip" >
+
+                <TextView
+                    style="@style/list_block_radio_button_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:singleLine="true"
+                    android:text="@string/uncertainty_do_a_test_to_confirm"
+                    android:textColor="#FFFF3300"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/setting_arrow" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1.0px"
+                android:background="@drawable/setting_line" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 标题栏下阴影 -->
+
+    <ImageView
+        android:id="@+id/title_bar_shadow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_bar"
+        android:contentDescription="@string/title_bar_shadow"
+        android:src="@drawable/title_shadow" />
+
+</RelativeLayout>

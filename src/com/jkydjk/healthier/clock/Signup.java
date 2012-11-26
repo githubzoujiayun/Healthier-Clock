@@ -11,7 +11,9 @@ import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.JSONHelper;
 import com.jkydjk.healthier.clock.util.StringUtil;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.sax.TextElementListener;
 import android.text.util.Linkify;
@@ -34,11 +36,15 @@ public class Signup extends BaseActivity implements OnClickListener {
   private EditText password;
 
   private String errorMessage;
+  
+  private SharedPreferences sharedPreference = null;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.signup);
+    
+    sharedPreference = this.getSharedPreferences("configure", Context.MODE_PRIVATE);
 
     cancel = findViewById(R.id.cancel);
     cancel.setOnClickListener(this);
@@ -89,10 +95,9 @@ public class Signup extends BaseActivity implements OnClickListener {
       if (isCheck()) {
         User user = submit();
         if (user != null) {
-//          intent = new Intent(this, ResumeActivity.class);
-//          intent.putExtra("user", user);
-//          startActivity(intent);
-//          this.finish();
+          Intent intent = new Intent(this, Resume.class);
+          startActivity(intent);
+          finish();
         } else {
           Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
         }
@@ -122,6 +127,7 @@ public class Signup extends BaseActivity implements OnClickListener {
       JSONObject json = new JSONObject(result);
       if ("1".equals(json.getString("status"))) {
         user = JSONHelper.parseObject(json.getString("user"), User.class);
+        User.serializable(sharedPreference, user);
       } else {
         user = null;
         errorMessage = json.getString("message");

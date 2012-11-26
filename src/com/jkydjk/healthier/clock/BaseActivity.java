@@ -2,11 +2,8 @@ package com.jkydjk.healthier.clock;
 
 import java.io.File;
 
-import com.jkydjk.healthier.clock.util.StringUtil;
-
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Environment;
 
 public class BaseActivity extends Activity {
@@ -36,18 +33,5 @@ public class BaseActivity extends Activity {
   public static int getStringResourceID(Context context, String name) {
     return context.getResources().getIdentifier(context.getPackageName() + ":string/" + name, null, null);
   }
-
-  /**
-   * Android动态获取文本资源
-   * 
-   * @param context
-   * @param name
-   * @return Resource ID: R.string.xxxxx
-   */
-  // public int getString(String name) {
-  // Context context = this.getApplicationContext();
-  // return context.getResources().getIdentifier(context.getPackageName() +
-  // ":string/" + name, null, null);
-  // }
 
 }
