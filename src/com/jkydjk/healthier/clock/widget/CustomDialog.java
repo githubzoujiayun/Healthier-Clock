@@ -14,6 +14,7 @@ public class CustomDialog extends Dialog {
   Context context;
 
   private TextView title;
+  private TextView content;
   private View close;
   private View actions;
   private View divider;
@@ -23,7 +24,9 @@ public class CustomDialog extends Dialog {
   private int positiveTextResourceID;
   private int negativeTextResourceID;
 
-  private int titleRexourceID;
+  private int titleResourceID;
+  private int contentResourceID;
+  
   private Button.OnClickListener positiveOnClickListener;
   private Button.OnClickListener negativeOnClickListener;
 
@@ -44,10 +47,15 @@ public class CustomDialog extends Dialog {
     setContentView(R.layout.custom_dialog);
 
     title = (TextView) findViewById(R.id.title);
-    if(titleRexourceID != 0){
-       title.setText(titleRexourceID);
+    if(titleResourceID != 0){
+       title.setText(titleResourceID);
     }
-
+    
+    content = (TextView)findViewById(R.id.text);
+    if(contentResourceID != 0){
+      content.setText(contentResourceID);
+   }
+    
     close = findViewById(R.id.close);
     close.setOnClickListener(new Button.OnClickListener() {
       public void onClick(View v) {
@@ -82,9 +90,13 @@ public class CustomDialog extends Dialog {
   }
 
   public void setTitle(int rid) {
-    this.titleRexourceID = rid;
+    this.titleResourceID = rid;
   }
 
+  public void setContent(int rid){
+    this.contentResourceID = rid;
+  }
+  
   public void setPositiveButton(int rid, Button.OnClickListener positiveOnClickListener) {
     this.positiveTextResourceID = rid;
     this.positiveOnClickListener = positiveOnClickListener;

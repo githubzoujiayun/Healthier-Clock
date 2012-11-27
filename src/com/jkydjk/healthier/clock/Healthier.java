@@ -133,6 +133,7 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
         final CustomDialog dialog = new CustomDialog(this);
 
         dialog.setTitle(R.string.my_account);
+        dialog.setContent(R.string.account_dialog_tip);
 
         dialog.setPositiveButton(R.string.signup, new OnClickListener() {
           public void onClick(View v) {

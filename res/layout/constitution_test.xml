@@ -30,53 +30,19 @@
             android:text="@string/close" />
     </RelativeLayout>
 
-    <ScrollView
+    <ListView
+        android:id="@+id/question_list_view"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/title_bar"
         android:background="@android:color/transparent"
+        android:cacheColorHint="#00000000"
+        android:divider="#CCCCCC"
+        android:dividerHeight="0px"
         android:fadingEdge="none"
         android:listSelector="@android:color/transparent"
-        android:scrollingCache="false" >
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/constitution_test_tip"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/banner_title_large_bg"
-                android:padding="12dip"
-                android:text="@string/constitution_test_tip"
-                android:textColor="#FF333333"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:id="@+id/question_list"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-
-            <Button
-                android:id="@+id/calculate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="15dip"
-                android:background="@drawable/button"
-                android:gravity="center"
-                android:shadowColor="#333333"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="1"
-                android:text="@string/constitution_calculate"
-                android:textColor="#FFFFFF" />
-        </LinearLayout>
-    </ScrollView>
+        android:scrollingCache="false" />
 
     <!-- 标题栏下阴影 -->
 

@@ -19,6 +19,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="12dip"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:orientation="horizontal"
         android:visibility="gone" >
 
@@ -29,6 +32,9 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="1.0px"
             android:background="@drawable/button_radio_first_selector"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:text="@string/constitution_option_no" />
 
         <RadioButton
@@ -37,6 +43,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="1.0px"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:text="@string/constitution_option_seldom" />
 
         <RadioButton
@@ -45,6 +54,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="1.0px"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:text="@string/constitution_option_sometimes" />
 
         <RadioButton
@@ -53,6 +65,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="1.0px"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:text="@string/constitution_option_often" />
 
         <RadioButton
@@ -61,6 +76,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_radio_last_selector"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:text="@string/constitution_option_always" />
     </RadioGroup>
 

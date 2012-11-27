@@ -78,9 +78,7 @@ public class Resume extends BaseActivity implements OnClickListener {
 
     case R.id.logout:
       Editor editor = sharedPreference.edit();
-      editor.remove("token");
-      editor.remove("username");
-      editor.remove("email");
+      editor.clear();
       editor.commit();
       finish();
       break;

@@ -349,9 +349,7 @@
     <string name="constitution_i">特禀质</string>
     <string name="constitution_i_intro">容易过敏\n喷嚏流泪</string>
     <string name="constitution_i_desc">特禀体质的人无特殊体型，适应能力差，易过敏，且易复发。</string>
-    
     <string name="constitution_color">体质颜色</string>
-    
     <string name="select_constitution">选择体质</string>
     <string name="my_constitution">我的体质</string>
     <string name="setted_constitution">设置为我的体质!</string>
@@ -360,6 +358,10 @@
     <string name="retest">重新测试</string>
     <string name="constitution_test">体质测试</string>
     <string name="constitution_calculate">计算结果</string>
+    <string name="abandon_the_test">放弃测试</string>
+    <string name="tip">提示</string>
+    <string name="constitution_test_dialog_tip">该体质测试有时效性，放弃测试不会保存你的数据!确定要放弃测试吗?</string>
+    <string name="constitution_test_not_complete">还有测试题没有完成!</string>
     
     <string name="constitution_test_tip">请根据近一年的体验和感觉回答以下问题，孕妇及16岁以下青少年不建议使用本测试。</string>
     <string name="constitution_option_no">没有</string>
@@ -368,6 +370,7 @@
     <string name="constitution_option_often">经常</string>
     <string name="constitution_option_always">总是</string>
     
+    <string name="account_dialog_tip">在此驻足小憩片刻，留下您的痕迹，我们将一路追寻，奉献出更精彩、更适合您的内容。</string>
     <string name="unset">未设置</string>
     <string name="not_logged_in">未登录!</string>
     <string name="about">关于健康时钟</string>

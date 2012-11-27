@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <!-- 此Layout需要放入ListView, 设置android:clickable="true"等 阻止ListView onItemClick事件 -->
+
+    <TextView
+        android:id="@+id/constitution_test_tip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/banner_title_large_bg"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:padding="12dip"
+        android:text="@string/constitution_test_tip"
+        android:textColor="#FF333333"
+        android:textSize="16sp" />
+
+</LinearLayout>
