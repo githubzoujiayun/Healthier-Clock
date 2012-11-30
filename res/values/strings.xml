@@ -309,6 +309,7 @@
     <string name="gender">性别</string>
     <string name="birthday">生日</string>
     <string name="location">所在地</string>
+    <string name="update">更新</string>
     
     <string name="constitution">体质</string>
     <string name="constitution_tip">了解自己的体质，让我们给你提供更个性化的健康方案。</string>
@@ -387,7 +388,8 @@
     <string name="bounded">已绑定</string>
     <string name="special_concern">❤ 特别关注</string>
     <string name="special_concern_tip">选择特别关注后，我们将在每\n天这个时辰给你发送提醒 :)</string>
-
+	<string name="network_access_exception">网络访问异常</string>
+    
     <!-- Solution action button -->
     <string name="favorite">收藏</string>
     <string name="set_solution_alarm">设置提醒</string>

@@ -82,15 +82,22 @@ public class Signin extends BaseActivity implements OnClickListener {
     try {
       httpClientManager.execute(ResuestMethod.POST);
       String result = httpClientManager.getResponse();
+      
       JSONObject json = new JSONObject(result);
+      
       if ("1".equals(json.getString("status"))) {
-        user = JSONHelper.parseObject(json.getString("user"), User.class);
+        
+        user = User.parse(json.getJSONObject("user"));
+
         User.serializable(sharedPreference, user);
+        
       } else {
         user = null;
         errorMessage = json.getString("message");
       }
     } catch (Exception e) {
+      
+      e.printStackTrace();
       user = null;
       errorMessage = "网络访问异常";
     }

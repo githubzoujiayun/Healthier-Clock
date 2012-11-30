@@ -265,6 +265,7 @@ public class JSONHelper {
           Object array = parseArray(ja, c);
           f.set(instance, array);
         }
+        
       } else if (isCollection(clazz)) { // 泛型集合
         // 获取定义的泛型类型
         Class<?> c = null;
@@ -277,17 +278,18 @@ public class JSONHelper {
             c = (Class<?>) t;
           }
         }
-
         JSONArray ja = jo.optJSONArray(name);
         if (!isNull(ja)) {
           Object o = parseCollection(ja, clazz, c);
           f.set(instance, o);
         }
+        
       } else if (isSingle(clazz)) { // 值类型
         Object o = jo.opt(name);
         if (o != null) {
           f.set(instance, o);
         }
+        
       } else if (isObject(clazz)) { // 对象
         JSONObject j = jo.optJSONObject(name);
         if (!isNull(j)) {

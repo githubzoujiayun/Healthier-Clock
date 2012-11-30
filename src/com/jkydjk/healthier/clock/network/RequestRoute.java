@@ -9,5 +9,13 @@ public class RequestRoute {
    * </pre>
    */
   public static final String USER_SIGNIN = "user/signin";
+  
+  /**
+   * <pre>
+   * <strong>Route</strong> : user/constitution
+   * <strong>Method</strong>: POST
+   * </pre>
+   */
+  public static final String USER_CONSTITUTION = "user/constitution";
 
 }
