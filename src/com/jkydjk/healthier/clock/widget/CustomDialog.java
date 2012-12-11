@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jkydjk.healthier.clock.R;
@@ -14,10 +15,14 @@ public class CustomDialog extends Dialog {
   Context context;
 
   private TextView title;
-  private TextView content;
+  
   private View close;
   private View actions;
   private View divider;
+
+  private LinearLayout dialogViewContent;
+  private TextView content;
+
   private Button positive;
   private Button negative;
 
@@ -25,8 +30,11 @@ public class CustomDialog extends Dialog {
   private int negativeTextResourceID;
 
   private int titleResourceID;
-  private int contentResourceID;
   
+  private View dialogView;
+  
+  private int contentResourceID;
+
   private Button.OnClickListener positiveOnClickListener;
   private Button.OnClickListener negativeOnClickListener;
 
@@ -47,15 +55,21 @@ public class CustomDialog extends Dialog {
     setContentView(R.layout.custom_dialog);
 
     title = (TextView) findViewById(R.id.title);
-    if(titleResourceID != 0){
-       title.setText(titleResourceID);
+    if (titleResourceID != 0) {
+      title.setText(titleResourceID);
     }
     
-    content = (TextView)findViewById(R.id.text);
-    if(contentResourceID != 0){
+    content = (TextView) findViewById(R.id.text);
+    if (contentResourceID != 0) {
       content.setText(contentResourceID);
-   }
+    }
     
+    dialogViewContent = (LinearLayout)findViewById(R.id.dialog_view);
+    if (dialogView != null) {
+      dialogViewContent.removeAllViews();
+      dialogViewContent.addView(dialogView);
+    }
+
     close = findViewById(R.id.close);
     close.setOnClickListener(new Button.OnClickListener() {
       public void onClick(View v) {
@@ -93,10 +107,14 @@ public class CustomDialog extends Dialog {
     this.titleResourceID = rid;
   }
 
-  public void setContent(int rid){
-    this.contentResourceID = rid;
+  public void setView(View dialogView){
+    this.dialogView = dialogView;
   }
   
+  public void setContent(int rid) {
+    this.contentResourceID = rid;
+  }
+
   public void setPositiveButton(int rid, Button.OnClickListener positiveOnClickListener) {
     this.positiveTextResourceID = rid;
     this.positiveOnClickListener = positiveOnClickListener;

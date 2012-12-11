@@ -29,7 +29,6 @@ import android.widget.Toast;
 import com.jkydjk.healthier.clock.adapter.QuestionListAdapter;
 import com.jkydjk.healthier.clock.database.DatabaseManager;
 import com.jkydjk.healthier.clock.entity.Question;
-import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.widget.CustomDialog;
 
 public class ConstitutionTest extends BaseActivity implements OnClickListener, OnItemClickListener, OnCheckedChangeListener {
@@ -240,8 +239,6 @@ public class ConstitutionTest extends BaseActivity implements OnClickListener, O
   public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 
     Question question = (Question) adapter.getItemAtPosition(position);
-
-    Log.v("adapter.getItemAtPosition(position): " + question);
 
     view.setClickable(true);
 

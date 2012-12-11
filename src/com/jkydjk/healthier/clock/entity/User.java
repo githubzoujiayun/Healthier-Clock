@@ -5,8 +5,10 @@ import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.jkydjk.healthier.clock.BaseActivity;
 import com.jkydjk.healthier.clock.util.Log;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
@@ -144,7 +146,7 @@ public class User implements Serializable {
     return user;
   }
 
-  public static void serializable(SharedPreferences sharedPreference, User user) {
+  public static void serializable(Context context, SharedPreferences sharedPreference, User user) {
     Editor edit = sharedPreference.edit();
 
     edit.putString("token", user.token);
@@ -152,6 +154,9 @@ public class User implements Serializable {
     edit.putString("email", user.email);
     edit.putString("realname", user.realname);
     edit.putString("constitution", user.constitution);
+    
+    edit.putString("constitution_flag", context.getString(BaseActivity.getStringResourceID(context, "constitution_" + user.constitution)));
+    
     edit.putString("birthday", user.birthday);
     edit.putString("gender", user.gender);
 

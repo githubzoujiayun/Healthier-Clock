@@ -89,7 +89,7 @@ public class Signin extends BaseActivity implements OnClickListener {
         
         user = User.parse(json.getJSONObject("user"));
 
-        User.serializable(sharedPreference, user);
+        User.serializable(Signin.this, sharedPreference, user);
         
       } else {
         user = null;

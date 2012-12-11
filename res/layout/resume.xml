@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/resume" />
-        
+
         <Button
             android:id="@+id/logout"
             style="@style/title_bar_right_button"
@@ -58,10 +58,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10.0dip"
                 android:layout_marginRight="10.0dip"
-                android:layout_marginTop="12.0dip"
                 android:orientation="vertical" >
 
                 <LinearLayout
+                    android:id="@+id/username_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="48.0dip"
                     android:background="@drawable/list_blockbg_top_selector"
@@ -96,6 +96,7 @@
                     android:background="@drawable/setting_line" />
 
                 <LinearLayout
+                    android:id="@+id/email_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="48.0dip"
                     android:background="@drawable/list_blockbg_bottom_selector"
@@ -139,6 +140,7 @@
                     android:orientation="vertical" >
 
                     <LinearLayout
+                        android:id="@+id/realname_layout"
                         android:layout_width="fill_parent"
                         android:layout_height="48.0dip"
                         android:background="@drawable/list_blockbg_top_selector"
@@ -178,6 +180,7 @@
                         android:background="@drawable/setting_line" />
 
                     <LinearLayout
+                        android:id="@+id/gender_layout"
                         android:layout_width="fill_parent"
                         android:layout_height="48.0dip"
                         android:background="@drawable/list_blockbg_middle_selector"
@@ -217,6 +220,7 @@
                         android:background="@drawable/setting_line" />
 
                     <LinearLayout
+                        android:id="@+id/birthday_layout"
                         android:layout_width="fill_parent"
                         android:layout_height="48.0dip"
                         android:background="@drawable/list_blockbg_middle_selector"
@@ -256,6 +260,7 @@
                         android:background="@drawable/setting_line" />
 
                     <LinearLayout
+                        android:id="@+id/location_layout"
                         android:layout_width="fill_parent"
                         android:layout_height="48.0dip"
                         android:background="@drawable/list_blockbg_middle_selector"

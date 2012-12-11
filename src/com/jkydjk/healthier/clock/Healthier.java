@@ -38,8 +38,6 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
 
   private SharedPreferences sharedPreference = null;
 
-  private boolean ifFullScreen = false;
-
   private TabWidget channelTabWidget;
   private TabHost mTabHost;
 
@@ -52,7 +50,6 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
   private View account;
 
   private View titlebar;
-  private View footerFilling;
   private View tabs;
 
   @Override
@@ -87,7 +84,6 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
 
     titlebar = findViewById(R.id.titlebar);
     titlebar.setVisibility(View.VISIBLE);
-    footerFilling = findViewById(R.id.footer_filling);
     tabs = findViewById(android.R.id.tabs);
   }
 

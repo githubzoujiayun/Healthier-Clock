@@ -127,7 +127,7 @@ public class Signup extends BaseActivity implements OnClickListener {
       JSONObject json = new JSONObject(result);
       if ("1".equals(json.getString("status"))) {
         user = JSONHelper.parseObject(json.getString("user"), User.class);
-        User.serializable(sharedPreference, user);
+        User.serializable(Signup.this, sharedPreference, user);
       } else {
         user = null;
         errorMessage = json.getString("message");
