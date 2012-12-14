@@ -5,30 +5,22 @@
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
-    <!--
     <Spinner
         android:id="@+id/province"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:prompt="@string/please_select_provinces" />
 
     <Spinner
         android:id="@+id/city"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:prompt="@string/please_select_city" />
 
     <Spinner
         android:id="@+id/district"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:prompt="@string/please_select_district" />
-    -->
-
-    <ExpandableListView
-        android:id="@+id/regions"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:drawSelectorOnTop="false" />
 
 </LinearLayout>

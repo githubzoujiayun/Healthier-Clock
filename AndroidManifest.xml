@@ -72,6 +72,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent" />
         <activity
+            android:name=".RegionSelector"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.InputMethod" />
+        <activity
             android:name=".ConstitutionSelector"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent" />

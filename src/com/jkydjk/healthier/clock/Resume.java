@@ -195,45 +195,7 @@ public class Resume extends BaseActivity implements OnClickListener {
 
     // 设置所在地
     case R.id.location_layout:
-      final CustomDialog locationDialog = new CustomDialog(this);
-      locationDialog.setTitle(R.string.set_location);
-
-      locationDialog.setView(LinearLayout.inflate(Resume.this, R.layout.dialog_resume_location, null));
-
-      locationDialog.setPositiveButton(R.string.cancel, new OnClickListener() {
-        public void onClick(View v) {
-          locationDialog.dismiss();
-        }
-      });
-      locationDialog.setNegativeButton(R.string.save, new OnClickListener() {
-        public void onClick(View v) {
-
-          locationDialog.dismiss();
-        }
-      });
-      locationDialog.setOnStartCallback(new CustomDialog.CustomDialogOnStartCallback() {
-        public void onStart(CustomDialog dialog) {
-//          SQLiteDatabase database = DatabaseManager.openDatabase(Resume.this);
-//          
-//          Cursor provinceCursor = database.rawQuery("select _id, name from regions where type = 'Province' order by _id", null);
-//          
-//          Spinner provinceSpinner = (Spinner)dialog.findViewById(R.id.province);
-//
-//          String[] from = new String[] {"name"};
-//          
-//          int[] to = new int[] {android.R.id.text1};
-//          
-//          SimpleCursorAdapter sca = new SimpleCursorAdapter(Resume.this, android.R.layout.simple_spinner_item, provinceCursor, from, to);
-//
-//          // set layout for activated adapter
-//          sca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); 
-//
-//          // get xml file spinner and set adapter 
-//          provinceSpinner.setAdapter(sca);
-          
-        }
-      });
-      locationDialog.show();
+      startActivity(new Intent(Resume.this, RegionSelector.class));
       break;
 
     // 设置体质
