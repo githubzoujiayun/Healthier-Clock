@@ -307,12 +307,17 @@
     <string name="resume">个人信息</string>
     <string name="edit_resume">编辑个人信息</string>
     <string name="realname">姓名</string>
+    <string name="set_realname">设置姓名</string>
     <string name="gender">性别</string>
+    <string name="set_gender">设置性别</string>
     <string name="birthday">生日</string>
+    <string name="set_birthday">设置生日</string>
     <string name="location">所在地</string>
+    <string name="set_location">设置所在地</string>
     <string name="update">更新</string>
-    <string name="male">男</string>
-    <string name="female">女</string>
+    <string name="male">男性</string>
+    <string name="female">女性</string>
+    <string name="after_setting_can_not_be_modified">设置后不可以修改.</string>
     
     <string name="constitution">体质</string>
     <string name="constitution_tip">了解自己的体质，让我们给你提供更个性化的健康方案。</string>

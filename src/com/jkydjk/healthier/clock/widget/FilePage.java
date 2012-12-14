@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.jkydjk.healthier.clock.R;
 import com.jkydjk.healthier.clock.entity.FileExtension;

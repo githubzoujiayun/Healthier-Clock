@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,13 +16,13 @@ public class CustomDialog extends Dialog {
   Context context;
 
   private TextView title;
-  
+
   private View close;
   private View actions;
   private View divider;
 
   private LinearLayout dialogViewContent;
-  private TextView content;
+  private TextView contentTextView;
 
   private Button positive;
   private Button negative;
@@ -30,13 +31,15 @@ public class CustomDialog extends Dialog {
   private int negativeTextResourceID;
 
   private int titleResourceID;
-  
+
   private View dialogView;
-  
+
   private int contentResourceID;
 
   private Button.OnClickListener positiveOnClickListener;
   private Button.OnClickListener negativeOnClickListener;
+  
+  private CustomDialogOnStartCallback onStartCallback;
 
   public CustomDialog(Context context) {
     // super(context);
@@ -58,16 +61,16 @@ public class CustomDialog extends Dialog {
     if (titleResourceID != 0) {
       title.setText(titleResourceID);
     }
-    
-    content = (TextView) findViewById(R.id.text);
+
+    contentTextView = (TextView) findViewById(R.id.text);
     if (contentResourceID != 0) {
-      content.setText(contentResourceID);
+      contentTextView.setText(contentResourceID);
     }
-    
-    dialogViewContent = (LinearLayout)findViewById(R.id.dialog_view);
+
+    dialogViewContent = (LinearLayout) findViewById(R.id.dialog_view);
     if (dialogView != null) {
       dialogViewContent.removeAllViews();
-      dialogViewContent.addView(dialogView);
+      dialogViewContent.addView(dialogView, ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     close = findViewById(R.id.close);
@@ -103,15 +106,23 @@ public class CustomDialog extends Dialog {
 
   }
 
+  @Override
+  protected void onStart() {
+    super.onStart();
+    if(onStartCallback != null){
+      onStartCallback.onStart(CustomDialog.this);
+    }
+  }
+
   public void setTitle(int rid) {
     this.titleResourceID = rid;
   }
 
-  public void setView(View dialogView){
+  public void setView(View dialogView) {
     this.dialogView = dialogView;
   }
-  
-  public void setContent(int rid) {
+
+  public void setContentText(int rid) {
     this.contentResourceID = rid;
   }
 
@@ -124,7 +135,15 @@ public class CustomDialog extends Dialog {
     this.negativeTextResourceID = rid;
     this.negativeOnClickListener = negativeOnClickListener;
   }
+  
+  public void setOnStartCallback(CustomDialog.CustomDialogOnStartCallback onStartCallback){
+    this.onStartCallback = onStartCallback;
+  }
 
+  public interface CustomDialogOnStartCallback{
+    public void onStart(CustomDialog dialog);
+  }
+  
   // called when this dialog is dismissed
   // protected void onStop() {
   // }

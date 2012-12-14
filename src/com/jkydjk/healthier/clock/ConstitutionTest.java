@@ -141,7 +141,7 @@ public class ConstitutionTest extends BaseActivity implements OnClickListener, O
     final CustomDialog dialog = new CustomDialog(this);
 
     dialog.setTitle(R.string.tip);
-    dialog.setContent(R.string.constitution_test_dialog_tip);
+    dialog.setContentText(R.string.constitution_test_dialog_tip);
 
     dialog.setPositiveButton(R.string.abandon_the_test, new OnClickListener() {
       public void onClick(View v) {
