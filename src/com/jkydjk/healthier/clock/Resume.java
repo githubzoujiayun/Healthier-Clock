@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
@@ -16,9 +18,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jkydjk.healthier.clock.database.DatabaseManager;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
@@ -204,6 +209,28 @@ public class Resume extends BaseActivity implements OnClickListener {
         public void onClick(View v) {
 
           locationDialog.dismiss();
+        }
+      });
+      locationDialog.setOnStartCallback(new CustomDialog.CustomDialogOnStartCallback() {
+        public void onStart(CustomDialog dialog) {
+//          SQLiteDatabase database = DatabaseManager.openDatabase(Resume.this);
+//          
+//          Cursor provinceCursor = database.rawQuery("select _id, name from regions where type = 'Province' order by _id", null);
+//          
+//          Spinner provinceSpinner = (Spinner)dialog.findViewById(R.id.province);
+//
+//          String[] from = new String[] {"name"};
+//          
+//          int[] to = new int[] {android.R.id.text1};
+//          
+//          SimpleCursorAdapter sca = new SimpleCursorAdapter(Resume.this, android.R.layout.simple_spinner_item, provinceCursor, from, to);
+//
+//          // set layout for activated adapter
+//          sca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); 
+//
+//          // get xml file spinner and set adapter 
+//          provinceSpinner.setAdapter(sca);
+          
         }
       });
       locationDialog.show();

@@ -314,6 +314,11 @@
     <string name="set_birthday">设置生日</string>
     <string name="location">所在地</string>
     <string name="set_location">设置所在地</string>
+    
+    <string name="please_select_provinces">请选择省份</string>
+    <string name="please_select_city">请选择城市</string>
+    <string name="please_select_district">请选择区县</string>
+    
     <string name="update">更新</string>
     <string name="male">男性</string>
     <string name="female">女性</string>
