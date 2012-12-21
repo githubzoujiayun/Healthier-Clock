@@ -187,7 +187,7 @@
             android:drawableLeft="@drawable/icon_trash"
             android:text="@string/delete" />
 
-        <Button
+        <!-- <Button
             android:id="@+id/skip"
             style="@style/alarm_action_button"
             android:layout_width="fill_parent"
@@ -195,7 +195,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:drawableLeft="@drawable/icon_forward"
-            android:text="@string/skip" />
+            android:text="@string/skip" /> -->
     </LinearLayout>
 
 </LinearLayout>

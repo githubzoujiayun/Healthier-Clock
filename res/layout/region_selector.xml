@@ -30,8 +30,8 @@
             android:text="@string/set_location" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/region_list_view"
+    <ExpandableListView
+        android:id="@+id/region_expandable_list_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -41,8 +41,8 @@
         android:divider="#CCCCCC"
         android:dividerHeight="0px"
         android:fadingEdge="none"
-        android:scrollingCache="false" />
-<!--         android:listSelector="@android:color/transparent" -->
+        android:scrollingCache="false"
+        android:groupIndicator="@null" />
 
     <!-- 标题栏下阴影 -->
 

@@ -253,7 +253,10 @@
     <string name="welcome_good_noon">中午好</string>
     <string name="welcome_good_afternoon">下午好</string>
     <string name="welcome_good_evening">晚上好</string>
-
+	
+	<string name="getting_weather_information">正在获取天气信息&#8230;</string>
+    <string name="no_wealther_info_tip">无法获取天气信息!</string>
+    <string name="wealther_info_updated">天气更新成功!</string>
     <!-- Weather logo font -->
     <string name="wealther_logo_shade">`</string>
     <string name="wealther_logo_cloudy">1</string>

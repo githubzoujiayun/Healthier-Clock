@@ -25,15 +25,21 @@ public class User implements Serializable {
   public String birthday;
   public String gender;
 
-  public Integer province;
-  public Integer city;
-  public Integer district;
+  public String province;
+  public Integer provinceID;
+
+  public String city;
+  public Integer cityID;
+
+  public String district;
+  public Integer districtID;
 
   public User() {
     super();
   }
 
-  public User(String token, String username, String email, String realname, String constitution, String birthday, String gender, Integer province, Integer city, Integer district) {
+  public User(String token, String username, String email, String realname, String constitution, String birthday, String gender, String province, Integer provinceID, String city, Integer cityID,
+      String district, Integer districtID) {
     super();
     this.token = token;
     this.username = username;
@@ -43,8 +49,11 @@ public class User implements Serializable {
     this.birthday = birthday;
     this.gender = gender;
     this.province = province;
+    this.provinceID = provinceID;
     this.city = city;
+    this.cityID = cityID;
     this.district = district;
+    this.districtID = districtID;
   }
 
   public String getToken() {
@@ -103,28 +112,52 @@ public class User implements Serializable {
     this.gender = gender;
   }
 
-  public Integer getProvince() {
+  public String getProvince() {
     return province;
   }
 
-  public void setProvince(Integer province) {
+  public void setProvince(String province) {
     this.province = province;
   }
 
-  public Integer getCity() {
+  public Integer getProvinceID() {
+    return provinceID;
+  }
+
+  public void setProvinceID(Integer provinceID) {
+    this.provinceID = provinceID;
+  }
+
+  public String getCity() {
     return city;
   }
 
-  public void setCity(Integer city) {
+  public void setCity(String city) {
     this.city = city;
   }
 
-  public Integer getDistrict() {
+  public Integer getCityID() {
+    return cityID;
+  }
+
+  public void setCityID(Integer cityID) {
+    this.cityID = cityID;
+  }
+
+  public String getDistrict() {
     return district;
   }
 
-  public void setDistrict(Integer district) {
+  public void setDistrict(String district) {
     this.district = district;
+  }
+
+  public Integer getDistrictID() {
+    return districtID;
+  }
+
+  public void setDistrictID(Integer districtID) {
+    this.districtID = districtID;
   }
 
   public static User parse(JSONObject json) {
@@ -139,37 +172,51 @@ public class User implements Serializable {
     user.birthday = json.isNull("birthday") ? null : json.optString("birthday");
     user.gender = json.isNull("gender") ? null : json.optString("gender");
 
-    user.province = json.isNull("province") ? null : json.optInt("province");
-    user.city = json.isNull("city") ? null : json.optInt("city");
-    user.district = json.isNull("district") ? null : json.optInt("district");
+    user.province = json.isNull("province") ? null : json.optString("province");
+    user.provinceID = json.isNull("province_id") ? null : json.optInt("province_id");
+
+    user.city = json.isNull("city") ? null : json.optString("city");
+    user.cityID = json.isNull("city_id") ? null : json.optInt("city_id");
+
+    user.district = json.isNull("district") ? null : json.optString("district");
+    user.districtID = json.isNull("district_id") ? null : json.optInt("district_id");
 
     return user;
   }
 
   public static void serializable(Context context, SharedPreferences sharedPreference, User user) {
-    Editor edit = sharedPreference.edit();
+    Editor editor = sharedPreference.edit();
 
-    edit.putString("token", user.token);
-    edit.putString("username", user.username);
-    edit.putString("email", user.email);
-    edit.putString("realname", user.realname);
-    edit.putString("constitution", user.constitution);
-    
-    edit.putString("constitution_flag", context.getString(BaseActivity.getStringResourceID(context, "constitution_" + user.constitution)));
-    
-    edit.putString("birthday", user.birthday);
-    edit.putString("gender", user.gender);
+    editor.putString("token", user.token);
+    editor.putString("username", user.username);
+    editor.putString("email", user.email);
+    editor.putString("realname", user.realname);
+    editor.putString("constitution", user.constitution);
+
+    editor.putString("constitution_flag", context.getString(BaseActivity.getStringResourceID(context, "constitution_" + user.constitution)));
+
+    editor.putString("birthday", user.birthday);
+    editor.putString("gender", user.gender);
 
     if (user.province != null)
-      edit.putInt("province", user.province);
+      editor.putString("province", user.province);
+
+    if (user.provinceID != null)
+      editor.putInt("province", user.provinceID);
 
     if (user.city != null)
-      edit.putInt("city", user.city);
+      editor.putString("city", user.city);
+
+    if (user.cityID != null)
+      editor.putInt("city_id", user.cityID);
 
     if (user.district != null)
-      edit.putInt("district", user.district);
+      editor.putString("district", user.district);
 
-    edit.commit();
+    if (user.districtID != null)
+      editor.putInt("district", user.districtID);
+
+    editor.commit();
   }
 
 }

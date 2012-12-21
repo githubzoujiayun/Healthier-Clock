@@ -38,7 +38,6 @@ public class Constitution extends BaseActivity implements OnClickListener {
   private SharedPreferences sharedPreference = null;
   private LayoutInflater layoutInflater;
 
-  private String token;
   private String constitutionType;
 
   private LongOperation longOperation;
@@ -51,8 +50,6 @@ public class Constitution extends BaseActivity implements OnClickListener {
     sharedPreference = this.getSharedPreferences("configure", Context.MODE_PRIVATE);
 
     layoutInflater = LayoutInflater.from(this);
-
-    token = sharedPreference.getString("token", null);
 
     constitutionType = sharedPreference.getString("constitution", null);
 
@@ -125,7 +122,6 @@ public class Constitution extends BaseActivity implements OnClickListener {
 
       HttpClientManager connect = new HttpClientManager(Constitution.this, HttpClientManager.REQUEST_PATH + RequestRoute.USER_CONSTITUTION);
 
-      connect.addParam("token", token);
       connect.addParam("constitution", constitutionType);
 
       try {
@@ -142,9 +138,7 @@ public class Constitution extends BaseActivity implements OnClickListener {
         cvs.put("regimen", constitution);
         cvs.put("updated_at", version);
 
-        String[] whereArgs = { constitutionType };
-
-        database.update("constitutions", cvs, "type = ?", whereArgs);
+        database.update("constitutions", cvs, "type = ?", new String[] { constitutionType });
 
         database.close();
 
@@ -167,15 +161,15 @@ public class Constitution extends BaseActivity implements OnClickListener {
 
     @Override
     protected void onPostExecute(String result) {
-      
+
       loading.setVisibility(View.GONE);
-      
-      if (result == null){
+
+      if (result == null) {
         Toast.makeText(Constitution.this, R.string.network_access_exception, Toast.LENGTH_SHORT).show();
         updateButton.setClickable(true);
         return;
       }
-      
+
       try {
 
         page.removeAllViews();
@@ -184,11 +178,14 @@ public class Constitution extends BaseActivity implements OnClickListener {
 
         JSONArray fields = json.getJSONArray("fields");
 
-        JSONObject fieldNames = json.getJSONObject("field_name");
-
         for (int i = 0; i < fields.length(); i++) {
-          String key = (String) fields.get(i);
-          String title = fieldNames.getString(key);
+
+          JSONArray field = (JSONArray) fields.get(i);
+
+          String key = (String) field.get(0);
+
+          String title = (String) field.get(1);
+
           String content = json.getString(key);
 
           if (!StringUtil.isEmpty(content)) {

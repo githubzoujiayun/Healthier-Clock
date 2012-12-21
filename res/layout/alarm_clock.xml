@@ -6,66 +6,65 @@
 
     <!-- 天气块 -->
 
-    <RelativeLayout
-        android:id="@+id/weather_layout"
+    <ImageView
+        android:id="@+id/weather_picture"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" >
+        android:contentDescription="@string/weather_sunny"
+        android:src="@drawable/weather_sunny" />
 
-        <ImageView
-            android:id="@+id/weather_picture"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/weather_sunny"
-            android:src="@drawable/weather_sunny" />
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/weather"
+        android:layout_marginLeft="12dp"
+        android:paddingTop="8dp"
+        android:shadowColor="#333333"
+        android:shadowDx="1.5"
+        android:shadowDy="1.5"
+        android:shadowRadius="1"
+        android:text="@string/welcome_good_morning"
+        android:textColor="#FFFFFFFF"
+        android:textSize="16sp" />
 
-        <ImageView
-            android:id="@+id/weather_shadow"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/weather_picture"
-            android:contentDescription="@string/weather_shadow"
-            android:src="@drawable/weather_shadow" />
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/welcome"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/welcome"
+        android:shadowColor="#333333"
+        android:shadowDx="1.5"
+        android:shadowDy="1.5"
+        android:shadowRadius="1"
+        android:text=""
+        android:textColor="#FFFFFFFF"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:id="@+id/weather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/add_alarm"
+        android:layout_marginLeft="12dp"
+        android:orientation="horizontal"
+        android:paddingTop="5dp" >
 
         <TextView
-            android:id="@+id/welcome"
+            android:id="@+id/weather_info_tip"
+            style="@style/weather_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/weather_shadow"
-            android:layout_marginLeft="12dp"
-            android:paddingTop="8dp"
-            android:shadowColor="#333333"
-            android:shadowDx="1.5"
-            android:shadowDy="1.5"
-            android:shadowRadius="1"
-            android:text="@string/welcome_good_morning"
-            android:textColor="#FFFFFFFF"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/welcome"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/welcome"
-            android:shadowColor="#333333"
-            android:shadowDx="1.5"
-            android:shadowDy="1.5"
-            android:shadowRadius="1"
-            android:text="上海"
-            android:textColor="#FFFFFFFF"
-            android:textSize="14sp" />
+            android:text="@string/getting_weather_information" />
 
         <LinearLayout
             android:id="@+id/weather_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/weather_shadow"
-            android:layout_below="@+id/welcome"
-            android:layout_marginLeft="12dp"
             android:orientation="horizontal"
-            android:paddingTop="5dp" >
+            android:visibility="gone" >
 
             <com.jkydjk.healthier.clock.widget.TextViewWeather
                 android:id="@+id/weather_logo_today"
@@ -79,11 +78,11 @@
                 style="@style/weather_info"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="今天 阴\n25 - 33℃" />
+                android:text="今天 晴转多云\n-1℃~-6℃" />
 
             <View
                 android:layout_width="1.0px"
-                android:layout_height="fill_parent"
+                android:layout_height="32dip"
                 android:layout_marginBottom="12dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -101,9 +100,9 @@
                 style="@style/weather_info"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="明天 多云\n25 - 35℃" />
+                android:text="明天 多云转晴\n-2℃~-5℃" />
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
     <!-- 无闹钟提示块 -->
 
@@ -112,7 +111,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/weather_layout"
+        android:layout_below="@+id/weather_picture"
         android:layout_centerHorizontal="true" >
 
         <ImageView
@@ -138,7 +137,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/weather_layout"
+        android:layout_below="@+id/weather_picture"
         android:background="@android:color/transparent"
         android:cacheColorHint="#00000000"
         android:divider="#CCCCCC"
@@ -169,7 +168,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/weather_layout"
+        android:layout_below="@+id/weather_picture"
         android:src="@drawable/button_add_alarm_arrow" />
 
 </RelativeLayout>

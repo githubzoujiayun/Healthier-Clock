@@ -102,7 +102,7 @@
                     android:id="@+id/alarm_cycle_setting"
                     android:layout_width="fill_parent"
                     android:layout_height="48.0dip"
-                    android:background="@drawable/list_blockbg_middle_selector"
+                    android:background="@drawable/list_blockbg_bottom_selector"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
@@ -142,7 +142,7 @@
                         android:src="@drawable/setting_arrow" />
                 </RelativeLayout>
 
-                <View
+                <!-- <View
                     android:layout_width="fill_parent"
                     android:layout_height="1.0px"
                     android:background="@drawable/setting_line" />
@@ -177,7 +177,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/setting_arrow" />
-                </LinearLayout>
+                </LinearLayout> -->
             </LinearLayout>
 
             <LinearLayout

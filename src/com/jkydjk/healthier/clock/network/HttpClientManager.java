@@ -25,10 +25,10 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.protocol.HTTP;
 
 import com.jkydjk.healthier.clock.database.PhoneInfo;
+import com.jkydjk.healthier.clock.util.Log;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 public class HttpClientManager {
   private static final String TAG = "HttpClientManager";
@@ -104,7 +104,7 @@ public class HttpClientManager {
           sBuffer.append(param.getName()).append("=").append(URLEncoder.encode(param.getValue() == null ? "" : param.getValue(), HTTP.UTF_8));
         }
       }
-      System.out.println("params => " + sBuffer.toString());
+      Log.v("params => " + sBuffer.toString());
       HttpGet request = new HttpGet(url + sBuffer.toString());
       for (NameValuePair head : headers) {
         request.addHeader(head.getName(), head.getValue());
@@ -186,11 +186,11 @@ public class HttpClientManager {
       }
     } catch (ClientProtocolException e) {
       client.getConnectionManager().shutdown();
-      Log.e(TAG, e.getMessage());
+      Log.e(TAG + e.getMessage());
     } catch (IOException e) {
       client.getConnectionManager().shutdown();
       e.printStackTrace();
-      Log.e(TAG, e.getMessage());
+      Log.e(TAG + e.getMessage());
     }
   }
 
@@ -204,12 +204,12 @@ public class HttpClientManager {
         sb.append(line + "\n");
       }
     } catch (IOException e) {
-      Log.e(TAG, e.getMessage());
+      Log.e(TAG + e.getMessage());
     } finally {
       try {
         is.close();
       } catch (IOException e) {
-        Log.e(TAG, e.getMessage());
+        Log.e(TAG + e.getMessage());
       }
     }
     return sb.toString();

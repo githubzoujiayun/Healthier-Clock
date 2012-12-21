@@ -10,8 +10,10 @@
         android:id="@+id/name"
         style="@style/list_block_item_name"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dip" />
+        android:layout_height="48dip"
+        android:gravity="center_vertical"
+        android:paddingLeft="36dip"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <View
         android:layout_width="fill_parent"
