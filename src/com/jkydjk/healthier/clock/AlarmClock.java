@@ -2,6 +2,7 @@ package com.jkydjk.healthier.clock;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -34,7 +35,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jkydjk.healthier.clock.entity.Weather;
-import com.jkydjk.healthier.clock.entity.Weather.TaskCallback;
+import com.jkydjk.healthier.clock.entity.Weather.Callback;
+import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 import com.jkydjk.healthier.clock.widget.TextViewWeather;
 
@@ -119,10 +121,8 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
     addAlarmButton.setOnClickListener(this);
 
     welcomeTextView = (TextView) findViewById(R.id.welcome);
-    setWelcomeText();
 
     locationTextView = (TextView) findViewById(R.id.location);
-    setLocation();
 
     noAlarmLayout = (RelativeLayout) findViewById(R.id.no_alarm);
 
@@ -155,6 +155,9 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
     controller = new LayoutAnimationController(set, 0.5f);
 
     mAlarmsList = (ListView) findViewById(R.id.alarms_list);
+
+    setWelcomeText();
+    setLocation();
     updateAlarmList();
 
     timer = new Handler() {
@@ -264,16 +267,32 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
     Weather.Task task = new Weather.Task(this);
 
-    task.setCallback(new TaskCallback() {
+    task.setCallback(new Callback() {
       public void onPreExecute() {
         weatherInfoTip.setVisibility(View.VISIBLE);
         weatherInfo.setVisibility(View.GONE);
       }
 
-      public void onPostExecute(String result) {
+      public void onPostExecute(Weather.Task task, String result) {
         Toast.makeText(AlarmClock.this, R.string.wealther_info_updated, Toast.LENGTH_SHORT).show();
+
+        List<Weather> weathers = task.weathers;
+
+        if (weathers.size() >= 1) {
+          Weather today = weathers.get(0);
+          // weatherLogoToday.setText("");
+          weatherTextToday.setText("今天 " + today.getFlag() + "\n" + today.getTemperature());
+        }
+
+        if (weathers.size() >= 2) {
+          Weather tomorrow = weathers.get(1);
+          // weatherLogoTomorrow.setText("");
+          weatherTextTomorrow.setText("明天 " + tomorrow.getFlag() + "\n" + tomorrow.getTemperature());
+        }
+
         weatherInfoTip.setVisibility(View.GONE);
         weatherInfo.setVisibility(View.VISIBLE);
+
       }
     });
 

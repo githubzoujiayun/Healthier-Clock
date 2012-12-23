@@ -18,7 +18,7 @@ public class WeatherDatabaseHelper extends SQLiteOpenHelper {
 
   @Override
   public void onCreate(SQLiteDatabase db) {
-    db.execSQL("CREATE TABLE weathers (_id INTEGER PRIMARY KEY, region_id INTEGER, flag TEXT, flag_start TEXT, flag_end TEXT, temperature TEXT, wind TEXT, wind_power TEXT, feel TEXT, proposal TEXT, uv TEXT);");
+    db.execSQL("CREATE TABLE weathers (_id INTEGER PRIMARY KEY, region_id INTEGER, date DATE, flag TEXT, flag_start TEXT, flag_end TEXT, temperature TEXT, wind TEXT, wind_power TEXT, feel TEXT, proposal TEXT, uv TEXT);");
   }
 
   @Override

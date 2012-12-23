@@ -2,15 +2,13 @@ package com.jkydjk.healthier.clock.entity;
 
 import java.io.Serializable;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.jkydjk.healthier.clock.BaseActivity;
-import com.jkydjk.healthier.clock.util.Log;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+
+import com.jkydjk.healthier.clock.BaseActivity;
 
 public class User implements Serializable {
 

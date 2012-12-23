@@ -78,7 +78,7 @@
                 style="@style/weather_info"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="今天 晴转多云\n-1℃~-6℃" />
+                android:text="" />
 
             <View
                 android:layout_width="1.0px"
@@ -100,7 +100,7 @@
                 style="@style/weather_info"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="明天 多云转晴\n-2℃~-5℃" />
+                android:text="" />
         </LinearLayout>
     </LinearLayout>
 

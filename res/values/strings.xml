@@ -258,8 +258,49 @@
     <string name="no_wealther_info_tip">无法获取天气信息!</string>
     <string name="wealther_info_updated">天气更新成功!</string>
     <!-- Weather logo font -->
-    <string name="wealther_logo_shade">`</string>
-    <string name="wealther_logo_cloudy">1</string>
+    <string name="wealther_logo_shade">`</string><!--  阴 -->
+	<string name="wealther_logo_cloudy">1</string><!--  多云 -->
+	
+	<string name="wealther_logo_shade">2</string><!--  夜间多云 -->
+	<string name="wealther_logo_shade">3</string><!--  中雨 -->
+	<string name="wealther_logo_shade">4</string><!--  阵雨 -->
+	<string name="wealther_logo_shade">5</string><!--  夜间阵雨 -->
+	<string name="wealther_logo_shade">6</string><!--  小雨 -->
+	<string name="wealther_logo_shade">7</string><!--  白天小雨 -->
+	<string name="wealther_logo_shade">8</string><!--  夜间小雨 -->
+	<string name="wealther_logo_shade">9</string><!--  大雨 -->
+	<string name="wealther_logo_shade">0</string><!--  白天大雨 -->
+	<string name="wealther_logo_shade">-</string><!--  夜间大雨 -->
+	<string name="wealther_logo_shade">=</string>
+	<string name="wealther_logo_shade">q</string>
+	<string name="wealther_logo_shade">w</string>
+	<string name="wealther_logo_shade">e</string><!--  雨夹雪 -->
+	<string name="wealther_logo_shade">r</string><!--  白天雨夹雪 -->
+	<string name="wealther_logo_shade">t</string><!--  夜间雨夹雪 -->
+	<string name="wealther_logo_shade">y</string><!--  冰雹 -->
+	<string name="wealther_logo_shade">u</string><!--  白天冰雹 -->
+	<string name="wealther_logo_shade">i</string><!--  夜间冰雹 -->
+	<string name="wealther_logo_shade">o</string><!--  小雪 -->
+	<string name="wealther_logo_shade">p</string><!--  白天小雪 -->
+	<string name="wealther_logo_shade">[</string><!--  夜间小雪 -->
+	<string name="wealther_logo_shade">]</string><!--  大雪 -->
+	<string name="wealther_logo_shade">\</string><!--  白天大雪 -->
+	<string name="wealther_logo_shade">a</string><!--  夜间大雪 -->
+	<string name="wealther_logo_shade">s</string><!--  雾 -->
+	<string name="wealther_logo_shade">d</string><!--  白天有雾 -->
+	<string name="wealther_logo_shade">f</string><!--  夜间有雾 -->
+	<string name="wealther_logo_shade">g</string><!--  霾 -->
+	<string name="wealther_logo_shade">h</string><!--  白天有霾 -->
+	<string name="wealther_logo_shade">j</string><!--  夜间有霾 -->
+	<string name="wealther_logo_shade">k</string><!--  风 -->
+	<string name="wealther_logo_shade">l</string>
+	<string name="wealther_logo_shade">;</string>
+	<string name="wealther_logo_shade">'</string>
+	<string name="wealther_logo_shade">z</string><!--  雷雨 -->
+	<string name="wealther_logo_shade">x</string><!--  白天雷雨 -->
+	<string name="wealther_logo_shade">c</string><!--  夜间雷雨 -->
+	<string name="wealther_logo_shade">v</string><!--  晴 -->
+	<string name="wealther_logo_shade">(</string><!--  龙卷风 -->
 
     <!-- Alarm category -->
     <string name="alarm_category_image_content_description">闹钟分类图标</string>

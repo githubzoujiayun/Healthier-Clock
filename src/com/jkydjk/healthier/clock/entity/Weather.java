@@ -1,8 +1,11 @@
 package com.jkydjk.healthier.clock.entity;
 
-import java.sql.Date;
+import java.util.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,6 +13,7 @@ import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -20,6 +24,7 @@ import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.Log;
+import com.jkydjk.healthier.clock.util.StringUtil;
 
 /**
  * 
@@ -147,24 +152,136 @@ public class Weather {
     this.uv = uv;
   }
 
+  public static String getWeatherICON(String flag){
+    String[][] icons = { {"`", "阴"} };
+    return null;
+  }
+
+  public static List<Weather> getWeathers(Context context, String regionID) {
+    List<Weather> weathers = new ArrayList<Weather>();
+    SQLiteDatabase database = new WeatherDatabaseHelper(context).getReadableDatabase();
+
+    try {
+      SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd");
+      Calendar calendar = Calendar.getInstance();
+      String today = dateFormat.format(calendar.getTime());
+      String fields = "region_id, date(date,'localtime'), flag, flag_start, flag_end, temperature, wind, wind_power, feel, proposal, uv";
+      Cursor cursor = database.rawQuery("select " + fields + " from weathers where region_id = ? and date >= ? order by date", new String[] { regionID, today });
+
+      if (cursor != null && cursor.moveToFirst()) {
+        do {
+          Weather weather = new Weather();
+          weather.regionID = cursor.getInt(cursor.getColumnIndex("region_id"));
+          weather.date = dateFormat.parse(cursor.getString(cursor.getColumnIndex("date(date,'localtime')")));
+          weather.flag = cursor.getString(cursor.getColumnIndex("flag"));
+          weather.flagStart = cursor.getString(cursor.getColumnIndex("flag_start"));
+          weather.flagEnd = cursor.getString(cursor.getColumnIndex("flag_end"));
+          weather.temperature = cursor.getString(cursor.getColumnIndex("temperature"));
+          weather.wind = cursor.getString(cursor.getColumnIndex("wind"));
+          weather.windPower = cursor.getString(cursor.getColumnIndex("wind_power"));
+          weather.feel = cursor.getString(cursor.getColumnIndex("feel"));
+          weather.proposal = cursor.getString(cursor.getColumnIndex("proposal"));
+          weather.uv = cursor.getString(cursor.getColumnIndex("uv"));
+
+          weathers.add(weather);
+        } while (cursor.moveToNext());
+        cursor.close();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    database.close();
+    return weathers;
+
+  }
+
+  /**
+   * 更新天气信息
+   * 
+   * @param context
+   * @param regionID
+   * @return
+   */
+  public static boolean update(Context context, String regionID) {
+
+    SQLiteDatabase database = new WeatherDatabaseHelper(context).getReadableDatabase();
+
+    HttpClientManager connect = new HttpClientManager(context, HttpClientManager.REQUEST_PATH + RequestRoute.WEATHER);
+
+    connect.addParam("region_id", regionID);
+
+    try {
+      connect.execute(ResuestMethod.GET);
+      JSONArray weathers = new JSONObject(connect.getResponse()).getJSONArray("weathers");
+
+      database.beginTransaction();
+      database.delete("weathers", null, null);
+
+      for (int i = 0; i < weathers.length(); i++) {
+        JSONObject weather = (JSONObject) weathers.get(i);
+        ContentValues cvs = new ContentValues();
+        cvs.put("region_id", weather.getInt("region_id"));
+        cvs.put("date", weather.getString("date"));
+        cvs.put("flag", weather.getString("flag"));
+        cvs.put("flag_start", weather.getString("flag_start"));
+        cvs.put("flag_end", weather.getString("flag_end"));
+        cvs.put("temperature", weather.getString("temperature"));
+        cvs.put("wind", weather.getString("wind"));
+        cvs.put("wind_power", weather.getString("wind_power"));
+
+        if (!weather.isNull("feel"))
+          cvs.put("feel", weather.getString("feel"));
+
+        if (!weather.isNull("proposal"))
+          cvs.put("proposal", weather.getString("proposal"));
+
+        if (!weather.isNull("uv"))
+          cvs.put("uv", weather.getString("uv"));
+
+        database.insert("weathers", null, cvs);
+      }
+
+      database.setTransactionSuccessful();
+
+    } catch (Exception e) {
+      Log.v("Update failed!");
+      return false;
+
+    } finally {
+      database.endTransaction();
+    }
+
+    database.close();
+    return true;
+  }
+
+  /**
+   * 
+   * @author miclle
+   * 
+   */
   public static class Task extends AsyncTask<String, Integer, String> {
 
     Context context;
 
-    TaskCallback callback;
+    Callback callback;
+
+    public List<Weather> weathers = null;
 
     public Task(Context context) {
       super();
       this.context = context;
     }
 
-    public void setCallback(TaskCallback callback) {
+    public void setCallback(Callback callback) {
       this.callback = callback;
     }
 
     @Override
     protected void onPreExecute() {
       super.onPreExecute();
+      callback.onPreExecute();
     }
 
     @Override
@@ -172,85 +289,29 @@ public class Weather {
 
       String regionID = params[0];
 
-      HttpClientManager connect = new HttpClientManager(context, HttpClientManager.REQUEST_PATH + RequestRoute.WEATHER);
+      weathers = Weather.getWeathers(context, regionID);
 
-      connect.addParam("region_id", regionID);
+      if (weathers.size() == 0) {
+        if (Weather.update(context, regionID)) {
+          weathers = Weather.getWeathers(context, regionID);
+        } else {
 
-      try {
-        connect.execute(ResuestMethod.GET);
-
-        String result = connect.getResponse();
-
-        JSONObject json = new JSONObject(result);
-
-        JSONArray weathers = json.getJSONArray("weathers");
-
-        WeatherDatabaseHelper databaseHelp = new WeatherDatabaseHelper(context);
-        SQLiteDatabase database = databaseHelp.getReadableDatabase();
-        database.beginTransaction();
-
-        database.delete("weathers", null, null);
-
-        // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        // Calendar calendar = Calendar.getInstance();
-        // calendar.add(Calendar.DAY_OF_YEAR, -1);
-        
-        String insertMe = "INSERT INTO alarms " + "(label, hour, minutes, daysofweek, alarmtime, enabled, vibrate, alert, remark) " + "VALUES ";
-        
-        try {
-          for (int i = 0; i < weathers.length(); i++) {
-
-            // calendar.add(Calendar.DAY_OF_YEAR, 1);
-            // String date = dateFormat.format(calendar.getTime());
-            // Log.v("date: " + date);
-
-            JSONObject weather = (JSONObject) weathers.get(i);
-
-            int region_id      = weather.getInt("region_id");
-            String date        = weather.getString("date");
-            String flag        = weather.getString("flag");
-            String flag_start  = weather.getString("flag_start");
-            String flag_end    = weather.getString("flag_end");
-            String temperature = weather.getString("temperature");
-            String wind        = weather.getString("wind");
-            String wind_power  = weather.getString("wind_power");
-            String feel        = weather.getString("feel");
-            String proposal    = weather.getString("proposal");
-            String uv          = weather.getString("uv");
-            
-            database.execSQL(insertMe + "('闹铃', 7, 0, 127, 0, 0, 1, '', '');");
-            
-            // ContentValues cvs = new ContentValues();
-            // cvs.put("region_id", regionID);
-
-            // database.insert("weathers", null, cvs);
-
-          }
-          database.setTransactionSuccessful();
-
-        } catch (Exception e) {
-          Log.v("Database insert error!");
-        } finally {
-          database.endTransaction();
-          database.close();
         }
-
-      } catch (Exception e) {
-        return "网络访问异常";
       }
+
       return null;
     }
 
     @Override
     protected void onPostExecute(String result) {
-      callback.onPostExecute(result);
+      callback.onPostExecute(this, result);
     }
   }
 
-  public interface TaskCallback {
+  public interface Callback {
     public void onPreExecute();
 
-    public void onPostExecute(String result);
+    public void onPostExecute(Task task, String result);
   }
 
 }
