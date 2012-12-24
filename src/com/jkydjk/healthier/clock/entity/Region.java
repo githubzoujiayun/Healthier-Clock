@@ -3,6 +3,9 @@ package com.jkydjk.healthier.clock.entity;
 import java.util.ArrayList;
 
 public class Region {
+  
+  public final static long DEFAULT_REGION_ID = 310100;
+  public final static String DEFAULT_REGION = "上海";
 
   private Integer id;
   private String type;

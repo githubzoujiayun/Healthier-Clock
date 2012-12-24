@@ -13,13 +13,20 @@
         android:contentDescription="@string/weather_sunny"
         android:src="@drawable/weather_sunny" />
 
+    <ImageView
+        android:id="@+id/weather_shadow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/weather_picture"
+        android:src="@drawable/weather_shadow" />
+
     <TextView
         android:id="@+id/welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/weather"
-        android:layout_marginLeft="12dp"
-        android:paddingTop="8dp"
+        android:layout_alignBottom="@+id/weather_shadow"
+        android:layout_marginBottom="10dip"
+        android:layout_marginLeft="10dip"
         android:shadowColor="#333333"
         android:shadowDx="1.5"
         android:shadowDy="1.5"
@@ -47,8 +54,8 @@
         android:id="@+id/weather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/add_alarm"
-        android:layout_marginLeft="12dp"
+        android:layout_alignTop="@+id/weather_shadow"
+        android:layout_marginLeft="10dp"
         android:orientation="horizontal"
         android:paddingTop="5dp" >
 
@@ -57,6 +64,7 @@
             style="@style/weather_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="12dip"
             android:text="@string/getting_weather_information" />
 
         <LinearLayout
@@ -71,7 +79,7 @@
                 style="@style/weather_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="@string/wealther_logo_shade" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/weather_text_today"
@@ -93,7 +101,7 @@
                 style="@style/weather_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="@string/wealther_logo_cloudy" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/weather_text_tomorrow"

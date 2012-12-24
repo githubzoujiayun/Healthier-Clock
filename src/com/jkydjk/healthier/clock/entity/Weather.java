@@ -1,30 +1,32 @@
 package com.jkydjk.healthier.clock.entity;
 
-import java.util.Date;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.text.format.Time;
+import android.widget.Toast;
 
+import com.jkydjk.healthier.clock.AlarmClock;
+import com.jkydjk.healthier.clock.BaseActivity;
+import com.jkydjk.healthier.clock.R;
 import com.jkydjk.healthier.clock.database.WeatherDatabaseHelper;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.Log;
-import com.jkydjk.healthier.clock.util.StringUtil;
 
 /**
  * 
@@ -37,7 +39,9 @@ public class Weather {
   private Date date;
   private String flag;
   private String flagStart;
+  private String flagCodeStart;
   private String flagEnd;
+  private String flagCodeEnd;
   private String temperature;
   private String wind;
   private String windPower;
@@ -49,13 +53,16 @@ public class Weather {
     super();
   }
 
-  public Weather(Integer regionID, Date date, String flag, String flagStart, String flagEnd, String temperature, String wind, String windPower, String feel, String proposal, String uv) {
+  public Weather(Integer regionID, Date date, String flag, String flagStart, String flagCodeStart, String flagEnd, String flagCodeEnd, String temperature, String wind, String windPower, String feel,
+      String proposal, String uv) {
     super();
     this.regionID = regionID;
     this.date = date;
     this.flag = flag;
     this.flagStart = flagStart;
+    this.flagCodeStart = flagCodeStart;
     this.flagEnd = flagEnd;
+    this.flagCodeEnd = flagCodeEnd;
     this.temperature = temperature;
     this.wind = wind;
     this.windPower = windPower;
@@ -96,12 +103,28 @@ public class Weather {
     this.flagStart = flagStart;
   }
 
+  public String getFlagCodeStart() {
+    return flagCodeStart;
+  }
+
+  public void setFlagCodeStart(String flagCodeStart) {
+    this.flagCodeStart = flagCodeStart;
+  }
+
   public String getFlagEnd() {
     return flagEnd;
   }
 
   public void setFlagEnd(String flagEnd) {
     this.flagEnd = flagEnd;
+  }
+
+  public String getFlagCodeEnd() {
+    return flagCodeEnd;
+  }
+
+  public void setFlagCodeEnd(String flagCodeEnd) {
+    this.flagCodeEnd = flagCodeEnd;
   }
 
   public String getTemperature() {
@@ -152,9 +175,8 @@ public class Weather {
     this.uv = uv;
   }
 
-  public static String getWeatherICON(String flag){
-    String[][] icons = { {"`", "阴"} };
-    return null;
+  public int getIcon(Context context) {
+    return BaseActivity.getStringResourceID(context, "wealther_icon_" + getFlagCodeStart());
   }
 
   public static List<Weather> getWeathers(Context context, String regionID) {
@@ -165,7 +187,7 @@ public class Weather {
       SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd");
       Calendar calendar = Calendar.getInstance();
       String today = dateFormat.format(calendar.getTime());
-      String fields = "region_id, date(date,'localtime'), flag, flag_start, flag_end, temperature, wind, wind_power, feel, proposal, uv";
+      String fields = "region_id, date(date,'localtime'), flag, flag_start, flag_code_start, flag_end, flag_code_end, temperature, wind, wind_power, feel, proposal, uv";
       Cursor cursor = database.rawQuery("select " + fields + " from weathers where region_id = ? and date >= ? order by date", new String[] { regionID, today });
 
       if (cursor != null && cursor.moveToFirst()) {
@@ -175,7 +197,9 @@ public class Weather {
           weather.date = dateFormat.parse(cursor.getString(cursor.getColumnIndex("date(date,'localtime')")));
           weather.flag = cursor.getString(cursor.getColumnIndex("flag"));
           weather.flagStart = cursor.getString(cursor.getColumnIndex("flag_start"));
+          weather.flagCodeStart = cursor.getString(cursor.getColumnIndex("flag_code_start"));
           weather.flagEnd = cursor.getString(cursor.getColumnIndex("flag_end"));
+          weather.flagCodeEnd = cursor.getString(cursor.getColumnIndex("flag_code_end"));
           weather.temperature = cursor.getString(cursor.getColumnIndex("temperature"));
           weather.wind = cursor.getString(cursor.getColumnIndex("wind"));
           weather.windPower = cursor.getString(cursor.getColumnIndex("wind_power"));
@@ -212,10 +236,10 @@ public class Weather {
     connect.addParam("region_id", regionID);
 
     try {
+      database.beginTransaction();
       connect.execute(ResuestMethod.GET);
       JSONArray weathers = new JSONObject(connect.getResponse()).getJSONArray("weathers");
 
-      database.beginTransaction();
       database.delete("weathers", null, null);
 
       for (int i = 0; i < weathers.length(); i++) {
@@ -225,7 +249,9 @@ public class Weather {
         cvs.put("date", weather.getString("date"));
         cvs.put("flag", weather.getString("flag"));
         cvs.put("flag_start", weather.getString("flag_start"));
+        cvs.put("flag_code_start", weather.getString("flag_code_start"));
         cvs.put("flag_end", weather.getString("flag_end"));
+        cvs.put("flag_code_end", weather.getString("flag_code_end"));
         cvs.put("temperature", weather.getString("temperature"));
         cvs.put("wind", weather.getString("wind"));
         cvs.put("wind_power", weather.getString("wind_power"));
@@ -241,19 +267,30 @@ public class Weather {
 
         database.insert("weathers", null, cvs);
       }
-
       database.setTransactionSuccessful();
+      database.endTransaction();
+      database.close();
+      return true;
 
     } catch (Exception e) {
       Log.v("Update failed!");
-      return false;
-
-    } finally {
       database.endTransaction();
+      database.close();
+      return false;
     }
+  }
 
-    database.close();
-    return true;
+  /**
+   * 今天是否更新过天气数据
+   * 
+   * @param context
+   * @return
+   */
+  public static boolean todayIsUpdated(Context context) {
+    SharedPreferences sharedPreferences = context.getSharedPreferences("configure", Context.MODE_PRIVATE);
+    Time time = new Time();
+    time.setToNow();
+    return sharedPreferences.getInt("weather_update_day", -1) == time.yearDay ? true : false;
   }
 
   /**
@@ -265,6 +302,12 @@ public class Weather {
 
     Context context;
 
+    SharedPreferences sharedPreferences;
+
+    boolean force = false;
+
+    boolean updateSuccess = false;
+
     Callback callback;
 
     public List<Weather> weathers = null;
@@ -272,8 +315,17 @@ public class Weather {
     public Task(Context context) {
       super();
       this.context = context;
+      sharedPreferences = context.getSharedPreferences("configure", Context.MODE_PRIVATE);
     }
 
+    public void setForceUpdate(boolean force) {
+      this.force = force;
+    }
+    
+    public boolean getUpdateSuccess(){
+      return updateSuccess;
+    }
+    
     public void setCallback(Callback callback) {
       this.callback = callback;
     }
@@ -289,16 +341,18 @@ public class Weather {
 
       String regionID = params[0];
 
-      weathers = Weather.getWeathers(context, regionID);
-
-      if (weathers.size() == 0) {
-        if (Weather.update(context, regionID)) {
-          weathers = Weather.getWeathers(context, regionID);
-        } else {
-
-        }
+      if (force) {
+        updateSuccess = Weather.update(context, regionID);
+        setWeatherUpdateVersion();
       }
 
+      weathers = Weather.getWeathers(context, regionID);
+
+      if (weathers.size() == 0 && Weather.update(context, regionID)) {
+        weathers = Weather.getWeathers(context, regionID);
+        updateSuccess = true;
+        setWeatherUpdateVersion();
+      }
       return null;
     }
 
@@ -306,8 +360,22 @@ public class Weather {
     protected void onPostExecute(String result) {
       callback.onPostExecute(this, result);
     }
+
+    private void setWeatherUpdateVersion() {
+      Editor editor = sharedPreferences.edit();
+      Time time = new Time();
+      time.setToNow();
+      editor.putInt("weather_update_day", time.yearDay);
+      editor.commit();
+    }
   }
 
+  /**
+   * Task Callback
+   * 
+   * @author miclle
+   * 
+   */
   public interface Callback {
     public void onPreExecute();
 

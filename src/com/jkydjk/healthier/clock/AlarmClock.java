@@ -34,6 +34,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jkydjk.healthier.clock.entity.Region;
 import com.jkydjk.healthier.clock.entity.Weather;
 import com.jkydjk.healthier.clock.entity.Weather.Callback;
 import com.jkydjk.healthier.clock.util.Log;
@@ -94,7 +95,7 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
   private View currentAlarmLayout;
 
-  private int regionID;
+  private long regionID;
   private String city;
 
   /*
@@ -114,8 +115,8 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
     sharedPreferencesOnConfigure = getSharedPreferences("configure", Context.MODE_PRIVATE);
 
-    regionID = sharedPreferencesOnConfigure.getInt("city_id", 0);
-    city = sharedPreferencesOnConfigure.getString("city", "上海");
+    city = sharedPreferencesOnConfigure.getString("city", Region.DEFAULT_REGION);
+    regionID = sharedPreferencesOnConfigure.getLong("city_id", Region.DEFAULT_REGION_ID);
 
     addAlarmButton = findViewById(R.id.add_alarm);
     addAlarmButton.setOnClickListener(this);
@@ -129,6 +130,7 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
     weatherInfoTip = (TextView) findViewById(R.id.weather_info_tip);
 
     weatherInfo = findViewById(R.id.weather_info);
+    weatherInfo.setOnClickListener(this);
 
     weatherLogoToday = (TextViewWeather) findViewById(R.id.weather_logo_today);
 
@@ -157,7 +159,11 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
     mAlarmsList = (ListView) findViewById(R.id.alarms_list);
 
     setWelcomeText();
-    setLocation();
+
+    locationTextView.setText(city);
+
+    updateWeatherInfo(Weather.todayIsUpdated(this) ? false : true);
+
     updateAlarmList();
 
     timer = new Handler() {
@@ -207,7 +213,7 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
   protected void onResume() {
     super.onResume();
     setWelcomeText();
-    setLocation();
+    updateLocation();
     updateAlarmList();
   }
 
@@ -262,10 +268,27 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
     welcomeTextView.setText(welcome);
   }
 
-  private void setLocation() {
-    locationTextView.setText(city);
+  /**
+   * 更新所在城市
+   */
+  private void updateLocation() {
+    long newRegionID = sharedPreferencesOnConfigure.getLong("city_id", Region.DEFAULT_REGION_ID);
+    if (regionID != newRegionID) {
+      regionID = newRegionID;
+      city = sharedPreferencesOnConfigure.getString("city", Region.DEFAULT_REGION);
+      locationTextView.setText(city);
+      updateWeatherInfo(true);
+    }
+  }
+
+  /**
+   * 设置天气信息
+   */
+  private void updateWeatherInfo(boolean force) {
 
     Weather.Task task = new Weather.Task(this);
+
+    task.setForceUpdate(force);
 
     task.setCallback(new Callback() {
       public void onPreExecute() {
@@ -274,25 +297,26 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
       }
 
       public void onPostExecute(Weather.Task task, String result) {
-        Toast.makeText(AlarmClock.this, R.string.wealther_info_updated, Toast.LENGTH_SHORT).show();
+
+        if (task.getUpdateSuccess()) {
+          Toast.makeText(AlarmClock.this, R.string.wealther_info_updated, Toast.LENGTH_SHORT).show();
+        } else {
+          Toast.makeText(AlarmClock.this, R.string.unable_to_get_weather_information, Toast.LENGTH_SHORT).show();
+        }
 
         List<Weather> weathers = task.weathers;
-
         if (weathers.size() >= 1) {
           Weather today = weathers.get(0);
-          // weatherLogoToday.setText("");
+          weatherLogoToday.setText(today.getIcon(AlarmClock.this));
           weatherTextToday.setText("今天 " + today.getFlag() + "\n" + today.getTemperature());
         }
-
         if (weathers.size() >= 2) {
           Weather tomorrow = weathers.get(1);
-          // weatherLogoTomorrow.setText("");
+          weatherLogoTomorrow.setText(tomorrow.getIcon(AlarmClock.this));
           weatherTextTomorrow.setText("明天 " + tomorrow.getFlag() + "\n" + tomorrow.getTemperature());
         }
-
         weatherInfoTip.setVisibility(View.GONE);
         weatherInfo.setVisibility(View.VISIBLE);
-
       }
     });
 
@@ -307,6 +331,9 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
     case R.id.add_alarm:
       // startActivity(new Intent(this, AddAlarm.class));
       startActivity(new Intent(this, SetAlarmCustom.class));
+      break;
+    case R.id.weather_info:
+      updateWeatherInfo(true);
       break;
     }
   }

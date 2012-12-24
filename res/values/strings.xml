@@ -255,52 +255,44 @@
     <string name="welcome_good_evening">晚上好</string>
 	
 	<string name="getting_weather_information">正在获取天气信息&#8230;</string>
-    <string name="no_wealther_info_tip">无法获取天气信息!</string>
+    <string name="unable_to_get_weather_information">无法获取天气信息!</string>
     <string name="wealther_info_updated">天气更新成功!</string>
     <!-- Weather logo font -->
-    <string name="wealther_logo_shade">`</string><!--  阴 -->
-	<string name="wealther_logo_cloudy">1</string><!--  多云 -->
-	
-	<string name="wealther_logo_shade">2</string><!--  夜间多云 -->
-	<string name="wealther_logo_shade">3</string><!--  中雨 -->
-	<string name="wealther_logo_shade">4</string><!--  阵雨 -->
-	<string name="wealther_logo_shade">5</string><!--  夜间阵雨 -->
-	<string name="wealther_logo_shade">6</string><!--  小雨 -->
-	<string name="wealther_logo_shade">7</string><!--  白天小雨 -->
-	<string name="wealther_logo_shade">8</string><!--  夜间小雨 -->
-	<string name="wealther_logo_shade">9</string><!--  大雨 -->
-	<string name="wealther_logo_shade">0</string><!--  白天大雨 -->
-	<string name="wealther_logo_shade">-</string><!--  夜间大雨 -->
-	<string name="wealther_logo_shade">=</string>
-	<string name="wealther_logo_shade">q</string>
-	<string name="wealther_logo_shade">w</string>
-	<string name="wealther_logo_shade">e</string><!--  雨夹雪 -->
-	<string name="wealther_logo_shade">r</string><!--  白天雨夹雪 -->
-	<string name="wealther_logo_shade">t</string><!--  夜间雨夹雪 -->
-	<string name="wealther_logo_shade">y</string><!--  冰雹 -->
-	<string name="wealther_logo_shade">u</string><!--  白天冰雹 -->
-	<string name="wealther_logo_shade">i</string><!--  夜间冰雹 -->
-	<string name="wealther_logo_shade">o</string><!--  小雪 -->
-	<string name="wealther_logo_shade">p</string><!--  白天小雪 -->
-	<string name="wealther_logo_shade">[</string><!--  夜间小雪 -->
-	<string name="wealther_logo_shade">]</string><!--  大雪 -->
-	<string name="wealther_logo_shade">\</string><!--  白天大雪 -->
-	<string name="wealther_logo_shade">a</string><!--  夜间大雪 -->
-	<string name="wealther_logo_shade">s</string><!--  雾 -->
-	<string name="wealther_logo_shade">d</string><!--  白天有雾 -->
-	<string name="wealther_logo_shade">f</string><!--  夜间有雾 -->
-	<string name="wealther_logo_shade">g</string><!--  霾 -->
-	<string name="wealther_logo_shade">h</string><!--  白天有霾 -->
-	<string name="wealther_logo_shade">j</string><!--  夜间有霾 -->
-	<string name="wealther_logo_shade">k</string><!--  风 -->
-	<string name="wealther_logo_shade">l</string>
-	<string name="wealther_logo_shade">;</string>
-	<string name="wealther_logo_shade">'</string>
-	<string name="wealther_logo_shade">z</string><!--  雷雨 -->
-	<string name="wealther_logo_shade">x</string><!--  白天雷雨 -->
-	<string name="wealther_logo_shade">c</string><!--  夜间雷雨 -->
-	<string name="wealther_logo_shade">v</string><!--  晴 -->
-	<string name="wealther_logo_shade">(</string><!--  龙卷风 -->
+    
+    <string name="wealther_icon_0">v</string><!--晴-->
+	<string name="wealther_icon_1">1</string><!--多云-->
+	<string name="wealther_icon_2">`</string><!--阴-->
+	<string name="wealther_icon_3">4</string><!--阵雨-->
+	<string name="wealther_icon_4">z</string><!--雷阵雨-->
+	<string name="wealther_icon_5">z</string><!--雷阵雨伴有冰雹-->
+	<string name="wealther_icon_6">e</string><!--雨夹雪-->
+	<string name="wealther_icon_7">6</string><!--小雨-->
+	<string name="wealther_icon_8">9</string><!--中雨-->
+	<string name="wealther_icon_9">9</string><!--大雨-->
+	<string name="wealther_icon_10">9</string><!--暴雨-->
+	<string name="wealther_icon_11">9</string><!--大暴雨-->
+	<string name="wealther_icon_12">9</string><!--特大暴雨-->
+	<string name="wealther_icon_13">o</string><!--阵雪-->
+	<string name="wealther_icon_14">o</string><!--小雪-->
+	<string name="wealther_icon_15">]</string><!--中雪-->
+	<string name="wealther_icon_16">]</string><!--大雪-->
+	<string name="wealther_icon_17">]</string><!--暴雪-->
+	<string name="wealther_icon_18">s</string><!--雾-->
+	<string name="wealther_icon_19">e</string><!--冻雨-->
+	<string name="wealther_icon_20">(</string><!--沙尘暴-->
+	<string name="wealther_icon_21">6</string><!--小雨-中雨-->
+	<string name="wealther_icon_22">9</string><!--中雨-大雨-->
+	<string name="wealther_icon_23">9</string><!--大雨-暴雨-->
+	<string name="wealther_icon_24">9</string><!--暴雨-大暴雨-->
+	<string name="wealther_icon_25">9</string><!--大暴雨-特大暴雨-->
+	<string name="wealther_icon_26">o</string><!--小雪-中雪-->
+	<string name="wealther_icon_27">]</string><!--中雪-大雪-->
+	<string name="wealther_icon_28">]</string><!--大雪-暴雪-->
+	<string name="wealther_icon_29">(</string><!--浮尘-->
+	<string name="wealther_icon_30">(</string><!--扬沙-->
+	<string name="wealther_icon_31">(</string><!--强沙尘暴-->
+
+    
 
     <!-- Alarm category -->
     <string name="alarm_category_image_content_description">闹钟分类图标</string>
