@@ -298,10 +298,8 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
       public void onPostExecute(Weather.Task task, String result) {
 
-        if (task.getUpdateSuccess()) {
-          Toast.makeText(AlarmClock.this, R.string.wealther_info_updated, Toast.LENGTH_SHORT).show();
-        } else {
-          Toast.makeText(AlarmClock.this, R.string.unable_to_get_weather_information, Toast.LENGTH_SHORT).show();
+        if (task.getForceUpdate()) {
+          Toast.makeText(AlarmClock.this, (task.getUpdateSuccess() ? R.string.wealther_info_updated : R.string.unable_to_get_weather_information), Toast.LENGTH_SHORT).show();
         }
 
         List<Weather> weathers = task.weathers;

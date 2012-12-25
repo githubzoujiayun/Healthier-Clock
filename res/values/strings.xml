@@ -292,8 +292,6 @@
 	<string name="wealther_icon_30">(</string><!--扬沙-->
 	<string name="wealther_icon_31">(</string><!--强沙尘暴-->
 
-    
-
     <!-- Alarm category -->
     <string name="alarm_category_image_content_description">闹钟分类图标</string>
     <string name="alarm_category_work_rest">起床睡觉</string>
@@ -439,6 +437,12 @@
     <string name="special_concern_tip">选择特别关注后，我们将在每\n天这个时辰给你发送提醒 :)</string>
 	<string name="network_access_exception">网络访问异常</string>
     
+	<string name="loading">正在加载&#8230;</string>
+	
+	<string name="steps">操作步骤</string>
+	<string name="click_steps_to_try">点击步骤试试</string>
+	<string name="tips">温馨提示</string>
+	
     <!-- Solution action button -->
     <string name="favorite">收藏</string>
     <string name="set_solution_alarm">设置提醒</string>
@@ -451,6 +455,7 @@
     <string name="help_page_text_alarm">健康闹钟，给您安个随身秘书！</string>
     <string name="help_page_text_chinese_hour">子丑寅卯辰，从时辰里看养生哲学。</string>
     <string name="help_page_text_solar_terms">生长化收藏，从节气里悟养生心语。</string>
+    
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_process">Process</string>

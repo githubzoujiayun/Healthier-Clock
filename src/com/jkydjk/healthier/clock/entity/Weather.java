@@ -322,6 +322,10 @@ public class Weather {
       this.force = force;
     }
     
+    public boolean getForceUpdate(){
+      return force;
+    }
+    
     public boolean getUpdateSuccess(){
       return updateSuccess;
     }

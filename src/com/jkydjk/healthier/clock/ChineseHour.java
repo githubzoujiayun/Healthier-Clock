@@ -2,8 +2,6 @@ package com.jkydjk.healthier.clock;
 
 import java.util.ArrayList;
 
-import com.jkydjk.healthier.clock.util.Log;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,19 +16,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 
+import com.jkydjk.healthier.clock.util.Log;
+
 public class ChineseHour extends FragmentActivity implements OnPageChangeListener {
 
-  static final int NUM_ITEMS = 3;
+  static final int NUM_ITEMS = 12;
 
   private LayoutInflater inflater;
   private ViewPager pager;
@@ -65,6 +59,11 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
   }
 
+  /**
+   * 
+   * @author miclle
+   *
+   */
   public static class SolutionFragmentPagerAdapter extends FragmentPagerAdapter {
     public SolutionFragmentPagerAdapter(FragmentManager fm) {
       super(fm);
@@ -81,9 +80,14 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
     }
   }
 
+  /**
+   * 
+   * @author miclle
+   * 
+   */
   public static class SolutionFragment extends Fragment implements OnClickListener {
-    
-    ScrollView content;
+
+    ScrollView contentScrollView;
     View hourRemind;
     View actions;
 
@@ -105,41 +109,40 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-      View view = inflater.inflate(R.layout.hour_solution, container, false);
-
-//      final Healthier activity = (Healthier) getActivity().getParent();
-
-      content = (ScrollView)view.findViewById(R.id.content);
-      actions = view.findViewById(R.id.actions);
       
+      View view = inflater.inflate(R.layout.hour, container, false);
+
+      contentScrollView = (ScrollView) view.findViewById(R.id.content);
+      actions = view.findViewById(R.id.actions);
+
       hourRemind = view.findViewById(R.id.hour_remind);
       hourRemind.setOnClickListener(this);
-      
-      final ImageButton todo = (ImageButton) view.findViewById(R.id.todo);
-      todo.setOnClickListener(this);
 
-      ImageButton favorite = (ImageButton) view.findViewById(R.id.favorite);
-      favorite.setOnClickListener(this);
+//      final ImageButton todo = (ImageButton) view.findViewById(R.id.todo);
+//      todo.setOnClickListener(this);
+//
+//      ImageButton favorite = (ImageButton) view.findViewById(R.id.favorite);
+//      favorite.setOnClickListener(this);
+//
+//      ImageButton alarm = (ImageButton) view.findViewById(R.id.alarm);
+//      alarm.setOnClickListener(this);
+//
+//      ImageButton process = (ImageButton) view.findViewById(R.id.process);
+//      process.setOnClickListener(this);
+//
+//      ImageButton evaluate = (ImageButton) view.findViewById(R.id.evaluate);
+//      evaluate.setOnClickListener(this);
+//
+//      ImageButton forwarding = (ImageButton) view.findViewById(R.id.forwarding);
+//      forwarding.setOnClickListener(this);
 
-      ImageButton alarm = (ImageButton) view.findViewById(R.id.alarm);
-      alarm.setOnClickListener(this);
-
-      ImageButton process = (ImageButton) view.findViewById(R.id.process);
-      process.setOnClickListener(this);
-
-      ImageButton evaluate = (ImageButton) view.findViewById(R.id.evaluate);
-      evaluate.setOnClickListener(this);
-
-      ImageButton forwarding = (ImageButton) view.findViewById(R.id.forwarding);
-      forwarding.setOnClickListener(this);
-      
-      content.setOnTouchListener(new OnTouchListener() {
-        public boolean onTouch(View v, MotionEvent event) {
-          todo.setVisibility(View.VISIBLE);
-          actions.setVisibility(View.INVISIBLE);
-          return false;
-        }
-      });
+//      content.setOnTouchListener(new OnTouchListener() {
+//        public boolean onTouch(View v, MotionEvent event) {
+//          todo.setVisibility(View.VISIBLE);
+//          actions.setVisibility(View.INVISIBLE);
+//          return false;
+//        }
+//      });
 
       return view;
     }
@@ -155,7 +158,7 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
       case R.id.hour_remind:
         startActivity(new Intent(getActivity(), HourRemind.class));
         break;
-      
+
       case R.id.todo:
         v.setVisibility(View.GONE);
         actions.setVisibility(View.VISIBLE);
@@ -172,7 +175,7 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
       case R.id.process:
         startActivity(new Intent(getActivity(), Process.class));
         break;
-        
+
       case R.id.evaluate:
         startActivity(new Intent(getActivity(), SolutionEvaluate.class));
         break;
@@ -180,10 +183,11 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
       case R.id.forwarding:
 
         break;
+        
       default:
         break;
       }
-
+      
     }
 
   }
