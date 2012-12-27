@@ -22,12 +22,12 @@
             android:text="@string/back" />
 
         <TextView
-            android:id="@+id/title_text"
+            android:id="@+id/title_text_view"
             style="@style/title_bar_title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="辰时" />
+            android:text="@string/chinese_hour" />
     </RelativeLayout>
 
     <ScrollView
@@ -37,8 +37,10 @@
         android:layout_above="@+id/hour_remind"
         android:layout_below="@+id/title_bar"
         android:background="@android:color/transparent"
+        android:fadeScrollbars="false"
         android:fadingEdge="none"
         android:listSelector="@android:color/transparent"
+        android:scrollbars="vertical"
         android:scrollingCache="false" >
 
         <LinearLayout
@@ -49,12 +51,21 @@
             android:paddingTop="20dip" >
 
             <ImageView
+                android:id="@+id/meridian"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/hour_remind_01" />
+                android:layout_gravity="center" />
         </LinearLayout>
     </ScrollView>
+
+    <ImageView
+        android:id="@+id/meridian_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/title_bar"
+        android:layout_gravity="center"
+        android:layout_margin="15dip" />
 
     <LinearLayout
         android:id="@+id/hour_remind"
@@ -64,23 +75,23 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/restore"
+            android:id="@+id/appropriate_text_view"
             style="@style/hour_tip"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#B3669900"
             android:singleLine="false"
-            android:text="宜：进食温热早餐，保养胃气,进食温热早餐，保养胃气"
+            android:text=""
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/taboo"
+            android:id="@+id/taboo_text_view"
             style="@style/hour_tip"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#B3CC0000"
             android:singleLine="false"
-            android:text="忌：不食早餐或冷食，饮酒"
+            android:text=""
             android:textSize="18sp" />
     </LinearLayout>
 

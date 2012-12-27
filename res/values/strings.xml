@@ -433,9 +433,35 @@
     <string name="account_douban">豆瓣</string>
     <string name="unbound">未绑定</string>
     <string name="bounded">已绑定</string>
-    <string name="special_concern">❤ 特别关注</string>
+    <string name="special_concern">特别关注</string>
     <string name="special_concern_tip">选择特别关注后，我们将在每\n天这个时辰给你发送提醒 :)</string>
 	<string name="network_access_exception">网络访问异常</string>
+	
+	<string name="hour_name_1">子时</string>
+	<string name="hour_name_2">丑时</string>
+	<string name="hour_name_3">寅时</string>
+	<string name="hour_name_4">卯时</string>
+	<string name="hour_name_5">辰时</string>
+	<string name="hour_name_6">巳时</string>
+	<string name="hour_name_7">午时</string>
+	<string name="hour_name_8">未时</string>
+	<string name="hour_name_9">申时</string>
+	<string name="hour_name_10">酉时</string>
+	<string name="hour_name_11">戌时</string>
+	<string name="hour_name_12">亥时</string>
+	
+	<string name="hour_time_interval_1">23:00~1:00</string>
+	<string name="hour_time_interval_2">1:00~3:00</string>
+	<string name="hour_time_interval_3">3:00~5:00</string>
+	<string name="hour_time_interval_4">5:00~7:00</string>
+	<string name="hour_time_interval_5">7:00~9:00</string>
+	<string name="hour_time_interval_6">9:00~11:00</string>
+	<string name="hour_time_interval_7">11:00~13:00</string>
+	<string name="hour_time_interval_8">13:00~15:00</string>
+	<string name="hour_time_interval_9">15:00~17:00</string>
+	<string name="hour_time_interval_10">17:00~19:00</string>
+	<string name="hour_time_interval_11">19:00~21:00</string>
+	<string name="hour_time_interval_12">21:00~23:00</string>
     
 	<string name="loading">正在加载&#8230;</string>
 	

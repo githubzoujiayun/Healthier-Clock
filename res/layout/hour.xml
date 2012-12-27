@@ -6,7 +6,7 @@
     android:background="@drawable/main_bg" >
 
     <ScrollView
-        android:id="@+id/content"
+        android:id="@+id/content_scroll_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@android:color/transparent"
@@ -36,13 +36,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/shadow"
-                    android:layout_alignLeft="@+id/hour"
+                    android:layout_alignLeft="@+id/hour_name_text_view"
                     android:layout_marginBottom="5dip"
                     android:drawableRight="@drawable/icon_refresh"
                     android:text="更新于2012/7/5 " />
 
-                <TextView
-                    android:id="@+id/concern"
+                <Button
+                    android:id="@+id/concern_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/shadow"
@@ -52,18 +52,21 @@
                     android:layout_marginRight="10dip"
                     android:layout_marginTop="10dip"
                     android:background="@drawable/shadow_background"
+                    android:drawableLeft="@drawable/icon_heart_small_white"
                     android:paddingBottom="5dip"
                     android:paddingLeft="8dip"
                     android:paddingRight="8dip"
                     android:paddingTop="5dip"
                     android:text="@string/special_concern"
                     android:textColor="#FFFFFFFF" />
+                <!-- icon_heart_small_red -->
 
                 <TextView
+                    android:id="@+id/concern_tip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/concern"
-                    android:layout_toLeftOf="@+id/concern"
+                    android:layout_alignTop="@+id/concern_button"
+                    android:layout_toLeftOf="@+id/concern_button"
                     android:background="@drawable/tip_background_left"
                     android:paddingLeft="6dip"
                     android:paddingRight="12dip"
@@ -81,7 +84,7 @@
                     android:src="@drawable/weather_shadow" />
 
                 <com.jkydjk.healthier.clock.widget.CustomTextView
-                    android:id="@+id/hour"
+                    android:id="@+id/hour_name_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/shadow"
@@ -93,16 +96,17 @@
                     android:shadowDx="1.5"
                     android:shadowDy="1.5"
                     android:shadowRadius="1"
-                    android:text="辰时"
+                    android:text=""
                     android:textColor="#FFFFFFFF"
                     android:textSize="42sp" />
 
                 <TextView
+                    android:id="@+id/hour_time_interval_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/hour"
-                    android:layout_alignRight="@+id/hour"
-                    android:layout_below="@+id/hour"
+                    android:layout_alignLeft="@+id/hour_name_text_view"
+                    android:layout_alignRight="@+id/hour_name_text_view"
+                    android:layout_below="@+id/hour_name_text_view"
                     android:layout_marginTop="-5dip"
                     android:gravity="center_horizontal"
                     android:shadowColor="#FF333333"
@@ -110,7 +114,7 @@
                     android:shadowDy="1.5"
                     android:shadowRadius="1"
                     android:singleLine="true"
-                    android:text="22:00 - 23:00"
+                    android:text=""
                     android:textColor="#FFFFFFFF"
                     android:textSize="14sp" />
 
@@ -119,27 +123,27 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/hour"
+                    android:layout_alignTop="@+id/hour_name_text_view"
                     android:layout_marginLeft="15dip"
                     android:layout_marginTop="10dip"
-                    android:layout_toRightOf="@+id/hour"
+                    android:layout_toRightOf="@+id/hour_name_text_view"
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/appropriate"
+                        android:id="@+id/appropriate_text_view"
                         style="@style/hour_tip"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="#B3669900"
-                        android:text="宜：进食温热早餐，保养胃气" />
+                        android:text="" />
 
                     <TextView
-                        android:id="@+id/taboo"
+                        android:id="@+id/taboo_text_view"
                         style="@style/hour_tip"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="#B3CC0000"
-                        android:text="忌：不食早餐或冷食，饮酒" />
+                        android:text="" />
                 </LinearLayout>
             </RelativeLayout>
 

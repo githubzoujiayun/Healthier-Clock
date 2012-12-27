@@ -57,5 +57,13 @@ public class RequestRoute {
    * </pre>
    */
   public static final String WEATHER = "weather";
+  
+  /**
+   * <pre>
+   * <strong>Route</strong> : solution/hour
+   * <strong>Method</strong>: GET
+   * </pre>
+   */
+  public static final String SOLUTION_HOUR = "solution/hour";
 
 }
