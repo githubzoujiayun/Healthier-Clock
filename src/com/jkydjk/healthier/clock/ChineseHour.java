@@ -2,6 +2,8 @@ package com.jkydjk.healthier.clock;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +25,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +47,7 @@ import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.Log;
 
-public class ChineseHour extends FragmentActivity {
+public class ChineseHour extends FragmentActivity implements OnPageChangeListener {
 
   private ViewPager pager;
 
@@ -58,12 +61,28 @@ public class ChineseHour extends FragmentActivity {
     pager = (ViewPager) findViewById(R.id.pager);
     pagerAdapter = new SolutionFragmentPagerAdapter(getSupportFragmentManager());
     pager.setAdapter(pagerAdapter);
-    // pager.setOnPageChangeListener(this);
+    pager.setOnPageChangeListener(this);
     Time time = new Time();
     time.setToNow();
     int hour = Hour.from_time_hour(time.hour);
     pager.setCurrentItem(hour == 12 ? 0 : hour);
+  }
 
+  public void onPageScrollStateChanged(int arg0) {
+    // TODO Auto-generated method stub
+
+  }
+
+  public void onPageScrolled(int arg0, float arg1, int arg2) {
+    // TODO Auto-generated method stub
+
+  }
+
+  public void onPageSelected(int position) {
+    Fragment fragment = pagerAdapter.getItem(position);
+    FragmentActivity fa = fragment.getActivity();
+    ScrollView sv = (ScrollView) fa.findViewById(R.id.content_scroll_view);
+    sv.scrollTo(0, 0);
   }
 
   /**
@@ -72,6 +91,9 @@ public class ChineseHour extends FragmentActivity {
    * 
    */
   public static class SolutionFragmentPagerAdapter extends FragmentPagerAdapter {
+
+    Map<Integer, SolutionFragment> fragments = new HashMap<Integer, ChineseHour.SolutionFragment>();
+
     public SolutionFragmentPagerAdapter(FragmentManager fm) {
       super(fm);
     }
@@ -83,7 +105,12 @@ public class ChineseHour extends FragmentActivity {
 
     @Override
     public Fragment getItem(int position) {
-      return SolutionFragment.newInstance(position);
+      SolutionFragment fragment = fragments.get(position);
+      if (fragment == null) {
+        fragment = SolutionFragment.newInstance(position);
+        fragments.put(position, fragment);
+      }
+      return fragment;
     }
   }
 
@@ -317,4 +344,5 @@ public class ChineseHour extends FragmentActivity {
 
     }
   }
+
 }
