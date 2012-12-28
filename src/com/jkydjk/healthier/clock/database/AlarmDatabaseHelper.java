@@ -30,8 +30,7 @@ public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int currentVersion) {
-    if (Log.LOGV)
-      Log.v("Upgrading alarms database from version " + oldVersion + " to " + currentVersion + ", which will destroy all old data");
+    Log.v("Upgrading alarms database from version " + oldVersion + " to " + currentVersion + ", which will destroy all old data");
     db.execSQL("DROP TABLE IF EXISTS alarms");
     onCreate(db);
   }

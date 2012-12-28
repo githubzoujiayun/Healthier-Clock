@@ -18,7 +18,7 @@ import android.text.TextUtils;
 
 public class AlarmProvider extends ContentProvider {
   
-  private SQLiteOpenHelper mOpenHelper;
+  private SQLiteOpenHelper alarmDatabaseOpenHelper;
 
   private static final int ALARMS = 1;
   private static final int ALARMS_ID = 2;
@@ -34,7 +34,7 @@ public class AlarmProvider extends ContentProvider {
 
   @Override
   public boolean onCreate() {
-    mOpenHelper = new AlarmDatabaseHelper(getContext());
+    alarmDatabaseOpenHelper = new AlarmDatabaseHelper(getContext());
     return true;
   }
 
@@ -57,7 +57,7 @@ public class AlarmProvider extends ContentProvider {
       throw new IllegalArgumentException("Unknown URL " + url);
     }
 
-    SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+    SQLiteDatabase db = alarmDatabaseOpenHelper.getReadableDatabase();
     Cursor ret = qb.query(db, projectionIn, selection, selectionArgs, null, null, sort);
 
     if (ret == null) {
@@ -88,7 +88,7 @@ public class AlarmProvider extends ContentProvider {
     int count;
     long rowId = 0;
     int match = sURLMatcher.match(url);
-    SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+    SQLiteDatabase db = alarmDatabaseOpenHelper.getWritableDatabase();
     switch (match) {
     case ALARMS_ID: {
       String segment = url.getPathSegments().get(1);
@@ -142,7 +142,7 @@ public class AlarmProvider extends ContentProvider {
     if (!values.containsKey(Alarm.Columns.ALERT))
       values.put(Alarm.Columns.ALERT, "");
 
-    SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+    SQLiteDatabase db = alarmDatabaseOpenHelper.getWritableDatabase();
     long rowId = db.insert("alarms", Alarm.Columns.REMARK, values);
     if (rowId < 0) {
       throw new SQLException("Failed to insert row into " + url);
@@ -156,7 +156,7 @@ public class AlarmProvider extends ContentProvider {
   }
 
   public int delete(Uri url, String where, String[] whereArgs) {
-    SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+    SQLiteDatabase db = alarmDatabaseOpenHelper.getWritableDatabase();
     int count;
     long rowId = 0;
     switch (sURLMatcher.match(url)) {

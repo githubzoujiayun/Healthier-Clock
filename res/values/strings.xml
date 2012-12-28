@@ -433,7 +433,7 @@
     <string name="account_douban">豆瓣</string>
     <string name="unbound">未绑定</string>
     <string name="bounded">已绑定</string>
-    <string name="special_concern">特别关注</string>
+    <string name="special_concern">&#160;特别关注</string>
     <string name="special_concern_tip">选择特别关注后，我们将在每\n天这个时辰给你发送提醒 :)</string>
 	<string name="network_access_exception">网络访问异常</string>
 	

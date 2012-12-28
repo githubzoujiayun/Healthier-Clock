@@ -17,7 +17,7 @@
             android:id="@+id/picture"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/solar_terms_01" />
+            android:src="@drawable/solar_terms_5" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -40,42 +40,6 @@
                 android:layout_height="wrap_content"
                 automatic="false" />
         </LinearLayout>
-
-        <com.jkydjk.healthier.clock.widget.TextViewVertical
-            android:id="@+id/solar_terms_intro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="10dip"
-            android:layout_marginTop="10dip"
-            TextViewVertical:font="FZDBSJW_0.TTF"
-            TextViewVertical:lineWidth="5dip"
-            android:shadowColor="#FF333333"
-            android:shadowDx="1.5"
-            android:shadowDy="1.5"
-            android:shadowRadius="1"
-            android:text="一候腐草为萤\n二候土润溽暑\n三候大雨时行"
-            android:textColor="#FFFFFFFF"
-            android:textSize="12sp" />
-
-        <com.jkydjk.healthier.clock.widget.TextViewVertical
-            android:id="@+id/solar_terms_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="5dip"
-            android:layout_marginTop="10dip"
-            android:layout_toLeftOf="@+id/solar_terms_intro"
-            TextViewVertical:font="FZDBSJW_0.TTF"
-            TextViewVertical:lineWidth="5dip"
-            android:shadowColor="#FF333333"
-            android:shadowDx="1.5"
-            android:shadowDy="1.5"
-            android:shadowRadius="1"
-            android:text="大暑"
-            android:textColor="#FFFFFFFF"
-            android:textSize="42sp" />
 
         <ImageView
             android:id="@+id/shadow"

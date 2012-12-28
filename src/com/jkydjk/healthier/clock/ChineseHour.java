@@ -1,5 +1,8 @@
 package com.jkydjk.healthier.clock;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,21 +23,26 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jkydjk.healthier.clock.database.DatabaseManager;
+import com.jkydjk.healthier.clock.database.SolutionDatabaseHelper;
+import com.jkydjk.healthier.clock.entity.Hour;
+import com.jkydjk.healthier.clock.entity.Solution;
+import com.jkydjk.healthier.clock.entity.SolutionStep;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.Log;
-import com.jkydjk.healthier.clock.util.StringUtil;
 
 public class ChineseHour extends FragmentActivity {
 
@@ -46,17 +54,16 @@ public class ChineseHour extends FragmentActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.chinese_hour);
+
     pager = (ViewPager) findViewById(R.id.pager);
     pagerAdapter = new SolutionFragmentPagerAdapter(getSupportFragmentManager());
     pager.setAdapter(pagerAdapter);
     // pager.setOnPageChangeListener(this);
+    Time time = new Time();
+    time.setToNow();
+    int hour = Hour.from_time_hour(time.hour);
+    pager.setCurrentItem(hour == 12 ? 0 : hour);
 
-    // Time time = new Time();
-    // time.setToNow();
-    // Log.v("Time.hour: " + time.hour);
-
-    // pager.setCurrentItem(11);
-    // pager.setCurrentItem(11, true);
   }
 
   /**
@@ -94,7 +101,12 @@ public class ChineseHour extends FragmentActivity {
     View hourRemind;
     TextView appropriateTextView;
     TextView tabooTextView;
+
+    LinearLayout solutionContentView;
+
     View actions;
+
+    View loading;
 
     public int hour;
 
@@ -154,6 +166,10 @@ public class ChineseHour extends FragmentActivity {
       hourTimeIntervalTextView.setText(hourTimeInterval);
       appropriateTextView.setText("宜：" + hourAppropriate);
       tabooTextView.setText("忌：" + hourTaboo);
+
+      solutionContentView = (LinearLayout) view.findViewById(R.id.solution_content);
+
+      loading = view.findViewById(R.id.loading);
       return view;
     }
 
@@ -161,27 +177,8 @@ public class ChineseHour extends FragmentActivity {
     public void onActivityCreated(Bundle savedInstanceState) {
       super.onActivityCreated(savedInstanceState);
       SolutionTask task = new SolutionTask();
-      task.setFragment(this);
-      task.execute("");
+      task.execute();
     }
-
-    // @Override
-    // public void onDestroy() {
-    // super.onDestroy();
-    // Log.v("Fragment onDestory()" + hour);
-    // }
-    //
-    // @Override
-    // public void onPause() {
-    // super.onPause();
-    // Log.v("Fragment onPause()" + hour);
-    // }
-    //
-    // @Override
-    // public void onResume() {
-    // super.onResume();
-    // Log.v("Fragment onResume()" + hour);
-    // }
 
     public void onClick(View v) {
       switch (v.getId()) {
@@ -237,39 +234,57 @@ public class ChineseHour extends FragmentActivity {
 
     class SolutionTask extends AsyncTask<String, Integer, String> {
 
-      Fragment fragment;
-
-      public void setFragment(Fragment fragment) {
-        this.fragment = fragment;
-      }
+      SQLiteDatabase database;
 
       @Override
       protected String doInBackground(String... params) {
 
-        int h = hour;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar calendar = Calendar.getInstance();
+        String today = dateFormat.format(calendar.getTime());
 
-        Log.v("hour: " + hour);
+        database = new SolutionDatabaseHelper(getActivity()).getWritableDatabase();
 
-        // SQLiteDatabase database =
-        // DatabaseManager.openDatabase(fragment.getActivity());
-        // HttpClientManager connect = new
-        // HttpClientManager(fragment.getActivity(),
-        // HttpClientManager.REQUEST_PATH + RequestRoute.SOLUTION_HOUR);
-        // connect.addParam("hour", "");
-        // try {
-        // connect.execute(ResuestMethod.GET);
-        // JSONObject json = new JSONObject(connect.getResponse());
-        // JSONObject hourJSONObject = json.getJSONObject("hour");
-        // JSONObject solutionJSONObject = json.getJSONObject("solution");
-        // ContentValues cvs = new ContentValues();
-        // // cvs.put("updated_at", version);
-        // database.update("constitutions", cvs, "type = ?", new String[] {});
-        // database.close();
-        // return null;
-        // } catch (Exception e) { // errorMessage = "网络访问异常";
-        // if (database != null)
-        // database.close();
-        // }
+        Cursor cursor = database.rawQuery("select * from solutions where ableon_type = ? and ableon_id = ?", new String[] { "hour", hour + "" });
+
+        if (cursor == null || cursor.getCount() == 0) {
+
+          HttpClientManager connect = new HttpClientManager(getActivity(), HttpClientManager.REQUEST_PATH + RequestRoute.SOLUTION_HOUR);
+
+          connect.addParam("hour", hour + "");
+
+          try {
+            database.beginTransaction();
+
+            connect.execute(ResuestMethod.GET);
+
+            JSONObject json = new JSONObject(connect.getResponse());
+
+            JSONObject solutionJSON = json.getJSONObject("solution");
+
+            // database.update("hours", cvs, "id = ?", null });
+
+            database.insert("solutions", null, Solution.jsonObjectToContentValues("hour", hour, solutionJSON));
+
+            JSONArray stepsArray = solutionJSON.getJSONArray("steps");
+
+            for (int i = 0; i < stepsArray.length(); i++) {
+              database.insert("steps", null, SolutionStep.jsonObjectToContentValues((JSONObject) stepsArray.get(i)));
+            }
+
+            database.setTransactionSuccessful();
+            database.endTransaction();
+            database.close();
+
+          } catch (Exception e) { // errorMessage = "网络访问异常";
+            Log.v("Insert failed!");
+            database.endTransaction();
+            database.close();
+          }
+        }
+
+        database.close();
+
         return null;
       }
 
@@ -280,10 +295,26 @@ public class ChineseHour extends FragmentActivity {
 
       @Override
       protected void onPostExecute(String result) {
-        // fa.findViewById(id)
+        Solution solution = Solution.getSolution(getActivity(), "hour", hour);
+        if (solution != null) {
+          loading.setVisibility(View.GONE);
+          View solutionView = getLayoutInflater(null).inflate(R.layout.hour_solution, null);
+
+          TextView titleTextView = (TextView) solutionView.findViewById(R.id.title);
+          titleTextView.setText(solution.getTitle());
+
+          TextView efficacy = (TextView) solutionView.findViewById(R.id.efficacy);
+          efficacy.setText(solution.getEffect());
+
+          TextView tips = (TextView) solutionView.findViewById(R.id.tips);
+          tips.setText(solution.getNote());
+
+          solutionContentView.removeAllViews();
+          solutionContentView.addView(solutionView);
+          solutionContentView.setVisibility(View.VISIBLE);
+        }
       }
 
     }
-
   }
 }

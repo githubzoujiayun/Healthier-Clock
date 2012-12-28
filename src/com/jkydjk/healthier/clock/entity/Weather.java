@@ -181,10 +181,10 @@ public class Weather {
 
   public static List<Weather> getWeathers(Context context, String regionID) {
     List<Weather> weathers = new ArrayList<Weather>();
-    SQLiteDatabase database = new WeatherDatabaseHelper(context).getReadableDatabase();
+    SQLiteDatabase database = new WeatherDatabaseHelper(context).getWritableDatabase();
 
     try {
-      SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd");
+      SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
       Calendar calendar = Calendar.getInstance();
       String today = dateFormat.format(calendar.getTime());
       String fields = "region_id, date(date,'localtime'), flag, flag_start, flag_code_start, flag_end, flag_code_end, temperature, wind, wind_power, feel, proposal, uv";
