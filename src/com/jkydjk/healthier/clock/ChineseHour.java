@@ -68,21 +68,24 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
     pager.setCurrentItem(hour == 12 ? 0 : hour);
   }
 
-  public void onPageScrollStateChanged(int arg0) {
-    // TODO Auto-generated method stub
+  public void onPageScrollStateChanged(int state) {
 
   }
 
-  public void onPageScrolled(int arg0, float arg1, int arg2) {
-    // TODO Auto-generated method stub
+  public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
   }
 
   public void onPageSelected(int position) {
+
+    Log.v("onPageSelected(): " + position);
+
     Fragment fragment = pagerAdapter.getItem(position);
     FragmentActivity fa = fragment.getActivity();
-    ScrollView sv = (ScrollView) fa.findViewById(R.id.content_scroll_view);
-    sv.scrollTo(0, 0);
+    if (fa != null) {
+      ScrollView sv = (ScrollView) fa.findViewById(R.id.content_scroll_view);
+      sv.scrollTo(0, 0);
+    }
   }
 
   /**
@@ -205,6 +208,24 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
       super.onActivityCreated(savedInstanceState);
       SolutionTask task = new SolutionTask();
       task.execute();
+    }
+
+    @Override
+    public void onDestroy() {
+      // TODO Auto-generated method stub
+      super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+      // TODO Auto-generated method stub
+      super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+      // TODO Auto-generated method stub
+      super.onResume();
     }
 
     public void onClick(View v) {
