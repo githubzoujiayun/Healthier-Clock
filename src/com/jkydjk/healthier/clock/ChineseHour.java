@@ -49,23 +49,22 @@ import com.jkydjk.healthier.clock.util.Log;
 
 public class ChineseHour extends FragmentActivity implements OnPageChangeListener {
 
+  private View loading;
   private ViewPager pager;
+
+  public static Map<Long, Hour> hours;
 
   private SolutionFragmentPagerAdapter pagerAdapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.chinese_hour);
 
+    setContentView(R.layout.chinese_hour);
+    loading = findViewById(R.id.loading);
     pager = (ViewPager) findViewById(R.id.pager);
-    pagerAdapter = new SolutionFragmentPagerAdapter(getSupportFragmentManager());
-    pager.setAdapter(pagerAdapter);
-    pager.setOnPageChangeListener(this);
-    Time time = new Time();
-    time.setToNow();
-    int hour = Hour.from_time_hour(time.hour);
-    pager.setCurrentItem(hour == 12 ? 0 : hour);
+
+    new HourTask().execute();
   }
 
   public void onPageScrollStateChanged(int state) {
@@ -77,15 +76,52 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
   }
 
   public void onPageSelected(int position) {
-
-    Log.v("onPageSelected(): " + position);
-
     Fragment fragment = pagerAdapter.getItem(position);
     FragmentActivity fa = fragment.getActivity();
     if (fa != null) {
       ScrollView sv = (ScrollView) fa.findViewById(R.id.content_scroll_view);
       sv.scrollTo(0, 0);
     }
+  }
+
+  /**
+   * 
+   * @author miclle
+   * 
+   */
+  class HourTask extends AsyncTask<String, Integer, String> {
+
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+      loading.setVisibility(View.VISIBLE);
+      pager.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected String doInBackground(String... params) {
+      hours = Hour.all(ChineseHour.this);
+      return null;
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+      super.onPostExecute(result);
+
+      pagerAdapter = new SolutionFragmentPagerAdapter(getSupportFragmentManager());
+      pager.setAdapter(pagerAdapter);
+      pager.setOnPageChangeListener(ChineseHour.this);
+
+      Time time = new Time();
+      time.setToNow();
+
+      int hour = Hour.from_time_hour(time.hour);
+      pager.setCurrentItem(hour == 12 ? 0 : hour);
+
+      loading.setVisibility(View.GONE);
+      pager.setVisibility(View.VISIBLE);
+    }
+
   }
 
   /**
@@ -138,7 +174,8 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
     View loading;
 
-    public int hour;
+    public Hour hour;
+    public long hourID;
 
     SharedPreferences sharedPreferences;
 
@@ -158,18 +195,9 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      hour = getArguments().getInt("hour");
+      hourID = getArguments().getInt("hour");
       sharedPreferences = getActivity().getSharedPreferences("configure", Context.MODE_PRIVATE);
-      SQLiteDatabase database = DatabaseManager.openDatabase(this.getActivity());
-      Cursor cursor = database.rawQuery("select * from hours where _id = ?", new String[] { hour + "" });
-      if (cursor != null && cursor.moveToFirst()) {
-        hourName = cursor.getString(cursor.getColumnIndex("name"));
-        hourTimeInterval = cursor.getString(cursor.getColumnIndex("interval"));
-        hourAppropriate = cursor.getString(cursor.getColumnIndex("appropriate"));
-        hourTaboo = cursor.getString(cursor.getColumnIndex("taboo"));
-        cursor.close();
-      }
-      database.close();
+      hour = ChineseHour.hours.get(hourID);
     }
 
     @Override
@@ -178,7 +206,7 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
       contentScrollView = (ScrollView) view.findViewById(R.id.content_scroll_view);
       concernButton = (Button) view.findViewById(R.id.concern_button);
-      int concernResourceID = sharedPreferences.getBoolean("concern_" + hour, false) ? R.drawable.icon_heart_small_red : R.drawable.icon_heart_small_white;
+      int concernResourceID = sharedPreferences.getBoolean("concern_" + hourID, false) ? R.drawable.icon_heart_small_red : R.drawable.icon_heart_small_white;
       Drawable concernIcon = getResources().getDrawable(concernResourceID);
       concernIcon.setBounds(0, 0, concernIcon.getMinimumWidth(), concernIcon.getMinimumHeight());
       concernButton.setCompoundDrawables(concernIcon, null, null, null);
@@ -188,14 +216,15 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
       hourTimeIntervalTextView = (TextView) view.findViewById(R.id.hour_time_interval_text_view);
       appropriateTextView = (TextView) view.findViewById(R.id.appropriate_text_view);
       tabooTextView = (TextView) view.findViewById(R.id.taboo_text_view);
+
       actions = view.findViewById(R.id.actions);
       hourRemind = view.findViewById(R.id.hour_remind);
       hourRemind.setOnClickListener(this);
 
-      hourNameTextView.setText(hourName);
-      hourTimeIntervalTextView.setText(hourTimeInterval);
-      appropriateTextView.setText("宜：" + hourAppropriate);
-      tabooTextView.setText("忌：" + hourTaboo);
+      hourNameTextView.setText(hour.getName());
+      hourTimeIntervalTextView.setText(hour.getTimeInterval());
+      appropriateTextView.setText("宜：" + hour.getAppropriate());
+      tabooTextView.setText("忌：" + hour.getTaboo());
 
       solutionContentView = (LinearLayout) view.findViewById(R.id.solution_content);
 
@@ -206,8 +235,8 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
       super.onActivityCreated(savedInstanceState);
-      SolutionTask task = new SolutionTask();
-      task.execute();
+       SolutionTask task = new SolutionTask();
+       task.execute();
     }
 
     @Override
@@ -231,9 +260,9 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
     public void onClick(View v) {
       switch (v.getId()) {
       case R.id.concern_button: // 特别关注
-        boolean isConcern = sharedPreferences.getBoolean("concern_" + hour, false);
+        boolean isConcern = sharedPreferences.getBoolean("concern_" + hourID, false);
         Editor editor = sharedPreferences.edit();
-        editor.putBoolean("concern_" + hour, !isConcern);
+        editor.putBoolean("concern_" + hourID, !isConcern);
         if (editor.commit()) {
           int concernResourceID = !isConcern ? R.drawable.icon_heart_small_red : R.drawable.icon_heart_small_white;
           Drawable concernIcon = getResources().getDrawable(concernResourceID);
@@ -245,7 +274,7 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
       case R.id.hour_remind:
         Intent intent = new Intent(getActivity(), HourRemind.class);
-        intent.putExtra("hour", hour);
+        intent.putExtra("hour", hourID);
         startActivity(intent);
         break;
 
@@ -293,13 +322,13 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
         database = new SolutionDatabaseHelper(getActivity()).getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("select * from solutions where ableon_type = ? and ableon_id = ?", new String[] { "hour", hour + "" });
+        Cursor cursor = database.rawQuery("select * from solutions where ableon_type = ? and ableon_id = ?", new String[] { "hour", hourID + "" });
 
         if (cursor == null || cursor.getCount() == 0) {
 
           HttpClientManager connect = new HttpClientManager(getActivity(), HttpClientManager.REQUEST_PATH + RequestRoute.SOLUTION_HOUR);
 
-          connect.addParam("hour", hour + "");
+          connect.addParam("hour", hourID + "");
 
           try {
             database.beginTransaction();
@@ -312,7 +341,7 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
             // database.update("hours", cvs, "id = ?", null });
 
-            database.insert("solutions", null, Solution.jsonObjectToContentValues("hour", hour, solutionJSON));
+            database.insert("solutions", null, Solution.jsonObjectToContentValues("hour", hourID, solutionJSON));
 
             JSONArray stepsArray = solutionJSON.getJSONArray("steps");
 
@@ -343,7 +372,7 @@ public class ChineseHour extends FragmentActivity implements OnPageChangeListene
 
       @Override
       protected void onPostExecute(String result) {
-        Solution solution = Solution.getSolution(getActivity(), "hour", hour);
+        Solution solution = Solution.getSolution(getActivity(), "hour", hourID);
         if (solution != null) {
           loading.setVisibility(View.GONE);
           View solutionView = getLayoutInflater(null).inflate(R.layout.hour_solution, null);

@@ -26,7 +26,7 @@ public class HourRemind extends BaseActivity implements OnClickListener {
   ImageView meridian;
   ImageView meridianName;
 
-  private int hour;
+  private long hour;
 
   String hourName;
   String hourTimeInterval;
@@ -42,7 +42,7 @@ public class HourRemind extends BaseActivity implements OnClickListener {
     time.setToNow();
 
     Intent intent = getIntent();
-    hour = intent.getIntExtra("hour", Hour.from_time_hour(time.hour));
+    hour = intent.getLongExtra("hour", Hour.from_time_hour(time.hour));
 
     titleTextView = (TextView) findViewById(R.id.title_text_view);
     appropriateTextView = (TextView) findViewById(R.id.appropriate_text_view);

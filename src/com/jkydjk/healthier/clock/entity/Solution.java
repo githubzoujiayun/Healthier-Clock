@@ -170,7 +170,7 @@ public class Solution {
     this.version = version;
   }
 
-  public static Solution getSolution(Context context, String ableOnType, int ableOnID) {
+  public static Solution getSolution(Context context, String ableOnType, long ableOnID) {
 
     SQLiteDatabase database = new SolutionDatabaseHelper(context).getWritableDatabase();
 
@@ -215,7 +215,7 @@ public class Solution {
    * @return
    * @throws JSONException
    */
-  public static ContentValues jsonObjectToContentValues(String ableOnType, int ableOnID, JSONObject solutionJSON) throws JSONException {
+  public static ContentValues jsonObjectToContentValues(String ableOnType, long ableOnID, JSONObject solutionJSON) throws JSONException {
 
     ContentValues cvs = new ContentValues();
 

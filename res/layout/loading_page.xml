@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@+id/content_view" >
-    
-    <!--
-         <com.jkydjk.healthier.clock.widget.Loading
-        android:id="@+id/loading1"
-        style="@android:style/Widget.ProgressBar.Small.Inverse"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:background="@android:color/transparent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        automatic="true" />
-    -->
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/tea" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dip"
+        android:gravity="center_horizontal"
+        android:text="@string/please_be_patient_wait_for_a_moment"
+        android:textSize="18sp" />
 
     <ProgressBar
-        style="@android:style/Widget.ProgressBar.Inverse"
+        style="?android:attr/progressBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_gravity="center_horizontal" />
 
-</RelativeLayout>
+</LinearLayout>

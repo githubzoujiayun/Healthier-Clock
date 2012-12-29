@@ -464,6 +464,7 @@
 	<string name="hour_time_interval_12">21:00~23:00</string>
     
 	<string name="loading">正在加载&#8230;</string>
+	<string name="please_be_patient_wait_for_a_moment">~内容马上就会呈现～\n请耐心等待片刻</string>
 	
 	<string name="steps">操作步骤</string>
 	<string name="click_steps_to_try">点击步骤试试</string>
