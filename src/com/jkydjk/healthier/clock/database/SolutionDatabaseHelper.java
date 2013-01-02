@@ -20,7 +20,7 @@ public class SolutionDatabaseHelper extends SQLiteOpenHelper {
   public void onCreate(SQLiteDatabase db) {
     db.execSQL("CREATE TABLE solutions (_id INTEGER PRIMARY KEY, ableon_type TEXT, ableon_id INTEGER, solution_id INTEGER, type TEXT, category INTEGER, title TEXT, consuming INTEGER, started_at INTEGER, ended_at INTEGER, frequency INTEGER, times INTEGER, cycle INTEGER, description TEXT, effect TEXT, principle TEXT, note TEXT, favorited INTEGER, alarm INTEGER, version INTEGER);");
 
-    db.execSQL("CREATE TABLE steps (_id INTEGER PRIMARY KEY, steps_id INTEGER, solution_id INTEGER, no INTEGER, content TEXT);");
+    db.execSQL("CREATE TABLE steps (_id INTEGER PRIMARY KEY, step_id INTEGER, solution_id INTEGER, no INTEGER, content TEXT);");
   }
 
   @Override

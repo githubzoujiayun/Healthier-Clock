@@ -24,20 +24,20 @@ public class User implements Serializable {
   public String gender;
 
   public String province;
-  public Integer provinceID;
+  public Long provinceID;
 
   public String city;
-  public Integer cityID;
+  public Long cityID;
 
   public String district;
-  public Integer districtID;
+  public Long districtID;
 
   public User() {
     super();
   }
 
-  public User(String token, String username, String email, String realname, String constitution, String birthday, String gender, String province, Integer provinceID, String city, Integer cityID,
-      String district, Integer districtID) {
+  public User(String token, String username, String email, String realname, String constitution, String birthday, String gender, String province, Long provinceID, String city, Long cityID,
+      String district, Long districtID) {
     super();
     this.token = token;
     this.username = username;
@@ -118,11 +118,11 @@ public class User implements Serializable {
     this.province = province;
   }
 
-  public Integer getProvinceID() {
+  public Long getProvinceID() {
     return provinceID;
   }
 
-  public void setProvinceID(Integer provinceID) {
+  public void setProvinceID(Long provinceID) {
     this.provinceID = provinceID;
   }
 
@@ -134,11 +134,11 @@ public class User implements Serializable {
     this.city = city;
   }
 
-  public Integer getCityID() {
+  public Long getCityID() {
     return cityID;
   }
 
-  public void setCityID(Integer cityID) {
+  public void setCityID(Long cityID) {
     this.cityID = cityID;
   }
 
@@ -150,11 +150,11 @@ public class User implements Serializable {
     this.district = district;
   }
 
-  public Integer getDistrictID() {
+  public Long getDistrictID() {
     return districtID;
   }
 
-  public void setDistrictID(Integer districtID) {
+  public void setDistrictID(Long districtID) {
     this.districtID = districtID;
   }
 
@@ -171,13 +171,13 @@ public class User implements Serializable {
     user.gender = json.isNull("gender") ? null : json.optString("gender");
 
     user.province = json.isNull("province") ? null : json.optString("province");
-    user.provinceID = json.isNull("province_id") ? null : json.optInt("province_id");
+    user.provinceID = json.isNull("province_id") ? null : json.optLong("province_id");
 
     user.city = json.isNull("city") ? null : json.optString("city");
-    user.cityID = json.isNull("city_id") ? null : json.optInt("city_id");
+    user.cityID = json.isNull("city_id") ? null : json.optLong("city_id");
 
     user.district = json.isNull("district") ? null : json.optString("district");
-    user.districtID = json.isNull("district_id") ? null : json.optInt("district_id");
+    user.districtID = json.isNull("district_id") ? null : json.optLong("district_id");
 
     return user;
   }
@@ -200,19 +200,19 @@ public class User implements Serializable {
       editor.putString("province", user.province);
 
     if (user.provinceID != null)
-      editor.putInt("province", user.provinceID);
+      editor.putLong("province", user.provinceID);
 
     if (user.city != null)
       editor.putString("city", user.city);
 
     if (user.cityID != null)
-      editor.putInt("city_id", user.cityID);
+      editor.putLong("city_id", user.cityID);
 
     if (user.district != null)
       editor.putString("district", user.district);
 
     if (user.districtID != null)
-      editor.putInt("district", user.districtID);
+      editor.putLong("district", user.districtID);
 
     editor.commit();
   }

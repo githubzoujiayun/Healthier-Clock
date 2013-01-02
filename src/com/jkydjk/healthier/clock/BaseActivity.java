@@ -4,7 +4,9 @@ import java.io.File;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Environment;
+import android.widget.Toast;
 
 public class BaseActivity extends Activity {
 
@@ -33,5 +35,5 @@ public class BaseActivity extends Activity {
   public static int getStringResourceID(Context context, String name) {
     return context.getResources().getIdentifier(context.getPackageName() + ":string/" + name, null, null);
   }
-
+  
 }

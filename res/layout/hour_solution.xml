@@ -23,42 +23,34 @@
         android:layout_height="wrap_content"
         android:text="" />
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/steps_divider"
-            style="@style/list_block_divider"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="@string/steps" />
-
-        <TextView
-            style="@style/list_block_divider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="12dip"
-            android:gravity="right|center_vertical"
-            android:text="@string/click_steps_to_try" />
-    </RelativeLayout>
-
-    <!--
     <LinearLayout
-        android:id="@+id/steps"
+        android:id="@+id/steps_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <include layout="@layout/solution_step" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
-        <include layout="@layout/solution_step" />
+            <TextView
+                android:id="@+id/steps_divider"
+                style="@style/list_block_divider"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/steps" />
 
-        <include layout="@layout/solution_step" />
+            <TextView
+                style="@style/list_block_divider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dip"
+                android:gravity="right|center_vertical"
+                android:text="@string/click_steps_to_try" />
+        </RelativeLayout>
     </LinearLayout>
-    -->
 
     <TextView
         style="@style/list_block_divider"

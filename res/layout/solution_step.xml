@@ -5,6 +5,7 @@
     android:background="@android:color/transparent" >
 
     <TextView
+        android:id="@+id/step_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -14,26 +15,23 @@
         android:paddingLeft="5dip"
         android:paddingRight="5dip"
         android:paddingTop="2dip"
-        android:text="1"
         android:textColor="#FF666666"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/step_content"
         style="@style/solution_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:paddingLeft="28dip"
-        android:text="按摩太阳穴，两拇指或两中指端分别在左右两太阳穴上揉动30次。或用双手拇指按压太阳穴，然后用弯曲的食指第二节的内侧轻刮眼眶一圈，由内上→外上→外下→内下，使眼眶周围的多个穴位受到按摩。" />
+        android:paddingLeft="28dip" />
 
     <RelativeLayout
         android:id="@+id/acupoint_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/text"
+        android:layout_below="@+id/step_content"
         android:background="#FFFFFFFF"
         android:paddingBottom="10dip"
         android:paddingLeft="28dip"
@@ -46,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="5dip"
             android:singleLine="true"
-            android:text="看看穴位在哪？"
+            android:text="@string/view_acupoint"
             android:textColor="#FFFF3300"
             android:textSize="16sp" />
 
@@ -61,6 +59,7 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="1.0px"
+        android:layout_below="@+id/acupoint_layout"
         android:background="@drawable/setting_line" />
 
 </RelativeLayout>

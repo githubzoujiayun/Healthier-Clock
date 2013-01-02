@@ -1,19 +1,15 @@
 package com.jkydjk.healthier.clock;
 
-import com.jkydjk.healthier.clock.database.DatabaseManager;
-import com.jkydjk.healthier.clock.entity.Hour;
-
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
+
+import com.jkydjk.healthier.clock.entity.Hour;
 
 public class HourRemind extends BaseActivity implements OnClickListener {
 
@@ -26,12 +22,9 @@ public class HourRemind extends BaseActivity implements OnClickListener {
   ImageView meridian;
   ImageView meridianName;
 
-  private long hour;
+  private long hourID;
 
-  String hourName;
-  String hourTimeInterval;
-  String hourAppropriate;
-  String hourTaboo;
+  private Hour hour;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -42,38 +35,28 @@ public class HourRemind extends BaseActivity implements OnClickListener {
     time.setToNow();
 
     Intent intent = getIntent();
-    hour = intent.getLongExtra("hour", Hour.from_time_hour(time.hour));
+    hourID = intent.getIntExtra("hourID", Hour.from_time_hour(time.hour));
 
     titleTextView = (TextView) findViewById(R.id.title_text_view);
     appropriateTextView = (TextView) findViewById(R.id.appropriate_text_view);
     tabooTextView = (TextView) findViewById(R.id.taboo_text_view);
 
     meridian = (ImageView) findViewById(R.id.meridian);
-    meridian.setImageResource(getImageResourceID(this, "meridian_" + hour));
+    meridian.setImageResource(getImageResourceID(this, "meridian_" + hourID));
 
     meridianName = (ImageView) findViewById(R.id.meridian_name);
-    meridianName.setImageResource(getImageResourceID(this, "meridian_name_" + hour));
+    meridianName.setImageResource(getImageResourceID(this, "meridian_name_" + hourID));
 
     back = (Button) findViewById(R.id.back);
     back.setOnClickListener(this);
 
-    SQLiteDatabase database = DatabaseManager.openDatabase(this);
+    hour = Hour.find(this, hourID);
 
-    Cursor cursor = database.rawQuery("select * from hours where _id = ?", new String[] { hour + "" });
-
-    if (cursor != null && cursor.moveToFirst()) {
-      hourName = cursor.getString(cursor.getColumnIndex("name"));
-      hourTimeInterval = cursor.getString(cursor.getColumnIndex("interval"));
-      hourAppropriate = cursor.getString(cursor.getColumnIndex("appropriate"));
-      hourTaboo = cursor.getString(cursor.getColumnIndex("taboo"));
-
-      titleTextView.setText(hourName + " " + hourTimeInterval);
-      appropriateTextView.setText("宜：" + hourAppropriate);
-      tabooTextView.setText("忌：" + hourTaboo);
-
-      cursor.close();
+    if (hour != null) {
+      titleTextView.setText(hour.getName() + " " + hour.getTimeInterval());
+      appropriateTextView.setText("宜：" + hour.getAppropriate());
+      tabooTextView.setText("忌：" + hour.getTaboo());
     }
-    database.close();
 
   }
 
@@ -82,11 +65,9 @@ public class HourRemind extends BaseActivity implements OnClickListener {
     case R.id.back:
       finish();
       break;
-
     default:
       break;
     }
-
   }
 
 }

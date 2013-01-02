@@ -2,6 +2,8 @@ package com.jkydjk.healthier.clock;
 
 import java.util.ArrayList;
 
+import com.jkydjk.healthier.clock.util.Log;
+
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -111,12 +113,14 @@ public class Help extends BaseActivity implements OnPageChangeListener {
 
     @Override
     public void destroyItem(View container, int position, Object object) {
+      Log.v("destroyItem: " + position);
       ((ViewPager) container).removeView(pages.get(position));
     }
 
     @Override
     public Object instantiateItem(View container, int position) {
       ((ViewPager) container).addView(pages.get(position));
+      Log.v("instantiateItem: " + position);
       return pages.get(position);
     }
 

@@ -3,7 +3,6 @@ package com.jkydjk.healthier.clock.entity;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jkydjk.healthier.clock.ChineseHour;
 import com.jkydjk.healthier.clock.database.DatabaseManager;
 
 import android.content.Context;
@@ -22,18 +21,51 @@ public class Hour {
    * #根据给定时间(小时)返回对应时辰
    * 
    * @param hour
-   * @return
+   * @return 1~12
    */
   public static int from_time_hour(int hour) {
-    int a = hour % 2;
+    if (hour == 0 || hour == 23) {
+      return 1;
+    }
 
-    if (a == 0) {
-      return hour / 2;
+    if (hour % 2 == 0) {
+      return hour / 2 + 1;
     } else {
-      return (hour + 1) / 2;
+      return (hour + 1) / 2 + 1;
     }
   }
 
+  /**
+   * 根据ID查找
+   * 
+   * @param context
+   * @param hourID
+   * @return
+   */
+  public static Hour find(Context context, long hourID) {
+    Hour hour = null;
+    SQLiteDatabase database = DatabaseManager.openDatabase(context);
+    Cursor cursor = database.rawQuery("select * from hours where _id = ?", new String[] { hourID + "" });
+    if (cursor != null && cursor.moveToFirst()) {
+      hour = new Hour();
+      hour.id = cursor.getLong(cursor.getColumnIndex("_id"));
+      hour.name = cursor.getString(cursor.getColumnIndex("name"));
+      hour.timeInterval = cursor.getString(cursor.getColumnIndex("interval"));
+      hour.appropriate = cursor.getString(cursor.getColumnIndex("appropriate"));
+      hour.taboo = cursor.getString(cursor.getColumnIndex("taboo"));
+      cursor.close();
+    }
+    database.close();
+
+    return hour;
+  }
+
+  /**
+   * 返回所有时辰
+   * 
+   * @param context
+   * @return
+   */
   public static Map<Long, Hour> all(Context context) {
     Map<Long, Hour> hours = null;
     SQLiteDatabase database = DatabaseManager.openDatabase(context);

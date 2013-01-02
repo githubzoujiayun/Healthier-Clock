@@ -303,11 +303,18 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
         }
 
         List<Weather> weathers = task.weathers;
+        
+        if (weathers.size() == 0) {
+          weatherInfoTip.setText(R.string.unable_to_get_weather_information);
+          return;
+        }
+        
         if (weathers.size() >= 1) {
           Weather today = weathers.get(0);
           weatherLogoToday.setText(today.getIcon(AlarmClock.this));
           weatherTextToday.setText("今天 " + today.getFlag() + "\n" + today.getTemperature());
         }
+        
         if (weathers.size() >= 2) {
           Weather tomorrow = weathers.get(1);
           weatherLogoTomorrow.setText(tomorrow.getIcon(AlarmClock.this));
@@ -315,6 +322,7 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
         }
         weatherInfoTip.setVisibility(View.GONE);
         weatherInfo.setVisibility(View.VISIBLE);
+
       }
     });
 
