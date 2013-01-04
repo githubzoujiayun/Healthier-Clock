@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jkydjk.healthier.clock.database.DatabaseManager;
+import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
@@ -104,7 +104,7 @@ public class Constitution extends BaseActivity implements OnClickListener {
     @Override
     protected String doInBackground(String... params) {
 
-      SQLiteDatabase database = DatabaseManager.openDatabase(Constitution.this);
+      SQLiteDatabase database = new DatabaseHelper(Constitution.this).getWritableDatabase();
 
       if (cache) {
         String[] selectionArgs = { constitutionType };

@@ -31,6 +31,12 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/weather_sunny" />
 
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/picture"
+                    android:src="@drawable/picture_bottom_inner_shadow" />
+
                 <Button
                     android:id="@+id/concern_button"
                     android:layout_width="wrap_content"

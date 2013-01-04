@@ -1,12 +1,15 @@
 package com.jkydjk.healthier.clock.entity;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "steps")
+@DatabaseTable(tableName = "solution_steps")
 public class SolutionStep {
 
   @DatabaseField(id = true)
@@ -20,6 +23,8 @@ public class SolutionStep {
 
   @DatabaseField
   private String content;
+
+  private ArrayList<Integer> acupointIds = new ArrayList<Integer>();
 
   public SolutionStep() {
     super();
@@ -41,6 +46,13 @@ public class SolutionStep {
       step.no = stepJSON.getInt("no");
 
     step.content = stepJSON.getString("content");
+
+    JSONArray acupoints = stepJSON.getJSONArray("acupoints");
+
+    for (int i = 0; i < acupoints.length(); i++) {
+      int acupointId = (Integer) acupoints.get(i);
+      step.acupointIds.add(i, acupointId);
+    }
 
     return step;
   }
@@ -75,6 +87,14 @@ public class SolutionStep {
 
   public void setContent(String content) {
     this.content = content;
+  }
+
+  public ArrayList<Integer> getAcupointIds() {
+    return acupointIds;
+  }
+
+  public void setAcupointIds(ArrayList<Integer> acupointIds) {
+    this.acupointIds = acupointIds;
   }
 
 }

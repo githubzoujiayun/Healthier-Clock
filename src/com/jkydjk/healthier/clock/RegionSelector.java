@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.SimpleCursorTreeAdapter;
 import android.widget.Toast;
 
-import com.jkydjk.healthier.clock.database.DatabaseManager;
+import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
@@ -43,7 +43,7 @@ public class RegionSelector extends BaseActivity implements OnClickListener, OnC
     backAction = findViewById(R.id.back);
     backAction.setOnClickListener(this);
 
-    SQLiteDatabase database = DatabaseManager.openDatabase(this);
+    SQLiteDatabase database = new DatabaseHelper(this).getWritableDatabase();
 
     Cursor cursor = database.rawQuery("select * from regions where type = 'Province' order by _id", null);
 
@@ -92,7 +92,7 @@ public class RegionSelector extends BaseActivity implements OnClickListener, OnC
 
     @Override
     protected Cursor getChildrenCursor(Cursor groupCursor) {
-      SQLiteDatabase database = DatabaseManager.openDatabase(RegionSelector.this);
+      SQLiteDatabase database = new DatabaseHelper(RegionSelector.this).getWritableDatabase();
       return database.rawQuery("select * from regions where type = 'City' and parent_id = '" + groupCursor.getInt(groupCursor.getColumnIndex("_id")) + "' order by _id", null);
     }
 
@@ -111,7 +111,7 @@ public class RegionSelector extends BaseActivity implements OnClickListener, OnC
 
   public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-    SQLiteDatabase database = DatabaseManager.openDatabase(this);
+    SQLiteDatabase database = new DatabaseHelper(this).getWritableDatabase();
 
     Cursor cursor = database.rawQuery("select * from regions where _id = ?", new String[] { id + "" });
 

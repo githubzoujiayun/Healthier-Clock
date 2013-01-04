@@ -3,7 +3,7 @@ package com.jkydjk.healthier.clock.entity;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jkydjk.healthier.clock.database.DatabaseManager;
+import com.jkydjk.healthier.clock.database.DatabaseHelper;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -44,7 +44,9 @@ public class Hour {
    */
   public static Hour find(Context context, long hourID) {
     Hour hour = null;
-    SQLiteDatabase database = DatabaseManager.openDatabase(context);
+    
+    SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
+    
     Cursor cursor = database.rawQuery("select * from hours where _id = ?", new String[] { hourID + "" });
     if (cursor != null && cursor.moveToFirst()) {
       hour = new Hour();
@@ -58,33 +60,6 @@ public class Hour {
     database.close();
 
     return hour;
-  }
-
-  /**
-   * 返回所有时辰
-   * 
-   * @param context
-   * @return
-   */
-  public static Map<Long, Hour> all(Context context) {
-    Map<Long, Hour> hours = null;
-    SQLiteDatabase database = DatabaseManager.openDatabase(context);
-    Cursor cursor = database.rawQuery("select * from hours", null);
-    if (cursor != null && cursor.moveToFirst()) {
-      hours = new HashMap<Long, Hour>();
-      do {
-        Hour hour = new Hour();
-        hour.id = cursor.getLong(cursor.getColumnIndex("_id"));
-        hour.name = cursor.getString(cursor.getColumnIndex("name"));
-        hour.timeInterval = cursor.getString(cursor.getColumnIndex("interval"));
-        hour.appropriate = cursor.getString(cursor.getColumnIndex("appropriate"));
-        hour.taboo = cursor.getString(cursor.getColumnIndex("taboo"));
-        hours.put(hour.id, hour);
-      } while (cursor.moveToNext());
-      cursor.close();
-    }
-    database.close();
-    return hours;
   }
 
   public long getId() {

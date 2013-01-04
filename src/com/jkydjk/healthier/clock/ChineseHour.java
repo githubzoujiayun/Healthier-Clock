@@ -41,7 +41,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.mapped.MappedPreparedStmt;
-import com.jkydjk.healthier.clock.database.SolutionDatabaseHelper;
+import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Hour;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
@@ -51,7 +51,7 @@ import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
 
-public class ChineseHour extends OrmLiteBaseActivity<SolutionDatabaseHelper> implements OnClickListener, OnTouchListener {
+public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements OnClickListener, OnTouchListener {
 
   ScrollView contentScrollView;
   TextView updatedAtTextView;
@@ -81,7 +81,9 @@ public class ChineseHour extends OrmLiteBaseActivity<SolutionDatabaseHelper> imp
   LayoutInflater layoutInflater;
   SharedPreferences sharedPreferences;
 
+  DatabaseHelper helper;
   Dao<Solution, Integer> solutionDao;
+  Dao<SolutionStep, Integer> solutionStepDao;
 
   Hour hour;
   int hourID;
@@ -170,10 +172,14 @@ public class ChineseHour extends OrmLiteBaseActivity<SolutionDatabaseHelper> imp
 
       layoutInflater = ChineseHour.this.getLayoutInflater();
 
-      solutionID = sharedPreferences.getInt("hour_solution_" + hourID, 0);
+      solutionID = sharedPreferences.getInt("solution_" + hourID, 0);
 
       try {
-        solutionDao = getHelper().getSolutionDataDao();
+        helper = getHelper();
+
+        solutionDao = helper.getSolutionDao();
+
+        solutionStepDao = helper.getSolutionStepDao();
 
         solution = solutionDao.queryForId(solutionID);
 
@@ -195,15 +201,13 @@ public class ChineseHour extends OrmLiteBaseActivity<SolutionDatabaseHelper> imp
 
           JSONArray stepsArray = solutionJSON.getJSONArray("steps");
 
-          ForeignCollection<SolutionStep> steps = solutionDao.getEmptyForeignCollection("steps");
-
           for (int i = 0; i < stepsArray.length(); i++) {
             SolutionStep step = SolutionStep.parseJsonObject((JSONObject) stepsArray.get(i));
             step.setSolution(solution);
-            steps.add(step);
-          }
+            solutionStepDao.createOrUpdate(step);
 
-          solution.setSteps(steps);
+            Log.v("step acupoint_ids: " + step.getAcupointIds());
+          }
 
           solutionDao.createOrUpdate(solution);
 
@@ -213,8 +217,8 @@ public class ChineseHour extends OrmLiteBaseActivity<SolutionDatabaseHelper> imp
 
           Editor editor = sharedPreferences.edit();
 
-          editor.putInt("hour_solution_" + hourID, solution.getId());
-          editor.putString("hour_solution_" + hourID + "_updated_at", today);
+          editor.putInt("solution_" + hourID, solution.getId());
+          editor.putString("solution_" + hourID + "_updated_at", today);
           editor.commit();
         }
 
@@ -230,14 +234,14 @@ public class ChineseHour extends OrmLiteBaseActivity<SolutionDatabaseHelper> imp
     protected void onPostExecute(String result) {
       super.onPostExecute(result);
 
-      String updatedAt = sharedPreferences.getString("hour_solution_" + hourID + "_updated_at", null);
+      String updatedAt = sharedPreferences.getString("solution_" + hourID + "_updated_at", null);
 
       if (updatedAt != null) {
         updatedAtTextView.setText("更新于" + updatedAt);
         updatedAtTextView.setVisibility(View.VISIBLE);
       }
 
-      solutionID = sharedPreferences.getInt("hour_solution_" + hourID, 0);
+      solutionID = sharedPreferences.getInt("solution_" + hourID, 0);
 
       if (solution != null) {
 
@@ -265,8 +269,6 @@ public class ChineseHour extends OrmLiteBaseActivity<SolutionDatabaseHelper> imp
           while (it.hasNext()) {
             SolutionStep step = (SolutionStep) it.next();
 
-            Log.v("solutionStep: " + step);
-
             View stepView = layoutInflater.inflate(R.layout.solution_step, null);
 
             TextView stepNoTextView = (TextView) stepView.findViewById(R.id.step_no);
@@ -282,7 +284,6 @@ public class ChineseHour extends OrmLiteBaseActivity<SolutionDatabaseHelper> imp
             });
 
             stepsView.addView(stepView);
-
           }
         }
 
@@ -293,6 +294,8 @@ public class ChineseHour extends OrmLiteBaseActivity<SolutionDatabaseHelper> imp
         actionsToolbar.setVisibility(View.VISIBLE);
 
         favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
+
+        helper.close();
 
       } else {
         loading.findViewById(R.id.loading_icon).setVisibility(View.GONE);

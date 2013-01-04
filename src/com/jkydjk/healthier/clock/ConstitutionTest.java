@@ -27,7 +27,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
 
 import com.jkydjk.healthier.clock.adapter.QuestionListAdapter;
-import com.jkydjk.healthier.clock.database.DatabaseManager;
+import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Question;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.widget.CustomDialog;
@@ -68,7 +68,7 @@ public class ConstitutionTest extends BaseActivity implements OnClickListener, O
 
     questions.add(0, constitutionTextTop);
 
-    SQLiteDatabase database = DatabaseManager.openDatabase(this);
+    SQLiteDatabase database = new DatabaseHelper(this).getWritableDatabase();
 
     ContentValues cvs = new ContentValues();
     cvs.put("score", "");
@@ -159,7 +159,7 @@ public class ConstitutionTest extends BaseActivity implements OnClickListener, O
    */
   public void calculate() {
 
-    SQLiteDatabase database = DatabaseManager.openDatabase(this);
+    SQLiteDatabase database = new DatabaseHelper(this).getWritableDatabase();
 
     Cursor cursor = database.rawQuery("select * from constitution_questions where score = '' or score = 0 or score = 'NULL' or score is NULL", null);
 
@@ -290,7 +290,7 @@ public class ConstitutionTest extends BaseActivity implements OnClickListener, O
       break;
     }
 
-    SQLiteDatabase database = DatabaseManager.openDatabase(this);
+    SQLiteDatabase database = new DatabaseHelper(this).getWritableDatabase();
     ContentValues cvs = new ContentValues();
     cvs.put("score", score);
     String[] whereArgs = { id + "" };
