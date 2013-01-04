@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jkydjk.healthier.clock.entity.Hour;
+import com.jkydjk.healthier.clock.util.ActivityHelper;
 
 public class HourRemind extends BaseActivity implements OnClickListener {
 
@@ -42,10 +43,10 @@ public class HourRemind extends BaseActivity implements OnClickListener {
     tabooTextView = (TextView) findViewById(R.id.taboo_text_view);
 
     meridian = (ImageView) findViewById(R.id.meridian);
-    meridian.setImageResource(getImageResourceID(this, "meridian_" + hourID));
+    meridian.setImageResource(ActivityHelper.getImageResourceID(this, "meridian_" + hourID));
 
     meridianName = (ImageView) findViewById(R.id.meridian_name);
-    meridianName.setImageResource(getImageResourceID(this, "meridian_name_" + hourID));
+    meridianName.setImageResource(ActivityHelper.getImageResourceID(this, "meridian_name_" + hourID));
 
     back = (Button) findViewById(R.id.back);
     back.setOnClickListener(this);

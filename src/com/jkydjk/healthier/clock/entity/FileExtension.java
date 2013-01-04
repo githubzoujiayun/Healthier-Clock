@@ -7,12 +7,13 @@ import android.view.View;
 
 import com.jkydjk.healthier.clock.BaseActivity;
 import com.jkydjk.healthier.clock.R;
+import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.FileUtil;
 import com.jkydjk.healthier.clock.widget.FileItem;
 
 public class FileExtension implements Comparable<FileExtension> {
 
-    public static FileExtension SDCARD_FILE_EXTENSION = new FileExtension(BaseActivity.SDCARD);
+    public static FileExtension SDCARD_FILE_EXTENSION = new FileExtension(ActivityHelper.SDCARD);
     
     public static final int FLODER_IS_EMPTY = 0x0;
     public static final int NO_FILES_IN_THE_FLODER = 0x1;

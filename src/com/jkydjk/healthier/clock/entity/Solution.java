@@ -1,234 +1,128 @@
 package com.jkydjk.healthier.clock.entity;
 
-import java.util.ArrayList;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.jkydjk.healthier.clock.database.SolutionDatabaseHelper;
+import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
+@DatabaseTable(tableName = "solutions")
 public class Solution {
 
-  private long id;
+  @DatabaseField(id = true)
+  private int id;
+
+  @DatabaseField
   private String type;
+
+  @DatabaseField
   private int category;
+
+  @DatabaseField
   private String title;
+
+  @DatabaseField
   private int consuming;
+
+  @DatabaseField
   private int startedAt;
+
+  @DatabaseField
   private int endedAt;
+
+  @DatabaseField
   private int frequency;
+
+  @DatabaseField
   private int times;
+
+  @DatabaseField
   private int cycle;
+
+  @DatabaseField
   private String description;
+
+  @DatabaseField
   private String effect;
+
+  @DatabaseField
   private String principle;
+
+  @DatabaseField
   private String note;
-  private int favorited;
-  private int alarm;
+
+  @DatabaseField
+  private boolean favorited;
+
+  @DatabaseField
+  private boolean alarm;
+
+  @DatabaseField
   private long version;
 
-  private ArrayList<SolutionStep> steps;
+  @ForeignCollectionField(eager = false)
+  private ForeignCollection<SolutionStep> steps;
 
   public Solution() {
     super();
   }
 
   /**
-   * 根据i查找Solution
+   * 从JSONObject中解析Solution
    * 
-   * @param context
-   * @param id
-   * @return
-   */
-  public static Solution find(Context context, long id) {
-    Solution solution = null;
-    SQLiteDatabase database = new SolutionDatabaseHelper(context).getWritableDatabase();
-
-    Cursor cursor = database.rawQuery("select * from solutions where solution_id = ?", new String[] { id + "" });
-
-    if (cursor != null && cursor.moveToFirst()) {
-      solution = new Solution();
-      solution.id = cursor.getLong(cursor.getColumnIndex("solution_id"));
-      solution.title = cursor.getString(cursor.getColumnIndex("title"));
-      solution.type = cursor.getString(cursor.getColumnIndex("type"));
-      solution.category = cursor.getInt(cursor.getColumnIndex("category"));
-      solution.consuming = cursor.getInt(cursor.getColumnIndex("consuming"));
-      solution.startedAt = cursor.getInt(cursor.getColumnIndex("started_at"));
-      solution.endedAt = cursor.getInt(cursor.getColumnIndex("ended_at"));
-      solution.frequency = cursor.getInt(cursor.getColumnIndex("frequency"));
-      solution.times = cursor.getInt(cursor.getColumnIndex("times"));
-      solution.cycle = cursor.getInt(cursor.getColumnIndex("cycle"));
-      solution.description = cursor.getString(cursor.getColumnIndex("description"));
-      solution.effect = cursor.getString(cursor.getColumnIndex("effect"));
-      solution.principle = cursor.getString(cursor.getColumnIndex("principle"));
-      solution.note = cursor.getString(cursor.getColumnIndex("note"));
-      solution.favorited = cursor.getInt(cursor.getColumnIndex("favorited"));
-      solution.alarm = cursor.getInt(cursor.getColumnIndex("alarm"));
-      solution.version = cursor.getLong(cursor.getColumnIndex("version"));
-    }
-
-    if (solution != null) {
-      cursor = database.rawQuery("select * from steps where solution_id = ? group by no order by no", new String[] { id + "" });
-      if (cursor != null && cursor.moveToFirst()) {
-        solution.steps = new ArrayList<SolutionStep>();
-        do {
-          SolutionStep step = new SolutionStep();
-          step.setSolutionID(id);
-          step.setId(cursor.getInt(cursor.getColumnIndex("step_id")));
-          step.setNo(cursor.getInt(cursor.getColumnIndex("no")));
-          step.setContent(cursor.getString(cursor.getColumnIndex("content")));
-          solution.steps.add(step);
-        } while (cursor.moveToNext());
-        cursor.close();
-      }
-    }
-
-    database.close();
-    return solution;
-  }
-
-  /**
-   * 
-   * @param context
-   * @param hour
-   * @return
-   */
-  public static Solution getHourSolution(Context context, long hour) {
-
-    SQLiteDatabase database = new SolutionDatabaseHelper(context).getWritableDatabase();
-
-    Cursor cursor = database.rawQuery("select * from solutions where ableon_type = ? and ableon_id = ?", new String[] { "hour", hour + "" });
-
-    if (cursor != null && cursor.moveToFirst()) {
-
-      Solution solution = new Solution();
-
-      solution.id = cursor.getLong(cursor.getColumnIndex("solution_id"));
-      solution.title = cursor.getString(cursor.getColumnIndex("title"));
-      solution.type = cursor.getString(cursor.getColumnIndex("type"));
-      solution.category = cursor.getInt(cursor.getColumnIndex("category"));
-      solution.consuming = cursor.getInt(cursor.getColumnIndex("consuming"));
-      solution.startedAt = cursor.getInt(cursor.getColumnIndex("started_at"));
-      solution.endedAt = cursor.getInt(cursor.getColumnIndex("ended_at"));
-      solution.frequency = cursor.getInt(cursor.getColumnIndex("frequency"));
-      solution.times = cursor.getInt(cursor.getColumnIndex("times"));
-      solution.cycle = cursor.getInt(cursor.getColumnIndex("cycle"));
-      solution.description = cursor.getString(cursor.getColumnIndex("description"));
-      solution.effect = cursor.getString(cursor.getColumnIndex("effect"));
-      solution.principle = cursor.getString(cursor.getColumnIndex("principle"));
-      solution.note = cursor.getString(cursor.getColumnIndex("note"));
-      solution.favorited = cursor.getInt(cursor.getColumnIndex("favorited"));
-      solution.alarm = cursor.getInt(cursor.getColumnIndex("alarm"));
-      solution.version = cursor.getLong(cursor.getColumnIndex("version"));
-
-      database.close();
-      return solution;
-    }
-
-    database.close();
-
-    return null;
-  }
-
-  /**
-   * 收藏方案
-   * 
-   * @param context
-   * @param id
-   * @return
-   */
-  public static boolean favorite(Context context, long id) {
-    SQLiteDatabase database = new SolutionDatabaseHelper(context).getWritableDatabase();
-    ContentValues cvs = new ContentValues();
-    cvs.put("favorited", 1);
-    int rows = database.update("solutions", cvs, "solution_id = ?", new String[] { id + "" });
-    return rows > 0 ? true : false;
-  }
-
-  /**
-   * 收藏方案
-   * 
-   * @param context
-   * @param id
-   * @return
-   */
-  public static boolean unfavorite(Context context, long id) {
-    SQLiteDatabase database = new SolutionDatabaseHelper(context).getWritableDatabase();
-    ContentValues cvs = new ContentValues();
-    cvs.put("favorited", 0);
-    int rows = database.update("solutions", cvs, "solution_id = ?", new String[] { id + "" });
-    return rows > 0 ? true : false;
-  }
-
-  /**
-   * 
-   * @param ableOnType
-   * @param ableOnID
    * @param solutionJSON
    * @return
    * @throws JSONException
    */
-  public static ContentValues jsonObjectToContentValues(String ableOnType, long ableOnID, JSONObject solutionJSON) throws JSONException {
+  public static Solution parseJsonObject(JSONObject solutionJSON) throws JSONException {
 
-    ContentValues cvs = new ContentValues();
+    Solution solution = new Solution();
 
-    cvs.put("ableon_type", ableOnType);
-    cvs.put("ableon_id", ableOnID);
+    solution.id = solutionJSON.getInt("id");
 
-    cvs.put("solution_id", solutionJSON.getLong("id"));
+    solution.title = solutionJSON.getString("title");
 
-    cvs.put("title", solutionJSON.getString("title"));
-
-    cvs.put("type", solutionJSON.getString("type"));
+    solution.type = solutionJSON.getString("type");
 
     if (!solutionJSON.isNull("category"))
-      cvs.put("category", solutionJSON.getInt("category"));
+      solution.category = solutionJSON.getInt("category");
 
     if (!solutionJSON.isNull("consuming"))
-      cvs.put("consuming", solutionJSON.getInt("consuming"));
+      solution.consuming = solutionJSON.getInt("consuming");
 
     if (!solutionJSON.isNull("started_at"))
-      cvs.put("started_at", solutionJSON.getInt("started_at"));
+      solution.startedAt = solutionJSON.getInt("started_at");
 
     if (!solutionJSON.isNull("ended_at"))
-      cvs.put("ended_at", solutionJSON.getInt("ended_at"));
+      solution.endedAt = solutionJSON.getInt("ended_at");
 
     if (!solutionJSON.isNull("frequency"))
-      cvs.put("frequency", solutionJSON.getInt("frequency"));
+      solution.frequency = solutionJSON.getInt("frequency");
 
     if (!solutionJSON.isNull("times"))
-      cvs.put("times", solutionJSON.getInt("times"));
+      solution.times = solutionJSON.getInt("times");
 
     if (!solutionJSON.isNull("cycle"))
-      cvs.put("cycle", solutionJSON.getInt("cycle"));
+      solution.cycle = solutionJSON.getInt("cycle");
 
-    if (!solutionJSON.isNull("description"))
-      cvs.put("description", solutionJSON.getString("description"));
+    solution.description = solutionJSON.getString("description");
+    solution.effect = solutionJSON.getString("effect");
+    solution.principle = solutionJSON.getString("principle");
+    solution.note = solutionJSON.getString("note");
 
-    if (!solutionJSON.isNull("effect"))
-      cvs.put("effect", solutionJSON.getString("effect"));
+    if (!solutionJSON.isNull("version"))
+      solution.version = solutionJSON.getInt("version");
 
-    if (!solutionJSON.isNull("principle"))
-      cvs.put("principle", solutionJSON.getString("principle"));
-
-    if (!solutionJSON.isNull("note"))
-      cvs.put("note", solutionJSON.getString("note"));
-
-    cvs.put("version", solutionJSON.getInt("version"));
-
-    return cvs;
+    return solution;
   }
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 
@@ -336,19 +230,19 @@ public class Solution {
     this.note = note;
   }
 
-  public int getFavorited() {
+  public boolean isFavorited() {
     return favorited;
   }
 
-  public void setFavorited(int favorited) {
+  public void setFavorited(boolean favorited) {
     this.favorited = favorited;
   }
 
-  public int getAlarm() {
+  public boolean isAlarm() {
     return alarm;
   }
 
-  public void setAlarm(int alarm) {
+  public void setAlarm(boolean alarm) {
     this.alarm = alarm;
   }
 
@@ -360,11 +254,11 @@ public class Solution {
     this.version = version;
   }
 
-  public ArrayList<SolutionStep> getSteps() {
+  public ForeignCollection<SolutionStep> getSteps() {
     return steps;
   }
 
-  public void setSteps(ArrayList<SolutionStep> steps) {
+  public void setSteps(ForeignCollection<SolutionStep> steps) {
     this.steps = steps;
   }
 

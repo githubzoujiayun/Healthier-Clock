@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import com.jkydjk.healthier.clock.R;
 import com.jkydjk.healthier.clock.entity.Question;
 
-@SuppressLint("UseSparseArrays")
 public class QuestionListAdapter extends BaseAdapter {
 
   private LayoutInflater layoutInflater;

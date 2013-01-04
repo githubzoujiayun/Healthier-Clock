@@ -1,6 +1,5 @@
 package com.jkydjk.healthier.clock.widget;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -26,7 +25,6 @@ import com.jkydjk.healthier.clock.R;
 /**
  * 一个类似iPhone风格的切换开关
  */
-@SuppressLint("FloatMath")
 public class ToggleSwitch extends CompoundButton {
 	private static final int TOUCH_MODE_IDLE = 0;
 	private static final int TOUCH_MODE_DOWN = 1;

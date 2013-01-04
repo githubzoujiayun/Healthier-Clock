@@ -4,7 +4,6 @@ import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -44,7 +43,6 @@ import com.jkydjk.healthier.clock.widget.TextViewWeather;
 /**
  * AlarmClock application.
  */
-@SuppressLint({ "NewApi", "HandlerLeak" })
 public class AlarmClock extends BaseActivity implements OnClickListener {
 
   protected static final int MSG_CLOCK = 0x1234;

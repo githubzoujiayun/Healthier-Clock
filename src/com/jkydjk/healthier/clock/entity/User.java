@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import com.jkydjk.healthier.clock.BaseActivity;
+import com.jkydjk.healthier.clock.util.ActivityHelper;
 
 public class User implements Serializable {
 
@@ -191,7 +192,7 @@ public class User implements Serializable {
     editor.putString("realname", user.realname);
     editor.putString("constitution", user.constitution);
 
-    editor.putString("constitution_flag", context.getString(BaseActivity.getStringResourceID(context, "constitution_" + user.constitution)));
+    editor.putString("constitution_flag", context.getString(ActivityHelper.getStringResourceID(context, "constitution_" + user.constitution)));
 
     editor.putString("birthday", user.birthday);
     editor.putString("gender", user.gender);

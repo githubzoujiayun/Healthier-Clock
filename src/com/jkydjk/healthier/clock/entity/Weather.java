@@ -26,6 +26,7 @@ import com.jkydjk.healthier.clock.database.WeatherDatabaseHelper;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
+import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
 
 /**
@@ -176,7 +177,7 @@ public class Weather {
   }
 
   public int getIcon(Context context) {
-    return BaseActivity.getStringResourceID(context, "wealther_icon_" + getFlagCodeStart());
+    return ActivityHelper.getStringResourceID(context, "wealther_icon_" + getFlagCodeStart());
   }
 
   public static List<Weather> getWeathers(Context context, String regionID) {

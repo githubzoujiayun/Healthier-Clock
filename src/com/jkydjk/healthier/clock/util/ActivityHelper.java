@@ -1,9 +1,12 @@
 package com.jkydjk.healthier.clock.util;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.os.Environment;
 
 /**
  * 一个Activity的帮助类，提供一些静态方法
@@ -12,6 +15,33 @@ import android.net.ConnectivityManager;
  * 
  */
 public class ActivityHelper {
+  
+  /**
+   * SD卡目录
+   */
+  public static final File SDCARD = Environment.getExternalStorageDirectory().getAbsoluteFile();
+  
+  /**
+   * Android动态获取图片资源
+   * 
+   * @param context
+   * @param name
+   * @return Resource ID: R.drawable.xxxxx
+   */
+  public static int getImageResourceID(Context context, String name) {
+    return context.getResources().getIdentifier(context.getPackageName() + ":drawable/" + name, null, null);
+  }
+
+  /**
+   * Android动态获取文本资源
+   * 
+   * @param context
+   * @param name
+   * @return Resource ID: R.string.xxxxx
+   */
+  public static int getStringResourceID(Context context, String name) {
+    return context.getResources().getIdentifier(context.getPackageName() + ":string/" + name, null, null);
+  }
 
   /**
    * 判断用户有没有登录

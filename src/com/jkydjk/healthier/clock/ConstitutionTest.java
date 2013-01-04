@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.jkydjk.healthier.clock.adapter.QuestionListAdapter;
 import com.jkydjk.healthier.clock.database.DatabaseManager;
 import com.jkydjk.healthier.clock.entity.Question;
+import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.widget.CustomDialog;
 
 public class ConstitutionTest extends BaseActivity implements OnClickListener, OnItemClickListener, OnCheckedChangeListener {
@@ -214,15 +215,15 @@ public class ConstitutionTest extends BaseActivity implements OnClickListener, O
 
     if (a >= 60 && max < 40) {
       editor.putString("constitution", "a");
-      editor.putString("constitution_flag", getString(getStringResourceID(this, "constitution_a")));
+      editor.putString("constitution_flag", getString(ActivityHelper.getStringResourceID(this, "constitution_a")));
       if (max > 30) {
         editor.putString("constitution_second", scoreType.get(max));
-        editor.putString("constitution_second_flag", getString(getStringResourceID(this, "constitution_" + scoreType.get(max))));
+        editor.putString("constitution_second_flag", getString(ActivityHelper.getStringResourceID(this, "constitution_" + scoreType.get(max))));
       }
     } else {
       if (max > 30) {
         editor.putString("constitution", scoreType.get(max));
-        editor.putString("constitution_flag", getString(getStringResourceID(this, "constitution_" + scoreType.get(max))));
+        editor.putString("constitution_flag", getString(ActivityHelper.getStringResourceID(this, "constitution_" + scoreType.get(max))));
       }
     }
 

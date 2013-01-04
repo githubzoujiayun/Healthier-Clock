@@ -1,5 +1,7 @@
 package com.jkydjk.healthier.clock;
 
+import com.jkydjk.healthier.clock.util.ActivityHelper;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,9 +41,9 @@ public class ConstitutionIntro extends BaseActivity implements OnClickListener {
     introTextView = (TextView) findViewById(R.id.intro);
     descriptionTextView = (TextView) findViewById(R.id.description);
 
-    int title = getStringResourceID(this, "constitution_" + constitution);
-    int intro = getStringResourceID(this, "constitution_" + constitution + "_intro");
-    int description = getStringResourceID(this, "constitution_" + constitution + "_desc");
+    int title = ActivityHelper.getStringResourceID(this, "constitution_" + constitution);
+    int intro = ActivityHelper.getStringResourceID(this, "constitution_" + constitution + "_intro");
+    int description = ActivityHelper.getStringResourceID(this, "constitution_" + constitution + "_desc");
     
     constitution_flag = getString(title);
     

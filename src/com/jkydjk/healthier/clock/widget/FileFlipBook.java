@@ -3,7 +3,6 @@ package com.jkydjk.healthier.clock.widget;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.HorizontalScrollView;
 
-@SuppressLint("UseSparseArrays")
 public class FileFlipBook extends HorizontalScrollView {
 
     private float SWIPE_VERT_MIN_DISTANCE = 30;

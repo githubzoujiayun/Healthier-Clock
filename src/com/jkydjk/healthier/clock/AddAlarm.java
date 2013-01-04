@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
 
 import android.content.Intent;
@@ -42,8 +43,8 @@ public class AddAlarm extends BaseActivity implements OnClickListener, OnItemCli
 
 			Map<String, Object> item = new HashMap<String, Object>();
 
-			item.put("image", getImageResourceID(this, "alarm_category_" + alarmCategory[i]));
-			item.put("text", getString(getStringResourceID(this, "alarm_category_" + alarmCategory[i])));
+			item.put("image", ActivityHelper.getImageResourceID(this, "alarm_category_" + alarmCategory[i]));
+			item.put("text", getString(ActivityHelper.getStringResourceID(this, "alarm_category_" + alarmCategory[i])));
 			item.put("category", alarmCategory[i]);
 			items.add(item);
 		}

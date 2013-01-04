@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
 
 import android.content.Intent;
@@ -44,8 +45,8 @@ public class ConstitutionSelector extends BaseActivity implements OnClickListene
 
       Map<String, Object> item = new HashMap<String, Object>();
 
-      item.put("image", getImageResourceID(this, "constitution_" + constitutions[i]));
-      item.put("text", getString(getStringResourceID(this, "constitution_" + constitutions[i] + "_intro")));
+      item.put("image", ActivityHelper.getImageResourceID(this, "constitution_" + constitutions[i]));
+      item.put("text", getString(ActivityHelper.getStringResourceID(this, "constitution_" + constitutions[i] + "_intro")));
       item.put("type", constitutions[i]);
       items.add(item);
     }

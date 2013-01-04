@@ -1,8 +1,11 @@
 package com.jkydjk.healthier.clock;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,10 +28,19 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.j256.ormlite.dao.BaseForeignCollection;
+import com.j256.ormlite.dao.CloseableIterator;
+import com.j256.ormlite.dao.CloseableWrappedIterable;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.stmt.SelectArg;
+import com.j256.ormlite.stmt.mapped.MappedPreparedStmt;
 import com.jkydjk.healthier.clock.database.SolutionDatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Hour;
 import com.jkydjk.healthier.clock.entity.Solution;
@@ -39,13 +51,15 @@ import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
 
-public class ChineseHour extends BaseActivity implements OnClickListener, OnTouchListener {
+public class ChineseHour extends OrmLiteBaseActivity<SolutionDatabaseHelper> implements OnClickListener, OnTouchListener {
 
   ScrollView contentScrollView;
   TextView updatedAtTextView;
+
   Button concernButton;
-  TextView hourNameTextView;
-  TextView hourTimeIntervalTextView;
+
+  ImageView picture;
+
   View hourRemind;
   TextView appropriateTextView;
   TextView tabooTextView;
@@ -64,17 +78,19 @@ public class ChineseHour extends BaseActivity implements OnClickListener, OnTouc
 
   LinearLayout loading;
 
-  public Hour hour;
-  public int hourID;
-
+  LayoutInflater layoutInflater;
   SharedPreferences sharedPreferences;
 
-  long solutionID;
+  Dao<Solution, Integer> solutionDao;
+
+  Hour hour;
+  int hourID;
+  int solutionID;
+  Solution solution;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     setContentView(R.layout.chinese_hour);
 
     sharedPreferences = getSharedPreferences("chinese_hour", Context.MODE_PRIVATE);
@@ -89,19 +105,18 @@ public class ChineseHour extends BaseActivity implements OnClickListener, OnTouc
     contentScrollView = (ScrollView) findViewById(R.id.content_scroll_view);
     contentScrollView.setOnTouchListener(this);
 
+    picture = (ImageView) findViewById(R.id.picture);
+    picture.setImageResource(ActivityHelper.getImageResourceID(this, "hour_" + hourID));
+
     concernButton = (Button) findViewById(R.id.concern_button);
     setConcernIcon(sharedPreferences.getBoolean("concern_" + hourID, false));
     concernButton.setOnClickListener(this);
 
     updatedAtTextView = (TextView) findViewById(R.id.updated_at);
 
-    hourNameTextView = (TextView) findViewById(R.id.hour_name_text_view);
-    hourTimeIntervalTextView = (TextView) findViewById(R.id.hour_time_interval_text_view);
     appropriateTextView = (TextView) findViewById(R.id.appropriate_text_view);
     tabooTextView = (TextView) findViewById(R.id.taboo_text_view);
 
-    hourNameTextView.setText(hour.getName());
-    hourTimeIntervalTextView.setText(hour.getTimeInterval());
     appropriateTextView.setText("宜：" + hour.getAppropriate());
     tabooTextView.setText("忌：" + hour.getTaboo());
 
@@ -153,22 +168,22 @@ public class ChineseHour extends BaseActivity implements OnClickListener, OnTouc
     @Override
     protected String doInBackground(String... params) {
 
-      solutionID = sharedPreferences.getLong("hour_solution_" + hourID, 0);
+      layoutInflater = ChineseHour.this.getLayoutInflater();
 
-      if (solutionID == 0) {
+      solutionID = sharedPreferences.getInt("hour_solution_" + hourID, 0);
 
-        if (!ActivityHelper.networkConnected(ChineseHour.this)) {
-          return "网络未连接！";
-        }
+      try {
+        solutionDao = getHelper().getSolutionDataDao();
 
-        SQLiteDatabase database = new SolutionDatabaseHelper(ChineseHour.this).getWritableDatabase();
+        solution = solutionDao.queryForId(solutionID);
 
-        HttpClientManager connect = new HttpClientManager(ChineseHour.this, HttpClientManager.REQUEST_PATH + RequestRoute.SOLUTION_HOUR);
+        if (solution == null) {
+          if (!ActivityHelper.networkConnected(ChineseHour.this)) {
+            return "网络未连接！";
+          }
 
-        connect.addParam("hour", hourID + "");
-
-        try {
-          database.beginTransaction();
+          HttpClientManager connect = new HttpClientManager(ChineseHour.this, HttpClientManager.REQUEST_PATH + RequestRoute.SOLUTION_HOUR);
+          connect.addParam("hour", hourID + "");
 
           connect.execute(ResuestMethod.GET);
 
@@ -176,30 +191,21 @@ public class ChineseHour extends BaseActivity implements OnClickListener, OnTouc
 
           JSONObject solutionJSON = json.getJSONObject("solution");
 
-          String[] whereArgs = { solutionJSON.getLong("id") + "" };
+          solution = Solution.parseJsonObject(solutionJSON);
 
-          Cursor cursor = database.rawQuery("select solution_id, version from solutions where solution_id = ?", whereArgs);
+          JSONArray stepsArray = solutionJSON.getJSONArray("steps");
 
-          if (cursor.getCount() <= 0) {
-            database.insert("solutions", null, Solution.jsonObjectToContentValues("hour", hourID, solutionJSON));
+          ForeignCollection<SolutionStep> steps = solutionDao.getEmptyForeignCollection("steps");
 
-            JSONArray stepsArray = solutionJSON.getJSONArray("steps");
-
-            for (int i = 0; i < stepsArray.length(); i++) {
-              database.insert("steps", null, SolutionStep.jsonObjectToContentValues((JSONObject) stepsArray.get(i)));
-            }
-
-          } else {
-            database.update("solutions", Solution.jsonObjectToContentValues("hour", hourID, solutionJSON), "solution_id = ?", whereArgs);
-
-            JSONArray stepsArray = solutionJSON.getJSONArray("steps");
-
-            for (int i = 0; i < stepsArray.length(); i++) {
-              ContentValues cvs = SolutionStep.jsonObjectToContentValues((JSONObject) stepsArray.get(i));
-              database.update("steps", cvs, "step_id = ?", new String[] { cvs.getAsString("step_id") });
-            }
-
+          for (int i = 0; i < stepsArray.length(); i++) {
+            SolutionStep step = SolutionStep.parseJsonObject((JSONObject) stepsArray.get(i));
+            step.setSolution(solution);
+            steps.add(step);
           }
+
+          solution.setSteps(steps);
+
+          solutionDao.createOrUpdate(solution);
 
           SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
           Calendar calendar = Calendar.getInstance();
@@ -207,20 +213,14 @@ public class ChineseHour extends BaseActivity implements OnClickListener, OnTouc
 
           Editor editor = sharedPreferences.edit();
 
-          editor.putLong("hour_solution_" + hourID, solutionJSON.getLong("id"));
+          editor.putInt("hour_solution_" + hourID, solution.getId());
           editor.putString("hour_solution_" + hourID + "_updated_at", today);
           editor.commit();
-
-          database.setTransactionSuccessful();
-          database.endTransaction();
-          database.close();
-
-        } catch (Exception e) { // errorMessage = "网络访问异常";
-          Log.v("Insert failed!");
-          database.endTransaction();
-          database.close();
-          return "网络访问异常!";
         }
+
+      } catch (Exception e) {
+        e.printStackTrace();
+        return "网络访问异常!";
       }
 
       return null;
@@ -237,11 +237,7 @@ public class ChineseHour extends BaseActivity implements OnClickListener, OnTouc
         updatedAtTextView.setVisibility(View.VISIBLE);
       }
 
-      solutionID = sharedPreferences.getLong("hour_solution_" + hourID, 0);
-
-      Solution solution = Solution.find(ChineseHour.this, solutionID);
-
-      LayoutInflater layoutInflater = ChineseHour.this.getLayoutInflater();
+      solutionID = sharedPreferences.getInt("hour_solution_" + hourID, 0);
 
       if (solution != null) {
 
@@ -260,10 +256,17 @@ public class ChineseHour extends BaseActivity implements OnClickListener, OnTouc
 
         LinearLayout stepsView = (LinearLayout) solutionView.findViewById(R.id.steps_view);
 
-        ArrayList<SolutionStep> steps = solution.getSteps();
-        if (steps != null && steps.size() > 0) {
-          for (int i = 0; i < steps.size(); i++) {
-            SolutionStep step = steps.get(i);
+        ForeignCollection<SolutionStep> steps = solution.getSteps();
+
+        if (steps != null) {
+
+          Iterator<SolutionStep> it = steps.iterator();
+
+          while (it.hasNext()) {
+            SolutionStep step = (SolutionStep) it.next();
+
+            Log.v("solutionStep: " + step);
+
             View stepView = layoutInflater.inflate(R.layout.solution_step, null);
 
             TextView stepNoTextView = (TextView) stepView.findViewById(R.id.step_no);
@@ -279,6 +282,7 @@ public class ChineseHour extends BaseActivity implements OnClickListener, OnTouc
             });
 
             stepsView.addView(stepView);
+
           }
         }
 
@@ -288,7 +292,7 @@ public class ChineseHour extends BaseActivity implements OnClickListener, OnTouc
 
         actionsToolbar.setVisibility(View.VISIBLE);
 
-        favoriteImageButton.setImageResource(solution.getFavorited() == 0 ? R.drawable.action_favorite : R.drawable.action_favorite_on);
+        favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
 
       } else {
         loading.findViewById(R.id.loading_icon).setVisibility(View.GONE);
@@ -327,13 +331,12 @@ public class ChineseHour extends BaseActivity implements OnClickListener, OnTouc
       break;
 
     case R.id.favorite:
-      Solution solution = Solution.find(this, solutionID);
-      if (solution.getFavorited() == 0) {
-        if (Solution.favorite(this, solutionID))
-          favoriteImageButton.setImageResource(R.drawable.action_favorite_on);
-      } else {
-        if (Solution.unfavorite(this, solutionID))
-          favoriteImageButton.setImageResource(R.drawable.action_favorite);
+      try {
+        solution.setFavorited(!solution.isFavorited());
+        solutionDao.update(solution);
+        favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
+      } catch (SQLException e) {
+        e.printStackTrace();
       }
       break;
 

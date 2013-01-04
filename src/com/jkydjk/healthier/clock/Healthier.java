@@ -1,6 +1,5 @@
 package com.jkydjk.healthier.clock;
 
-import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +25,6 @@ import com.jkydjk.healthier.clock.util.StringUtil;
 import com.jkydjk.healthier.clock.widget.AnimationTabHost;
 import com.jkydjk.healthier.clock.widget.CustomDialog;
 
-@SuppressLint("NewApi")
 public class Healthier extends TabActivity implements OnTabChangeListener, OnClickListener {
 
   public final static int FULL_SCREEN_NO = 0;
@@ -99,9 +97,8 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
     return indicator;
   }
 
-  @SuppressLint("ResourceAsColor")
   public void onTabChanged(String tabId) {
-    channelTabWidget.setBackgroundResource(BaseActivity.getImageResourceID(this, "channel_buttons_on_" + tabId));
+    channelTabWidget.setBackgroundResource(ActivityHelper.getImageResourceID(this, "channel_buttons_on_" + tabId));
     int tabs = channelTabWidget.getChildCount();
     for (int i = 0; i < tabs; i++) {
       TextView title = (TextView) channelTabWidget.getChildAt(i).findViewById(R.id.title);

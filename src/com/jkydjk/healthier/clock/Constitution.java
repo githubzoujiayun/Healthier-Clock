@@ -23,6 +23,7 @@ import com.jkydjk.healthier.clock.database.DatabaseManager;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
+import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 
@@ -59,8 +60,8 @@ public class Constitution extends BaseActivity implements OnClickListener {
 
     introTextView = (TextView) findViewById(R.id.intro);
 
-    int type = getStringResourceID(this, "constitution_" + constitutionType);
-    int intro = getStringResourceID(this, "constitution_" + constitutionType + "_intro");
+    int type = ActivityHelper.getStringResourceID(this, "constitution_" + constitutionType);
+    int intro = ActivityHelper.getStringResourceID(this, "constitution_" + constitutionType + "_intro");
 
     introTextView.setText(getString(intro).replaceAll("\n", "") + "的" + getString(type));
 

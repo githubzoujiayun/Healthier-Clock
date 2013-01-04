@@ -1,50 +1,64 @@
 package com.jkydjk.healthier.clock.entity;
 
-import java.util.ArrayList;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.ContentValues;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+@DatabaseTable(tableName = "steps")
 public class SolutionStep {
 
-  private long id;
-  private long solutionID;
+  @DatabaseField(id = true)
+  private int id;
+
+  @DatabaseField(foreign = true, canBeNull = false)
+  private Solution solution;
+
+  @DatabaseField
   private int no;
+
+  @DatabaseField
   private String content;
 
-  public static ArrayList<SolutionStep> steps(long solutionID) {
-
-    return null;
+  public SolutionStep() {
+    super();
   }
 
-  public static ContentValues jsonObjectToContentValues(JSONObject stepJSON) throws JSONException {
+  /**
+   * 
+   * @param stepJSON
+   * @return
+   * @throws JSONException
+   */
+  public static SolutionStep parseJsonObject(JSONObject stepJSON) throws JSONException {
 
-    ContentValues cvs = new ContentValues();
+    SolutionStep step = new SolutionStep();
 
-    cvs.put("step_id", stepJSON.getString("id"));
-    cvs.put("solution_id", stepJSON.getString("solution_id"));
-    cvs.put("no", stepJSON.getInt("no"));
-    cvs.put("content", stepJSON.getString("content"));
+    step.id = stepJSON.getInt("id");
 
-    return cvs;
+    if (!stepJSON.isNull("no"))
+      step.no = stepJSON.getInt("no");
+
+    step.content = stepJSON.getString("content");
+
+    return step;
   }
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 
-  public long getSolutionID() {
-    return solutionID;
+  public Solution getSolution() {
+    return solution;
   }
 
-  public void setSolutionID(long solutionID) {
-    this.solutionID = solutionID;
+  public void setSolution(Solution solution) {
+    this.solution = solution;
   }
 
   public int getNo() {

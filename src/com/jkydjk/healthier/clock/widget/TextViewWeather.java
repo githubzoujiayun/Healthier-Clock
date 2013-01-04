@@ -1,12 +1,10 @@
 package com.jkydjk.healthier.clock.widget;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-@SuppressLint("ViewConstructor")
 public class TextViewWeather extends TextView {
 
 	public static Typeface FONT_NAME;
