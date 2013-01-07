@@ -1,42 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/main_bg"
-    android:orientation="vertical" >
-
-    <include layout="@layout/solution_list_item" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1.0px"
-        android:background="#FFCCCCCC" />
-
-    <include layout="@layout/solution_list_item" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1.0px"
-        android:background="#FFCCCCCC" />
-
-    <include layout="@layout/solution_list_item" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1.0px"
-        android:background="#FFCCCCCC" />
+    android:background="@drawable/main_bg" >
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/solution_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.0"
         android:background="@android:color/transparent"
         android:cacheColorHint="#00000000"
         android:divider="#FFCCCCCC"
         android:dividerHeight="1.0px"
         android:fadingEdge="none"
         android:listSelector="@android:color/transparent"
-        android:scrollingCache="false" />
+        android:scrollingCache="false"
+        android:visibility="gone" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/no_no_favorites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/the_solution_no_favorites"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        layout="@layout/loading_page" />
+
+</RelativeLayout>

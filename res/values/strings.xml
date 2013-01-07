@@ -230,13 +230,41 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+    
+    <string name="chinese_hour">时辰</string>
+    
+    <string name="solar_terms">节气</string>
+    <string name="solar_terms_0">小寒</string>
+	<string name="solar_terms_1">大寒</string>
+	<string name="solar_terms_2">立春</string>
+	<string name="solar_terms_3">雨水</string>
+	<string name="solar_terms_4">惊蛰</string>
+	<string name="solar_terms_5">春分</string>
+	<string name="solar_terms_6">清明</string>
+	<string name="solar_terms_7">谷雨</string>
+	<string name="solar_terms_8">立夏</string>
+	<string name="solar_terms_9">小满</string>
+	<string name="solar_terms_10">芒种</string>
+	<string name="solar_terms_11">夏至</string>
+	<string name="solar_terms_12">小暑</string>
+	<string name="solar_terms_13">大暑</string>
+	<string name="solar_terms_14">立秋</string>
+	<string name="solar_terms_15">处暑</string>
+	<string name="solar_terms_16">白露</string>
+	<string name="solar_terms_17">秋分</string>
+	<string name="solar_terms_18">寒露</string>
+	<string name="solar_terms_19">霜降</string>
+	<string name="solar_terms_20">立冬</string>
+	<string name="solar_terms_21">小雪</string>
+	<string name="solar_terms_22">大雪</string>
+	<string name="solar_terms_23">冬至</string>
 
     <string name="title_bar_shadow">标题栏阴影</string>
     <string name="weather_sunny">晴天</string>
     <string name="weather_shadow">天气阴影</string>
-    <string name="chinese_hour">时辰</string>
-    <string name="solar_terms">节气</string>
+    
     <string name="favorites">收藏</string>
+    <string name="the_solution_no_favorites">您还没有收藏方案</string>
     <string name="cancel">取消</string>
     <string name="enter">确定</string>
     <string name="back">返回</string>
@@ -462,6 +490,8 @@
 	<string name="hour_time_interval_10">17:00~19:00</string>
 	<string name="hour_time_interval_11">19:00~21:00</string>
 	<string name="hour_time_interval_12">21:00~23:00</string>
+	
+	<string name="acupoint">穴位</string>
     
 	<string name="loading">正在加载&#8230;</string>
 	<string name="please_be_patient_wait_for_a_moment">~内容马上就会呈现～\n请耐心等待片刻</string>

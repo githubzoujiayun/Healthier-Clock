@@ -79,7 +79,6 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
   Dao<Solution, Integer> solutionDao;
   Dao<SolutionStep, Integer> solutionStepDao;
   Dao<Acupoint, Integer> acupointDao;
-  // Dao<AcupointSolutionStep, Integer> acupointSolutionStepDao;
 
   Hour hour;
   int hourID;

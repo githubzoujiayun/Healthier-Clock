@@ -2,11 +2,17 @@ package com.jkydjk.healthier.clock.util;
 
 import java.io.File;
 
+import com.jkydjk.healthier.clock.R;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Environment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * 一个Activity的帮助类，提供一些静态方法
@@ -15,12 +21,12 @@ import android.os.Environment;
  * 
  */
 public class ActivityHelper {
-  
+
   /**
    * SD卡目录
    */
   public static final File SDCARD = Environment.getExternalStorageDirectory().getAbsoluteFile();
-  
+
   /**
    * Android动态获取图片资源
    * 
@@ -76,6 +82,30 @@ public class ActivityHelper {
       return true;
     }
     return false;
+  }
+
+  /**
+   * 给ViewGroup插入一个内容片段
+   * @param group
+   * @param title
+   * @param content
+   */
+  public static void generateContentItem(ViewGroup group, String title, String content) {
+
+    if (group == null || StringUtil.isEmpty(title) || StringUtil.isEmpty(content))
+      return;
+
+    LayoutInflater inflater = (LayoutInflater) group.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+    View contentItemView = inflater.inflate(R.layout.content_item, null, false);
+
+    TextView titleTextView = (TextView) contentItemView.findViewById(R.id.title);
+    titleTextView.setText(title);
+
+    TextView contentTextView = (TextView) contentItemView.findViewById(R.id.content);
+    contentTextView.setText(content);
+
+    group.addView(contentItemView);
   }
 
 }

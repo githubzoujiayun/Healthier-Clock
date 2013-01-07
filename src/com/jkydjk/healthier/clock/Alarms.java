@@ -396,7 +396,7 @@ public class Alarms {
   /**
    * Disables alert in AlarmManger and StatusBar.
    * 
-   * @param id
+   * @param acupointId
    *          Alarm ID.
    */
   static void disableAlert(Context context) {

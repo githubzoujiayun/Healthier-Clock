@@ -42,4 +42,105 @@ public class Meridian {
   @DatabaseField
   private String description;
 
+  public Meridian() {
+    super();
+    // TODO Auto-generated constructor stub
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getSubtitle() {
+    return subtitle;
+  }
+
+  public void setSubtitle(String subtitle) {
+    this.subtitle = subtitle;
+  }
+
+  public int getCategory() {
+    return category;
+  }
+
+  public void setCategory(int category) {
+    this.category = category;
+  }
+
+  public int getCategoryTradition() {
+    return categoryTradition;
+  }
+
+  public void setCategoryTradition(int categoryTradition) {
+    this.categoryTradition = categoryTradition;
+  }
+
+  public String getAcupointsDescription() {
+    return acupointsDescription;
+  }
+
+  public void setAcupointsDescription(String acupointsDescription) {
+    this.acupointsDescription = acupointsDescription;
+  }
+
+  public String getDefinition() {
+    return definition;
+  }
+
+  public void setDefinition(String definition) {
+    this.definition = definition;
+  }
+
+  public String getIndications() {
+    return indications;
+  }
+
+  public void setIndications(String indications) {
+    this.indications = indications;
+  }
+
+  public String getLaw() {
+    return law;
+  }
+
+  public void setLaw(String law) {
+    this.law = law;
+  }
+
+  public String getProverb() {
+    return proverb;
+  }
+
+  public void setProverb(String proverb) {
+    this.proverb = proverb;
+  }
+
+  public String getHealthTips() {
+    return healthTips;
+  }
+
+  public void setHealthTips(String healthTips) {
+    this.healthTips = healthTips;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
 }
