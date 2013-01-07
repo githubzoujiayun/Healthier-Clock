@@ -70,7 +70,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
       TableUtils.createTable(connectionSource, Solution.class);
       TableUtils.createTable(connectionSource, SolutionStep.class);
       TableUtils.createTable(connectionSource, AcupointSolutionStep.class);
-      TableUtils.createTable(connectionSource, Acupoint.class);
     } catch (SQLException e) {
       Log.v(DATABASE_NAME + "创建数据库失败: \n" + e);
       e.printStackTrace();
@@ -84,7 +83,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
       TableUtils.dropTable(connectionSource, Solution.class, true);
       TableUtils.dropTable(connectionSource, SolutionStep.class, true);
       TableUtils.dropTable(connectionSource, AcupointSolutionStep.class, true);
-      TableUtils.dropTable(connectionSource, Acupoint.class, true);
       onCreate(db, connectionSource);
     } catch (SQLException e) {
       Log.v(DATABASE_NAME + "更新数据库失败: \n" + e);

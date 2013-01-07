@@ -2,21 +2,17 @@ package com.jkydjk.healthier.clock;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.content.ContentValues;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,15 +30,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
-import com.j256.ormlite.dao.BaseForeignCollection;
-import com.j256.ormlite.dao.CloseableIterator;
-import com.j256.ormlite.dao.CloseableWrappedIterable;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
-import com.j256.ormlite.stmt.SelectArg;
-import com.j256.ormlite.stmt.mapped.MappedPreparedStmt;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
+import com.jkydjk.healthier.clock.entity.Acupoint;
 import com.jkydjk.healthier.clock.entity.Hour;
+import com.jkydjk.healthier.clock.entity.Ids;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
@@ -51,6 +44,7 @@ import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
 
+@SuppressLint("SimpleDateFormat")
 public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements OnClickListener, OnTouchListener {
 
   ScrollView contentScrollView;
@@ -84,6 +78,8 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
   DatabaseHelper helper;
   Dao<Solution, Integer> solutionDao;
   Dao<SolutionStep, Integer> solutionStepDao;
+  Dao<Acupoint, Integer> acupointDao;
+  // Dao<AcupointSolutionStep, Integer> acupointSolutionStepDao;
 
   Hour hour;
   int hourID;
@@ -178,8 +174,8 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
         helper = getHelper();
 
         solutionDao = helper.getSolutionDao();
-
         solutionStepDao = helper.getSolutionStepDao();
+        acupointDao = helper.getAcupointDao();
 
         solution = solutionDao.queryForId(solutionID);
 
@@ -199,17 +195,21 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
           solution = Solution.parseJsonObject(solutionJSON);
 
+          solutionDao.createOrUpdate(solution);
+
           JSONArray stepsArray = solutionJSON.getJSONArray("steps");
+
+          ForeignCollection<SolutionStep> steps = solutionDao.getEmptyForeignCollection("steps");
 
           for (int i = 0; i < stepsArray.length(); i++) {
             SolutionStep step = SolutionStep.parseJsonObject((JSONObject) stepsArray.get(i));
             step.setSolution(solution);
-            solutionStepDao.createOrUpdate(step);
-
-            Log.v("step acupoint_ids: " + step.getAcupointIds());
+            solutionStepDao.delete(step);
+            // solutionStepDao.createOrUpdate(step);
+            steps.add(step);
           }
 
-          solutionDao.createOrUpdate(solution);
+          solution.setSteps(steps);
 
           SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
           Calendar calendar = Calendar.getInstance();
@@ -267,7 +267,7 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
           Iterator<SolutionStep> it = steps.iterator();
 
           while (it.hasNext()) {
-            SolutionStep step = (SolutionStep) it.next();
+            final SolutionStep step = (SolutionStep) it.next();
 
             View stepView = layoutInflater.inflate(R.layout.solution_step, null);
 
@@ -277,9 +277,13 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
             TextView stepContentTextView = (TextView) stepView.findViewById(R.id.step_content);
             stepContentTextView.setText(step.getContent());
 
-            stepView.setOnClickListener(new OnClickListener() {
+            View acupointLayout = stepView.findViewById(R.id.acupoint_layout);
+
+            acupointLayout.setOnClickListener(new OnClickListener() {
               public void onClick(View v) {
-                Log.v("Setp On Click");
+                Intent intent = new Intent(ChineseHour.this, AcupointSlider.class);
+                intent.putExtra("acupoints", step.getAcupointIds());
+                startActivity(intent);
               }
             });
 
@@ -294,8 +298,6 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
         actionsToolbar.setVisibility(View.VISIBLE);
 
         favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
-
-        helper.close();
 
       } else {
         loading.findViewById(R.id.loading_icon).setVisibility(View.GONE);

@@ -147,7 +147,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent" />
         <activity
-            android:name=".Acupoint"
+            android:name="com.jkydjk.healthier.clock.AcupointSlider"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent" />
 

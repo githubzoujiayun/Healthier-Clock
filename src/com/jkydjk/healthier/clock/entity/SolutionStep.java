@@ -1,11 +1,13 @@
 package com.jkydjk.healthier.clock.entity;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -15,7 +17,7 @@ public class SolutionStep {
   @DatabaseField(id = true)
   private int id;
 
-  @DatabaseField(foreign = true, canBeNull = false)
+  @DatabaseField(foreign = true, canBeNull = false, foreignAutoCreate = true, foreignAutoRefresh = true)
   private Solution solution;
 
   @DatabaseField
@@ -24,13 +26,15 @@ public class SolutionStep {
   @DatabaseField
   private String content;
 
-  private ArrayList<Integer> acupointIds = new ArrayList<Integer>();
+  @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = "acupoint_ids")
+  private Ids acupointIds;
 
   public SolutionStep() {
     super();
   }
 
   /**
+   * 从JSONObject中解析一个SolutionStep对象
    * 
    * @param stepJSON
    * @return
@@ -49,8 +53,10 @@ public class SolutionStep {
 
     JSONArray acupoints = stepJSON.getJSONArray("acupoints");
 
+    step.acupointIds = new Ids();
+
     for (int i = 0; i < acupoints.length(); i++) {
-      int acupointId = (Integer) acupoints.get(i);
+      Integer acupointId = (Integer) acupoints.get(i);
       step.acupointIds.add(i, acupointId);
     }
 
@@ -89,11 +95,11 @@ public class SolutionStep {
     this.content = content;
   }
 
-  public ArrayList<Integer> getAcupointIds() {
+  public Ids getAcupointIds() {
     return acupointIds;
   }
 
-  public void setAcupointIds(ArrayList<Integer> acupointIds) {
+  public void setAcupointIds(Ids acupointIds) {
     this.acupointIds = acupointIds;
   }
 
