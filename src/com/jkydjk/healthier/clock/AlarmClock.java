@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.jkydjk.healthier.clock.entity.Region;
 import com.jkydjk.healthier.clock.entity.Weather;
 import com.jkydjk.healthier.clock.entity.Weather.Callback;
+import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 import com.jkydjk.healthier.clock.widget.TextViewWeather;
@@ -62,6 +63,8 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
   private SharedPreferences sharedPreferencesOnConfigure;
 
   private LayoutInflater layoutInflater;
+
+  private ImageView weatherPicture;
 
   private View addAlarmButton;
 
@@ -118,6 +121,8 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
     addAlarmButton = findViewById(R.id.add_alarm);
     addAlarmButton.setOnClickListener(this);
+
+    weatherPicture = (ImageView) findViewById(R.id.weather_picture);
 
     welcomeTextView = (TextView) findViewById(R.id.welcome);
 
@@ -301,23 +306,27 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
         }
 
         List<Weather> weathers = task.weathers;
-        
+
         if (weathers.size() == 0) {
           weatherInfoTip.setText(R.string.unable_to_get_weather_information);
           return;
         }
-        
+
         if (weathers.size() >= 1) {
           Weather today = weathers.get(0);
+
+          weatherPicture.setImageResource(ActivityHelper.getImageResourceID(AlarmClock.this, "weather_picture_" + today.getFlagCodeStart()));
+
           weatherLogoToday.setText(today.getIcon(AlarmClock.this));
           weatherTextToday.setText("今天 " + today.getFlag() + "\n" + today.getTemperature());
         }
-        
+
         if (weathers.size() >= 2) {
           Weather tomorrow = weathers.get(1);
           weatherLogoTomorrow.setText(tomorrow.getIcon(AlarmClock.this));
           weatherTextTomorrow.setText("明天 " + tomorrow.getFlag() + "\n" + tomorrow.getTemperature());
         }
+        
         weatherInfoTip.setVisibility(View.GONE);
         weatherInfo.setVisibility(View.VISIBLE);
 

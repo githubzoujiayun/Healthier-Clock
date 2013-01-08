@@ -64,6 +64,8 @@ public class ConstitutionTest extends BaseActivity implements OnClickListener, O
    */
   private void builder() {
 
+    // listView.addHeaderView();
+
     View constitutionTextTop = layoutInflater.inflate(R.layout.constitution_test_top, null, false);
 
     questions.add(0, constitutionTextTop);

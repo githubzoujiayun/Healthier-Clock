@@ -5,33 +5,41 @@ import java.util.List;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract.Contacts.Data;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
+import com.jkydjk.healthier.clock.adapter.SolutionListAdapter;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Solution;
-import com.jkydjk.healthier.clock.util.Log;
 
-public class Favorites extends OrmLiteBaseActivity<DatabaseHelper> {
+public class Favorites extends OrmLiteBaseActivity<DatabaseHelper> implements OnItemClickListener {
 
-  ListView solutionlist;
+  ListView solutionList;
+  View noFavoritesView;
   View loading;
 
   DatabaseHelper helper;
   Dao<Solution, Integer> solutionDao;
+  List<Solution> solutions;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.favorites);
 
-    solutionlist = (ListView) findViewById(R.id.solution_list);
+    solutionList = (ListView) findViewById(R.id.solution_list);
+    noFavoritesView = findViewById(R.id.no_favorites);
     loading = findViewById(R.id.loading);
+  }
 
+  @Override
+  protected void onResume() {
     new Task().execute();
+    super.onResume();
   }
 
   class Task extends AsyncTask<String, Integer, String> {
@@ -39,6 +47,8 @@ public class Favorites extends OrmLiteBaseActivity<DatabaseHelper> {
     @Override
     protected void onPreExecute() {
       super.onPreExecute();
+      solutionList.setVisibility(View.GONE);
+      noFavoritesView.setVisibility(View.GONE);
       loading.setVisibility(View.VISIBLE);
     }
 
@@ -46,11 +56,8 @@ public class Favorites extends OrmLiteBaseActivity<DatabaseHelper> {
     protected String doInBackground(String... params) {
       helper = getHelper();
       try {
-
         solutionDao = helper.getSolutionDao();
-
-        List<Solution> solutions = solutionDao.queryForEq("favorited", true);
-
+        solutions = solutionDao.queryForEq("favorited", true);
       } catch (SQLException e) {
         e.printStackTrace();
       }
@@ -60,10 +67,26 @@ public class Favorites extends OrmLiteBaseActivity<DatabaseHelper> {
     @Override
     protected void onPostExecute(String result) {
       super.onPostExecute(result);
+
       loading.setVisibility(View.GONE);
-      solutionlist.setVisibility(View.VISIBLE);
+
+      if (solutions.size() == 0) {
+        noFavoritesView.setVisibility(View.VISIBLE);
+        solutionList.removeAllViewsInLayout();
+        solutionList.setVisibility(View.GONE);
+      } else {
+        noFavoritesView.setVisibility(View.GONE);
+        solutionList.setAdapter(new SolutionListAdapter(Favorites.this, solutions));
+        solutionList.setOnItemClickListener(Favorites.this);
+        solutionList.setVisibility(View.VISIBLE);
+      }
+
     }
 
+  }
+
+  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    // TODO Auto-generated method stub
   }
 
 }

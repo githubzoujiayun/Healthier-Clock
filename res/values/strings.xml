@@ -260,8 +260,6 @@
 	<string name="solar_terms_23">冬至</string>
 
     <string name="title_bar_shadow">标题栏阴影</string>
-    <string name="weather_sunny">晴天</string>
-    <string name="weather_shadow">天气阴影</string>
     
     <string name="favorites">收藏</string>
     <string name="the_solution_no_favorites">您还没有收藏方案</string>

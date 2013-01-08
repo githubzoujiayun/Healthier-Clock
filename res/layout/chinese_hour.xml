@@ -29,7 +29,7 @@
                     android:id="@+id/picture"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/weather_sunny" />
+                    android:src="@drawable/transparent_banner_image" />
 
                 <ImageView
                     android:layout_width="fill_parent"
@@ -95,15 +95,15 @@
                         android:id="@+id/appropriate_text_view"
                         style="@style/hour_tip"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#B3669900" />
+                        android:layout_height="wrap_content" />
+                    <!-- android:background="#B3669900" -->
 
                     <TextView
                         android:id="@+id/taboo_text_view"
                         style="@style/hour_tip"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#B3CC0000" />
+                        android:layout_height="wrap_content" />
+                    <!-- android:background="#B3CC0000" -->
                 </LinearLayout>
             </RelativeLayout>
 

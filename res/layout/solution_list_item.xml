@@ -23,7 +23,6 @@
         android:layout_toLeftOf="@+id/arrow"
         android:layout_toRightOf="@+id/image"
         android:singleLine="true"
-        android:text="湿热质夏至的饮食调养"
         android:textColor="#FF333333"
         android:textSize="16sp" />
 
@@ -35,7 +34,8 @@
         android:layout_alignLeft="@+id/title"
         android:layout_alignRight="@+id/title"
         android:layout_marginBottom="3dip"
-        android:text="节气方案具体内容，选取一部分显示在这里，长度不超过2行..."
+        android:ellipsize="end"
+        android:lines="2"
         android:textColor="#FF999999"
         android:textSize="12sp" />
 

@@ -72,110 +72,6 @@ public class Weather {
     this.uv = uv;
   }
 
-  public Integer getRegionID() {
-    return regionID;
-  }
-
-  public void setRegionID(Integer regionID) {
-    this.regionID = regionID;
-  }
-
-  public Date getDate() {
-    return date;
-  }
-
-  public void setDate(Date date) {
-    this.date = date;
-  }
-
-  public String getFlag() {
-    return flag;
-  }
-
-  public void setFlag(String flag) {
-    this.flag = flag;
-  }
-
-  public String getFlagStart() {
-    return flagStart;
-  }
-
-  public void setFlagStart(String flagStart) {
-    this.flagStart = flagStart;
-  }
-
-  public String getFlagCodeStart() {
-    return flagCodeStart;
-  }
-
-  public void setFlagCodeStart(String flagCodeStart) {
-    this.flagCodeStart = flagCodeStart;
-  }
-
-  public String getFlagEnd() {
-    return flagEnd;
-  }
-
-  public void setFlagEnd(String flagEnd) {
-    this.flagEnd = flagEnd;
-  }
-
-  public String getFlagCodeEnd() {
-    return flagCodeEnd;
-  }
-
-  public void setFlagCodeEnd(String flagCodeEnd) {
-    this.flagCodeEnd = flagCodeEnd;
-  }
-
-  public String getTemperature() {
-    return temperature;
-  }
-
-  public void setTemperature(String temperature) {
-    this.temperature = temperature;
-  }
-
-  public String getWind() {
-    return wind;
-  }
-
-  public void setWind(String wind) {
-    this.wind = wind;
-  }
-
-  public String getWindPower() {
-    return windPower;
-  }
-
-  public void setWindPower(String windPower) {
-    this.windPower = windPower;
-  }
-
-  public String getFeel() {
-    return feel;
-  }
-
-  public void setFeel(String feel) {
-    this.feel = feel;
-  }
-
-  public String getProposal() {
-    return proposal;
-  }
-
-  public void setProposal(String proposal) {
-    this.proposal = proposal;
-  }
-
-  public String getUv() {
-    return uv;
-  }
-
-  public void setUv(String uv) {
-    this.uv = uv;
-  }
-
   public int getIcon(Context context) {
     return ActivityHelper.getStringResourceID(context, "wealther_icon_" + getFlagCodeStart());
   }
@@ -322,15 +218,15 @@ public class Weather {
     public void setForceUpdate(boolean force) {
       this.force = force;
     }
-    
-    public boolean getForceUpdate(){
+
+    public boolean getForceUpdate() {
       return force;
     }
-    
-    public boolean getUpdateSuccess(){
+
+    public boolean getUpdateSuccess() {
       return updateSuccess;
     }
-    
+
     public void setCallback(Callback callback) {
       this.callback = callback;
     }
@@ -385,6 +281,110 @@ public class Weather {
     public void onPreExecute();
 
     public void onPostExecute(Task task, String result);
+  }
+
+  public Integer getRegionID() {
+    return regionID;
+  }
+
+  public void setRegionID(Integer regionID) {
+    this.regionID = regionID;
+  }
+
+  public Date getDate() {
+    return date;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
+  }
+
+  public String getFlag() {
+    return flag;
+  }
+
+  public void setFlag(String flag) {
+    this.flag = flag;
+  }
+
+  public String getFlagStart() {
+    return flagStart;
+  }
+
+  public void setFlagStart(String flagStart) {
+    this.flagStart = flagStart;
+  }
+
+  public String getFlagCodeStart() {
+    return flagCodeStart;
+  }
+
+  public void setFlagCodeStart(String flagCodeStart) {
+    this.flagCodeStart = flagCodeStart;
+  }
+
+  public String getFlagEnd() {
+    return flagEnd;
+  }
+
+  public void setFlagEnd(String flagEnd) {
+    this.flagEnd = flagEnd;
+  }
+
+  public String getFlagCodeEnd() {
+    return flagCodeEnd;
+  }
+
+  public void setFlagCodeEnd(String flagCodeEnd) {
+    this.flagCodeEnd = flagCodeEnd;
+  }
+
+  public String getTemperature() {
+    return temperature;
+  }
+
+  public void setTemperature(String temperature) {
+    this.temperature = temperature;
+  }
+
+  public String getWind() {
+    return wind;
+  }
+
+  public void setWind(String wind) {
+    this.wind = wind;
+  }
+
+  public String getWindPower() {
+    return windPower;
+  }
+
+  public void setWindPower(String windPower) {
+    this.windPower = windPower;
+  }
+
+  public String getFeel() {
+    return feel;
+  }
+
+  public void setFeel(String feel) {
+    this.feel = feel;
+  }
+
+  public String getProposal() {
+    return proposal;
+  }
+
+  public void setProposal(String proposal) {
+    this.proposal = proposal;
+  }
+
+  public String getUv() {
+    return uv;
+  }
+
+  public void setUv(String uv) {
+    this.uv = uv;
   }
 
 }

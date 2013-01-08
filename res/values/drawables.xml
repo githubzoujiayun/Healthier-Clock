@@ -1,15 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <item type="drawable" name="transparent_background">#00000000</item>
-    
-    <item type="drawable" name="trans">#00000000</item>
-    <item type="drawable" name="preview_btn_bg_press">#ff000000</item>
-    <item type="drawable" name="chatwindow_btn_press">#9936b5e3</item>
-    <item type="drawable" name="sc_trans">#00000000</item>
-    <item type="drawable" name="option_dilog_item_normal">#ef2a2a2a</item>
-    <item type="drawable" name="option_dilog_item_press">#ff3a3a3a</item>
-    <item type="drawable" name="setting_line1">#ffc9c9c9</item>
-    <item type="drawable" name="setting_line2">#ffffffff</item>
-    <item type="drawable" name="pressed_forebground">#4d000000</item>
+
+    <item name="transparent_background" type="drawable">#00000000</item>
+    <item name="trans" type="drawable">#00000000</item>
+    <item name="preview_btn_bg_press" type="drawable">#ff000000</item>
+    <item name="chatwindow_btn_press" type="drawable">#9936b5e3</item>
+    <item name="sc_trans" type="drawable">#00000000</item>
+    <item name="option_dilog_item_normal" type="drawable">#ef2a2a2a</item>
+    <item name="option_dilog_item_press" type="drawable">#ff3a3a3a</item>
+    <item name="setting_line1" type="drawable">#ffc9c9c9</item>
+    <item name="setting_line2" type="drawable">#ffffffff</item>
+    <item name="pressed_forebground" type="drawable">#4d000000</item>
+
+    <!-- 天气图片 -->
+    <!-- @drawable/weather_image_fine 晴 -->
+    <item name="weather_picture_0" type="drawable">@drawable/weather_image_fine</item> <!-- 晴 -->
+
+
+    <!-- @drawable/weather_image_cloudy 多云 -->
+    <item name="weather_picture_1" type="drawable">@drawable/weather_image_cloudy</item> <!-- 多云 -->
+
+
+    <!-- @drawable/weather_image_cloudy_day 阴天 -->
+    <item name="weather_picture_2" type="drawable">@drawable/weather_image_cloudy_day</item> <!-- 阴 -->
+
+
+    <!-- @drawable/weather_image_rain 雨 -->
+    <item name="weather_picture_3" type="drawable">@drawable/weather_image_rain</item> <!-- 阵雨 -->
+    <item name="weather_picture_4" type="drawable">@drawable/weather_image_rain</item> <!-- 雷阵雨 -->
+    <item name="weather_picture_5" type="drawable">@drawable/weather_image_rain</item> <!-- 雷阵雨伴有冰雹 -->
+    <item name="weather_picture_6" type="drawable">@drawable/weather_image_rain</item> <!-- 雨夹雪 -->
+    <item name="weather_picture_7" type="drawable">@drawable/weather_image_rain</item> <!-- 小雨 -->
+    <item name="weather_picture_8" type="drawable">@drawable/weather_image_rain</item> <!-- 中雨 -->
+    <item name="weather_picture_9" type="drawable">@drawable/weather_image_rain</item> <!-- 大雨 -->
+    <item name="weather_picture_10" type="drawable">@drawable/weather_image_rain</item> <!-- 暴雨 -->
+    <item name="weather_picture_11" type="drawable">@drawable/weather_image_rain</item> <!-- 大暴雨 -->
+    <item name="weather_picture_12" type="drawable">@drawable/weather_image_rain</item> <!-- 特大暴雨 -->
+    <item name="weather_picture_19" type="drawable">@drawable/weather_image_rain</item> <!-- 冻雨 -->
+    <item name="weather_picture_21" type="drawable">@drawable/weather_image_rain</item> <!-- 小雨-中雨 -->
+    <item name="weather_picture_22" type="drawable">@drawable/weather_image_rain</item> <!-- 中雨-大雨 -->
+    <item name="weather_picture_23" type="drawable">@drawable/weather_image_rain</item> <!-- 大雨-暴雨 -->
+    <item name="weather_picture_24" type="drawable">@drawable/weather_image_rain</item> <!-- 暴雨-大暴雨 -->
+    <item name="weather_picture_25" type="drawable">@drawable/weather_image_rain</item> <!-- 大暴雨-特大暴雨 -->
+
+
+    <!-- @drawable/weather_image_snow 雪 -->
+    <item name="weather_picture_13" type="drawable">@drawable/weather_image_snow</item> <!-- 阵雪 -->
+    <item name="weather_picture_14" type="drawable">@drawable/weather_image_snow</item> <!-- 小雪 -->
+    <item name="weather_picture_15" type="drawable">@drawable/weather_image_snow</item> <!-- 中雪 -->
+    <item name="weather_picture_16" type="drawable">@drawable/weather_image_snow</item> <!-- 大雪 -->
+    <item name="weather_picture_17" type="drawable">@drawable/weather_image_snow</item> <!-- 暴雪 -->
+    <item name="weather_picture_26" type="drawable">@drawable/weather_image_snow</item> <!-- 小雪-中雪 -->
+    <item name="weather_picture_27" type="drawable">@drawable/weather_image_snow</item> <!-- 中雪-大雪 -->
+    <item name="weather_picture_28" type="drawable">@drawable/weather_image_snow</item> <!-- 大雪-暴雪 -->
+
+
+    <!-- @drawable/weather_image_fog 雾 -->
+    <item name="weather_picture_18" type="drawable">@drawable/weather_image_fog</item> <!-- 雾 -->
+
+
+    <!-- @drawable/weather_image_sandstorm 沙尘 -->
+    <item name="weather_picture_20" type="drawable">@drawable/weather_image_sandstorm</item> <!-- 沙尘暴 -->
+    <item name="weather_picture_29" type="drawable">@drawable/weather_image_sandstorm</item> <!-- 浮尘 -->
+    <item name="weather_picture_30" type="drawable">@drawable/weather_image_sandstorm</item> <!-- 扬沙 -->
+    <item name="weather_picture_31" type="drawable">@drawable/weather_image_sandstorm</item> <!-- 强沙尘暴 -->
+
+
+    <!-- @drawable/weather_image_hail 冰雹 -->
+    <!-- @drawable/weather_image_thunder 雷 -->
+    <!-- @drawable/weather_image_tornado 龙卷风 -->
+    <!-- @drawable/weather_image_typhoon 台风 -->
+
 </resources>

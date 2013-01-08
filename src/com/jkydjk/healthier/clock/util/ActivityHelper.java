@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 /**
@@ -21,6 +22,8 @@ import android.widget.TextView;
  * 
  */
 public class ActivityHelper {
+
+  private static ArrayAdapter<Object> emptyArrayAdapter;
 
   /**
    * SD卡目录
@@ -86,6 +89,7 @@ public class ActivityHelper {
 
   /**
    * 给ViewGroup插入一个内容片段
+   * 
    * @param group
    * @param title
    * @param content
@@ -106,6 +110,18 @@ public class ActivityHelper {
     contentTextView.setText(content);
 
     group.addView(contentItemView);
+  }
+
+  /**
+   * 返回一个空的ArrayAdapter实例
+   * 
+   * @param context
+   * @return
+   */
+  public static ArrayAdapter<Object> getEmptyArrayAdapter(Context context) {
+    if (emptyArrayAdapter == null)
+      emptyArrayAdapter = new ArrayAdapter<Object>(context, R.layout.empty_simple_expandable_list_item, android.R.layout.simple_expandable_list_item_1);
+    return emptyArrayAdapter;
   }
 
 }

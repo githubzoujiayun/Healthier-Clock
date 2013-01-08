@@ -14,7 +14,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.jkydjk.healthier.clock.R;
-import com.jkydjk.healthier.clock.entity.Question;
 import com.jkydjk.healthier.clock.entity.Solution;
 
 @SuppressLint("UseSparseArrays")
@@ -58,8 +57,10 @@ public class SolutionListAdapter extends BaseAdapter {
     Solution solution = (Solution) items.get(position);
 
     TextView titleTextView = (TextView) view.findViewById(R.id.title);
-
     titleTextView.setText(solution.getTitle());
+    
+    TextView introTextView = (TextView)view.findViewById(R.id.intro);
+    introTextView.setText(solution.getEffect());
 
     views.put(position, view);
     

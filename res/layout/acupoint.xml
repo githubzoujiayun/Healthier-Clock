@@ -23,12 +23,20 @@
                 android:id="@+id/title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="15dip"
                 android:background="@drawable/banner_title_bg"
                 android:paddingLeft="12dp"
                 android:paddingTop="8dp"
                 android:text=""
                 android:textColor="#FF333333"
                 android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="15dip"
+                android:src="@drawable/image_preview_large" />
         </LinearLayout>
     </ScrollView>
 
