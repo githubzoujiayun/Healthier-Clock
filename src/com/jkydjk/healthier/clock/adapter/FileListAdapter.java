@@ -1,4 +1,4 @@
-package com.jkydjk.healthier.clock.util;
+package com.jkydjk.healthier.clock.adapter;
 
 import java.util.ArrayList;
 import java.util.List;

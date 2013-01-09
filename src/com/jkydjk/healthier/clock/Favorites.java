@@ -3,6 +3,7 @@ package com.jkydjk.healthier.clock;
 import java.sql.SQLException;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -67,9 +68,7 @@ public class Favorites extends OrmLiteBaseActivity<DatabaseHelper> implements On
     @Override
     protected void onPostExecute(String result) {
       super.onPostExecute(result);
-
       loading.setVisibility(View.GONE);
-
       if (solutions.size() == 0) {
         noFavoritesView.setVisibility(View.VISIBLE);
         solutionList.removeAllViewsInLayout();
@@ -80,13 +79,14 @@ public class Favorites extends OrmLiteBaseActivity<DatabaseHelper> implements On
         solutionList.setOnItemClickListener(Favorites.this);
         solutionList.setVisibility(View.VISIBLE);
       }
-
     }
-
   }
 
   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    // TODO Auto-generated method stub
+    Solution solution = (Solution) parent.getItemAtPosition(position);
+    Intent intent = new Intent(this, SolutionActivity.class);
+    intent.putExtra("solutionId", solution.getId());
+    startActivity(intent);
   }
 
 }

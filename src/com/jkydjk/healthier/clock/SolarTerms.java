@@ -3,29 +3,22 @@ package com.jkydjk.healthier.clock;
 import java.sql.SQLException;
 import java.util.List;
 
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
-import com.jkydjk.healthier.clock.Favorites.Task;
 import com.jkydjk.healthier.clock.adapter.SolutionListAdapter;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Lunar;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.TextView;
 
 public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements OnItemClickListener {
 

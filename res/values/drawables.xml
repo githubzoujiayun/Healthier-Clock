@@ -14,7 +14,7 @@
 
     <!-- 天气图片 -->
     <!-- @drawable/weather_image_fine 晴 -->
-    <item name="weather_picture_0" type="drawable">@drawable/weather_image_fine</item> <!-- 晴 -->
+    <item name="weather_picture_0" type="drawable">@drawable/weather_image_fine_2</item> <!-- 晴 -->
 
 
     <!-- @drawable/weather_image_cloudy 多云 -->

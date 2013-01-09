@@ -81,30 +81,40 @@
                     android:drawableRight="@drawable/icon_refresh"
                     android:visibility="invisible" />
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/hour_remind"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/picture"
-                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="18dip"
                     android:layout_marginLeft="100dip"
-                    android:orientation="vertical"
-                    android:paddingBottom="20dip" >
+                    android:background="@drawable/shadow_background_contain_left"
+                    android:orientation="vertical" >
 
                     <TextView
                         android:id="@+id/appropriate_text_view"
                         style="@style/hour_tip"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" />
-                    <!-- android:background="#B3669900" -->
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true" />
 
                     <TextView
                         android:id="@+id/taboo_text_view"
                         style="@style/hour_tip"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" />
-                    <!-- android:background="#B3CC0000" -->
-                </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/appropriate_text_view" />
+
+                    <ImageView
+                        android:id="@+id/arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:padding="4dip"
+                        android:src="@drawable/setting_arrow" />
+                </RelativeLayout>
             </RelativeLayout>
 
             <LinearLayout

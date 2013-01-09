@@ -1,7 +1,17 @@
-##健吾投资 健康时钟 Android 应用
+#健吾投资 健康时钟 Android 应用
 
-###天气
+##libs
+===
+#####图片加载: 
+Android-Universal-Image-Loader
+<https://github.com/nostra13/Android-Universal-Image-Loader>
+#####ORM:
+OrmLite - Lightweight Object Relational Mapping (ORM) Java Package 
+<http://ormlite.com/>
 
+
+##天气
+===
 #####天气数据:
 中国天气 <http://www.weather.com.cn/>
 

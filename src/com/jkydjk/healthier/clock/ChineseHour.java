@@ -35,14 +35,12 @@ import com.j256.ormlite.dao.ForeignCollection;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Acupoint;
 import com.jkydjk.healthier.clock.entity.Hour;
-import com.jkydjk.healthier.clock.entity.Ids;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
-import com.jkydjk.healthier.clock.util.Log;
 
 @SuppressLint("SimpleDateFormat")
 public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements OnClickListener, OnTouchListener {
@@ -114,8 +112,8 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
     appropriateTextView = (TextView) findViewById(R.id.appropriate_text_view);
     tabooTextView = (TextView) findViewById(R.id.taboo_text_view);
 
-    appropriateTextView.setText("宜：" + hour.getAppropriate());
-    tabooTextView.setText("忌：" + hour.getTaboo());
+    appropriateTextView.setText("宜: " + hour.getAppropriate());
+    tabooTextView.setText("忌: " + hour.getTaboo());
 
     hourRemind = findViewById(R.id.hour_remind);
     hourRemind.setOnClickListener(this);

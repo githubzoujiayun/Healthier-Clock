@@ -17,8 +17,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.jkydjk.healthier.clock.adapter.FileListAdapter;
 import com.jkydjk.healthier.clock.entity.FileExtension;
-import com.jkydjk.healthier.clock.util.FileListAdapter;
 import com.jkydjk.healthier.clock.util.FileUtil;
 import com.jkydjk.healthier.clock.widget.FileFlipBook;
 import com.jkydjk.healthier.clock.widget.FileItem;

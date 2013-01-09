@@ -23,6 +23,7 @@
     <!-- android.permission.EXPAND_STATUS_BAR -->
 
     <application
+        android:name=".HealthierApplication"
         android:icon="@drawable/ic_launcher_alarmclock"
         android:label="@string/app_label"
         android:persistent="true"
@@ -55,6 +56,10 @@
         <activity
             android:name=".Favorites"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".SolutionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent" />
         <activity
             android:name=".More"
             android:screenOrientation="portrait"
