@@ -9,7 +9,7 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "solutions")
-public class Solution {
+public class Solution implements BaseSolution{
 
   @DatabaseField(id = true)
   private int id;
@@ -26,10 +26,10 @@ public class Solution {
   @DatabaseField
   private int consuming;
 
-  @DatabaseField
+  @DatabaseField(columnName = "started_at")
   private int startedAt;
 
-  @DatabaseField
+  @DatabaseField(columnName = "ended_at")
   private int endedAt;
 
   @DatabaseField
@@ -117,7 +117,11 @@ public class Solution {
 
     return solution;
   }
-
+  
+  public int getSolutionId(){
+    return id;
+  }
+  
   public int getId() {
     return id;
   }

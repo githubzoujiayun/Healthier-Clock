@@ -75,7 +75,7 @@ public class Favorites extends OrmLiteBaseActivity<DatabaseHelper> implements On
         solutionList.setVisibility(View.GONE);
       } else {
         noFavoritesView.setVisibility(View.GONE);
-        solutionList.setAdapter(new SolutionListAdapter(Favorites.this, solutions));
+        solutionList.setAdapter(new SolutionListAdapter<Solution>(Favorites.this, solutions));
         solutionList.setOnItemClickListener(Favorites.this);
         solutionList.setVisibility(View.VISIBLE);
       }

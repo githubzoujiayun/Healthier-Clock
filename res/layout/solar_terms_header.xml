@@ -10,6 +10,7 @@
         android:src="@drawable/transparent_banner_image" />
 
     <LinearLayout
+        android:id="@+id/updated_at_wrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/shadow"
@@ -18,11 +19,12 @@
         android:paddingRight="12dip" >
 
         <TextView
+            android:id="@+id/updated_at"
             style="@style/shadow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="更新于2012/7/5 " />
+            android:text="" />
 
         <com.jkydjk.healthier.clock.widget.Loading
             style="@android:style/Widget.ProgressBar.Small"

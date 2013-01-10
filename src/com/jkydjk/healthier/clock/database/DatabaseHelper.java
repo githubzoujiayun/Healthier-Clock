@@ -12,6 +12,7 @@ import com.j256.ormlite.table.TableUtils;
 import com.jkydjk.healthier.clock.R;
 import com.jkydjk.healthier.clock.entity.Acupoint;
 import com.jkydjk.healthier.clock.entity.AcupointSolutionStep;
+import com.jkydjk.healthier.clock.entity.SolarTermSolution;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
 import com.jkydjk.healthier.clock.util.Log;
@@ -35,6 +36,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
   private static final int DATABASE_VERSION = 1;
 
   private Dao<Solution, Integer> solutionDao = null;
+  private Dao<SolarTermSolution, Integer> solarTermSolutionDao = null;
   private Dao<SolutionStep, Integer> solutionStepDao = null;
   private Dao<Acupoint, Integer> acupointDao = null;
   private Dao<AcupointSolutionStep, Integer> acupointSolutionStepDao = null;
@@ -68,6 +70,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
   public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
     try {
       TableUtils.createTable(connectionSource, Solution.class);
+      TableUtils.createTable(connectionSource, SolarTermSolution.class);
       TableUtils.createTable(connectionSource, SolutionStep.class);
       TableUtils.createTable(connectionSource, AcupointSolutionStep.class);
     } catch (SQLException e) {
@@ -81,6 +84,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     try {
       TableUtils.dropTable(connectionSource, Solution.class, true);
+      TableUtils.dropTable(connectionSource, SolarTermSolution.class, true);
       TableUtils.dropTable(connectionSource, SolutionStep.class, true);
       TableUtils.dropTable(connectionSource, AcupointSolutionStep.class, true);
       onCreate(db, connectionSource);
@@ -102,6 +106,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
       solutionDao = getDao(Solution.class);
     }
     return solutionDao;
+  }
+
+  public Dao<SolarTermSolution, Integer> getSolarTermSolutionDao() throws SQLException {
+    if (solarTermSolutionDao == null) {
+      solarTermSolutionDao = getDao(SolarTermSolution.class);
+    }
+    return solarTermSolutionDao;
   }
 
   public Dao<SolutionStep, Integer> getSolutionStepDao() throws SQLException {

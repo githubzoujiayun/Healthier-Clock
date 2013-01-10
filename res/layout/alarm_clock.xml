@@ -10,6 +10,7 @@
         android:id="@+id/weather_picture"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
         android:src="@drawable/weather_image_fine_2" />
 
     <ImageView

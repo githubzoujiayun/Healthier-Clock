@@ -41,7 +41,7 @@ public class RequestRoute {
    * </pre>
    */
   public static final String USER_CITY = "user/city";
-  
+
   /**
    * <pre>
    * <strong>Route</strong> : user/constitution
@@ -49,7 +49,7 @@ public class RequestRoute {
    * </pre>
    */
   public static final String USER_CONSTITUTION = "user/constitution";
-  
+
   /**
    * <pre>
    * <strong>Route</strong> : weather
@@ -57,7 +57,7 @@ public class RequestRoute {
    * </pre>
    */
   public static final String WEATHER = "weather";
-  
+
   /**
    * <pre>
    * <strong>Route</strong> : solution/hour
@@ -65,5 +65,21 @@ public class RequestRoute {
    * </pre>
    */
   public static final String SOLUTION_HOUR = "solution/hour";
+
+  /**
+   * <pre>
+   * <strong>Route</strong> : solution/solar_term
+   * <strong>Method</strong>: GET
+   * </pre>
+   */
+  public static final String SOLUTION_SOLAR_TERM = "solution/solar_term";
+
+  /**
+   * <pre>
+   * <strong>Route</strong> : solution/list/image
+   * <strong>Method</strong>: GET
+   * </pre>
+   */
+  public static final String SOLUTION_LIST_IMAGE = "solution/list/image";
 
 }
