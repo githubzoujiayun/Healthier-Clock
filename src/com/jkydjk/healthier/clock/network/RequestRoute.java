@@ -96,12 +96,12 @@ public class RequestRoute {
   /**
    * <pre>
    * 方案列表图片
-   * <strong>Route</strong> : solution/list/image/:id
+   * <strong>Route</strong> : solution/list/:id/image
    * <strong>Method</strong>: GET
    * </pre>
    */
   public static String solutionListImage(int id) {
-    return REQUEST_PATH + "solution/list/image/" + id;
+    return REQUEST_PATH + "solution/list/" + id + "/image";
   }
 
   /**
@@ -113,6 +113,17 @@ public class RequestRoute {
    */
   public static String solution(int id) {
     return REQUEST_PATH + "solution/" + id;
+  }
+
+  /**
+   * <pre>
+   * 方案图片
+   * <strong>Route</strong> : solution/image/:id/image
+   * <strong>Method</strong>: GET
+   * </pre>
+   */
+  public static String solutionImage(int id) {
+    return REQUEST_PATH + "solution/" + id + "/image";
   }
 
 }

@@ -217,19 +217,30 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
       efficacy.setText(solution.getEffect());
       tips.setText(solution.getNote());
 
-      // "http://site.com/image.jpg" Or "file:///mnt/sdcard/images/image.jpg"
-      String imageUrl = "http://dribbble.s3.amazonaws.com/users/4737/screenshots/881241/attachments/95183/Big-Photo.png";
-
       ImageLoader imageLoader = ImageLoader.getInstance();
 
-      DisplayImageOptions options = new DisplayImageOptions.Builder().showStubImage(R.drawable.image_preview_large).showImageForEmptyUri(R.drawable.image_preview_large).resetViewBeforeLoading()
-          .cacheInMemory().cacheOnDisc().imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).bitmapConfig(Bitmap.Config.ARGB_8888).delayBeforeLoading(1000).displayer(new RoundedBitmapDisplayer(5))
-          .build();
+      DisplayImageOptions options = new DisplayImageOptions.Builder()
+        .showStubImage(R.drawable.image_preview_large)
+        .showImageForEmptyUri(R.drawable.image_preview_large)
+        .resetViewBeforeLoading()
+        .cacheInMemory()
+        .cacheOnDisc()
+        .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
+        .bitmapConfig(Bitmap.Config.ARGB_8888)
+        .delayBeforeLoading(1000)
+        .displayer(new RoundedBitmapDisplayer(5))
+        .build();
 
-      imageLoader.displayImage(imageUrl, picture, options, new SimpleImageLoadingListener() {
+      imageLoader.displayImage(RequestRoute.solutionImage(solutionId), picture, options, new SimpleImageLoadingListener() {
         @Override
         public void onLoadingComplete(Bitmap loadedImage) {
           loadingIcon.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onLoadingFailed(FailReason failReason) {
+          Log.v("onLoadingFailed: " + failReason);
+          super.onLoadingFailed(failReason);
         }
       });
 
