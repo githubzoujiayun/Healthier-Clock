@@ -23,14 +23,14 @@
             style="@style/shadow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="" />
+            android:layout_gravity="center_vertical" />
 
-        <com.jkydjk.healthier.clock.widget.Loading
-            style="@android:style/Widget.ProgressBar.Small"
+        <ImageView
+            android:id="@+id/cycling_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            automatic="false" />
+            android:background="@drawable/icon_refresh"
+            android:contentDescription="@string/cycling_loading" />
     </LinearLayout>
 
     <ImageView

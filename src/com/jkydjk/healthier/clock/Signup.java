@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import com.jkydjk.healthier.clock.entity.User;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
+import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.JSONHelper;
 import com.jkydjk.healthier.clock.util.StringUtil;
@@ -116,7 +117,7 @@ public class Signup extends BaseActivity implements OnClickListener {
 
     User user = null;
 
-    HttpClientManager httpClientManager = new HttpClientManager(this, HttpClientManager.REQUEST_PATH + "user/signup");
+    HttpClientManager httpClientManager = new HttpClientManager(this, RequestRoute.REQUEST_PATH + "user/signup");
     httpClientManager.addParam("username", strUsername);
     httpClientManager.addParam("email", strEmail);
     httpClientManager.addParam("password", strPassword);

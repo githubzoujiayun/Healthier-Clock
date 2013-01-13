@@ -1,6 +1,5 @@
 package com.jkydjk.healthier.clock;
 
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -16,6 +15,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
@@ -24,31 +24,32 @@ import android.widget.TextView;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.jkydjk.healthier.clock.adapter.SolutionListAdapter;
+import com.jkydjk.healthier.clock.animation.Cycling;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.SolarTermSolution;
-import com.jkydjk.healthier.clock.entity.Solution;
-import com.jkydjk.healthier.clock.entity.SolutionStep;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
-import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.Lunar;
 
 @SuppressLint("SimpleDateFormat")
-public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements OnItemClickListener {
+public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements OnItemClickListener, OnClickListener {
 
   SharedPreferences sharedPreferences;
   int solarTermIndex;
 
-  
   ListView solutionList;
+
+  View loadingPage;
   View headerView;
-  View loading;
+
   ImageView picture;
+  View updatedAtWrapper;
   TextView updatedAtTextView;
+  View loadingView;
 
   DatabaseHelper helper;
 
@@ -56,26 +57,35 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
 
   List<SolarTermSolution> solarTermSolutions;
 
+  boolean isUpdatIng = false;
+
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.solar_terms);
 
     sharedPreferences = getSharedPreferences("solar_terms", Context.MODE_PRIVATE);
-    
-    solutionList = (ListView) findViewById(R.id.solution_list);
 
     headerView = View.inflate(this, R.layout.solar_terms_header, null);
-    loading = View.inflate(this, R.layout.loading_page, null);
-    loading.setPadding(0, 20, 0, 20);
+
+    updatedAtWrapper = headerView.findViewById(R.id.updated_at_wrapper);
+    updatedAtWrapper.setOnClickListener(this);
 
     picture = (ImageView) headerView.findViewById(R.id.picture);
-    
-    updatedAtTextView = (TextView)headerView.findViewById(R.id.updated_at);
+    picture.setOnClickListener(this);
 
+    updatedAtTextView = (TextView) headerView.findViewById(R.id.updated_at);
+
+    loadingView = headerView.findViewById(R.id.cycling_loading);
+
+    loadingPage = View.inflate(this, R.layout.loading_page, null);
+    loadingPage.setPadding(0, 20, 0, 20);
+
+    solutionList = (ListView) findViewById(R.id.solution_list);
     solutionList.addHeaderView(headerView, null, false);
-    solutionList.addFooterView(loading, null, false);
-
+    solutionList.addFooterView(loadingPage, null, false);
     solutionList.setAdapter(ActivityHelper.getEmptyArrayAdapter(this));
+
+    new Task().execute();
   }
 
   @Override
@@ -84,8 +94,6 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
 
     solarTermIndex = Lunar.getCurrentSolarTermIntervalIndex();
     picture.setImageResource(ActivityHelper.getImageResourceID(this, "solar_terms_" + solarTermIndex));
-
-    new Task().execute();
   }
 
   /**
@@ -95,46 +103,64 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
    */
   class Task extends AsyncTask<String, Integer, String> {
 
+    private boolean force = false;
+
+    /**
+     * Set before execute() methods
+     * 
+     * @param force
+     * @return
+     */
+    public Task setForceUpdate(boolean force) {
+      this.force = force;
+      return this;
+    }
+
     @Override
     protected void onPreExecute() {
       super.onPreExecute();
+      isUpdatIng = true;
+      Cycling.start(loadingView);
     }
 
     @Override
     protected String doInBackground(String... params) {
+
       helper = getHelper();
       try {
         solarTermSolutionDao = helper.getSolarTermSolutionDao();
 
         solarTermSolutions = solarTermSolutionDao.queryForEq("solar_term_index", solarTermIndex);
 
-        if (solarTermSolutions.size() == 0) {
-
+        if (force || solarTermSolutions.size() == 0) {
           if (!ActivityHelper.networkConnected(SolarTerms.this)) {
             return "网络未连接！";
           }
-
-          HttpClientManager connect = new HttpClientManager(SolarTerms.this, HttpClientManager.REQUEST_PATH + RequestRoute.SOLUTION_SOLAR_TERM);
+          HttpClientManager connect = new HttpClientManager(SolarTerms.this, RequestRoute.REQUEST_PATH + RequestRoute.SOLUTION_SOLAR_TERM);
           connect.addParam("solar_term", solarTermIndex + "");
-
           connect.execute(ResuestMethod.GET);
-
           JSONObject json = new JSONObject(connect.getResponse());
-
           JSONArray solutionsArray = json.getJSONArray("solutions");
+
+          DeleteBuilder<SolarTermSolution, Integer> deleteBuilder = solarTermSolutionDao.deleteBuilder();
+          deleteBuilder.where().eq("solar_term_index", solarTermIndex);
+
+          solarTermSolutionDao.delete(deleteBuilder.prepare());
+
+          solarTermSolutions.clear();
 
           for (int i = 0; i < solutionsArray.length(); i++) {
             SolarTermSolution solution = SolarTermSolution.parseJsonObject((JSONObject) solutionsArray.get(i));
+            solution.setSolarTermIndex(solarTermIndex);
             solarTermSolutionDao.create(solution);
             solarTermSolutions.add(solution);
           }
 
           SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
           Calendar calendar = Calendar.getInstance();
-          String today = dateFormat.format(calendar.getTime());
 
           Editor editor = sharedPreferences.edit();
-          editor.putString("solution_" + solarTermIndex + "_updated_at", today);
+          editor.putString("solution_" + solarTermIndex + "_updated_at", dateFormat.format(calendar.getTime()));
           editor.commit();
         }
 
@@ -156,26 +182,42 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
       }
 
       if (solarTermSolutions.size() == 0) {
-        TextView loadingText = (TextView) loading.findViewById(R.id.loading_text);
+        TextView loadingText = (TextView) loadingPage.findViewById(R.id.loading_text);
         loadingText.setText("暂无方案");
-        loading.findViewById(R.id.loading_icon).setVisibility(View.GONE);
+        loadingPage.findViewById(R.id.loading_icon).setVisibility(View.GONE);
       } else {
+        solutionList.removeAllViewsInLayout();
         solutionList.setAdapter(new SolutionListAdapter<SolarTermSolution>(SolarTerms.this, solarTermSolutions));
         solutionList.setOnItemClickListener(SolarTerms.this);
-        solutionList.removeFooterView(loading);
+        solutionList.removeFooterView(loadingPage);
       }
 
+      Cycling.stop(loadingView);
+      isUpdatIng = false;
     }
   }
 
+  /**
+   * ListView onItemClick();
+   */
   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     SolarTermSolution solution = (SolarTermSolution) parent.getItemAtPosition(position);
-
     Intent intent = new Intent(this, SolutionActivity.class);
-
     intent.putExtra("solutionId", solution.getSolutionId());
-
     startActivity(intent);
+  }
+
+  /**
+   * View onClick();
+   */
+  public void onClick(View v) {
+    switch (v.getId()) {
+    case R.id.updated_at_wrapper:
+      if (!isUpdatIng)
+        new Task().setForceUpdate(true).execute();
+      break;
+    }
+
   }
 
 }

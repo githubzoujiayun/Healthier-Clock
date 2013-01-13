@@ -1,12 +1,10 @@
 package com.jkydjk.healthier.clock.widget;
 
-import com.jkydjk.healthier.clock.R;
-
-import android.R.style;
 import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
+
+import com.jkydjk.healthier.clock.R;
 
 /**
  * 
@@ -18,30 +16,28 @@ import android.widget.ProgressBar;
  * 
  */
 
-public class Loading extends ProgressBar {
+public class LoadingView extends ProgressBar {
 
   private boolean automatic;
 
-  public Loading(Context context) {
+  public LoadingView(Context context) {
     super(context);
   }
 
-  public Loading(Context context, AttributeSet attrs) {
+  public LoadingView(Context context, AttributeSet attrs) {
     super(context, attrs);
     automatic = attrs.getAttributeBooleanValue(null, "automatic", false);
     init();
   }
 
-  public Loading(Context context, AttributeSet attrs, int paramInt) {
+  public LoadingView(Context context, AttributeSet attrs, int paramInt) {
     super(context, attrs, paramInt);
     automatic = attrs.getAttributeBooleanValue(null, "automatic", false);
     init();
   }
 
   private void init() {
-    
-//    style="@android:style/Widget.ProgressBar.Small"
-    
+    // style="@android:style/Widget.ProgressBar.Small"
     if (automatic) {
       startLoading();
     } else {
@@ -54,7 +50,9 @@ public class Loading extends ProgressBar {
   }
 
   public void stopLoading() {
+    setIndeterminate(false);
     setIndeterminateDrawable(getResources().getDrawable(R.drawable.icon_refresh));
+    setBackgroundResource(R.drawable.icon_refresh);
   }
 
 }

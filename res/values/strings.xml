@@ -494,6 +494,7 @@
 	<string name="acupoint">穴位</string>
     
 	<string name="loading">正在加载&#8230;</string>
+	<string name="cycling_loading">加载图片</string>
 	<string name="please_be_patient_wait_for_a_moment">~内容马上就会呈现～\n请耐心等待片刻</string>
 	
 	<string name="steps">操作步骤</string>

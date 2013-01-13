@@ -4,6 +4,17 @@ public class RequestRoute {
 
   /**
    * <pre>
+   * API请求地址:
+   * http://192.168.2.100:3000/mobile/
+   * </pre>
+   */
+  public static String REQUEST_PATH = "http://192.168.2.100:3000/mobile/";
+
+  // public static String REQUEST_PATH = "http://jkydjk.com/mobile/";
+
+  /**
+   * <pre>
+   * 用户登录
    * <strong>Route</strong> : user/singin
    * <strong>Method</strong>: POST
    * </pre>
@@ -12,6 +23,7 @@ public class RequestRoute {
 
   /**
    * <pre>
+   * 设置用户真实姓名
    * <strong>Route</strong> : user/realname
    * <strong>Method</strong>: POST
    * </pre>
@@ -20,6 +32,7 @@ public class RequestRoute {
 
   /**
    * <pre>
+   * 设置用户性别
    * <strong>Route</strong> : user/gender
    * <strong>Method</strong>: POST
    * </pre>
@@ -28,6 +41,7 @@ public class RequestRoute {
 
   /**
    * <pre>
+   * 设置用户生日
    * <strong>Route</strong> : user/birthday
    * <strong>Method</strong>: POST
    * </pre>
@@ -36,6 +50,7 @@ public class RequestRoute {
 
   /**
    * <pre>
+   * 设置用户所在城市
    * <strong>Route</strong> : user/city
    * <strong>Method</strong>: POST
    * </pre>
@@ -44,6 +59,7 @@ public class RequestRoute {
 
   /**
    * <pre>
+   * 用户体质
    * <strong>Route</strong> : user/constitution
    * <strong>Method</strong>: POST
    * </pre>
@@ -52,6 +68,7 @@ public class RequestRoute {
 
   /**
    * <pre>
+   * 天气
    * <strong>Route</strong> : weather
    * <strong>Method</strong>: POST
    * </pre>
@@ -60,7 +77,8 @@ public class RequestRoute {
 
   /**
    * <pre>
-   * <strong>Route</strong> : solution/hour
+   * 时辰方案(给定时辰方案内容)
+   * <strong>Route</strong> : solution/hour/(:id)
    * <strong>Method</strong>: GET
    * </pre>
    */
@@ -68,7 +86,8 @@ public class RequestRoute {
 
   /**
    * <pre>
-   * <strong>Route</strong> : solution/solar_term
+   * 节气方案(返回列表)
+   * <strong>Route</strong> : solution/solar_term/(:id)
    * <strong>Method</strong>: GET
    * </pre>
    */
@@ -76,10 +95,24 @@ public class RequestRoute {
 
   /**
    * <pre>
-   * <strong>Route</strong> : solution/list/image
+   * 方案列表图片
+   * <strong>Route</strong> : solution/list/image/:id
    * <strong>Method</strong>: GET
    * </pre>
    */
-  public static final String SOLUTION_LIST_IMAGE = "solution/list/image";
+  public static String solutionListImage(int id) {
+    return REQUEST_PATH + "solution/list/image/" + id;
+  }
+
+  /**
+   * <pre>
+   * 方案内容
+   * <strong>Route</strong> : solution/:id
+   * <strong>Method</strong>: GET
+   * </pre>
+   */
+  public static String solution(int id) {
+    return REQUEST_PATH + "solution/" + id;
+  }
 
 }

@@ -181,7 +181,7 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
             return "网络未连接！";
           }
 
-          HttpClientManager connect = new HttpClientManager(ChineseHour.this, HttpClientManager.REQUEST_PATH + RequestRoute.SOLUTION_HOUR);
+          HttpClientManager connect = new HttpClientManager(ChineseHour.this, RequestRoute.REQUEST_PATH + RequestRoute.SOLUTION_HOUR);
           connect.addParam("hour", hourID + "");
 
           connect.execute(ResuestMethod.GET);

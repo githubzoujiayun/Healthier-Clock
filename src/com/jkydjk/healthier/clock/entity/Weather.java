@@ -128,7 +128,7 @@ public class Weather {
 
     SQLiteDatabase database = new WeatherDatabaseHelper(context).getReadableDatabase();
 
-    HttpClientManager connect = new HttpClientManager(context, HttpClientManager.REQUEST_PATH + RequestRoute.WEATHER);
+    HttpClientManager connect = new HttpClientManager(context, RequestRoute.REQUEST_PATH + RequestRoute.WEATHER);
 
     connect.addParam("region_id", regionID);
 

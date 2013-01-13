@@ -1,10 +1,16 @@
 package com.jkydjk.healthier.clock;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Iterator;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.AsyncTask;
@@ -27,6 +33,10 @@ import com.j256.ormlite.dao.ForeignCollection;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
+import com.jkydjk.healthier.clock.network.HttpClientManager;
+import com.jkydjk.healthier.clock.network.RequestRoute;
+import com.jkydjk.healthier.clock.network.ResuestMethod;
+import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.ImageLoaderUtil;
 import com.jkydjk.healthier.clock.util.Log;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -149,7 +159,41 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
         solutionStepDao = helper.getSolutionStepDao();
 
         solution = solutionDao.queryForId(solutionId);
-      } catch (SQLException e) {
+
+        if (solution == null) {
+          if (!ActivityHelper.networkConnected(SolutionActivity.this)) {
+            return "网络未连接！";
+          }
+
+          HttpClientManager connect = new HttpClientManager(SolutionActivity.this, RequestRoute.solution(solutionId));
+
+          connect.execute(ResuestMethod.GET);
+
+          JSONObject json = new JSONObject(connect.getResponse());
+
+          JSONObject solutionJSON = json.getJSONObject("solution");
+
+          solution = Solution.parseJsonObject(solutionJSON);
+
+          solutionDao.createOrUpdate(solution);
+
+          JSONArray stepsArray = solutionJSON.getJSONArray("steps");
+
+          ForeignCollection<SolutionStep> steps = solutionDao.getEmptyForeignCollection("steps");
+
+          for (int i = 0; i < stepsArray.length(); i++) {
+            SolutionStep step = SolutionStep.parseJsonObject((JSONObject) stepsArray.get(i));
+            step.setSolution(solution);
+            solutionStepDao.delete(step);
+            // solutionStepDao.createOrUpdate(step);
+            steps.add(step);
+          }
+
+          solution.setSteps(steps);
+
+        }
+
+      } catch (Exception e) {
         e.printStackTrace();
       }
 

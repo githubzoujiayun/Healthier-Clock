@@ -291,7 +291,7 @@ public class Resume extends BaseActivity implements OnClickListener {
       String type = params[1];
       String value = params[2];
 
-      HttpClientManager connect = new HttpClientManager(Resume.this, HttpClientManager.REQUEST_PATH + route);
+      HttpClientManager connect = new HttpClientManager(Resume.this, RequestRoute.REQUEST_PATH + route);
       connect.addParam(type, value);
 
       try {

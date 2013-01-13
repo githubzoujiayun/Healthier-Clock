@@ -143,7 +143,7 @@ public class RegionSelector extends BaseActivity implements OnClickListener, OnC
       String type = params[1];
       String value = params[2];
 
-      HttpClientManager connect = new HttpClientManager(RegionSelector.this, HttpClientManager.REQUEST_PATH + route);
+      HttpClientManager connect = new HttpClientManager(RegionSelector.this, RequestRoute.REQUEST_PATH + route);
       connect.addParam(type, value);
 
       try {

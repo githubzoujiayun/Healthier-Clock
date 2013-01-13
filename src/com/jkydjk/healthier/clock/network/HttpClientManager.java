@@ -35,9 +35,6 @@ public class HttpClientManager {
   private static final int REQUEST_TIMEOUT = 5 * 1000;// 设置请求超时3秒钟
   private static final int SO_TIMEOUT = 30 * 1000; // 设置等待数据超时时间20秒钟
 
-  public static String REQUEST_PATH = "http://192.168.2.100:3000/mobile/";
-  // public static String REQUEST_PATH = "http://jkydjk.com/mobile/";
-
   private ArrayList<NameValuePair> params;
   private ArrayList<NameValuePair> headers;
   private String url;
@@ -60,7 +57,6 @@ public class HttpClientManager {
   }
 
   public HttpClientManager(Context context, String url) {
-    // TODO Auto-generated constructor stub
     this.url = url;
     params = new ArrayList<NameValuePair>();
     headers = new ArrayList<NameValuePair>();

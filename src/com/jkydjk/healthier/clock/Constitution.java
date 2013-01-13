@@ -121,7 +121,7 @@ public class Constitution extends BaseActivity implements OnClickListener {
         }
       }
 
-      HttpClientManager connect = new HttpClientManager(Constitution.this, HttpClientManager.REQUEST_PATH + RequestRoute.USER_CONSTITUTION);
+      HttpClientManager connect = new HttpClientManager(Constitution.this, RequestRoute.REQUEST_PATH + RequestRoute.USER_CONSTITUTION);
 
       connect.addParam("constitution", constitutionType);
 

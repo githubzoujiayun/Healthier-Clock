@@ -3,6 +3,7 @@ package com.jkydjk.healthier.clock;
 import org.json.JSONObject;
 
 import com.jkydjk.healthier.clock.network.HttpClientManager;
+import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.StringUtil;
 
@@ -59,7 +60,7 @@ public class Feedback extends BaseActivity implements OnClickListener {
       return;
     }
 
-    HttpClientManager httpClientManager = new HttpClientManager(this, HttpClientManager.REQUEST_PATH + "feedback");
+    HttpClientManager httpClientManager = new HttpClientManager(this, RequestRoute.REQUEST_PATH + "feedback");
     httpClientManager.addParam("content", context);
 
     try {

@@ -75,7 +75,7 @@ public class Signin extends BaseActivity implements OnClickListener {
     String strLogin = login.getText().toString();
     String strPassword = password.getText().toString();
 
-    HttpClientManager httpClientManager = new HttpClientManager(this, HttpClientManager.REQUEST_PATH + RequestRoute.USER_SIGNIN);
+    HttpClientManager httpClientManager = new HttpClientManager(this, RequestRoute.REQUEST_PATH + RequestRoute.USER_SIGNIN);
     httpClientManager.addParam("login", strLogin);
     httpClientManager.addParam("password", strPassword);
 
