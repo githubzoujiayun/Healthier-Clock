@@ -3,7 +3,6 @@ package com.jkydjk.healthier.clock;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,11 +10,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -23,22 +25,24 @@ import android.widget.TextView;
 import com.j256.ormlite.dao.Dao;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Acupoint;
-import com.jkydjk.healthier.clock.entity.Meridian;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
-import com.jkydjk.healthier.clock.util.StringUtil;
 
-public class AcupointSlider extends FragmentActivity implements OnClickListener {
+public class AcupointSlider extends FragmentActivity implements OnClickListener, OnPageChangeListener {
 
   ArrayList<Integer> acupointIds;
 
   ViewPager pager;
+
   ArrayList<View> pages;
 
   AcupointFragmentPagerAdapter pagerAdapter;
 
   View numberBar;
-  View loading;
+
+  ImageView[] imageViews;
+  LinearLayout numbersView;
+
   Button back;
 
   DatabaseHelper helper;
@@ -55,22 +59,46 @@ public class AcupointSlider extends FragmentActivity implements OnClickListener 
       finish();
 
     pager = (ViewPager) findViewById(R.id.pager);
-    numberBar = findViewById(R.id.number_bar);
-    loading = findViewById(R.id.loading);
 
     back = (Button) findViewById(R.id.back);
     back.setOnClickListener(this);
 
     helper = new DatabaseHelper(AcupointSlider.this);
+
     try {
       acupointDao = helper.getAcupointDao();
     } catch (SQLException e) {
       e.printStackTrace();
     }
 
+    numberBar = findViewById(R.id.number_bar);
+    imageViews = new ImageView[acupointIds.size()];
+
+    numbersView = (LinearLayout) findViewById(R.id.numbers);
+
+    for (int i = 0; i < acupointIds.size(); i++) {
+      ImageView imageView = new ImageView(this);
+      imageView.setLayoutParams(new LayoutParams(20, 20));
+      imageView.setPadding(20, 0, 20, 0);
+      imageViews[i] = imageView;
+      if (i == 0) {
+        // 默认选中第一张图片
+        imageViews[i].setBackgroundResource(R.drawable.page_indicator_black_focused);
+      } else {
+        imageViews[i].setBackgroundResource(R.drawable.page_indicator_black);
+      }
+      numbersView.addView(imageViews[i]);
+    }
+
+    if (acupointIds.size() > 1) {
+      numberBar.setVisibility(View.VISIBLE);
+    }
+
     pagerAdapter = new AcupointFragmentPagerAdapter(getSupportFragmentManager());
     pagerAdapter.acupointIds = acupointIds;
     pager.setAdapter(pagerAdapter);
+    pager.setOnPageChangeListener(this);
+
   }
 
   /**
@@ -149,9 +177,7 @@ public class AcupointSlider extends FragmentActivity implements OnClickListener 
       titleTextView.setText(acupoint.getName());
 
       ActivityHelper.generateContentItem(contentLayout, "所在经络", acupoint.getMeridian().getName());
-      
       ActivityHelper.generateContentItem(contentLayout, "准确定位", acupoint.getPosition());
-      
       ActivityHelper.generateContentItem(contentLayout, "取穴技巧", acupoint.getLocateSkill());
 
       loading.setVisibility(View.GONE);
@@ -183,4 +209,24 @@ public class AcupointSlider extends FragmentActivity implements OnClickListener 
     }
 
   }
+
+  /**
+   * 页面滑动
+   */
+  // 指引页面更改事件监听器
+  public void onPageScrollStateChanged(int state) {
+  }
+
+  public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+  }
+
+  public void onPageSelected(int position) {
+    for (int i = 0; i < imageViews.length; i++) {
+      imageViews[position].setBackgroundResource(R.drawable.page_indicator_black_focused);
+      if (position != i) {
+        imageViews[i].setBackgroundResource(R.drawable.page_indicator_black);
+      }
+    }
+  }
+
 }
