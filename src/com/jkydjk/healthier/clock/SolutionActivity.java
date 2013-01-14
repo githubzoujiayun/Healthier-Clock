@@ -39,6 +39,7 @@ import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.ImageLoaderUtil;
 import com.jkydjk.healthier.clock.util.Log;
+import com.jkydjk.healthier.clock.util.StringUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -55,7 +56,7 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
 
   int solutionId;
 
-  View back;
+  View close;
 
   View loading;
   ScrollView contentScrollView;
@@ -66,6 +67,7 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
 
   TextView titleTextView;
   TextView efficacy;
+  View tipsTitle;
   TextView tips;
 
   LinearLayout stepsView;
@@ -95,8 +97,8 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
     if (solutionId == -1)
       finish();
 
-    back = findViewById(R.id.back);
-    back.setOnClickListener(this);
+    close = findViewById(R.id.close);
+    close.setOnClickListener(this);
 
     contentScrollView = (ScrollView) findViewById(R.id.content_scroll_view);
 
@@ -109,6 +111,8 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
     efficacy = (TextView) findViewById(R.id.efficacy);
 
     tips = (TextView) findViewById(R.id.tips);
+
+    tipsTitle = findViewById(R.id.tips_title);
 
     stepsView = (LinearLayout) findViewById(R.id.steps_view);
 
@@ -214,22 +218,24 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
       contentScrollView.setVisibility(View.VISIBLE);
 
       titleTextView.setText(solution.getTitle());
+
       efficacy.setText(solution.getEffect());
+
       tips.setText(solution.getNote());
+
+      if (StringUtil.isEmpty(solution.getNote())) {
+        tips.setVisibility(View.GONE);
+        tipsTitle.setVisibility(View.GONE);
+      } else {
+        tips.setVisibility(View.VISIBLE);
+        tipsTitle.setVisibility(View.VISIBLE);
+      }
 
       ImageLoader imageLoader = ImageLoader.getInstance();
 
-      DisplayImageOptions options = new DisplayImageOptions.Builder()
-        .showStubImage(R.drawable.image_preview_large)
-        .showImageForEmptyUri(R.drawable.image_preview_large)
-        .resetViewBeforeLoading()
-        .cacheInMemory()
-        .cacheOnDisc()
-        .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
-        .bitmapConfig(Bitmap.Config.ARGB_8888)
-        .delayBeforeLoading(1000)
-        .displayer(new RoundedBitmapDisplayer(5))
-        .build();
+      DisplayImageOptions options = new DisplayImageOptions.Builder().showStubImage(R.drawable.image_preview_large).showImageForEmptyUri(R.drawable.image_preview_large).resetViewBeforeLoading()
+          .cacheInMemory().cacheOnDisc().imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).bitmapConfig(Bitmap.Config.ARGB_8888).delayBeforeLoading(1000).displayer(new RoundedBitmapDisplayer(5))
+          .build();
 
       imageLoader.displayImage(RequestRoute.solutionImage(solutionId), picture, options, new SimpleImageLoadingListener() {
         @Override
@@ -312,10 +318,11 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
     switch (v.getId()) {
 
     // 返回
-    case R.id.back:
+    case R.id.close:
       finish();
       break;
 
+    // 收藏
     case R.id.favorite:
       try {
         solution.setFavorited(!solution.isFavorited());

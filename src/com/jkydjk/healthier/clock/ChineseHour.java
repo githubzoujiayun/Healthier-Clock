@@ -32,6 +32,8 @@ import android.widget.TextView;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
+import com.jkydjk.healthier.clock.SolarTerms.Task;
+import com.jkydjk.healthier.clock.animation.Cycling;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Acupoint;
 import com.jkydjk.healthier.clock.entity.Hour;
@@ -41,12 +43,16 @@ import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
+import com.jkydjk.healthier.clock.util.StringUtil;
 
 @SuppressLint("SimpleDateFormat")
 public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements OnClickListener, OnTouchListener {
 
   ScrollView contentScrollView;
+
+  View updatedAtWrapper;
   TextView updatedAtTextView;
+  ImageView cyclingLoading;
 
   Button concernButton;
 
@@ -80,8 +86,10 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
   Hour hour;
   int hourID;
-  int solutionID;
+  int solutionId;
   Solution solution;
+
+  boolean isUpdatIng = false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +115,11 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
     setConcernIcon(sharedPreferences.getBoolean("concern_" + hourID, false));
     concernButton.setOnClickListener(this);
 
+    updatedAtWrapper = findViewById(R.id.updated_at_wrapper);
+    updatedAtWrapper.setOnClickListener(this);
+
     updatedAtTextView = (TextView) findViewById(R.id.updated_at);
+    cyclingLoading = (ImageView) findViewById(R.id.cycling_loading);
 
     appropriateTextView = (TextView) findViewById(R.id.appropriate_text_view);
     tabooTextView = (TextView) findViewById(R.id.taboo_text_view);
@@ -154,10 +166,24 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
    */
   class Task extends AsyncTask<String, Integer, String> {
 
+    private boolean force = false;
+
+    /**
+     * Set before execute() methods
+     * 
+     * @param force
+     * @return
+     */
+    public Task setForceUpdate(boolean force) {
+      this.force = force;
+      return this;
+    }
+
     @Override
     protected void onPreExecute() {
       super.onPreExecute();
-      loading.setVisibility(View.VISIBLE);
+      isUpdatIng = true;
+      Cycling.start(cyclingLoading);
     }
 
     @Override
@@ -165,7 +191,7 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
       layoutInflater = ChineseHour.this.getLayoutInflater();
 
-      solutionID = sharedPreferences.getInt("solution_" + hourID, 0);
+      solutionId = sharedPreferences.getInt("hour_" + hourID, -1);
 
       try {
         helper = getHelper();
@@ -174,7 +200,11 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
         solutionStepDao = helper.getSolutionStepDao();
         acupointDao = helper.getAcupointDao();
 
-        solution = solutionDao.queryForId(solutionID);
+        if (force || solutionId == -1) {
+          solution = null;
+        } else {
+          solution = solutionDao.queryForId(solutionId);
+        }
 
         if (solution == null) {
           if (!ActivityHelper.networkConnected(ChineseHour.this)) {
@@ -192,7 +222,8 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
           solution = Solution.parseJsonObject(solutionJSON);
 
-          solutionDao.createOrUpdate(solution);
+          solutionDao.createIfNotExists(solution);
+          solutionDao.refresh(solution);
 
           JSONArray stepsArray = solutionJSON.getJSONArray("steps");
 
@@ -214,8 +245,8 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
           Editor editor = sharedPreferences.edit();
 
-          editor.putInt("solution_" + hourID, solution.getId());
-          editor.putString("solution_" + hourID + "_updated_at", today);
+          editor.putInt("hour_" + hourID, solution.getId());
+          editor.putString("hour_" + hourID + "_updated_at", today);
           editor.commit();
         }
 
@@ -231,14 +262,15 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
     protected void onPostExecute(String result) {
       super.onPostExecute(result);
 
-      String updatedAt = sharedPreferences.getString("solution_" + hourID + "_updated_at", null);
+      Cycling.stop(cyclingLoading);
+      isUpdatIng = false;
+
+      String updatedAt = sharedPreferences.getString("hour_" + hourID + "_updated_at", null);
 
       if (updatedAt != null) {
         updatedAtTextView.setText("更新于" + updatedAt);
         updatedAtTextView.setVisibility(View.VISIBLE);
       }
-
-      solutionID = sharedPreferences.getInt("solution_" + hourID, 0);
 
       if (solution != null) {
 
@@ -254,6 +286,14 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
         TextView tips = (TextView) solutionView.findViewById(R.id.tips);
         tips.setText(solution.getNote());
+
+        if (StringUtil.isEmpty(solution.getNote())) {
+          tips.setVisibility(View.GONE);
+          solutionView.findViewById(R.id.tips_title).setVisibility(View.GONE);
+        } else {
+          tips.setVisibility(View.VISIBLE);
+          solutionView.findViewById(R.id.tips_title).setVisibility(View.VISIBLE);
+        }
 
         LinearLayout stepsView = (LinearLayout) solutionView.findViewById(R.id.steps_view);
 
@@ -318,7 +358,11 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       if (editor.commit()) {
         setConcernIcon(!isConcern);
       }
+      break;
 
+    case R.id.updated_at_wrapper:
+      if (!isUpdatIng)
+        new Task().setForceUpdate(true).execute();
       break;
 
     case R.id.hour_remind:

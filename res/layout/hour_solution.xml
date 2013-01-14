@@ -52,6 +52,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tips_title"
         style="@style/list_block_divider"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
