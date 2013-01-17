@@ -10,7 +10,14 @@ public class RequestRoute {
    */
   public static String REQUEST_PATH = "http://192.168.2.100:3000/mobile/";
 
+  public static String IMAGE_REQUEST_PATH = "http://192.168.2.100:3000";
+
   // public static String REQUEST_PATH = "http://jkydjk.com/mobile/";
+
+  
+  public static String getImageURL(String url) {
+    return IMAGE_REQUEST_PATH + url;
+  }
 
   /**
    * <pre>
@@ -118,7 +125,7 @@ public class RequestRoute {
   /**
    * <pre>
    * 方案图片
-   * <strong>Route</strong> : solution/image/:id/image
+   * <strong>Route</strong> : solution/:id/image
    * <strong>Method</strong>: GET
    * </pre>
    */
@@ -126,4 +133,14 @@ public class RequestRoute {
     return REQUEST_PATH + "solution/" + id + "/image";
   }
 
+  /**
+   * <pre>
+   * 穴位图片地址
+   * <strong>Route</strong> : acupoint/:id/images
+   * <strong>Method</strong>: GET
+   * </pre>
+   */
+  public static String acupointImages(int id) {
+    return REQUEST_PATH + "acupoint/" + id + "/images";
+  }
 }

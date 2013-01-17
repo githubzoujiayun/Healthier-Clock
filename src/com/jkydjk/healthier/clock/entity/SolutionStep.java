@@ -14,7 +14,7 @@ public class SolutionStep {
   @DatabaseField(id = true)
   private int id;
 
-  @DatabaseField(foreign = true, canBeNull = false, foreignAutoCreate = true, foreignAutoRefresh = true)
+  @DatabaseField(columnName = "solution_id", foreign = true, canBeNull = false, foreignAutoCreate = true, foreignAutoRefresh = true)
   private Solution solution;
 
   @DatabaseField

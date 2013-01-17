@@ -5,7 +5,6 @@
     android:background="@drawable/main_bg" >
 
     <ScrollView
-        android:id="@+id/content_scroll_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@android:color/transparent"
@@ -14,23 +13,10 @@
         android:scrollingCache="false" >
 
         <LinearLayout
-            android:id="@+id/content"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingBottom="10dip" >
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dip"
-                android:background="@drawable/banner_title_bg"
-                android:paddingLeft="12dp"
-                android:paddingTop="8dp"
-                android:text=""
-                android:textColor="#FF333333"
-                android:textSize="16sp" />
 
             <RelativeLayout
                 android:id="@+id/image_wrapper"
@@ -49,7 +35,6 @@
                     android:layout_centerInParent="true" />
 
                 <Button
-                    android:visibility="gone"
                     android:id="@+id/forward"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -59,10 +44,10 @@
                     android:layout_centerVertical="true"
                     android:layout_margin="5dip"
                     android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/icon_arrow_left" />
+                    android:drawableLeft="@drawable/icon_arrow_left"
+                    android:visibility="gone" />
 
                 <Button
-                    android:visibility="gone"
                     android:id="@+id/next"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,16 +57,17 @@
                     android:layout_centerVertical="true"
                     android:layout_margin="5dip"
                     android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/icon_arrow_right" />
+                    android:drawableLeft="@drawable/icon_arrow_right"
+                    android:visibility="gone" />
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/content"
+                style="@style/solution_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
         </LinearLayout>
     </ScrollView>
-
-    <include
-        android:id="@+id/loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        layout="@layout/loading_page" />
 
 </RelativeLayout>
