@@ -132,6 +132,17 @@ public class RequestRoute {
   public static String solutionImage(int id) {
     return REQUEST_PATH + "solution/" + id + "/image";
   }
+  
+  /**
+   * <pre>
+   * 穴位图片
+   * <strong>Route</strong> : acupoint/:id/image
+   * <strong>Method</strong>: GET
+   * </pre>
+   */
+  public static String acupointImage(int id) {
+    return REQUEST_PATH + "acupoint/" + id + "/image";
+  }
 
   /**
    * <pre>

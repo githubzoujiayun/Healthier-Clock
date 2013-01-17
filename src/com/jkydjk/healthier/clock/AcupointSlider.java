@@ -156,7 +156,7 @@ public class AcupointSlider extends FragmentActivity implements OnClickListener,
     ScrollView contentScrollView;
     LinearLayout contentLayout;
     TextView titleTextView;
-    View imageWrapper;
+
     ImageSwitcher imageSwitcher;
 
     List<String> imageSources = new ArrayList<String>();
@@ -188,11 +188,11 @@ public class AcupointSlider extends FragmentActivity implements OnClickListener,
       contentScrollView = (ScrollView) view.findViewById(R.id.content_scroll_view);
       contentLayout = (LinearLayout) view.findViewById(R.id.content);
       titleTextView = (TextView) view.findViewById(R.id.title);
-      imageWrapper = view.findViewById(R.id.image_wrapper);
 
       imageSwitcher = (ImageSwitcher) view.findViewById(R.id.images);
       imageSwitcher.setFactory(AcupointFragment.this);
-
+      imageSwitcher.setImageResource(R.drawable.image_preview_large);
+      
       forward = view.findViewById(R.id.forward);
       forward.setOnClickListener(this);
 
@@ -262,7 +262,6 @@ public class AcupointSlider extends FragmentActivity implements OnClickListener,
       @Override
       protected void onPostExecute(String result) {
         if (imageSources != null && imageSources.size() > 0) {
-          imageWrapper.setVisibility(View.VISIBLE);
           setImageSwitcherImage(imageSources.get(index));
         }
         super.onPostExecute(result);
@@ -282,6 +281,9 @@ public class AcupointSlider extends FragmentActivity implements OnClickListener,
      * @param source
      */
     public void setImageSwitcherImage(String source) {
+      if (source == null)
+        return;
+      
       imageLoader.loadImage(getActivity(), RequestRoute.IMAGE_REQUEST_PATH + source, minImageSize, options, new SimpleImageLoadingListener() {
         @Override
         public void onLoadingComplete(Bitmap loadedImage) {

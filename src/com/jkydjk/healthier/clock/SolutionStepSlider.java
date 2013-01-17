@@ -1,13 +1,7 @@
 package com.jkydjk.healthier.clock;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
-import org.json.JSONArray;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
@@ -30,24 +24,16 @@ import android.widget.Button;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher.ViewFactory;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.ForeignCollection;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
-import com.jkydjk.healthier.clock.entity.Acupoint;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
-import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
-import com.jkydjk.healthier.clock.network.ResuestMethod;
-import com.jkydjk.healthier.clock.util.ActivityHelper;
-import com.jkydjk.healthier.clock.util.Log;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
@@ -150,7 +136,7 @@ public class SolutionStepSlider extends FragmentActivity implements OnClickListe
       pager.setAdapter(pagerAdapter);
       pager.setOnPageChangeListener(SolutionStepSlider.this);
 
-      pager.setCurrentItem(stepNo - 1, true);
+      pager.setCurrentItem(stepNo - 1, false);
 
       titleTextView.setText(title + " " + (pager.getCurrentItem() + 1) + "/" + steps.size());
 
@@ -188,21 +174,22 @@ public class SolutionStepSlider extends FragmentActivity implements OnClickListe
    * @author miclle
    * 
    */
-  public static class AcupointFragment extends Fragment implements ViewFactory {
+  public static class AcupointFragment extends Fragment implements ViewFactory, OnClickListener {
 
     SolutionStep step;
 
     TextView contentTextView;
 
-    View imageWrapper;
     ImageSwitcher imageSwitcher;
-
-    List<String> imageSources = new ArrayList<String>();
 
     View forward;
     View next;
 
     int index = 0;
+
+    ImageLoader imageLoader;
+    DisplayImageOptions options;
+    ImageSize minImageSize;
 
     static AcupointFragment newInstance(SolutionStep step) {
       AcupointFragment fragment = new AcupointFragment();
@@ -221,13 +208,16 @@ public class SolutionStepSlider extends FragmentActivity implements OnClickListe
 
       contentTextView = (TextView) view.findViewById(R.id.content);
 
-      imageWrapper = view.findViewById(R.id.image_wrapper);
-
       imageSwitcher = (ImageSwitcher) view.findViewById(R.id.images);
       imageSwitcher.setFactory(AcupointFragment.this);
 
+      imageSwitcher.setImageResource(R.drawable.image_preview_large);
+
       forward = view.findViewById(R.id.forward);
+      forward.setOnClickListener(this);
+
       next = view.findViewById(R.id.next);
+      next.setOnClickListener(this);
 
       return view;
     }
@@ -235,14 +225,74 @@ public class SolutionStepSlider extends FragmentActivity implements OnClickListe
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
       super.onActivityCreated(savedInstanceState);
-
       contentTextView.setText(step.getContent());
+
+      imageLoader = ImageLoader.getInstance();
+
+      options = new DisplayImageOptions.Builder().showStubImage(R.drawable.image_preview_large).showImageForEmptyUri(R.drawable.image_preview_large).resetViewBeforeLoading().cacheInMemory()
+          .cacheOnDisc().imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).bitmapConfig(Bitmap.Config.ARGB_8888).delayBeforeLoading(1000).displayer(new RoundedBitmapDisplayer(5)).build();
+
+      Display display = getActivity().getWindowManager().getDefaultDisplay();
+
+      int width = display.getWidth(); // deprecated
+//      int height = display.getHeight(); // deprecated
+
+      minImageSize = new ImageSize(width - 20, 80);
+
+      if (step.getAcupointIds() != null && step.getAcupointIds().size() > 0) {
+        setImageSwitcherImage(step.getAcupointIds().get(index));
+      }
+
     }
 
     public View makeView() {
       ImageView imageView = new ImageView(getActivity());
       imageView.setAdjustViewBounds(true);
       return imageView;
+    }
+
+    /**
+     * 设置ImageSwitcher图片
+     * 
+     * @param acupointId
+     */
+    public void setImageSwitcherImage(int acupointId) {
+
+      imageLoader.loadImage(getActivity(), RequestRoute.acupointImage(acupointId), options, new SimpleImageLoadingListener() {
+        @Override
+        public void onLoadingComplete(Bitmap loadedImage) {
+          imageSwitcher.setImageDrawable(new BitmapDrawable(loadedImage));
+
+          if (step.getAcupointIds().size() > 1) {
+            forward.setVisibility(View.VISIBLE);
+            next.setVisibility(View.VISIBLE);
+          }
+
+        }
+      });
+    }
+
+    public void onClick(View v) {
+      switch (v.getId()) {
+      case R.id.forward:
+        index--;
+        if (index < 0) {
+          index = step.getAcupointIds().size() - 1;
+        }
+        setImageSwitcherImage(step.getAcupointIds().get(index));
+        break;
+
+      case R.id.next:
+        index++;
+        if (index >= step.getAcupointIds().size()) {
+          index = 0;
+        }
+        setImageSwitcherImage(step.getAcupointIds().get(index));
+        break;
+
+      default:
+        break;
+      }
     }
 
   }

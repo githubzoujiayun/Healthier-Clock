@@ -39,8 +39,7 @@
                 android:layout_marginBottom="10dip"
                 android:gravity="center_horizontal"
                 android:paddingLeft="12dip"
-                android:paddingRight="12dip"
-                android:visibility="gone" >
+                android:paddingRight="12dip" >
 
                 <ImageSwitcher
                     android:id="@+id/images"
@@ -49,7 +48,6 @@
                     android:layout_centerInParent="true" />
 
                 <Button
-                    android:visibility="gone"
                     android:id="@+id/forward"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -59,10 +57,10 @@
                     android:layout_centerVertical="true"
                     android:layout_margin="5dip"
                     android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/icon_arrow_left" />
+                    android:drawableLeft="@drawable/icon_arrow_left"
+                    android:visibility="gone" />
 
                 <Button
-                    android:visibility="gone"
                     android:id="@+id/next"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,7 +70,8 @@
                     android:layout_centerVertical="true"
                     android:layout_margin="5dip"
                     android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/icon_arrow_right" />
+                    android:drawableLeft="@drawable/icon_arrow_right"
+                    android:visibility="gone" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

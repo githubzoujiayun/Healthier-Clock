@@ -281,6 +281,15 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
           TextView stepContentTextView = (TextView) stepView.findViewById(R.id.step_content);
           stepContentTextView.setText(step.getContent());
 
+          stepContentTextView.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+              Intent intent = new Intent(SolutionActivity.this, SolutionStepSlider.class);
+              intent.putExtra("solutionId", solution.getId());
+              intent.putExtra("stepNo", step.getNo());
+              startActivity(intent);
+            }
+          });
+
           View acupointLayout = stepView.findViewById(R.id.acupoint_layout);
 
           acupointLayout.setOnClickListener(new OnClickListener() {
