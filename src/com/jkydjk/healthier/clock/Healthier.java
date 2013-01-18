@@ -34,8 +34,6 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
   public final static int SLIDE_UP = 0x0;
   public final static int SLIDE_DOWN = 0x1;
 
-  private SharedPreferences sharedPreference = null;
-
   private TabWidget channelTabWidget;
   private TabHost mTabHost;
 
@@ -54,8 +52,6 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
-
-    sharedPreference = this.getSharedPreferences("configure", Context.MODE_PRIVATE);
 
     mTabHost = (TabHost) findViewById(android.R.id.tabhost);
     mTabHost.setOnTabChangedListener(this);

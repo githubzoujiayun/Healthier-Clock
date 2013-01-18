@@ -181,11 +181,12 @@ public class SolutionEvaluate extends OrmLiteBaseActivity<DatabaseHelper> implem
       dialog = new CustomDialog(SolutionEvaluate.this);
 
       dialog.setTitle(R.string.tip);
-      dialog.setContentText(R.string.constitution_test_dialog_tip);
+      dialog.setContentText(R.string.please_wait_while_the_evaluation_is_being_submitted);
 
       dialog.setPositiveButton(R.string.cancel, new OnClickListener() {
         public void onClick(View v) {
           dialog.dismiss();
+          Task.this.cancel(true);
           SolutionEvaluate.this.finish();
         }
       });
@@ -229,10 +230,8 @@ public class SolutionEvaluate extends OrmLiteBaseActivity<DatabaseHelper> implem
     @Override
     protected void onPostExecute(String result) {
       dialog.dismiss();
-
       Toast.makeText(SolutionEvaluate.this, result, Toast.LENGTH_SHORT).show();
-
-      // SolutionEvaluate.this.finish();
+      SolutionEvaluate.this.finish();
       super.onPostExecute(result);
     }
 

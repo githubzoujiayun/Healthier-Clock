@@ -34,7 +34,7 @@ public class Signin extends BaseActivity implements OnClickListener {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.signin);
 
-    sharedPreference = this.getSharedPreferences("configure", Context.MODE_PRIVATE);
+    sharedPreference = this.getSharedPreferences("user", Context.MODE_PRIVATE);
     edit = sharedPreference.edit();
 
     cancel = findViewById(R.id.cancel);
@@ -75,28 +75,28 @@ public class Signin extends BaseActivity implements OnClickListener {
     String strLogin = login.getText().toString();
     String strPassword = password.getText().toString();
 
-    HttpClientManager httpClientManager = new HttpClientManager(this, RequestRoute.REQUEST_PATH + RequestRoute.USER_SIGNIN);
+    HttpClientManager httpClientManager = new HttpClientManager(this, RequestRoute.USER_SIGNIN);
     httpClientManager.addParam("login", strLogin);
     httpClientManager.addParam("password", strPassword);
 
     try {
       httpClientManager.execute(ResuestMethod.POST);
       String result = httpClientManager.getResponse();
-      
+
       JSONObject json = new JSONObject(result);
-      
+
       if ("1".equals(json.getString("status"))) {
-        
+
         user = User.parse(json.getJSONObject("user"));
 
         User.serializable(Signin.this, sharedPreference, user);
-        
+
       } else {
         user = null;
         errorMessage = json.getString("message");
       }
     } catch (Exception e) {
-      
+
       e.printStackTrace();
       user = null;
       errorMessage = "网络访问异常";

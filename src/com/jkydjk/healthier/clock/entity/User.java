@@ -10,6 +10,7 @@ import android.content.SharedPreferences.Editor;
 
 import com.jkydjk.healthier.clock.BaseActivity;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
+import com.jkydjk.healthier.clock.util.StringUtil;
 
 public class User implements Serializable {
 
@@ -160,7 +161,9 @@ public class User implements Serializable {
   }
 
   public static User parse(JSONObject json) {
+
     User user = new User();
+
     user.token = json.isNull("token") ? null : json.optString("token");
     user.email = json.isNull("email") ? null : json.optString("email");
     user.username = json.isNull("username") ? null : json.optString("username");
@@ -192,7 +195,10 @@ public class User implements Serializable {
     editor.putString("realname", user.realname);
     editor.putString("constitution", user.constitution);
 
-    editor.putString("constitution_flag", context.getString(ActivityHelper.getStringResourceID(context, "constitution_" + user.constitution)));
+    if (!StringUtil.isEmpty(user.constitution)) {
+      String constitutionFlag = context.getString(ActivityHelper.getStringResourceID(context, "constitution_" + user.constitution));
+      editor.putString("constitution_flag", constitutionFlag);
+    }
 
     editor.putString("birthday", user.birthday);
     editor.putString("gender", user.gender);

@@ -61,7 +61,7 @@ public class Resume extends BaseActivity implements OnClickListener {
       finish();
     }
 
-    sharedPreference = this.getSharedPreferences("configure", Context.MODE_PRIVATE);
+    sharedPreference = this.getSharedPreferences("user", Context.MODE_PRIVATE);
     editor = sharedPreference.edit();
 
     token = sharedPreference.getString("token", null);

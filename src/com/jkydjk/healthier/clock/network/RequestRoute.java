@@ -25,7 +25,16 @@ public class RequestRoute {
    * <strong>Method</strong>: POST
    * </pre>
    */
-  public static final String USER_SIGNIN = "user/signin";
+  public static final String USER_SIGNIN = REQUEST_PATH + "user/signin";
+
+  /**
+   * <pre>
+   * 用户注册
+   * <strong>Route</strong> : user/signup
+   * <strong>Method</strong>: POST
+   * </pre>
+   */
+  public static final String USER_SIGNUP = REQUEST_PATH + "user/signup";
 
   /**
    * <pre>

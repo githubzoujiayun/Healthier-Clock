@@ -37,15 +37,15 @@ public class Signup extends BaseActivity implements OnClickListener {
   private EditText password;
 
   private String errorMessage;
-  
+
   private SharedPreferences sharedPreference = null;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.signup);
-    
-    sharedPreference = this.getSharedPreferences("configure", Context.MODE_PRIVATE);
+
+    sharedPreference = this.getSharedPreferences("user", Context.MODE_PRIVATE);
 
     cancel = findViewById(R.id.cancel);
     cancel.setOnClickListener(this);
@@ -110,6 +110,11 @@ public class Signup extends BaseActivity implements OnClickListener {
     }
   }
 
+  /**
+   * 提交注册信息
+   * 
+   * @return
+   */
   private User submit() {
     String strUsername = username.getText().toString();
     String strEmail = email.getText().toString();
@@ -117,22 +122,33 @@ public class Signup extends BaseActivity implements OnClickListener {
 
     User user = null;
 
-    HttpClientManager httpClientManager = new HttpClientManager(this, RequestRoute.REQUEST_PATH + "user/signup");
+    HttpClientManager httpClientManager = new HttpClientManager(this, RequestRoute.USER_SIGNUP);
+
     httpClientManager.addParam("username", strUsername);
     httpClientManager.addParam("email", strEmail);
     httpClientManager.addParam("password", strPassword);
 
     try {
       httpClientManager.execute(ResuestMethod.POST);
+
       String result = httpClientManager.getResponse();
+
       JSONObject json = new JSONObject(result);
+
       if ("1".equals(json.getString("status"))) {
-        user = JSONHelper.parseObject(json.getString("user"), User.class);
+
+        user = User.parse(json.getJSONObject("user"));
+
         User.serializable(Signup.this, sharedPreference, user);
+
       } else {
+
         user = null;
+        
         errorMessage = json.getString("message");
+        
         Log.d("signup=", errorMessage);
+
       }
     } catch (Exception e) {
       user = null;

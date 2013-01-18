@@ -518,6 +518,7 @@
     <string name="please_select_the_effect_and_feel">请选择效果感受!</string>
     <string name="evaluation_of_success">评价成功!</string>
     <string name="evaluation_of_failure">评价失败!</string>
+    <string name="please_wait_while_the_evaluation_is_being_submitted">请稍候，正在提交评价&#8230;</string>
     
     <string name="how_the_effect_and_feels_of_the_use_of_the_solution">使用方案后效果如何？有怎样的感受？</string>
     
