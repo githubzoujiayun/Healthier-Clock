@@ -312,7 +312,7 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
             TextView stepContentTextView = (TextView) stepView.findViewById(R.id.step_content);
             stepContentTextView.setText(step.getContent());
-            
+
             stepContentTextView.setOnClickListener(new OnClickListener() {
               public void onClick(View v) {
                 Intent intent = new Intent(ChineseHour.this, SolutionStepSlider.class);
@@ -373,12 +373,12 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
         new Task().setForceUpdate(true).execute();
       break;
 
-    case R.id.hour_remind:
+    case R.id.hour_remind: {
       Intent intent = new Intent(this, HourRemind.class);
       intent.putExtra("hourID", hourID);
       startActivity(intent);
       break;
-
+    }
     case R.id.todo_button:
       v.setVisibility(View.GONE);
       actionsLayout.setVisibility(View.VISIBLE);
@@ -402,10 +402,12 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       startActivity(new Intent(this, Process.class));
       break;
 
-    case R.id.evaluate:
-      startActivity(new Intent(this, SolutionEvaluate.class));
+    case R.id.evaluate: {
+      Intent intent = new Intent(this, SolutionEvaluate.class);
+      intent.putExtra("solutionId", solution.getId());
+      startActivity(intent);
       break;
-
+    }
     case R.id.forwarding:
 
       break;

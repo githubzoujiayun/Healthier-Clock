@@ -67,7 +67,7 @@
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="使用方案后效果如何？有怎样的感受？"
+                    android:text="@string/how_the_effect_and_feels_of_the_use_of_the_solution"
                     android:textColor="#FF333333"
                     android:textSize="16sp" />
 
@@ -79,7 +79,7 @@
             </LinearLayout>
 
             <RadioGroup
-                android:id="@+id/radios"
+                android:id="@+id/radio_group_effect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -88,7 +88,7 @@
                 android:orientation="horizontal" >
 
                 <RadioButton
-                    android:id="@+id/cure"
+                    android:id="@+id/effect_feel_cure"
                     style="@style/button_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                     android:text="@string/cure" />
 
                 <RadioButton
-                    android:id="@+id/improvement"
+                    android:id="@+id/effect_feel_improvement"
                     style="@style/button_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
                     android:text="@string/improvement" />
 
                 <RadioButton
-                    android:id="@+id/invalid"
+                    android:id="@+id/effect_feel_invalid"
                     style="@style/button_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -113,7 +113,7 @@
                     android:text="@string/invalid" />
 
                 <RadioButton
-                    android:id="@+id/aggravating"
+                    android:id="@+id/effect_feel_aggravating"
                     style="@style/button_radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="操作步骤" />
+                    android:text="@string/evaluate_score" />
             </RelativeLayout>
 
             <LinearLayout
@@ -146,12 +146,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="12dip"
-                    android:text="性价比"
+                    android:text="@string/cost"
                     android:textColor="#FF333333"
                     android:textSize="16sp" />
 
                 <RatingBar
-                    android:id="@+id/ratingBar1"
+                    android:id="@+id/rating_bar_cost"
                     style="@style/start_ratingbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -170,12 +170,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="12dip"
-                    android:text="方便性"
+                    android:text="@string/convenience"
                     android:textColor="#FF333333"
                     android:textSize="16sp" />
 
                 <RatingBar
-                    android:id="@+id/ratingBar2"
+                    android:id="@+id/rating_bar_convenience"
                     style="@style/start_ratingbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -194,12 +194,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="12dip"
-                    android:text="总评价"
+                    android:text="@string/overall"
                     android:textColor="#FF333333"
                     android:textSize="16sp" />
 
                 <RatingBar
-                    android:id="@+id/ratingBar3"
+                    android:id="@+id/rating_bar_overall"
                     style="@style/start_ratingbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

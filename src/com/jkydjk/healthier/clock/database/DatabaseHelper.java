@@ -14,6 +14,7 @@ import com.jkydjk.healthier.clock.entity.Acupoint;
 import com.jkydjk.healthier.clock.entity.AcupointSolutionStep;
 import com.jkydjk.healthier.clock.entity.SolarTermSolution;
 import com.jkydjk.healthier.clock.entity.Solution;
+import com.jkydjk.healthier.clock.entity.SolutionComment;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
 import com.jkydjk.healthier.clock.util.Log;
 
@@ -35,9 +36,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
   private static final int DATABASE_VERSION = 1;
 
+  // Dao
   private Dao<Solution, Integer> solutionDao = null;
   private Dao<SolarTermSolution, Integer> solarTermSolutionDao = null;
   private Dao<SolutionStep, Integer> solutionStepDao = null;
+  private Dao<SolutionComment, Integer> solutionCommentDao = null;
   private Dao<Acupoint, Integer> acupointDao = null;
   private Dao<AcupointSolutionStep, Integer> acupointSolutionStepDao = null;
 
@@ -72,6 +75,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
       TableUtils.createTable(connectionSource, Solution.class);
       TableUtils.createTable(connectionSource, SolarTermSolution.class);
       TableUtils.createTable(connectionSource, SolutionStep.class);
+      TableUtils.createTable(connectionSource, SolutionComment.class);
       TableUtils.createTable(connectionSource, AcupointSolutionStep.class);
     } catch (SQLException e) {
       Log.v(DATABASE_NAME + "创建数据库失败: \n" + e);
@@ -86,6 +90,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
       TableUtils.dropTable(connectionSource, Solution.class, true);
       TableUtils.dropTable(connectionSource, SolarTermSolution.class, true);
       TableUtils.dropTable(connectionSource, SolutionStep.class, true);
+      TableUtils.dropTable(connectionSource, SolutionComment.class, true);
       TableUtils.dropTable(connectionSource, AcupointSolutionStep.class, true);
       onCreate(db, connectionSource);
     } catch (SQLException e) {
@@ -98,9 +103,19 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
   public void close() {
     super.close();
     solutionDao = null;
+    solarTermSolutionDao = null;
     solutionStepDao = null;
+    solutionCommentDao = null;
+    acupointDao = null;
+    acupointSolutionStepDao = null;
   }
 
+  /**
+   * 方案
+   * 
+   * @return
+   * @throws SQLException
+   */
   public Dao<Solution, Integer> getSolutionDao() throws SQLException {
     if (solutionDao == null) {
       solutionDao = getDao(Solution.class);
@@ -108,6 +123,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     return solutionDao;
   }
 
+  /**
+   * 节气方案
+   * 
+   * @return
+   * @throws SQLException
+   */
   public Dao<SolarTermSolution, Integer> getSolarTermSolutionDao() throws SQLException {
     if (solarTermSolutionDao == null) {
       solarTermSolutionDao = getDao(SolarTermSolution.class);
@@ -115,6 +136,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     return solarTermSolutionDao;
   }
 
+  /**
+   * 方案操作步骤
+   * 
+   * @return
+   * @throws SQLException
+   */
   public Dao<SolutionStep, Integer> getSolutionStepDao() throws SQLException {
     if (solutionStepDao == null) {
       solutionStepDao = getDao(SolutionStep.class);
@@ -122,6 +149,25 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     return solutionStepDao;
   }
 
+  /**
+   * 方案评论
+   * 
+   * @return
+   * @throws SQLException
+   */
+  public Dao<SolutionComment, Integer> getSolutionCommentDao() throws SQLException {
+    if (solutionCommentDao == null) {
+      solutionCommentDao = getDao(SolutionComment.class);
+    }
+    return solutionCommentDao;
+  }
+
+  /**
+   * 穴位
+   * 
+   * @return
+   * @throws SQLException
+   */
   public Dao<Acupoint, Integer> getAcupointDao() throws SQLException {
     if (acupointDao == null) {
       acupointDao = getDao(Acupoint.class);

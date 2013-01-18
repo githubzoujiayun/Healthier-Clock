@@ -14,7 +14,6 @@ public class RequestRoute {
 
   // public static String REQUEST_PATH = "http://jkydjk.com/mobile/";
 
-  
   public static String getImageURL(String url) {
     return IMAGE_REQUEST_PATH + url;
   }
@@ -132,7 +131,18 @@ public class RequestRoute {
   public static String solutionImage(int id) {
     return REQUEST_PATH + "solution/" + id + "/image";
   }
-  
+
+  /**
+   * <pre>
+   * 评价方案
+   * <strong>Route</strong> : solution/:id/comment
+   * <strong>Method</strong>: POST
+   * </pre>
+   */
+  public static String solutionEvaluate(int id) {
+    return REQUEST_PATH + "solution/" + id + "/comment";
+  }
+
   /**
    * <pre>
    * 穴位图片
