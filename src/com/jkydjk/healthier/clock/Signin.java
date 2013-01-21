@@ -34,7 +34,7 @@ public class Signin extends BaseActivity implements OnClickListener {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.signin);
 
-    sharedPreference = this.getSharedPreferences("configure", Context.MODE_PRIVATE);
+    sharedPreference = this.getSharedPreferences("user", Context.MODE_PRIVATE);
     edit = sharedPreference.edit();
 
     cancel = findViewById(R.id.cancel);

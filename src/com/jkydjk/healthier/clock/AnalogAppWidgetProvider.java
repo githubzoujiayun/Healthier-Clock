@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2009 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.jkydjk.healthier.clock;
 
 import android.app.PendingIntent;
@@ -9,32 +25,28 @@ import android.widget.RemoteViews;
 
 /**
  * Simple widget to show analog clock.
- * 
- * @author miclle
- * 
  */
 public class AnalogAppWidgetProvider extends BroadcastReceiver {
+    static final String TAG = "AnalogAppWidgetProvider";
 
-  static final String TAG = "AnalogAppWidgetProvider";
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
 
-  public void onReceive(Context context, Intent intent) {
-    String action = intent.getAction();
+        if (AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action)) {
+            RemoteViews views = new RemoteViews(context.getPackageName(),
+                    R.layout.analog_appwidget);
 
-    if (AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action)) {
+            views.setOnClickPendingIntent(R.id.analog_appwidget,
+                    PendingIntent.getActivity(context, 0,
+                        new Intent(context, AlarmClock.class),
+                        PendingIntent.FLAG_CANCEL_CURRENT));
 
-      RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.analog_appwidget);
-      
-      PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, Healthier.class), PendingIntent.FLAG_CANCEL_CURRENT);
-      
-//      PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, ClockPicker.class), PendingIntent.FLAG_CANCEL_CURRENT);
-      
-      views.setOnClickPendingIntent(R.id.analog_appwidget, pendingIntent);
+            int[] appWidgetIds = intent.getIntArrayExtra(
+                    AppWidgetManager.EXTRA_APPWIDGET_IDS);
 
-      int[] appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
-
-      AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-
-      appWidgetManager.updateAppWidget(appWidgetIds, views);
+            AppWidgetManager gm = AppWidgetManager.getInstance(context);
+            gm.updateAppWidget(appWidgetIds, views);
+        }
     }
-  }
 }
+

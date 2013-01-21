@@ -59,7 +59,7 @@ public class ActivityHelper {
    * @return
    */
   public static boolean isLogged(Activity activity) {
-    SharedPreferences sharedPreference = activity.getSharedPreferences("configure", Context.MODE_PRIVATE);
+    SharedPreferences sharedPreference = activity.getSharedPreferences("user", Context.MODE_PRIVATE);
     String token = sharedPreference.getString("token", null);
     return StringUtil.isEmpty(token) ? false : true;
   }

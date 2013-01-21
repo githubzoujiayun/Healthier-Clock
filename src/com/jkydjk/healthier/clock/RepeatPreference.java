@@ -19,8 +19,6 @@ package com.jkydjk.healthier.clock;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
-import com.jkydjk.healthier.clock.entity.Alarm;
-
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;

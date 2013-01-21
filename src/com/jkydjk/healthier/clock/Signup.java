@@ -45,7 +45,7 @@ public class Signup extends BaseActivity implements OnClickListener {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.signup);
 
-    sharedPreference = this.getSharedPreferences("configure", Context.MODE_PRIVATE);
+    sharedPreference = this.getSharedPreferences("user", Context.MODE_PRIVATE);
 
     cancel = findViewById(R.id.cancel);
     cancel.setOnClickListener(this);
@@ -116,9 +116,6 @@ public class Signup extends BaseActivity implements OnClickListener {
    * @return
    */
   private User submit() {
-    
-  //ProgressDialog.show(Login.this, "请等待", "正在为你登录...", true);
-    
     String strUsername = username.getText().toString();
     String strEmail = email.getText().toString();
     String strPassword = password.getText().toString();

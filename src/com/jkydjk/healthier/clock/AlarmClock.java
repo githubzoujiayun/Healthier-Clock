@@ -33,12 +33,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jkydjk.healthier.clock.entity.Alarm;
 import com.jkydjk.healthier.clock.entity.Region;
 import com.jkydjk.healthier.clock.entity.Weather;
 import com.jkydjk.healthier.clock.entity.Weather.Callback;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
-import com.jkydjk.healthier.clock.util.Alarms;
 import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 import com.jkydjk.healthier.clock.widget.TextViewWeather;
@@ -50,9 +48,9 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
   protected static final int MSG_CLOCK = 0x1234;
 
-  public static final String PREFERENCES = "AlarmClock";
-  public static final String PREF_CLOCK_FACE = "face";
-  public static final String PREF_SHOW_CLOCK = "show_clock";
+  static final String PREFERENCES = "AlarmClock";
+  static final String PREF_CLOCK_FACE = "face";
+  static final String PREF_SHOW_CLOCK = "show_clock";
 
   /** Cap alarm count at this number */
   static final int MAX_ALARM_COUNT = 12;

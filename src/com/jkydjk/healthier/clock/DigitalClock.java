@@ -35,7 +35,6 @@ import android.widget.TextView;
 import java.util.Calendar;
 
 import com.jkydjk.healthier.clock.R;
-import com.jkydjk.healthier.clock.util.Alarms;
 import com.jkydjk.healthier.clock.util.Log;
 
 /**
