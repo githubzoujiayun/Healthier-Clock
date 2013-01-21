@@ -26,12 +26,14 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
+import com.jkydjk.healthier.clock.entity.Alarm;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
+import com.jkydjk.healthier.clock.util.AlarmUtil;
 import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -322,7 +324,7 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
       break;
 
     // 收藏
-    case R.id.favorite:
+    case R.id.favorite:{
       try {
         solution.setFavorited(!solution.isFavorited());
         solutionDao.update(solution);
@@ -331,25 +333,35 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
         e.printStackTrace();
       }
       break;
+    }
 
-    case R.id.alarm:
-
+    case R.id.alarm: {
+      long time = Alarm.addSolutionAlarm(this, solution);
+      AlarmUtil.popAlarmSetToast(this, time);
       break;
-
-    case R.id.process:
+    }
+    
+    case R.id.process:{
       startActivity(new Intent(this, Process.class));
       break;
-
+    }
+    
     case R.id.evaluate: {
       Intent intent = new Intent(this, SolutionEvaluate.class);
       intent.putExtra("solutionId", solution.getId());
       startActivity(intent);
       break;
     }
-    case R.id.forwarding:
-
+    
+    case R.id.forwarding: {
+      Intent intent = new Intent(Intent.ACTION_SEND);
+      intent.setType("text/plain");
+      intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
+      intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_solution), solution.getTitle(), solution.getEffect()));
+      startActivity(Intent.createChooser(intent, getTitle()));
       break;
-
+    }
+    
     default:
       break;
     }

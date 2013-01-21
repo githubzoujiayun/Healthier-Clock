@@ -16,6 +16,7 @@
 
 package com.jkydjk.healthier.clock;
 
+import com.jkydjk.healthier.clock.util.Alarms;
 import com.jkydjk.healthier.clock.util.Log;
 
 import android.app.KeyguardManager;

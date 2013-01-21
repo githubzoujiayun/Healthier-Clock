@@ -1,12 +1,12 @@
 package com.jkydjk.healthier.clock;
 
 import com.jkydjk.healthier.clock.database.AlarmDatabaseHelper;
+import com.jkydjk.healthier.clock.entity.Alarm;
 import com.jkydjk.healthier.clock.util.Log;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -17,7 +17,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 public class AlarmProvider extends ContentProvider {
-  
+
   private SQLiteOpenHelper alarmDatabaseOpenHelper;
 
   private static final int ALARMS = 1;
@@ -44,15 +44,18 @@ public class AlarmProvider extends ContentProvider {
 
     // Generate the body of the query
     int match = sURLMatcher.match(url);
+    
     switch (match) {
     case ALARMS:
       qb.setTables("alarms");
       break;
+      
     case ALARMS_ID:
       qb.setTables("alarms");
       qb.appendWhere("_id=");
       qb.appendWhere(url.getPathSegments().get(1));
       break;
+      
     default:
       throw new IllegalArgumentException("Unknown URL " + url);
     }

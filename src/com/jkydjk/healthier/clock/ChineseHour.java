@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.drawable.Drawable;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.Time;
@@ -35,13 +37,16 @@ import com.j256.ormlite.dao.ForeignCollection;
 import com.jkydjk.healthier.clock.animation.Cycling;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Acupoint;
+import com.jkydjk.healthier.clock.entity.Alarm;
 import com.jkydjk.healthier.clock.entity.Hour;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
+import com.jkydjk.healthier.clock.entity.Alarm.DaysOfWeek;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
+import com.jkydjk.healthier.clock.util.AlarmUtil;
 import com.jkydjk.healthier.clock.util.StringUtil;
 
 @SuppressLint("SimpleDateFormat")
@@ -394,10 +399,11 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       }
       break;
 
-    case R.id.alarm:
-
+    case R.id.alarm: {
+      long time = Alarm.addSolutionAlarm(this, solution);
+      AlarmUtil.popAlarmSetToast(this, time);
       break;
-
+    }
     case R.id.process:
       startActivity(new Intent(this, Process.class));
       break;
@@ -408,10 +414,14 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       startActivity(intent);
       break;
     }
-    case R.id.forwarding:
-
+    case R.id.forwarding: {
+      Intent intent = new Intent(Intent.ACTION_SEND);
+      intent.setType("text/plain");
+      intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
+      intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_solution), solution.getTitle(), solution.getEffect()));
+      startActivity(Intent.createChooser(intent, getTitle()));
       break;
-
+    }
     default:
       break;
     }

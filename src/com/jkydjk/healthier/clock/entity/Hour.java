@@ -1,8 +1,5 @@
 package com.jkydjk.healthier.clock.entity;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 
 import android.content.Context;

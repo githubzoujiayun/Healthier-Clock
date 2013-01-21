@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package com.jkydjk.healthier.clock;
+package com.jkydjk.healthier.clock.util;
 
 import java.util.Calendar;
 
-import com.jkydjk.healthier.clock.util.Log;
+import com.jkydjk.healthier.clock.AlarmClock;
+import com.jkydjk.healthier.clock.entity.Alarm;
 
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -80,7 +81,7 @@ public class Alarms {
 
   private final static String M12 = "h:mm aa";
   // Shared with DigitalClock
-  final static String M24 = "kk:mm";
+  public final static String M24 = "kk:mm";
 
   /**
    * Creates a new Alarm.
@@ -96,15 +97,11 @@ public class Alarms {
    */
   public static long addAlarm(Context context, String label, int hour, int minutes, Alarm.DaysOfWeek daysOfWeek, boolean vibrate, String alert, String remark) {
 
-    ContentValues values = new ContentValues(8);
+    ContentValues values = new ContentValues();
 
     ContentResolver resolver = context.getContentResolver();
 
-    long time = 0;
-
-    if (!daysOfWeek.isRepeatSet()) {
-      time = calculateAlarm(hour, minutes, daysOfWeek).getTimeInMillis();
-    }
+    long time = daysOfWeek.isRepeatSet() ? 0 : calculateAlarm(hour, minutes, daysOfWeek).getTimeInMillis();
 
     values.put(Alarm.Columns.LABEL, label);
     values.put(Alarm.Columns.ENABLED, 1);
@@ -407,7 +404,7 @@ public class Alarms {
     saveNextAlarm(context, "");
   }
 
-  static void saveSnoozeAlert(final Context context, final int id, final long time) {
+  public static void saveSnoozeAlert(final Context context, final int id, final long time) {
     SharedPreferences prefs = context.getSharedPreferences(AlarmClock.PREFERENCES, 0);
     if (id == -1) {
       clearSnoozePreference(context, prefs);
@@ -424,7 +421,7 @@ public class Alarms {
   /**
    * Disable the snooze alert if the given id matches the snooze id.
    */
-  static void disableSnoozeAlert(final Context context, final int id) {
+  public static void disableSnoozeAlert(final Context context, final int id) {
     SharedPreferences prefs = context.getSharedPreferences(AlarmClock.PREFERENCES, 0);
     int snoozeId = prefs.getInt(PREF_SNOOZE_ID, -1);
     if (snoozeId == -1) {
@@ -498,7 +495,7 @@ public class Alarms {
    * @param daysOfWeek
    *          0-59
    */
-  static Calendar calculateAlarm(int hour, int minute, Alarm.DaysOfWeek daysOfWeek) {
+  public static Calendar calculateAlarm(int hour, int minute, Alarm.DaysOfWeek daysOfWeek) {
 
     // start with now
     Calendar c = Calendar.getInstance();
@@ -527,13 +524,13 @@ public class Alarms {
     return c;
   }
 
-  static String formatTime(final Context context, int hour, int minute, Alarm.DaysOfWeek daysOfWeek) {
+  public static String formatTime(final Context context, int hour, int minute, Alarm.DaysOfWeek daysOfWeek) {
     Calendar c = calculateAlarm(hour, minute, daysOfWeek);
     return formatTime(context, c);
   }
 
   /* used by AlarmAlert */
-  static String formatTime(final Context context, Calendar c) {
+  public static String formatTime(final Context context, Calendar c) {
     String format = get24HourMode(context) ? M24 : M12;
     return (c == null) ? "" : (String) DateFormat.format(format, c);
   }
@@ -541,7 +538,7 @@ public class Alarms {
   /**
    * Shows day and time -- used for lock screen
    */
-  private static String formatDayAndTime(final Context context, Calendar c) {
+  public static String formatDayAndTime(final Context context, Calendar c) {
     String format = get24HourMode(context) ? DM24 : DM12;
     return (c == null) ? "" : (String) DateFormat.format(format, c);
   }
@@ -557,7 +554,7 @@ public class Alarms {
   /**
    * @return true if clock is set to 24-hour mode
    */
-  static boolean get24HourMode(final Context context) {
+  public static boolean get24HourMode(final Context context) {
     return android.text.format.DateFormat.is24HourFormat(context);
   }
 }
