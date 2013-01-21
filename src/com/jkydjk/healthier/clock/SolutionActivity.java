@@ -33,7 +33,7 @@ import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
-import com.jkydjk.healthier.clock.util.AlarmUtil;
+import com.jkydjk.healthier.clock.util.Alarms;
 import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -337,7 +337,7 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
 
     case R.id.alarm: {
       long time = Alarm.addSolutionAlarm(this, solution);
-      AlarmUtil.popAlarmSetToast(this, time);
+      Alarms.popAlarmSetToast(this, time);
       break;
     }
     
