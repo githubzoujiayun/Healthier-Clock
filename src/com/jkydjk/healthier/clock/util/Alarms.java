@@ -16,17 +16,10 @@
 
 package com.jkydjk.healthier.clock.util;
 
-import java.sql.SQLException;
 import java.util.Calendar;
 
-import com.j256.ormlite.dao.Dao;
 import com.jkydjk.healthier.clock.AlarmClock;
-import com.jkydjk.healthier.clock.R;
-import com.jkydjk.healthier.clock.ToastMaster;
-import com.jkydjk.healthier.clock.database.AlarmDatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Alarm;
-import com.jkydjk.healthier.clock.entity.DaysOfWeek;
-import com.jkydjk.healthier.clock.entity.columns.AlarmColumns;
 
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -42,7 +35,6 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.provider.Settings;
 import android.text.format.DateFormat;
-import android.widget.Toast;
 
 /**
  * The Alarms provider supplies info about Alarm Clock settings
@@ -96,58 +88,45 @@ public class Alarms {
    */
   public static Uri addAlarm(ContentResolver contentResolver) {
     ContentValues values = new ContentValues();
-    values.put(AlarmColumns.HOUR, 8);
-    return contentResolver.insert(AlarmColumns.CONTENT_URI, values);
+    values.put(Alarm.Columns.HOUR, 8);
+    return contentResolver.insert(Alarm.Columns.CONTENT_URI, values);
   }
 
   /**
    * Creates a new Alarm.
    */
-  public static long addAlarm(Context context, String label, int hour, int minutes, DaysOfWeek daysOfWeek, boolean vibrate, String alert, String remark) {
+  public static long addAlarm(Context context, String label, int hour, int minutes, Alarm.DaysOfWeek daysOfWeek, boolean vibrate, String alert, String remark) {
 
-    AlarmDatabaseHelper help = new AlarmDatabaseHelper(context);
+    ContentValues values = new ContentValues();
 
-    try {
-      Dao<Alarm, Integer> alarmDao = help.getAlarmDao();
+    ContentResolver resolver = context.getContentResolver();
 
-      long time = daysOfWeek.isRepeatSet() ? 0 : calculateAlarm(hour, minutes, daysOfWeek).getTimeInMillis();
+    long time = daysOfWeek.isRepeatSet() ? 0 : calculateAlarm(hour, minutes, daysOfWeek).getTimeInMillis();
 
-      Alarm alarm = new Alarm();
+    values.put(Alarm.Columns.LABEL, label);
+    values.put(Alarm.Columns.ENABLED, 1);
+    values.put(Alarm.Columns.HOUR, hour);
+    values.put(Alarm.Columns.MINUTES, minutes);
+    values.put(Alarm.Columns.ALARM_TIME, time);
+    values.put(Alarm.Columns.DAYS_OF_WEEK, daysOfWeek.getCoded());
+    values.put(Alarm.Columns.VIBRATE, vibrate);
+    values.put(Alarm.Columns.REMARK, remark);
+    values.put(Alarm.Columns.ALERT, alert);
 
-      alarm.setLabel(label);
-      alarm.setHour(hour);
-      alarm.setMinutes(minutes);
-      alarm.setDaysOfWeek(daysOfWeek);
-      alarm.setTime(time);
-      alarm.setVibrate(vibrate);
-      alarm.setAlert(alert);
-      alarm.setRemark(remark);
+    resolver.insert(Alarm.Columns.CONTENT_URI, values);
 
-      alarmDao.create(alarm);
+    long timeInMillis = calculateAlarm(hour, minutes, daysOfWeek).getTimeInMillis();
 
-      // ContentValues values = new ContentValues();
-      // ContentResolver resolver = context.getContentResolver();
-      // resolver.insert(AlarmColumns.CONTENT_URI, values);
+    SharedPreferences prefs = context.getSharedPreferences(AlarmClock.PREFERENCES, 0);
 
-      long timeInMillis = calculateAlarm(hour, minutes, daysOfWeek).getTimeInMillis();
-
-      SharedPreferences prefs = context.getSharedPreferences(AlarmClock.PREFERENCES, 0);
-
-      long snoozeTime = prefs.getLong(PREF_SNOOZE_TIME, 0);
-      
-      if (timeInMillis < snoozeTime) {
-        clearSnoozePreference(context, prefs);
-      }
-
-      setNextAlert(context);
-
-      return timeInMillis;
-
-    } catch (SQLException e) {
-      e.printStackTrace();
+    long snoozeTime = prefs.getLong(PREF_SNOOZE_TIME, 0);
+    if (timeInMillis < snoozeTime) {
+      clearSnoozePreference(context, prefs);
     }
 
-    return -1;
+    setNextAlert(context);
+
+    return timeInMillis;
   }
 
   /**
@@ -160,7 +139,7 @@ public class Alarms {
     /* If alarm is snoozing, lose it */
     disableSnoozeAlert(context, alarmId);
 
-    Uri uri = ContentUris.withAppendedId(AlarmColumns.CONTENT_URI, alarmId);
+    Uri uri = ContentUris.withAppendedId(Alarm.Columns.CONTENT_URI, alarmId);
     contentResolver.delete(uri, "", null);
 
     setNextAlert(context);
@@ -172,19 +151,12 @@ public class Alarms {
    * @return cursor over all alarms
    */
   public static Cursor getAlarmsCursor(ContentResolver contentResolver) {
-
-    // contentResolver.query(AlarmColumns.CONTENT_URI,
-    // AlarmColumns.ALARM_QUERY_COLUMNS, null, null,
-    // AlarmColumns.DEFAULT_SORT_ORDER);
-    return null;
+    return contentResolver.query(Alarm.Columns.CONTENT_URI, Alarm.Columns.ALARM_QUERY_COLUMNS, null, null, Alarm.Columns.DEFAULT_SORT_ORDER);
   }
 
   // Private method to get a more limited set of alarms from the database.
   private static Cursor getFilteredAlarmsCursor(ContentResolver contentResolver) {
-    // contentResolver.query(AlarmColumns.CONTENT_URI,
-    // AlarmColumns.ALARM_QUERY_COLUMNS, AlarmColumns.WHERE_ENABLED, null,
-    // null);
-    return null;
+    return contentResolver.query(Alarm.Columns.CONTENT_URI, Alarm.Columns.ALARM_QUERY_COLUMNS, Alarm.Columns.WHERE_ENABLED, null, null);
   }
 
   /**
@@ -192,18 +164,15 @@ public class Alarms {
    * null if no alarm exists.
    */
   public static Alarm getAlarm(ContentResolver contentResolver, int alarmId) {
-    // Cursor cursor =
-    // contentResolver.query(ContentUris.withAppendedId(AlarmColumns.CONTENT_URI,
-    // alarmId), AlarmColumns.ALARM_QUERY_COLUMNS, null, null, null);
-    // Alarm alarm = null;
-    // if (cursor != null) {
-    // if (cursor.moveToFirst()) {
-    // alarm = new Alarm(cursor);
-    // }
-    // cursor.close();
-    // }
-    // return alarm;
-    return null;
+    Cursor cursor = contentResolver.query(ContentUris.withAppendedId(Alarm.Columns.CONTENT_URI, alarmId), Alarm.Columns.ALARM_QUERY_COLUMNS, null, null, null);
+    Alarm alarm = null;
+    if (cursor != null) {
+      if (cursor.moveToFirst()) {
+        alarm = new Alarm(cursor);
+      }
+      cursor.close();
+    }
+    return alarm;
   }
 
   /**
@@ -229,7 +198,7 @@ public class Alarms {
    *          corresponds to the REMARK column
    * @return Time when the alarm will fire.
    */
-  public static long setAlarm(Context context, int id, String label, boolean enabled, int hour, int minutes, DaysOfWeek daysOfWeek, boolean vibrate, String alert, String remark) {
+  public static long setAlarm(Context context, int id, String label, boolean enabled, int hour, int minutes, Alarm.DaysOfWeek daysOfWeek, boolean vibrate, String alert, String remark) {
 
     ContentValues values = new ContentValues(8);
     ContentResolver resolver = context.getContentResolver();
@@ -243,17 +212,17 @@ public class Alarms {
     if (Log.LOGV)
       Log.v("**  setAlarm * idx " + id + " hour " + hour + " minutes " + minutes + " enabled " + enabled + " time " + time);
 
-    values.put(AlarmColumns.LABEL, label);
-    values.put(AlarmColumns.ENABLED, enabled ? 1 : 0);
-    values.put(AlarmColumns.HOUR, hour);
-    values.put(AlarmColumns.MINUTES, minutes);
-    values.put(AlarmColumns.ALARM_TIME, time);
-    values.put(AlarmColumns.DAYS_OF_WEEK, daysOfWeek.getCoded());
-    values.put(AlarmColumns.VIBRATE, vibrate);
-    values.put(AlarmColumns.REMARK, remark);
-    values.put(AlarmColumns.ALERT, alert);
+    values.put(Alarm.Columns.LABEL, label);
+    values.put(Alarm.Columns.ENABLED, enabled ? 1 : 0);
+    values.put(Alarm.Columns.HOUR, hour);
+    values.put(Alarm.Columns.MINUTES, minutes);
+    values.put(Alarm.Columns.ALARM_TIME, time);
+    values.put(Alarm.Columns.DAYS_OF_WEEK, daysOfWeek.getCoded());
+    values.put(Alarm.Columns.VIBRATE, vibrate);
+    values.put(Alarm.Columns.REMARK, remark);
+    values.put(Alarm.Columns.ALERT, alert);
 
-    resolver.update(ContentUris.withAppendedId(AlarmColumns.CONTENT_URI, id), values, null, null);
+    resolver.update(ContentUris.withAppendedId(Alarm.Columns.CONTENT_URI, id), values, null, null);
 
     long timeInMillis = calculateAlarm(hour, minutes, daysOfWeek).getTimeInMillis();
 
@@ -294,60 +263,47 @@ public class Alarms {
     ContentResolver resolver = context.getContentResolver();
 
     ContentValues values = new ContentValues(2);
-    values.put(AlarmColumns.ENABLED, enabled ? 1 : 0);
+    values.put(Alarm.Columns.ENABLED, enabled ? 1 : 0);
 
     // If we are enabling the alarm, calculate alarm time since the time
     // value in Alarm may be old.
     if (enabled) {
       long time = 0;
-      if (!alarm.getDaysOfWeek().isRepeatSet()) {
-        time = calculateAlarm(alarm.getHour(), alarm.getMinutes(), alarm.getDaysOfWeek()).getTimeInMillis();
+      if (!alarm.daysOfWeek.isRepeatSet()) {
+        time = calculateAlarm(alarm.hour, alarm.minutes, alarm.daysOfWeek).getTimeInMillis();
       }
-      values.put(AlarmColumns.ALARM_TIME, time);
+      values.put(Alarm.Columns.ALARM_TIME, time);
     }
 
-    resolver.update(ContentUris.withAppendedId(AlarmColumns.CONTENT_URI, alarm.getId()), values, null, null);
+    resolver.update(ContentUris.withAppendedId(Alarm.Columns.CONTENT_URI, alarm.id), values, null, null);
   }
 
-  /**
-   * 计算下一个闹钟
-   * 
-   * @param context
-   * @return
-   */
   public static Alarm calculateNextAlert(final Context context) {
-
     Alarm alarm = null;
-
     long minTime = Long.MAX_VALUE;
-
     long now = System.currentTimeMillis();
-
-    // Cursor cursor = getFilteredAlarmsCursor(context.getContentResolver());
-    //
-    // if (cursor != null) {
-    // if (cursor.moveToFirst()) {
-    // do {
-    // Alarm a = new Alarm(cursor);
-    // // A time of 0 indicates this is a repeating alarm, so
-    // // calculate the time to get the next alert.
-    // if (a.time == 0) {
-    // a.time = calculateAlarm(a.hour, a.minutes,
-    // a.daysOfWeek).getTimeInMillis();
-    // } else if (a.time < now) {
-    // // Expired alarm, disable it and move along.
-    // enableAlarmInternal(context, a, false);
-    // continue;
-    // }
-    // if (a.time < minTime) {
-    // minTime = a.time;
-    // alarm = a;
-    // }
-    // } while (cursor.moveToNext());
-    // }
-    // cursor.close();
-    // }
-
+    Cursor cursor = getFilteredAlarmsCursor(context.getContentResolver());
+    if (cursor != null) {
+      if (cursor.moveToFirst()) {
+        do {
+          Alarm a = new Alarm(cursor);
+          // A time of 0 indicates this is a repeating alarm, so
+          // calculate the time to get the next alert.
+          if (a.time == 0) {
+            a.time = calculateAlarm(a.hour, a.minutes, a.daysOfWeek).getTimeInMillis();
+          } else if (a.time < now) {
+            // Expired alarm, disable it and move along.
+            enableAlarmInternal(context, a, false);
+            continue;
+          }
+          if (a.time < minTime) {
+            minTime = a.time;
+            alarm = a;
+          }
+        } while (cursor.moveToNext());
+      }
+      cursor.close();
+    }
     return alarm;
   }
 
@@ -355,23 +311,23 @@ public class Alarms {
    * Disables non-repeating alarms that have passed. Called at boot.
    */
   public static void disableExpiredAlarms(final Context context) {
-    // Cursor cur = getFilteredAlarmsCursor(context.getContentResolver());
-    // long now = System.currentTimeMillis();
-    //
-    // if (cur.moveToFirst()) {
-    // do {
-    // Alarm alarm = new Alarm(cur);
-    // // A time of 0 means this alarm repeats. If the time is
-    // // non-zero, check if the time is before now.
-    // if (alarm.time != 0 && alarm.time < now) {
-    // if (Log.LOGV) {
-    // Log.v("** DISABLE " + alarm.id + " now " + now + " set " + alarm.time);
-    // }
-    // enableAlarmInternal(context, alarm, false);
-    // }
-    // } while (cur.moveToNext());
-    // }
-    // cur.close();
+    Cursor cur = getFilteredAlarmsCursor(context.getContentResolver());
+    long now = System.currentTimeMillis();
+
+    if (cur.moveToFirst()) {
+      do {
+        Alarm alarm = new Alarm(cur);
+        // A time of 0 means this alarm repeats. If the time is
+        // non-zero, check if the time is before now.
+        if (alarm.time != 0 && alarm.time < now) {
+          if (Log.LOGV) {
+            Log.v("** DISABLE " + alarm.id + " now " + now + " set " + alarm.time);
+          }
+          enableAlarmInternal(context, alarm, false);
+        }
+      } while (cur.moveToNext());
+    }
+    cur.close();
   }
 
   /**
@@ -383,7 +339,7 @@ public class Alarms {
     if (!enableSnoozeAlert(context)) {
       Alarm alarm = calculateNextAlert(context);
       if (alarm != null) {
-        enableAlert(context, alarm, alarm.getTime());
+        enableAlert(context, alarm, alarm.time);
       } else {
         disableAlert(context);
       }
@@ -403,7 +359,7 @@ public class Alarms {
     AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
     if (Log.LOGV) {
-      Log.v("** setAlert id " + alarm.getId() + " atTime " + atTimeInMillis);
+      Log.v("** setAlert id " + alarm.id + " atTime " + atTimeInMillis);
     }
 
     Intent intent = new Intent(ALARM_ALERT_ACTION);
@@ -512,7 +468,7 @@ public class Alarms {
     // The time in the database is either 0 (repeating) or a specific time
     // for a non-repeating alarm. Update this value so the AlarmReceiver
     // has the right time to compare.
-    alarm.setTime(time);
+    alarm.time = time;
 
     enableAlert(context, alarm, time);
     return true;
@@ -539,7 +495,7 @@ public class Alarms {
    * @param daysOfWeek
    *          0-59
    */
-  public static Calendar calculateAlarm(int hour, int minute, DaysOfWeek daysOfWeek) {
+  public static Calendar calculateAlarm(int hour, int minute, Alarm.DaysOfWeek daysOfWeek) {
 
     // start with now
     Calendar c = Calendar.getInstance();
@@ -568,7 +524,7 @@ public class Alarms {
     return c;
   }
 
-  public static String formatTime(final Context context, int hour, int minute, DaysOfWeek daysOfWeek) {
+  public static String formatTime(final Context context, int hour, int minute, Alarm.DaysOfWeek daysOfWeek) {
     Calendar c = calculateAlarm(hour, minute, daysOfWeek);
     return formatTime(context, c);
   }
@@ -601,42 +557,4 @@ public class Alarms {
   public static boolean get24HourMode(final Context context) {
     return android.text.format.DateFormat.is24HourFormat(context);
   }
-
-  /**
-   * 显示Toast提示
-   * 
-   * @param context
-   * @param timeInMillis
-   */
-  public static void popAlarmSetToast(Context context, long timeInMillis) {
-    String toastText = formatToast(context, timeInMillis);
-    Toast toast = Toast.makeText(context, toastText, Toast.LENGTH_LONG);
-    ToastMaster.setToast(toast);
-    toast.show();
-  }
-
-  /**
-   * format "Alarm set for 2 days 7 hours and 53 minutes from now"
-   */
-  static String formatToast(Context context, long timeInMillis) {
-    long delta = timeInMillis - System.currentTimeMillis();
-    long hours = delta / (1000 * 60 * 60);
-    long minutes = delta / (1000 * 60) % 60;
-    long days = hours / 24;
-    hours = hours % 24;
-
-    String daySeq = (days == 0) ? "" : (days == 1) ? context.getString(R.string.day) : context.getString(R.string.days, Long.toString(days));
-    String minSeq = (minutes == 0) ? "" : (minutes == 1) ? context.getString(R.string.minute) : context.getString(R.string.minutes, Long.toString(minutes));
-    String hourSeq = (hours == 0) ? "" : (hours == 1) ? context.getString(R.string.hour) : context.getString(R.string.hours, Long.toString(hours));
-
-    boolean dispDays = days > 0;
-    boolean dispHour = hours > 0;
-    boolean dispMinute = minutes > 0;
-
-    int index = (dispDays ? 1 : 0) | (dispHour ? 2 : 0) | (dispMinute ? 4 : 0);
-
-    String[] formats = context.getResources().getStringArray(R.array.alarm_set);
-    return String.format(formats[index], daySeq, hourSeq, minSeq);
-  }
-
 }

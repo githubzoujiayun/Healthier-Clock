@@ -80,9 +80,9 @@ public class AlarmReceiver extends BroadcastReceiver {
     // information in bug reports.
     long now = System.currentTimeMillis();
     SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss.SSS aaa");
-    Log.v("AlarmReceiver.onReceive() id " + alarm.getId() + " setFor " + format.format(new Date(alarm.getTime())));
+    Log.v("AlarmReceiver.onReceive() id " + alarm.id + " setFor " + format.format(new Date(alarm.time)));
 
-    if (now > alarm.getTime() + STALE_WINDOW * 1000) {
+    if (now > alarm.time + STALE_WINDOW * 1000) {
       if (Log.LOGV) {
         Log.v("AlarmReceiver ignoring stale alarm");
       }
@@ -115,10 +115,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     context.startActivity(alarmAlert);
 
     // Disable the snooze alert if this alarm is the snooze.
-    Alarms.disableSnoozeAlert(context, alarm.getId());
+    Alarms.disableSnoozeAlert(context, alarm.id);
     // Disable this alarm if it does not repeat.
-    if (!alarm.getDaysOfWeek().isRepeatSet()) {
-      Alarms.enableAlarm(context, alarm.getId(), false);
+    if (!alarm.daysOfWeek.isRepeatSet()) {
+      Alarms.enableAlarm(context, alarm.id, false);
     } else {
       // Enable the next alert if there is one. The above call to
       // enableAlarm will call setNextAlert so avoid calling it twice.
@@ -135,12 +135,12 @@ public class AlarmReceiver extends BroadcastReceiver {
     // launched from a user action.
     Intent notify = new Intent(context, AlarmAlert.class);
     notify.putExtra(Alarms.ALARM_INTENT_EXTRA, alarm);
-    PendingIntent pendingNotify = PendingIntent.getActivity(context, alarm.getId(), notify, 0);
+    PendingIntent pendingNotify = PendingIntent.getActivity(context, alarm.id, notify, 0);
 
     // Use the alarm's label or the default label as the ticker text and
     // main text of the notification.
     String label = alarm.getLabelOrDefault(context);
-    Notification n = new Notification(R.drawable.stat_notify_alarm, label, alarm.getTime());
+    Notification n = new Notification(R.drawable.stat_notify_alarm, label, alarm.time);
     n.setLatestEventInfo(context, label, context.getString(R.string.alarm_notify_text), pendingNotify);
     n.flags |= Notification.FLAG_SHOW_LIGHTS | Notification.FLAG_ONGOING_EVENT;
     n.defaults |= Notification.DEFAULT_LIGHTS;
@@ -148,7 +148,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     // Send the notification using the alarm id to easily identify the
     // correct notification.
     NotificationManager nm = getNotificationManager(context);
-    nm.notify(alarm.getId(), n);
+    nm.notify(alarm.id, n);
   }
 
   private NotificationManager getNotificationManager(Context context) {
@@ -168,19 +168,19 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     // Launch SetAlarm when clicked.
     Intent viewAlarm = new Intent(context, SetAlarm.class);
-    viewAlarm.putExtra(Alarms.ALARM_ID, alarm.getId());
-    PendingIntent intent = PendingIntent.getActivity(context, alarm.getId(), viewAlarm, 0);
+    viewAlarm.putExtra(Alarms.ALARM_ID, alarm.id);
+    PendingIntent intent = PendingIntent.getActivity(context, alarm.id, viewAlarm, 0);
 
     // Update the notification to indicate that the alert has been
     // silenced.
     String label = alarm.getLabelOrDefault(context);
-    Notification n = new Notification(R.drawable.stat_notify_alarm, label, alarm.getTime());
+    Notification n = new Notification(R.drawable.stat_notify_alarm, label, alarm.time);
     n.setLatestEventInfo(context, label, context.getString(R.string.alarm_alert_alert_silenced, timeout), intent);
     n.flags |= Notification.FLAG_AUTO_CANCEL;
     // We have to cancel the original notification since it is in the
     // ongoing section and we want the "killed" notification to be a plain
     // notification.
-    nm.cancel(alarm.getId());
-    nm.notify(alarm.getId(), n);
+    nm.cancel(alarm.id);
+    nm.notify(alarm.id, n);
   }
 }

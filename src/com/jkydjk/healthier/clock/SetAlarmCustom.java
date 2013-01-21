@@ -1,24 +1,30 @@
 package com.jkydjk.healthier.clock;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.format.DateFormat;
 import android.text.format.Time;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.jkydjk.healthier.clock.entity.Alarm;
-import com.jkydjk.healthier.clock.entity.DaysOfWeek;
+import com.jkydjk.healthier.clock.entity.Alarm.DaysOfWeek;
+import com.jkydjk.healthier.clock.util.AlarmUtil;
 import com.jkydjk.healthier.clock.util.Alarms;
+import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 import com.jkydjk.healthier.clock.widget.ToggleSwitch;
 import com.jkydjk.healthier.clock.widget.ToggleSwitch.OnChangeAttemptListener;
@@ -65,14 +71,14 @@ public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnC
       /* load alarm details from database */
       Alarm alarm = Alarms.getAlarm(getContentResolver(), alarmId);
       if (alarm != null) {
-        alarmEnabled = alarm.isEnabled();
-        alarmHour = alarm.getHour();
-        alarmMinutes = alarm.getMinutes();
-        alarmDaysOfWeek = alarm.getDaysOfWeek();
-        alarmLabel = alarm.getLabel();
-        alarmAlert = alarm.getAlert();
-        alarmRemark = alarm.getRemark();
-        alarmVibrate = alarm.isVibrate();
+        alarmEnabled = alarm.enabled;
+        alarmHour = alarm.hour;
+        alarmMinutes = alarm.minutes;
+        alarmDaysOfWeek = alarm.daysOfWeek;
+        alarmLabel = alarm.label;
+        alarmAlert = alarm.alert;
+        alarmRemark = alarm.remark;
+        alarmVibrate = alarm.vibrate;
       }
     } else {
       Time t = new Time();
@@ -153,7 +159,6 @@ public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnC
   private void saveAlarm() {
     alarmLabel = alarmLabelEditText.getText().toString();
     alarmRemark = alarmRemarkEditText.getText().toString();
-    
     long time;
     if (alarmId == -1) {
       time = Alarms.addAlarm(this, alarmLabel, alarmHour, alarmMinutes, alarmDaysOfWeek, alarmVibrate, alarmAlert.toString(), alarmRemark);
@@ -161,7 +166,7 @@ public class SetAlarmCustom extends BaseActivity implements OnClickListener, OnC
       time = Alarms.setAlarm(this, alarmId, alarmLabel, alarmEnabled, alarmHour, alarmMinutes, alarmDaysOfWeek, alarmVibrate, alarmAlert.toString(), alarmRemark);
     }
     if (alarmEnabled) {
-      Alarms.popAlarmSetToast(this, time);
+      AlarmUtil.popAlarmSetToast(this, time);
     }
   }
 

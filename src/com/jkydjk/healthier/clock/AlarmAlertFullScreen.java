@@ -46,7 +46,7 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
   private int mVolumeBehavior;
 
   ArrayList<View> pages = new ArrayList<View>();
-
+  
   private Button snooze;
   private Button dismiss;
 
@@ -55,7 +55,7 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
     @Override
     public void onReceive(Context context, Intent intent) {
       Alarm alarm = intent.getParcelableExtra(Alarms.ALARM_INTENT_EXTRA);
-      if (alarm != null && mAlarm.getId() == alarm.getId()) {
+      if (alarm != null && mAlarm.id == alarm.id) {
         dismiss(true);
       }
     }
@@ -113,7 +113,7 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
     slider.setCurrentItem(1);
 
     slider.setOnPageChangeListener(this);
-
+    
     snooze = (Button) actions.findViewById(R.id.snooze);
     snooze.setBackgroundResource(R.drawable.animate_arrow_left);
     ((AnimationDrawable) snooze.getBackground()).start();
@@ -158,7 +158,7 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
   }
 
   public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+    
   }
 
   public void onPageSelected(int position) {
@@ -173,12 +173,12 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
   // Attempt to snooze this alert.
   private void snooze() {
     final String snooze = PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.KEY_ALARM_SNOOZE, DEFAULT_SNOOZE);
-
+    
     int snoozeMinutes = Integer.parseInt(snooze);
 
     final long snoozeTime = System.currentTimeMillis() + (1000 * 60 * snoozeMinutes);
-
-    Alarms.saveSnoozeAlert(AlarmAlertFullScreen.this, mAlarm.getId(), snoozeTime);
+    
+    Alarms.saveSnoozeAlert(AlarmAlertFullScreen.this, mAlarm.id, snoozeTime);
 
     // Get the display time for the snooze and update the notification.
     final Calendar c = Calendar.getInstance();
@@ -191,15 +191,15 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
     // Notify the user that the alarm has been snoozed.
     Intent cancelSnooze = new Intent(this, AlarmReceiver.class);
     cancelSnooze.setAction(Alarms.CANCEL_SNOOZE);
-    cancelSnooze.putExtra(Alarms.ALARM_ID, mAlarm.getId());
-
-    PendingIntent broadcast = PendingIntent.getBroadcast(this, mAlarm.getId(), cancelSnooze, 0);
-
+    cancelSnooze.putExtra(Alarms.ALARM_ID, mAlarm.id);
+    
+    PendingIntent broadcast = PendingIntent.getBroadcast(this, mAlarm.id, cancelSnooze, 0);
+    
     NotificationManager nm = getNotificationManager();
     Notification n = new Notification(R.drawable.stat_notify_alarm, label, 0);
     n.setLatestEventInfo(this, label, getString(R.string.alarm_notify_snooze_text, Alarms.formatTime(this, c)), broadcast);
     n.flags |= Notification.FLAG_AUTO_CANCEL | Notification.FLAG_ONGOING_EVENT;
-    nm.notify(mAlarm.getId(), n);
+    nm.notify(mAlarm.id, n);
 
     String displayTime = getString(R.string.alarm_alert_snooze_set, snoozeMinutes);
     // Intentionally log the snooze time for debugging.
@@ -207,9 +207,9 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
 
     // Display the snooze minutes in a toast.
     Toast.makeText(AlarmAlertFullScreen.this, displayTime, Toast.LENGTH_LONG).show();
-
+    
     stopService(new Intent(Alarms.ALARM_ALERT_ACTION));
-
+    
     finish();
   }
 
@@ -224,7 +224,7 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
     if (!killed) {
       // Cancel the notification and stop playing the alarm
       NotificationManager nm = getNotificationManager();
-      nm.cancel(mAlarm.getId());
+      nm.cancel(mAlarm.id);
       stopService(new Intent(Alarms.ALARM_ALERT_ACTION));
     }
     finish();

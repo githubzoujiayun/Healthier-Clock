@@ -41,11 +41,12 @@ import com.jkydjk.healthier.clock.entity.Alarm;
 import com.jkydjk.healthier.clock.entity.Hour;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
+import com.jkydjk.healthier.clock.entity.Alarm.DaysOfWeek;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
-import com.jkydjk.healthier.clock.util.Alarms;
+import com.jkydjk.healthier.clock.util.AlarmUtil;
 import com.jkydjk.healthier.clock.util.StringUtil;
 
 @SuppressLint("SimpleDateFormat")
@@ -400,7 +401,7 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
     case R.id.alarm: {
       long time = Alarm.addSolutionAlarm(this, solution);
-      Alarms.popAlarmSetToast(this, time);
+      AlarmUtil.popAlarmSetToast(this, time);
       break;
     }
     case R.id.process:

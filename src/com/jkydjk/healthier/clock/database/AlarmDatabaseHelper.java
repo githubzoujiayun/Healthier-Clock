@@ -1,67 +1,37 @@
 package com.jkydjk.healthier.clock.database;
 
-import java.sql.SQLException;
+import com.jkydjk.healthier.clock.util.Log;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
-import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
-import com.jkydjk.healthier.clock.entity.Alarm;
-import com.jkydjk.healthier.clock.util.Log;
-
-public class AlarmDatabaseHelper extends OrmLiteSqliteOpenHelper {
+public class AlarmDatabaseHelper extends SQLiteOpenHelper {
 
   private static final String DATABASE_NAME = "alarms.db";
 
-  private static final int DATABASE_VERSION = 1;
-
-  private Dao<Alarm, Integer> alarmDao = null;
+  private static final int DATABASE_VERSION = 5;
 
   public AlarmDatabaseHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
   }
 
   @Override
-  public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
-    try {
-      TableUtils.createTable(connectionSource, Alarm.class);
-    } catch (SQLException e) {
-      Log.v(DATABASE_NAME + "创建数据库失败: \n" + e);
-      e.printStackTrace();
-    }
+  public void onCreate(SQLiteDatabase db) {
+    db.execSQL("CREATE TABLE alarms (" + "_id INTEGER PRIMARY KEY," + "label TEXT, " + "hour INTEGER, " + "minutes INTEGER, " + "daysofweek INTEGER, " + "alarmtime INTEGER, " + "enabled INTEGER, "
+        + "vibrate INTEGER, " + "alert TEXT, " + "remark TEXT);");
 
+    // insert default alarms
+    String insertMe = "INSERT INTO alarms " + "(label, hour, minutes, daysofweek, alarmtime, enabled, vibrate, alert, remark) " + "VALUES ";
+    db.execSQL(insertMe + "('闹铃', 7, 0, 127, 0, 0, 1, '', '');");
+    db.execSQL(insertMe + "('闹铃', 8, 30, 31, 0, 0, 1, '', '');");
+    db.execSQL(insertMe + "('闹铃', 9, 00, 0, 0, 0, 1, '', '');");
   }
 
   @Override
-  public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-    try {
-      TableUtils.dropTable(connectionSource, Alarm.class, true);
-      onCreate(db, connectionSource);
-    } catch (SQLException e) {
-      Log.v(DATABASE_NAME + "更新数据库失败: \n" + e);
-      e.printStackTrace();
-    }
+  public void onUpgrade(SQLiteDatabase db, int oldVersion, int currentVersion) {
+    Log.v("Upgrading alarms database from version " + oldVersion + " to " + currentVersion + ", which will destroy all old data");
+    db.execSQL("DROP TABLE IF EXISTS alarms");
+    onCreate(db);
   }
-
-  @Override
-  public void close() {
-    super.close();
-    alarmDao = null;
-  }
-
-  /**
-   * 
-   * @return
-   * @throws SQLException
-   */
-  public Dao<Alarm, Integer> getAlarmDao() throws SQLException {
-    if (alarmDao == null) {
-      alarmDao = getDao(Alarm.class);
-    }
-    return alarmDao;
-  }
-
 }

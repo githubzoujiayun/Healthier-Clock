@@ -1,6 +1,5 @@
 package com.jkydjk.healthier.clock;
 
-import java.sql.SQLException;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.List;
@@ -34,11 +33,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
-import com.j256.ormlite.dao.Dao;
-import com.jkydjk.healthier.clock.adapter.AlarmAdapter;
-import com.jkydjk.healthier.clock.database.AlarmDatabaseHelper;
-import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Alarm;
 import com.jkydjk.healthier.clock.entity.Region;
 import com.jkydjk.healthier.clock.entity.Weather;
@@ -52,15 +46,13 @@ import com.jkydjk.healthier.clock.widget.TextViewWeather;
 /**
  * AlarmClock application.
  */
-public class AlarmClock extends OrmLiteBaseActivity<AlarmDatabaseHelper> implements OnClickListener {
+public class AlarmClock extends BaseActivity implements OnClickListener {
 
   protected static final int MSG_CLOCK = 0x1234;
 
   public static final String PREFERENCES = "AlarmClock";
   public static final String PREF_CLOCK_FACE = "face";
   public static final String PREF_SHOW_CLOCK = "show_clock";
-
-  Dao<Alarm, Integer> alarmDao;
 
   /** Cap alarm count at this number */
   static final int MAX_ALARM_COUNT = 12;
@@ -69,6 +61,7 @@ public class AlarmClock extends OrmLiteBaseActivity<AlarmDatabaseHelper> impleme
   private AnimationSet set;
   private Animation animation;
 
+  private SharedPreferences sharedPreferences;
   private SharedPreferences sharedPreferencesOnConfigure;
 
   private LayoutInflater layoutInflater;
@@ -93,7 +86,7 @@ public class AlarmClock extends OrmLiteBaseActivity<AlarmDatabaseHelper> impleme
   private TextView weatherTextTomorrow;
 
   // private View mClock = null;
-  private ListView alarmsList;
+  private ListView mAlarmsList;
   private Cursor alarmsCursor;
 
   private String mAm, mPm;
@@ -120,6 +113,8 @@ public class AlarmClock extends OrmLiteBaseActivity<AlarmDatabaseHelper> impleme
     setContentView(R.layout.alarm_clock);
 
     layoutInflater = LayoutInflater.from(this);
+
+    sharedPreferences = getSharedPreferences(PREFERENCES, 0);
 
     sharedPreferencesOnConfigure = getSharedPreferences("configure", Context.MODE_PRIVATE);
 
@@ -166,7 +161,7 @@ public class AlarmClock extends OrmLiteBaseActivity<AlarmDatabaseHelper> impleme
 
     controller = new LayoutAnimationController(set, 0.5f);
 
-    alarmsList = (ListView) findViewById(R.id.alarms_list);
+    mAlarmsList = (ListView) findViewById(R.id.alarms_list);
 
     setWelcomeText();
 
@@ -238,23 +233,12 @@ public class AlarmClock extends OrmLiteBaseActivity<AlarmDatabaseHelper> impleme
    * 闹钟列表
    */
   private void updateAlarmList() {
-
-    try {
-      alarmDao = getHelper().getAlarmDao();
-
-      List<Alarm> alarms = alarmDao.queryForAll();
-
-      noAlarmLayout.setVisibility(alarms.size() > 0 ? View.GONE : View.VISIBLE);
-
-      alarmsList.setAdapter(new AlarmAdapter(this, alarms));
-      
-      // mAlarmsList.setVerticalScrollBarEnabled(true);
-      // mAlarmsList.setOnItemClickListener(this);
-      // mAlarmsList.setOnCreateContextMenuListener(this);
-
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+    alarmsCursor = Alarms.getAlarmsCursor(getContentResolver());
+    noAlarmLayout.setVisibility(alarmsCursor.getCount() > 0 ? View.GONE : View.VISIBLE);
+    mAlarmsList.setAdapter(new AlarmTimeAdapter(this, alarmsCursor));
+    mAlarmsList.setVerticalScrollBarEnabled(true);
+    // mAlarmsList.setOnItemClickListener(this);
+    mAlarmsList.setOnCreateContextMenuListener(this);
   }
 
   /**
@@ -344,7 +328,7 @@ public class AlarmClock extends OrmLiteBaseActivity<AlarmDatabaseHelper> impleme
           weatherLogoTomorrow.setText(tomorrow.getIcon(AlarmClock.this));
           weatherTextTomorrow.setText("明天 " + tomorrow.getFlag() + "\n" + tomorrow.getTemperature());
         }
-
+        
         weatherInfoTip.setVisibility(View.GONE);
         weatherInfo.setVisibility(View.VISIBLE);
 
@@ -387,5 +371,153 @@ public class AlarmClock extends OrmLiteBaseActivity<AlarmDatabaseHelper> impleme
   // Log.v("OnStop");
   // super.onStop();
   // }
+
+  private class AlarmTimeAdapter extends CursorAdapter {
+
+    public AlarmTimeAdapter(Context context, Cursor cursor) {
+      super(context, cursor);
+    }
+
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+      View ret = layoutInflater.inflate(R.layout.alarm_time, parent, false);
+
+      ((TextView) ret.findViewById(R.id.am)).setText(mAm);
+      ((TextView) ret.findViewById(R.id.pm)).setText(mPm);
+
+      DigitalClock digitalClock = (DigitalClock) ret.findViewById(R.id.digitalClock);
+      digitalClock.setLive(false);
+      return ret;
+    }
+
+    public void actionToggle(View v) {
+      View parentLayout = (View) v.getParent();
+
+      LinearLayout alarmActionsLayout;
+      ImageView arrow;
+
+      if (currentAlarmLayout != null && currentAlarmLayout != parentLayout) {
+        alarmActionsLayout = (LinearLayout) currentAlarmLayout.findViewById(R.id.alarm_actions_layout);
+        arrow = (ImageView) currentAlarmLayout.findViewById(R.id.arrow);
+        alarmActionsLayout.setVisibility(View.GONE);
+        arrow.setVisibility(View.GONE);
+        alarmActionsLayout.setEnabled(true);
+        currentAlarmLayout = null;
+      }
+
+      alarmActionsLayout = (LinearLayout) parentLayout.findViewById(R.id.alarm_actions_layout);
+      arrow = (ImageView) parentLayout.findViewById(R.id.arrow);
+
+      if (alarmActionsLayout.isEnabled() == true) {
+        currentAlarmLayout = parentLayout;
+        alarmActionsLayout.setLayoutAnimation(controller);
+
+        alarmActionsLayout.setVisibility(View.VISIBLE);
+        arrow.setVisibility(View.VISIBLE);
+        alarmActionsLayout.setEnabled(false);
+      } else {
+        alarmActionsLayout.setVisibility(View.GONE);
+        arrow.setVisibility(View.GONE);
+        alarmActionsLayout.setEnabled(true);
+        currentAlarmLayout = null;
+      }
+
+    }
+
+    public void bindView(final View view, Context context, Cursor cursor) {
+      final Alarm alarm = new Alarm(cursor);
+
+      View alarmLnfoLayout = view.findViewById(R.id.alarm_info_layout);
+      alarmLnfoLayout.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+          actionToggle(v);
+        }
+      });
+
+      final View closed = view.findViewById(R.id.closed);
+      closed.setVisibility(!alarm.enabled ? View.VISIBLE : View.GONE);
+
+      TextView alarmName = (TextView) view.findViewById(R.id.alarm_name);
+      if (!StringUtil.isEmpty(alarm.label)) {
+        alarmName.setText(alarm.label);
+      }
+
+      DigitalClock digitalClock = (DigitalClock) view.findViewById(R.id.digitalClock);
+
+      // 设置闹钟文字
+      final Calendar calendar = Calendar.getInstance();
+      calendar.set(Calendar.HOUR_OF_DAY, alarm.hour);
+      calendar.set(Calendar.MINUTE, alarm.minutes);
+      digitalClock.updateTime(calendar);
+
+      // 设置重复的文字或，如果它不重复留空
+      TextView daysOfWeekView = (TextView) digitalClock.findViewById(R.id.daysOfWeek);
+
+      final String daysOfWeekStr = alarm.daysOfWeek.toString(AlarmClock.this, false);
+
+      if (daysOfWeekStr != null && daysOfWeekStr.length() != 0) {
+        daysOfWeekView.setText(daysOfWeekStr);
+        daysOfWeekView.setVisibility(View.VISIBLE);
+      } else {
+        daysOfWeekView.setVisibility(View.GONE);
+      }
+
+      // 编辑按钮
+      Button editButton = (Button) view.findViewById(R.id.edit);
+      editButton.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+          Intent intent = new Intent(AlarmClock.this, SetAlarmCustom.class);
+          intent.putExtra(Alarms.ALARM_ID, alarm.id);
+          startActivity(intent);
+        }
+      });
+
+      // 关闭/开启 切换按钮
+      Button toggle = (Button) view.findViewById(R.id.toggle);
+      toggle.setText(alarm.enabled ? R.string.close : R.string.open);
+      toggle.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+          Button button = (Button) v;
+          if (alarm.enabled == true) {
+            alarm.enabled = false;
+            Alarms.enableAlarm(AlarmClock.this, alarm.id, false);
+            button.setText(R.string.open);
+          } else {
+            alarm.enabled = true;
+            Alarms.enableAlarm(AlarmClock.this, alarm.id, true);
+            SetAlarm.popAlarmSetToast(AlarmClock.this, alarm.hour, alarm.minutes, alarm.daysOfWeek);
+            button.setText(R.string.close);
+          }
+          closed.setVisibility(!alarm.enabled ? View.VISIBLE : View.GONE);
+        }
+      });
+
+      // 删除按钮
+      Button deleteButton = (Button) view.findViewById(R.id.delete);
+      deleteButton.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+          // Confirm that the alarm will be deleted.
+          new AlertDialog.Builder(AlarmClock.this).setTitle(getString(R.string.delete_alarm)).setMessage(getString(R.string.delete_alarm_confirm))
+              .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface d, int w) {
+                  Alarms.deleteAlarm(AlarmClock.this, alarm.id);
+                  updateAlarmList();
+                }
+              }).setNegativeButton(android.R.string.cancel, null).show();
+        }
+      });
+
+      // // 跳过按钮
+      // Button skipButton = (Button) view.findViewById(R.id.skip);
+      // skipButton.setOnClickListener(new OnClickListener() {
+      // public void onClick(View v) {
+      // Intent intent = new Intent(AlarmClock.this, AlarmAlertTest.class);
+      // // intent.putExtra(Alarms.ALARM_ID, alarm.id);
+      // startActivity(intent);
+      //
+      // }
+      // });
+
+    }
+  };
 
 }

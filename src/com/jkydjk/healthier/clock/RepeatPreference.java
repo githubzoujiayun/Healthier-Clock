@@ -20,7 +20,6 @@ import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
 import com.jkydjk.healthier.clock.entity.Alarm;
-import com.jkydjk.healthier.clock.entity.DaysOfWeek;
 
 import android.app.AlertDialog.Builder;
 import android.content.Context;
@@ -30,52 +29,52 @@ import android.util.AttributeSet;
 
 public class RepeatPreference extends ListPreference {
 
-  // Initial value that can be set with the values saved in the database.
-  private DaysOfWeek mDaysOfWeek = new DaysOfWeek(0);
-  // New value that will be set if a positive result comes back from the
-  // dialog.
-  private DaysOfWeek mNewDaysOfWeek = new DaysOfWeek(0);
+	// Initial value that can be set with the values saved in the database.
+	private Alarm.DaysOfWeek mDaysOfWeek = new Alarm.DaysOfWeek(0);
+	// New value that will be set if a positive result comes back from the
+	// dialog.
+	private Alarm.DaysOfWeek mNewDaysOfWeek = new Alarm.DaysOfWeek(0);
 
-  public RepeatPreference(Context context, AttributeSet attrs) {
-    super(context, attrs);
+	public RepeatPreference(Context context, AttributeSet attrs) {
+		super(context, attrs);
 
-    String[] weekdays = new DateFormatSymbols().getWeekdays();
+		String[] weekdays = new DateFormatSymbols().getWeekdays();
+		
+		String[] values = new String[] { weekdays[Calendar.MONDAY], weekdays[Calendar.TUESDAY], weekdays[Calendar.WEDNESDAY], weekdays[Calendar.THURSDAY], weekdays[Calendar.FRIDAY],
+				weekdays[Calendar.SATURDAY], weekdays[Calendar.SUNDAY], };
+		
+		setEntries(values);
+		
+		setEntryValues(values);
+	}
 
-    String[] values = new String[] { weekdays[Calendar.MONDAY], weekdays[Calendar.TUESDAY], weekdays[Calendar.WEDNESDAY], weekdays[Calendar.THURSDAY], weekdays[Calendar.FRIDAY],
-        weekdays[Calendar.SATURDAY], weekdays[Calendar.SUNDAY], };
+	@Override
+	protected void onDialogClosed(boolean positiveResult) {
+		if (positiveResult) {
+			mDaysOfWeek.set(mNewDaysOfWeek);
+			setSummary(mDaysOfWeek.toString(getContext(), true));
+		}
+	}
 
-    setEntries(values);
+	@Override
+	protected void onPrepareDialogBuilder(Builder builder) {
+		CharSequence[] entries = getEntries();
+		CharSequence[] entryValues = getEntryValues();
 
-    setEntryValues(values);
-  }
+		builder.setMultiChoiceItems(entries, mDaysOfWeek.getBooleanArray(), new DialogInterface.OnMultiChoiceClickListener() {
+			public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+				mNewDaysOfWeek.set(which, isChecked);
+			}
+		});
+	}
 
-  @Override
-  protected void onDialogClosed(boolean positiveResult) {
-    if (positiveResult) {
-      mDaysOfWeek.set(mNewDaysOfWeek);
-      setSummary(mDaysOfWeek.toString(getContext(), true));
-    }
-  }
+	public void setDaysOfWeek(Alarm.DaysOfWeek dow) {
+		mDaysOfWeek.set(dow);
+		mNewDaysOfWeek.set(dow);
+		setSummary(dow.toString(getContext(), true));
+	}
 
-  @Override
-  protected void onPrepareDialogBuilder(Builder builder) {
-    CharSequence[] entries = getEntries();
-    CharSequence[] entryValues = getEntryValues();
-
-    builder.setMultiChoiceItems(entries, mDaysOfWeek.getBooleanArray(), new DialogInterface.OnMultiChoiceClickListener() {
-      public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-        mNewDaysOfWeek.set(which, isChecked);
-      }
-    });
-  }
-
-  public void setDaysOfWeek(DaysOfWeek dow) {
-    mDaysOfWeek.set(dow);
-    mNewDaysOfWeek.set(dow);
-    setSummary(dow.toString(getContext(), true));
-  }
-
-  public DaysOfWeek getDaysOfWeek() {
-    return mDaysOfWeek;
-  }
+	public Alarm.DaysOfWeek getDaysOfWeek() {
+		return mDaysOfWeek;
+	}
 }

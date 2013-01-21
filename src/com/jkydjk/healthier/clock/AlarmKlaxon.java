@@ -138,11 +138,11 @@ public class AlarmKlaxon extends Service {
     stop();
 
     if (Log.LOGV) {
-      Log.v("AlarmKlaxon.play() " + alarm.getId() + " alert " + alarm.getAlert());
+      Log.v("AlarmKlaxon.play() " + alarm.id + " alert " + alarm.alert);
     }
 
-    if (!alarm.isSilent()) {
-      Uri alert = alarm.getAlert();
+    if (!alarm.silent) {
+      Uri alert = alarm.alert;
       // Fall back on the default alarm if the database does not have an
       // alarm stored.
       if (alert == null) {
@@ -193,7 +193,7 @@ public class AlarmKlaxon extends Service {
     }
 
     /* Start the vibrator after everything is ok with the media player */
-    if (alarm.isVibrate()) {
+    if (alarm.vibrate) {
       mVibrator.vibrate(sVibratePattern, 0);
     } else {
       mVibrator.cancel();

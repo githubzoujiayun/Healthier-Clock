@@ -1,7 +1,6 @@
 package com.jkydjk.healthier.clock;
 
 import com.jkydjk.healthier.clock.entity.Alarm;
-import com.jkydjk.healthier.clock.entity.DaysOfWeek;
 import com.jkydjk.healthier.clock.util.Alarms;
 import com.jkydjk.healthier.clock.util.Log;
 
@@ -81,17 +80,15 @@ public class SetAlarm extends PreferenceActivity implements TimePickerDialog.OnT
             return;
         }
         
-        mEnabled = alarm.isEnabled();
-        mLabel.setText(alarm.getRemark());
-        mLabel.setSummary(alarm.getRemark());
-        mHour = alarm.getHour();
-        mMinutes = alarm.getMinutes();
-        mRepeatPref.setDaysOfWeek(alarm.getDaysOfWeek());
-        mVibratePref.setChecked(alarm.isVibrate());
-        
+        mEnabled = alarm.enabled;
+        mLabel.setText(alarm.remark);
+        mLabel.setSummary(alarm.remark);
+        mHour = alarm.hour;
+        mMinutes = alarm.minutes;
+        mRepeatPref.setDaysOfWeek(alarm.daysOfWeek);
+        mVibratePref.setChecked(alarm.vibrate);
         // Give the alert uri to the preference.
-        mAlarmPref.setAlert(alarm.getAlert());
-        
+        mAlarmPref.setAlert(alarm.alert);
         updateTime();
 
         // We have to do this to get the save/cancel buttons to highlight on
@@ -143,7 +140,7 @@ public class SetAlarm extends PreferenceActivity implements TimePickerDialog.OnT
      * Write alarm out to persistent store and pops toast if alarm enabled. Used
      * only in test code.
      */
-    private static void saveAlarm(Context context, int id, boolean enabled, int hour, int minute, DaysOfWeek daysOfWeek, boolean vibrate, String label, String alert, boolean popToast) {
+    private static void saveAlarm(Context context, int id, boolean enabled, int hour, int minute, Alarm.DaysOfWeek daysOfWeek, boolean vibrate, String label, String alert, boolean popToast) {
         if (Log.LOGV)
             Log.v("** saveAlarm " + id + " " + label + " " + enabled + " " + hour + " " + minute + " vibe " + vibrate);
 
@@ -159,7 +156,7 @@ public class SetAlarm extends PreferenceActivity implements TimePickerDialog.OnT
      * Display a toast that tells the user how long until the alarm goes off.
      * This helps prevent "am/pm" mistakes.
      */
-    public static void popAlarmSetToast(Context context, int hour, int minute, DaysOfWeek daysOfWeek) {
+    public static void popAlarmSetToast(Context context, int hour, int minute, Alarm.DaysOfWeek daysOfWeek) {
         popAlarmSetToast(context, Alarms.calculateAlarm(hour, minute, daysOfWeek).getTimeInMillis());
     }
 

@@ -29,7 +29,7 @@
         android:persistent="true"
         android:theme="@style/Theme.Dialog" >
         <provider
-            android:name="com.jkydjk.healthier.clock.provider.AlarmProvider"
+            android:name="AlarmProvider"
             android:authorities="com.jkydjk.healthier.clock" />
 
         <activity
