@@ -45,7 +45,7 @@ public class Signup extends BaseActivity implements OnClickListener {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.signup);
 
-    sharedPreference = this.getSharedPreferences("user", Context.MODE_PRIVATE);
+    sharedPreference = this.getSharedPreferences("configure", Context.MODE_PRIVATE);
 
     cancel = findViewById(R.id.cancel);
     cancel.setOnClickListener(this);
