@@ -165,6 +165,10 @@ public final class Alarm implements Parcelable {
     p.writeInt(silent ? 1 : 0);
   }
 
+  // ////////////////////////////
+  // end Parcelable apis
+  // ////////////////////////////
+
   public int getId() {
     return id;
   }
@@ -228,6 +232,10 @@ public final class Alarm implements Parcelable {
   public void setCycle(int cycle) {
     this.cycle = cycle;
   }
+  
+  public void setCycle(DaysOfWeek daysOfWeek){
+    this.cycle = daysOfWeek.getCoded();
+  }
 
   public DaysOfWeek getDaysOfWeek() {
     return daysOfWeek;
@@ -284,9 +292,5 @@ public final class Alarm implements Parcelable {
   public void setSilent(boolean silent) {
     this.silent = silent;
   }
-
-  // ////////////////////////////
-  // end Parcelable apis
-  // ////////////////////////////
 
 }

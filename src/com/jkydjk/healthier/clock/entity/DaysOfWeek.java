@@ -17,11 +17,26 @@ public final class DaysOfWeek {
 
   private static int[] DAY_MAP = new int[] { Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY, };
 
+  public static final int REPEATING_NEVER_DAYS = 0x00;
+  public static final int REPEATING_EVERY_DAYS = 0x7f;
+
+  public static final int WEEK_CODE_MONDAY = 0x01;
+  public static final int WEEK_CODE_TUESDAY = 0x02;
+  public static final int WEEK_CODE_WEDNESDAY = 0x04;
+  public static final int WEEK_CODE_THURSDAY = 0x08;
+  public static final int WEEK_CODE_FRIDAY = 0x10;
+  public static final int WEEK_CODE_SATURDAY = 0x20;
+  public static final int WEEK_CODE_SUNDAY = 0x40;
+
   // Bitmask of all repeating days
   private int mDays;
 
   public DaysOfWeek(int days) {
     mDays = days;
+  }
+
+  public DaysOfWeek(boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday) {
+    mDays = DaysOfWeek.getCycleCode(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
   }
 
   public String toString(Context context, boolean showNever) {
@@ -117,5 +132,37 @@ public final class DaysOfWeek {
     }
     return dayCount;
   }
-  
+
+  /**
+   * return week cycle code
+   * @param monday
+   * @param tuesday
+   * @param wednesday
+   * @param thursday
+   * @param friday
+   * @param saturday
+   * @param sunday
+   * @return
+   */
+  public static int getCycleCode(boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday) {
+    int days = 0;
+
+    if (monday)
+      days += WEEK_CODE_MONDAY;
+    if (tuesday)
+      days += WEEK_CODE_TUESDAY;
+    if (wednesday)
+      days += WEEK_CODE_WEDNESDAY;
+    if (thursday)
+      days += WEEK_CODE_THURSDAY;
+    if (friday)
+      days += WEEK_CODE_FRIDAY;
+    if (saturday)
+      days += WEEK_CODE_SATURDAY;
+    if (sunday)
+      days += WEEK_CODE_SUNDAY;
+
+    return days;
+  }
+
 }

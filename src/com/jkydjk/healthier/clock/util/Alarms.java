@@ -619,7 +619,9 @@ public class Alarms {
 
       alarm.setEnabled(true);
 
-      alarm.setCycle(0);
+      alarm.setCycle(DaysOfWeek.REPEATING_EVERY_DAYS);
+
+      // alarm.setCycle(new DaysOfWeek(0));
 
       alarm.setVibrate(true);
 
@@ -634,7 +636,7 @@ public class Alarms {
       SharedPreferences prefs = context.getSharedPreferences(AlarmClock.PREFERENCES, 0);
 
       long snoozeTime = prefs.getLong(PREF_SNOOZE_TIME, 0);
-      
+
       if (timeInMillis < snoozeTime) {
         clearSnoozePreference(context, prefs);
       }
