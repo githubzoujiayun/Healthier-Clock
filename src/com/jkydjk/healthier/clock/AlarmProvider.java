@@ -1,6 +1,7 @@
 package com.jkydjk.healthier.clock;
 
 import com.jkydjk.healthier.clock.database.AlarmDatabaseHelper;
+import com.jkydjk.healthier.clock.entity.columns.AlarmColumns;
 import com.jkydjk.healthier.clock.util.Log;
 
 import android.content.ContentProvider;
@@ -118,39 +119,39 @@ public class AlarmProvider extends ContentProvider {
     else
       values = new ContentValues();
 
-    if (!values.containsKey(Alarm.Columns.HOUR))
-      values.put(Alarm.Columns.HOUR, 0);
+    if (!values.containsKey(AlarmColumns.HOUR))
+      values.put(AlarmColumns.HOUR, 0);
 
-    if (!values.containsKey(Alarm.Columns.MINUTES))
-      values.put(Alarm.Columns.MINUTES, 0);
+    if (!values.containsKey(AlarmColumns.MINUTES))
+      values.put(AlarmColumns.MINUTES, 0);
 
-    if (!values.containsKey(Alarm.Columns.DAYS_OF_WEEK))
-      values.put(Alarm.Columns.DAYS_OF_WEEK, 0);
+    if (!values.containsKey(AlarmColumns.DAYS_OF_WEEK))
+      values.put(AlarmColumns.DAYS_OF_WEEK, 0);
 
-    if (!values.containsKey(Alarm.Columns.ALARM_TIME))
-      values.put(Alarm.Columns.ALARM_TIME, 0);
+    if (!values.containsKey(AlarmColumns.ALARM_TIME))
+      values.put(AlarmColumns.ALARM_TIME, 0);
 
-    if (!values.containsKey(Alarm.Columns.ENABLED))
-      values.put(Alarm.Columns.ENABLED, 0);
+    if (!values.containsKey(AlarmColumns.ENABLED))
+      values.put(AlarmColumns.ENABLED, 0);
 
-    if (!values.containsKey(Alarm.Columns.VIBRATE))
-      values.put(Alarm.Columns.VIBRATE, 1);
+    if (!values.containsKey(AlarmColumns.VIBRATE))
+      values.put(AlarmColumns.VIBRATE, 1);
 
-    if (!values.containsKey(Alarm.Columns.REMARK))
-      values.put(Alarm.Columns.REMARK, "");
+    if (!values.containsKey(AlarmColumns.REMARK))
+      values.put(AlarmColumns.REMARK, "");
 
-    if (!values.containsKey(Alarm.Columns.ALERT))
-      values.put(Alarm.Columns.ALERT, "");
+    if (!values.containsKey(AlarmColumns.ALERT))
+      values.put(AlarmColumns.ALERT, "");
 
     SQLiteDatabase db = alarmDatabaseOpenHelper.getWritableDatabase();
-    long rowId = db.insert("alarms", Alarm.Columns.REMARK, values);
+    long rowId = db.insert("alarms", AlarmColumns.REMARK, values);
     if (rowId < 0) {
       throw new SQLException("Failed to insert row into " + url);
     }
     if (Log.LOGV)
       Log.v("Added alarm rowId = " + rowId);
 
-    Uri newUrl = ContentUris.withAppendedId(Alarm.Columns.CONTENT_URI, rowId);
+    Uri newUrl = ContentUris.withAppendedId(AlarmColumns.CONTENT_URI, rowId);
     getContext().getContentResolver().notifyChange(newUrl, null);
     return newUrl;
   }

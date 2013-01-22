@@ -20,7 +20,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.jkydjk.healthier.clock.Alarm.DaysOfWeek;
+import com.jkydjk.healthier.clock.entity.Alarm;
+import com.jkydjk.healthier.clock.entity.DaysOfWeek;
+import com.jkydjk.healthier.clock.util.Alarms;
 import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 import com.jkydjk.healthier.clock.widget.ToggleSwitch;

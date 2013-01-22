@@ -35,6 +35,7 @@ import com.j256.ormlite.dao.ForeignCollection;
 import com.jkydjk.healthier.clock.animation.Cycling;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Acupoint;
+import com.jkydjk.healthier.clock.entity.Alarm;
 import com.jkydjk.healthier.clock.entity.Hour;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
@@ -42,6 +43,7 @@ import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
+import com.jkydjk.healthier.clock.util.Alarms;
 import com.jkydjk.healthier.clock.util.StringUtil;
 
 @SuppressLint("SimpleDateFormat")
@@ -394,9 +396,11 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       }
       break;
 
-    case R.id.alarm:
-
+    case R.id.alarm: {
+      long time = Alarms.addSolutionAlarm(this, solution);
+      Alarms.popAlarmSetToast(this, time);
       break;
+    }
 
     case R.id.process:
       startActivity(new Intent(this, Process.class));
@@ -408,9 +412,15 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       startActivity(intent);
       break;
     }
-    case R.id.forwarding:
 
+    case R.id.forwarding: {
+      Intent intent = new Intent(Intent.ACTION_SEND);
+      intent.setType("text/plain");
+      intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
+      intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_solution), solution.getTitle(), solution.getEffect()));
+      startActivity(Intent.createChooser(intent, getTitle()));
       break;
+    }
 
     default:
       break;

@@ -16,6 +16,8 @@
 
 package com.jkydjk.healthier.clock;
 
+import com.jkydjk.healthier.clock.util.Alarms;
+
 import android.content.Context;
 import android.media.Ringtone;
 import android.media.RingtoneManager;

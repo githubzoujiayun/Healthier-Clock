@@ -1,5 +1,8 @@
 package com.jkydjk.healthier.clock;
 
+import com.jkydjk.healthier.clock.entity.Alarm;
+import com.jkydjk.healthier.clock.entity.DaysOfWeek;
+import com.jkydjk.healthier.clock.util.Alarms;
 import com.jkydjk.healthier.clock.util.Log;
 
 import android.app.TimePickerDialog;
@@ -138,7 +141,7 @@ public class SetAlarm extends PreferenceActivity implements TimePickerDialog.OnT
      * Write alarm out to persistent store and pops toast if alarm enabled. Used
      * only in test code.
      */
-    private static void saveAlarm(Context context, int id, boolean enabled, int hour, int minute, Alarm.DaysOfWeek daysOfWeek, boolean vibrate, String label, String alert, boolean popToast) {
+    private static void saveAlarm(Context context, int id, boolean enabled, int hour, int minute, DaysOfWeek daysOfWeek, boolean vibrate, String label, String alert, boolean popToast) {
         if (Log.LOGV)
             Log.v("** saveAlarm " + id + " " + label + " " + enabled + " " + hour + " " + minute + " vibe " + vibrate);
 
@@ -154,7 +157,7 @@ public class SetAlarm extends PreferenceActivity implements TimePickerDialog.OnT
      * Display a toast that tells the user how long until the alarm goes off.
      * This helps prevent "am/pm" mistakes.
      */
-    public static void popAlarmSetToast(Context context, int hour, int minute, Alarm.DaysOfWeek daysOfWeek) {
+    public static void popAlarmSetToast(Context context, int hour, int minute, DaysOfWeek daysOfWeek) {
         popAlarmSetToast(context, Alarms.calculateAlarm(hour, minute, daysOfWeek).getTimeInMillis());
     }
 
