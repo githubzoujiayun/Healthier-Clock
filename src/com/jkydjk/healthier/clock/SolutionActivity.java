@@ -130,6 +130,21 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
     new Task().execute();
   }
 
+  @Override
+  protected void onResume() {
+    if (solution != null) {
+      alarmImageButton.setImageResource(solution.isAlarm(this) ? R.drawable.action_alarm_on : R.drawable.action_alarm);
+
+      try {
+        solutionDao.refresh(solution);
+        favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    super.onResume();
+  }
+
   /**
    * 
    * @author miclle
@@ -309,6 +324,11 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
       actionsToolbar.setVisibility(View.VISIBLE);
 
       favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
+
+      if (solution.isAlarm(SolutionActivity.this)) {
+        alarmImageButton.setImageResource(R.drawable.action_alarm_on);
+      }
+
     }
   }
 
@@ -335,8 +355,12 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
       break;
 
     case R.id.alarm: {
-      long time = Alarms.addSolutionAlarm(this, solution);
-      Alarms.popAlarmSetToast(this, time);
+      if (!solution.isAlarm(this)) {
+        long time = Alarms.addSolutionAlarm(this, solution);
+        if (time > 0)
+          alarmImageButton.setImageResource(R.drawable.action_alarm_on);
+        Alarms.popAlarmSetToast(this, time);
+      }
       break;
     }
 

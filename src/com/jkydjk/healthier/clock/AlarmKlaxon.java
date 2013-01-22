@@ -42,6 +42,7 @@ public class AlarmKlaxon extends Service {
 
   // Internal messages
   private static final int KILLER = 1000;
+  
   private Handler mHandler = new Handler() {
     public void handleMessage(Message msg) {
       switch (msg.what) {

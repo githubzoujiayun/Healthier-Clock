@@ -3,7 +3,10 @@ package com.jkydjk.healthier.clock;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,17 +36,20 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.jkydjk.healthier.clock.animation.Cycling;
+import com.jkydjk.healthier.clock.database.AlarmDatabaseHelper;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Acupoint;
 import com.jkydjk.healthier.clock.entity.Alarm;
 import com.jkydjk.healthier.clock.entity.Hour;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
+import com.jkydjk.healthier.clock.entity.columns.AlarmColumns;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Alarms;
+import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 
 @SuppressLint("SimpleDateFormat")
@@ -158,6 +164,21 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
     loading = (LinearLayout) findViewById(R.id.loading);
 
     new Task().execute();
+  }
+
+  @Override
+  protected void onResume() {
+    if (solution != null) {
+      alarmImageButton.setImageResource(solution.isAlarm(this) ? R.drawable.action_alarm_on : R.drawable.action_alarm);
+
+      try {
+        solutionDao.refresh(solution);
+        favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    super.onResume();
   }
 
   /**
@@ -346,6 +367,10 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
         favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
 
+        if (solution.isAlarm(ChineseHour.this)) {
+          alarmImageButton.setImageResource(R.drawable.action_alarm_on);
+        }
+
       } else {
         loading.findViewById(R.id.loading_icon).setVisibility(View.GONE);
         TextView loadingTextView = (TextView) loading.findViewById(R.id.loading_text);
@@ -397,8 +422,12 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       break;
 
     case R.id.alarm: {
-      long time = Alarms.addSolutionAlarm(this, solution);
-      Alarms.popAlarmSetToast(this, time);
+      if (!solution.isAlarm(this)) {
+        long time = Alarms.addSolutionAlarm(this, solution);
+        if (time > 0)
+          alarmImageButton.setImageResource(R.drawable.action_alarm_on);
+        Alarms.popAlarmSetToast(this, time);
+      }
       break;
     }
 

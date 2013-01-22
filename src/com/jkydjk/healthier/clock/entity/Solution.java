@@ -1,15 +1,29 @@
 package com.jkydjk.healthier.clock.entity;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.table.DatabaseTable;
+import com.jkydjk.healthier.clock.ChineseHour;
+import com.jkydjk.healthier.clock.database.AlarmDatabaseHelper;
+import com.jkydjk.healthier.clock.entity.columns.AlarmColumns;
+import com.jkydjk.healthier.clock.util.Log;
 
 @DatabaseTable(tableName = "solutions")
-public class Solution implements BaseSolution{
+public class Solution implements BaseSolution {
 
   @DatabaseField(id = true)
   private int id;
@@ -55,9 +69,6 @@ public class Solution implements BaseSolution{
 
   @DatabaseField
   private boolean favorited;
-
-  @DatabaseField
-  private boolean alarm;
 
   @DatabaseField
   private long version;
@@ -117,11 +128,41 @@ public class Solution implements BaseSolution{
 
     return solution;
   }
-  
-  public int getSolutionId(){
+
+  /**
+   * 返回为方案设置的闹铃提醒
+   * 
+   * @param context
+   * @return
+   */
+  public Alarm getAlarm(Context context) {
+    try {
+      Dao<Alarm, Integer> alarmDao = new AlarmDatabaseHelper(context).getAlarmDao();
+      QueryBuilder<Alarm, Integer> queryBuilder = alarmDao.queryBuilder();
+      queryBuilder.where().eq(AlarmColumns.CATEGORY, Alarm.CATEGORY_SOLUTION).and().eq(AlarmColumns.CATEGORY_ABLE_ID, id);
+      PreparedQuery<Alarm> preparedQuery = queryBuilder.prepare();
+      return alarmDao.queryForFirst(preparedQuery);
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  /**
+   * 方案是否设置闹铃提醒
+   * 
+   * @param context
+   * @return
+   */
+  public boolean isAlarm(Context context) {
+    return getAlarm(context) == null ? false : true;
+  }
+
+  // get and set
+  public int getSolutionId() {
     return id;
   }
-  
+
   public int getId() {
     return id;
   }
@@ -240,14 +281,6 @@ public class Solution implements BaseSolution{
 
   public void setFavorited(boolean favorited) {
     this.favorited = favorited;
-  }
-
-  public boolean isAlarm() {
-    return alarm;
-  }
-
-  public void setAlarm(boolean alarm) {
-    this.alarm = alarm;
   }
 
   public long getVersion() {
