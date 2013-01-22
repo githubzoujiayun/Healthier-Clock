@@ -2,20 +2,15 @@ package com.jkydjk.healthier.clock.database;
 
 import java.sql.SQLException;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.jkydjk.healthier.clock.entity.AcupointSolutionStep;
 import com.jkydjk.healthier.clock.entity.Alarm;
-import com.jkydjk.healthier.clock.entity.SolarTermSolution;
-import com.jkydjk.healthier.clock.entity.Solution;
-import com.jkydjk.healthier.clock.entity.SolutionComment;
-import com.jkydjk.healthier.clock.entity.SolutionStep;
 import com.jkydjk.healthier.clock.util.Log;
-
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 
 public class AlarmDatabaseHelper extends OrmLiteSqliteOpenHelper {
 

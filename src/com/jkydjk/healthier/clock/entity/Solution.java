@@ -1,10 +1,10 @@
 package com.jkydjk.healthier.clock.entity;
 
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,15 +12,14 @@ import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.table.DatabaseTable;
-import com.jkydjk.healthier.clock.ChineseHour;
 import com.jkydjk.healthier.clock.database.AlarmDatabaseHelper;
 import com.jkydjk.healthier.clock.entity.columns.AlarmColumns;
-import com.jkydjk.healthier.clock.util.Log;
 
 @DatabaseTable(tableName = "solutions")
 public class Solution implements BaseSolution {
@@ -72,6 +71,9 @@ public class Solution implements BaseSolution {
 
   @DatabaseField
   private long version;
+
+  @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = "hour_ids")
+  private Ids hourIds;
 
   @ForeignCollectionField(eager = false)
   private ForeignCollection<SolutionStep> steps;
@@ -125,6 +127,16 @@ public class Solution implements BaseSolution {
 
     if (!solutionJSON.isNull("version"))
       solution.version = solutionJSON.getInt("version");
+
+    JSONArray hoursArray = solutionJSON.getJSONArray("hours");
+
+    Ids hourIds = new Ids();
+
+    for (int i = 0; i < hoursArray.length(); i++) {
+      hourIds.add((Integer) hoursArray.get(i));
+    }
+
+    solution.hourIds = hourIds;
 
     return solution;
   }
@@ -289,6 +301,14 @@ public class Solution implements BaseSolution {
 
   public void setVersion(long version) {
     this.version = version;
+  }
+
+  public Ids getHourIds() {
+    return hourIds;
+  }
+
+  public void setHourIds(Ids hourIds) {
+    this.hourIds = hourIds;
   }
 
   public ForeignCollection<SolutionStep> getSteps() {
