@@ -28,6 +28,14 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/process_management" />
+
+        <Button
+            android:id="@+id/enter"
+            style="@style/title_bar_right_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/enter" />
     </RelativeLayout>
 
     <ScrollView
@@ -56,6 +64,68 @@
                 android:text="按摩眼周穴位“点”亮双眸"
                 android:textColor="#FF333333"
                 android:textSize="16sp" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
+
+                <RadioGroup
+                    android:id="@+id/radios"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dip"
+                    android:layout_marginTop="12dip"
+                    android:orientation="horizontal" >
+
+                    <RadioButton
+                        android:id="@+id/comply"
+                        style="@style/button_radio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="1.0px"
+                        android:background="@drawable/button_radio_first_selector"
+                        android:text="@string/comply" />
+
+                    <RadioButton
+                        android:id="@+id/custom"
+                        style="@style/button_radio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_radio_last_selector"
+                        android:text="@string/custom" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="12dip"
+                    android:background="#FFDDDDDD"
+                    android:paddingBottom="2dip"
+                    android:paddingLeft="5dip"
+                    android:paddingRight="5dip"
+                    android:paddingTop="2dip"
+                    android:text="1"
+                    android:textColor="#FF666666"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/text"
+                    style="@style/solution_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/radios"
+                    android:paddingLeft="28dip"
+                    android:text="按摩太阳穴，两拇指或两" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.0px"
+                    android:background="@drawable/setting_line" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="fill_parent"

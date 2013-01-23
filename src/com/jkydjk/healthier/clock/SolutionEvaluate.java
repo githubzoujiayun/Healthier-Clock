@@ -50,7 +50,7 @@ public class SolutionEvaluate extends OrmLiteBaseActivity<DatabaseHelper> implem
     solutionId = intent.getIntExtra("solutionId", 0);
 
     if (solutionId == 0)
-      return;
+      finish();
 
     back = (Button) findViewById(R.id.back);
     back.setOnClickListener(this);

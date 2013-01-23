@@ -364,9 +364,12 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
       break;
     }
 
-    case R.id.process:
-      startActivity(new Intent(this, Process.class));
+    case R.id.process: {
+      Intent intent = new Intent(this, Process.class);
+      intent.putExtra("solutionId", solution.getId());
+      startActivity(intent);
       break;
+    }
 
     case R.id.evaluate: {
       Intent intent = new Intent(this, SolutionEvaluate.class);

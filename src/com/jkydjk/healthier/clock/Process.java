@@ -1,25 +1,36 @@
 package com.jkydjk.healthier.clock;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.RadioButton;
 
 public class Process extends BaseActivity implements OnClickListener {
-  
-  private Button back;
-  
+
+  View back;
+  View enter;
+
+  int solutionId;
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.process);
-    
-    back = (Button)findViewById(R.id.back);
+
+    Intent intent = getIntent();
+    solutionId = intent.getIntExtra("solutionId", 0);
+
+    if (solutionId == 0)
+      finish();
+
+    back = findViewById(R.id.back);
     back.setOnClickListener(this);
-    
-//    RadioButton
-    
+
+    enter = findViewById(R.id.enter);
+    enter.setOnClickListener(this);
+
+    // RadioButton
+
   }
 
   public void onClick(View v) {
@@ -28,10 +39,14 @@ public class Process extends BaseActivity implements OnClickListener {
       finish();
       break;
 
+    case R.id.enter:
+      finish();
+      break;
+
     default:
       break;
     }
-    
+
   }
 
 }
