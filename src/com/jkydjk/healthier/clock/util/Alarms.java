@@ -2,6 +2,8 @@ package com.jkydjk.healthier.clock.util;
 
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -28,6 +30,8 @@ import com.jkydjk.healthier.clock.ToastMaster;
 import com.jkydjk.healthier.clock.database.AlarmDatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Alarm;
 import com.jkydjk.healthier.clock.entity.DaysOfWeek;
+import com.jkydjk.healthier.clock.entity.Hour;
+import com.jkydjk.healthier.clock.entity.Ids;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.columns.AlarmColumns;
 
@@ -599,34 +603,52 @@ public class Alarms {
    */
   public static long addSolutionAlarm(Context context, Solution solution) {
 
+    Ids hourIds = solution.getHourIds();
+
+    Integer hourId = null;
+
+    if (hourIds != null && hourIds.size() > 0) {
+      hourId = hourIds.get(0);
+      for (Integer id : hourIds) {
+        if (id > 3 && id < 12) {
+          hourId = id;
+          break;
+        }
+      }
+    }
+
+    if (hourId == null) {
+      Time time = new Time();
+      time.setToNow();
+      return addSolutionAlarm(context, solution, time.hour, 0);
+    } else {
+      return addSolutionAlarm(context, solution, Hour.startHours[hourId - 1], 0);
+    }
+  }
+
+  /**
+   * 增加方案闹钟
+   */
+  public static long addSolutionAlarm(Context context, Solution solution, int hour, int minute) {
+
     long timeInMillis = 0;
 
     AlarmDatabaseHelper help = new AlarmDatabaseHelper(context);
-
-    Time t = new Time();
-    t.setToNow();
 
     try {
       Dao<Alarm, Integer> alarmDao = help.getAlarmDao();
 
       Alarm alarm = new Alarm();
+
       alarm.setCategory(Alarm.CATEGORY_SOLUTION);
       alarm.setCategoryAbleId(solution.getId());
       alarm.setLabel(solution.getTitle());
-
-      alarm.setHour(t.hour);
-      alarm.setMinutes(t.minute + 1);
-
+      alarm.setHour(hour);
+      alarm.setMinutes(minute);
       alarm.setEnabled(true);
-
       alarm.setCycle(DaysOfWeek.REPEATING_EVERY_DAYS);
-
-      // alarm.setCycle(new DaysOfWeek(0));
-
       alarm.setVibrate(true);
-
-      alarm.setRing(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString());
-
+      // alarm.setRing(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString());
       alarm.setRemark(solution.getEffect());
 
       alarmDao.create(alarm);

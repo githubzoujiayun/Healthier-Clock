@@ -1,8 +1,5 @@
 package com.jkydjk.healthier.clock.entity;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 
 import android.content.Context;
@@ -11,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class Hour {
 
-  private long id;
+  public static final int[] startHours = { 23, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21 };
+
+  private int id;
   private String name;
   private String timeInterval;
   private String appropriate;
@@ -36,6 +35,15 @@ public class Hour {
   }
 
   /**
+   * return start hour
+   * 
+   * @return
+   */
+  public int getStartHour() {
+    return startHours[id - 1];
+  }
+
+  /**
    * 根据ID查找
    * 
    * @param context
@@ -44,13 +52,13 @@ public class Hour {
    */
   public static Hour find(Context context, long hourID) {
     Hour hour = null;
-    
+
     SQLiteDatabase database = new DatabaseHelper(context).getWritableDatabase();
-    
+
     Cursor cursor = database.rawQuery("select * from hours where _id = ?", new String[] { hourID + "" });
     if (cursor != null && cursor.moveToFirst()) {
       hour = new Hour();
-      hour.id = cursor.getLong(cursor.getColumnIndex("_id"));
+      hour.id = cursor.getInt(cursor.getColumnIndex("_id"));
       hour.name = cursor.getString(cursor.getColumnIndex("name"));
       hour.timeInterval = cursor.getString(cursor.getColumnIndex("interval"));
       hour.appropriate = cursor.getString(cursor.getColumnIndex("appropriate"));
@@ -62,11 +70,11 @@ public class Hour {
     return hour;
   }
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 

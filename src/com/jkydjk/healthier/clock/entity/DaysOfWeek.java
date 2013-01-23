@@ -134,7 +134,7 @@ public final class DaysOfWeek {
   }
 
   /**
-   * return week cycle code
+   * return week day cycle code
    * @param monday
    * @param tuesday
    * @param wednesday

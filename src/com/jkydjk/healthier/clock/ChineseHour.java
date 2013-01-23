@@ -416,7 +416,7 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
     case R.id.alarm: {
       if (!solution.isAlarm(this)) {
-        long time = Alarms.addSolutionAlarm(this, solution);
+        long time = Alarms.addSolutionAlarm(this, solution, hour.getStartHour(), 0);
         if (time > 0)
           alarmImageButton.setImageResource(R.drawable.action_alarm_on);
         Alarms.popAlarmSetToast(this, time);
