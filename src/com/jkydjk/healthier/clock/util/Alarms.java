@@ -603,34 +603,6 @@ public class Alarms {
    */
   public static long addSolutionAlarm(Context context, Solution solution) {
 
-    Ids hourIds = solution.getHourIds();
-
-    Integer hourId = null;
-
-    if (hourIds != null && hourIds.size() > 0) {
-      hourId = hourIds.get(0);
-      for (Integer id : hourIds) {
-        if (id > 3 && id < 12) {
-          hourId = id;
-          break;
-        }
-      }
-    }
-
-    if (hourId == null) {
-      Time time = new Time();
-      time.setToNow();
-      return addSolutionAlarm(context, solution, time.hour, 0);
-    } else {
-      return addSolutionAlarm(context, solution, Hour.startHours[hourId - 1], 0);
-    }
-  }
-
-  /**
-   * 增加方案闹钟
-   */
-  public static long addSolutionAlarm(Context context, Solution solution, int hour, int minute) {
-
     long timeInMillis = 0;
 
     AlarmDatabaseHelper help = new AlarmDatabaseHelper(context);
@@ -643,8 +615,8 @@ public class Alarms {
       alarm.setCategory(Alarm.CATEGORY_SOLUTION);
       alarm.setCategoryAbleId(solution.getId());
       alarm.setLabel(solution.getTitle());
-      alarm.setHour(hour);
-      alarm.setMinutes(minute);
+      alarm.setHour(solution.getStartedAt());
+//      alarm.setMinutes(0);
       alarm.setEnabled(true);
       alarm.setCycle(DaysOfWeek.REPEATING_EVERY_DAYS);
       alarm.setVibrate(true);
