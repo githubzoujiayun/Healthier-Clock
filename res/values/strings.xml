@@ -505,6 +505,8 @@
 	<string name="click_steps_to_try">点击步骤试试</string>
 	<string name="tips">温馨提示</string>
 	<string name="view_acupoint">看看穴位在哪？</string>
+	<string name="material_and_tool">材料工具</string>
+	<string name="occasion">场所</string>
 	
     <!-- Solution action button -->
     <string name="favorite">收藏</string>

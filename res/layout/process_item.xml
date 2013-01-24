@@ -1,26 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:background="@android:color/transparent" >
+
+    <TextView
+        android:id="@+id/step_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="12dip"
+        android:background="#FFDDDDDD"
+        android:paddingBottom="2dip"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:paddingTop="2dip"
+        android:textColor="#FF666666"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/step_content"
+        style="@style/solution_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="0dp"
+        android:paddingLeft="28dip" />
 
     <RadioGroup
         android:id="@+id/radios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_below="@+id/step_content"
         android:layout_marginRight="10dip"
-        android:layout_marginTop="12dip"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:paddingBottom="6dip" >
 
         <RadioButton
-            android:id="@+id/comply"
+            android:id="@+id/done"
             style="@style/button_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="1.0px"
             android:background="@drawable/button_radio_first_selector"
-            android:text="@string/comply" />
+            android:text="@string/done" />
 
         <RadioButton
             android:id="@+id/custom"
@@ -31,34 +55,10 @@
             android:text="@string/custom" />
     </RadioGroup>
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="12dip"
-        android:background="#FFDDDDDD"
-        android:paddingBottom="2dip"
-        android:paddingLeft="5dip"
-        android:paddingRight="5dip"
-        android:paddingTop="2dip"
-        android:text="1"
-        android:textColor="#FF666666"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/text"
-        style="@style/solution_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/radios"
-        android:paddingLeft="28dip"
-        android:text="按摩太阳穴，两拇指或两中指端分别在左右两太阳穴上揉动30次。或用双手拇指按压太阳穴，然后用弯曲的食指第二节的内侧轻刮眼眶一圈，由内上→外上→外下→内下，使眼眶周围的多个穴位受到按摩。" />
-
     <View
         android:layout_width="fill_parent"
         android:layout_height="1.0px"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/setting_line" />
 
 </RelativeLayout>
