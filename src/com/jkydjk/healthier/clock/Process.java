@@ -2,38 +2,28 @@ package com.jkydjk.healthier.clock;
 
 import java.util.Iterator;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
+import com.jkydjk.healthier.clock.entity.Names;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
-import com.jkydjk.healthier.clock.network.HttpClientManager;
-import com.jkydjk.healthier.clock.network.RequestRoute;
-import com.jkydjk.healthier.clock.network.ResuestMethod;
-import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
-import com.jkydjk.healthier.clock.util.StringUtil;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnClickListener {
 
@@ -42,12 +32,25 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
   View back;
   View enter;
 
-  View loading;
-  View scrollViewContent;
+  View loadingLayout;
+  View contentScrollView;
 
   TextView textViewTitle;
 
   LinearLayout layoutSteps;
+
+  View materialAndToolLayout;
+
+  View materialLayout;
+  TextView materialTextView;
+  EditText materialEditText;
+
+  View toolLayout;
+  TextView toolTextView;
+  EditText toolEditText;
+
+  View occasionLayout;
+  TextView occasionTextView;
 
   int solutionId;
 
@@ -74,11 +77,47 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
     enter = findViewById(R.id.enter);
     enter.setOnClickListener(this);
 
-    loading = findViewById(R.id.loading);
-    scrollViewContent = findViewById(R.id.scroll_view_content);
+    loadingLayout = findViewById(R.id.loading);
+
+    contentScrollView = findViewById(R.id.scroll_view_content);
+
     textViewTitle = (TextView) findViewById(R.id.text_view_title);
+
+    materialAndToolLayout = findViewById(R.id.layout_material_and_tool);
+
+    materialLayout = findViewById(R.id.layout_material);
+    materialTextView = (TextView) findViewById(R.id.text_view_material);
+    materialEditText = (EditText) findViewById(R.id.edit_text_material);
+
+    toolLayout = findViewById(R.id.layout_tool);
+    toolTextView = (TextView) findViewById(R.id.text_view_tool);
+    toolEditText = (EditText) findViewById(R.id.edit_text_tool);
+
+    toolEditText.addTextChangedListener(new TextWatcher() {
+
+      @Override
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
+        // TODO Auto-generated method stub
+
+      }
+
+      @Override
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        // TODO Auto-generated method stub
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable s) {
+        // TODO Auto-generated method stub
+        Log.v("Editable s: " + s);
+      }
+    });
+
     layoutSteps = (LinearLayout) findViewById(R.id.layout_steps);
 
+    occasionLayout = findViewById(R.id.layout_occasion);
+    occasionTextView = (TextView) findViewById(R.id.text_view_occasion);
     // RadioButton
 
     new Task().execute();
@@ -94,7 +133,7 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
     @Override
     protected void onPreExecute() {
       super.onPreExecute();
-      loading.setVisibility(View.VISIBLE);
+      loadingLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -109,39 +148,6 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
         solutionStepDao = helper.getSolutionStepDao();
 
         solution = solutionDao.queryForId(solutionId);
-
-        if (solution == null) {
-          if (!ActivityHelper.networkConnected(Process.this)) {
-            return "网络未连接！";
-          }
-
-          HttpClientManager connect = new HttpClientManager(Process.this, RequestRoute.solution(solutionId));
-
-          connect.execute(ResuestMethod.GET);
-
-          JSONObject json = new JSONObject(connect.getResponse());
-
-          JSONObject solutionJSON = json.getJSONObject("solution");
-
-          solution = Solution.parseJsonObject(solutionJSON);
-
-          solutionDao.createOrUpdate(solution);
-
-          JSONArray stepsArray = solutionJSON.getJSONArray("steps");
-
-          ForeignCollection<SolutionStep> steps = solutionDao.getEmptyForeignCollection("steps");
-
-          for (int i = 0; i < stepsArray.length(); i++) {
-            SolutionStep step = SolutionStep.parseJsonObject((JSONObject) stepsArray.get(i));
-            step.setSolution(solution);
-            solutionStepDao.delete(step);
-            // solutionStepDao.createOrUpdate(step);
-            steps.add(step);
-          }
-
-          solution.setSteps(steps);
-
-        }
 
       } catch (Exception e) {
         e.printStackTrace();
@@ -160,10 +166,33 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
         return;
       }
 
-      loading.setVisibility(View.GONE);
-      scrollViewContent.setVisibility(View.VISIBLE);
+      loadingLayout.setVisibility(View.GONE);
+      contentScrollView.setVisibility(View.VISIBLE);
 
       textViewTitle.setText(solution.getTitle());
+
+      Names materials = solution.getMaterials();
+
+      if (materials.size() > 0) {
+        materialTextView.setText(String.format(getString(R.string.title_content), getString(R.string.material), materials.joinNames()));
+        materialLayout.setVisibility(View.VISIBLE);
+        materialAndToolLayout.setVisibility(View.VISIBLE);
+      }
+
+      Names tools = solution.getTools();
+
+      if (tools.size() > 0) {
+        toolTextView.setText(String.format(getString(R.string.title_content), getString(R.string.tool), tools.joinNames()));
+        toolLayout.setVisibility(View.VISIBLE);
+        materialAndToolLayout.setVisibility(View.VISIBLE);
+      }
+
+      Names occasions = solution.getOccasions();
+
+      if (occasions.size() > 0) {
+        occasionTextView.setText(String.format(getString(R.string.title_content), getString(R.string.occasion), occasions.joinNames()));
+        occasionLayout.setVisibility(View.VISIBLE);
+      }
 
       ForeignCollection<SolutionStep> steps = solution.getSteps();
 

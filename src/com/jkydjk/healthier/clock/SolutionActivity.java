@@ -26,7 +26,6 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
-import com.jkydjk.healthier.clock.entity.Alarm;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
 import com.jkydjk.healthier.clock.network.HttpClientManager;

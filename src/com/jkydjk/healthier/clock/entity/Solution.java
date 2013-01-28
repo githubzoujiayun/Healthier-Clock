@@ -18,6 +18,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.table.DatabaseTable;
 import com.jkydjk.healthier.clock.database.AlarmDatabaseHelper;
 import com.jkydjk.healthier.clock.entity.columns.AlarmColumns;
+import com.jkydjk.healthier.clock.util.Log;
 
 @DatabaseTable(tableName = "solutions")
 public class Solution implements BaseSolution {
@@ -70,8 +71,25 @@ public class Solution implements BaseSolution {
   @DatabaseField
   private long version;
 
-  @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = "hour_ids")
-  private Ids hourIds;
+  // 时辰
+  @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = "hours")
+  private Names hours;
+
+  // 节气
+  @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = "solar_terms")
+  private Names solarTerms;
+
+  // 工具
+  @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = "tools")
+  private Names tools;
+
+  // 选材
+  @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = "materials")
+  private Names materials;
+
+  // 场合
+  @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = "occasions")
+  private Names occasions;
 
   @ForeignCollectionField(eager = false)
   private ForeignCollection<SolutionStep> steps;
@@ -126,15 +144,15 @@ public class Solution implements BaseSolution {
     if (!solutionJSON.isNull("version"))
       solution.version = solutionJSON.getInt("version");
 
-    JSONArray hoursArray = solutionJSON.getJSONArray("hours");
+    solution.hours = Names.parseJSONArray(solutionJSON.getJSONArray("hours"));
 
-    Ids hourIds = new Ids();
+    solution.solarTerms = Names.parseJSONArray(solutionJSON.getJSONArray("solar_terms"));
 
-    for (int i = 0; i < hoursArray.length(); i++) {
-      hourIds.add((Integer) hoursArray.get(i));
-    }
+    solution.tools = Names.parseJSONArray(solutionJSON.getJSONArray("tools"));
 
-    solution.hourIds = hourIds;
+    solution.materials = Names.parseJSONArray(solutionJSON.getJSONArray("materials"));
+
+    solution.occasions = Names.parseJSONArray(solutionJSON.getJSONArray("occasions"));
 
     return solution;
   }
@@ -301,12 +319,44 @@ public class Solution implements BaseSolution {
     this.version = version;
   }
 
-  public Ids getHourIds() {
-    return hourIds;
+  public Names getHours() {
+    return hours;
   }
 
-  public void setHourIds(Ids hourIds) {
-    this.hourIds = hourIds;
+  public void setHours(Names hours) {
+    this.hours = hours;
+  }
+
+  public Names getSolarTerms() {
+    return solarTerms;
+  }
+
+  public void setSolarTerms(Names solarTerms) {
+    this.solarTerms = solarTerms;
+  }
+
+  public Names getTools() {
+    return tools;
+  }
+
+  public void setTools(Names tools) {
+    this.tools = tools;
+  }
+
+  public Names getMaterials() {
+    return materials;
+  }
+
+  public void setMaterials(Names materials) {
+    this.materials = materials;
+  }
+
+  public Names getOccasions() {
+    return occasions;
+  }
+
+  public void setOccasions(Names occasions) {
+    this.occasions = occasions;
   }
 
   public ForeignCollection<SolutionStep> getSteps() {

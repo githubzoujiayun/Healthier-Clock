@@ -66,10 +66,12 @@
                 android:textSize="16sp" />
 
             <LinearLayout
+                android:id="@+id/layout_material_and_tool"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dip"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:visibility="gone" >
 
                 <TextView
                     style="@style/list_block_divider"
@@ -77,9 +79,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/material_and_tool" />
 
+                <!-- material -->
+
                 <RelativeLayout
+                    android:id="@+id/layout_material"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" >
+                    android:layout_height="fill_parent"
+                    android:visibility="gone" >
 
                     <RadioGroup
                         android:id="@+id/radios_material"
@@ -115,9 +121,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"
                         android:layout_toLeftOf="@+id/radios_material"
-                        android:paddingLeft="28dip" />
+                        android:paddingLeft="12dip" />
+
+                    <EditText
+                        android:id="@+id/edit_text_material"
+                        style="@style/solution_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/text_view_material"
+                        android:layout_toLeftOf="@+id/radios_material"
+                        android:paddingLeft="12dip" />
 
                     <View
                         android:layout_width="fill_parent"
@@ -126,9 +141,13 @@
                         android:background="@drawable/setting_line" />
                 </RelativeLayout>
 
+                <!-- tool -->
+
                 <RelativeLayout
+                    android:id="@+id/layout_tool"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" >
+                    android:layout_height="fill_parent"
+                    android:visibility="gone" >
 
                     <RadioGroup
                         android:id="@+id/radios_tool"
@@ -164,9 +183,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"
                         android:layout_toLeftOf="@+id/radios_tool"
-                        android:paddingLeft="28dip" />
+                        android:paddingLeft="12dip" />
+
+                    <EditText
+                        android:id="@+id/edit_text_tool"
+                        style="@style/solution_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/text_view_tool"
+                        android:layout_toLeftOf="@+id/radios_tool"
+                        android:paddingLeft="12dip" />
 
                     <View
                         android:layout_width="fill_parent"
@@ -210,8 +238,20 @@
                 android:text="@string/occasion" />
 
             <RelativeLayout
+                android:id="@+id/layout_occasion"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent" >
+                android:layout_height="fill_parent"
+                android:visibility="gone" >
+
+                <TextView
+                    android:id="@+id/text_view_occasion"
+                    style="@style/solution_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/radios_occasion"
+                    android:paddingLeft="12dip" />
 
                 <RadioGroup
                     android:id="@+id/radios_occasion"
@@ -240,16 +280,6 @@
                         android:background="@drawable/button_radio_last_selector"
                         android:text="@string/custom" />
                 </RadioGroup>
-
-                <TextView
-                    android:id="@+id/text_view_occasion"
-                    style="@style/solution_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_toLeftOf="@+id/radios_tool"
-                    android:paddingLeft="28dip" />
 
                 <View
                     android:layout_width="fill_parent"
