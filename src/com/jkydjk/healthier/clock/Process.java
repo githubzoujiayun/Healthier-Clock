@@ -23,6 +23,7 @@ import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Names;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
+import com.jkydjk.healthier.clock.listener.TextChangedListener;
 import com.jkydjk.healthier.clock.util.Log;
 
 public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnClickListener {
@@ -89,28 +90,23 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
     materialTextView = (TextView) findViewById(R.id.text_view_material);
     materialEditText = (EditText) findViewById(R.id.edit_text_material);
 
+    materialEditText.addTextChangedListener(new TextChangedListener() {
+      @Override
+      public void afterTextChanged(Editable s) {
+        // TODO Auto-generated method stub
+
+      }
+    });
+
     toolLayout = findViewById(R.id.layout_tool);
     toolTextView = (TextView) findViewById(R.id.text_view_tool);
     toolEditText = (EditText) findViewById(R.id.edit_text_tool);
 
-    toolEditText.addTextChangedListener(new TextWatcher() {
-
-      @Override
-      public void onTextChanged(CharSequence s, int start, int before, int count) {
-        // TODO Auto-generated method stub
-
-      }
-
-      @Override
-      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        // TODO Auto-generated method stub
-
-      }
-
+    toolEditText.addTextChangedListener(new TextChangedListener() {
       @Override
       public void afterTextChanged(Editable s) {
         // TODO Auto-generated method stub
-        Log.v("Editable s: " + s);
+        Log.v("Editable s:" + s);
       }
     });
 
