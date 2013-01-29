@@ -73,21 +73,4 @@ public class Names extends HashMap<Integer, String> {
     return names;
   }
 
-  public String joinNames() {
-    return joinNames(",");
-  }
-
-  public String joinNames(String conjunction) {
-    StringBuilder sb = new StringBuilder();
-    boolean first = true;
-    for (String name : names) {
-      if (first)
-        first = false;
-      else
-        sb.append(conjunction);
-      sb.append(name);
-    }
-    return sb.toString();
-  }
-
 }

@@ -2,7 +2,6 @@ package com.jkydjk.healthier.clock.entity;
 
 import java.sql.SQLException;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,8 +17,12 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.table.DatabaseTable;
 import com.jkydjk.healthier.clock.database.AlarmDatabaseHelper;
 import com.jkydjk.healthier.clock.entity.columns.AlarmColumns;
-import com.jkydjk.healthier.clock.util.Log;
 
+/**
+ * 方案
+ * @author miclle
+ *
+ */
 @DatabaseTable(tableName = "solutions")
 public class Solution implements BaseSolution {
 

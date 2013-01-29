@@ -81,127 +81,144 @@
 
                 <!-- material -->
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/layout_material"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:orientation="vertical"
                     android:visibility="gone" >
-
-                    <RadioGroup
-                        android:id="@+id/radios_material"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dip"
-                        android:layout_marginTop="12dip"
-                        android:orientation="horizontal"
-                        android:paddingBottom="6dip" >
-
-                        <RadioButton
-                            android:id="@+id/radio_material_comply"
-                            style="@style/button_radio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="1.0px"
-                            android:background="@drawable/button_radio_first_selector"
-                            android:text="@string/comply" />
-
-                        <RadioButton
-                            android:id="@+id/radio_material_custom"
-                            style="@style/button_radio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/button_radio_last_selector"
-                            android:text="@string/custom" />
-                    </RadioGroup>
 
                     <TextView
                         android:id="@+id/text_view_material"
                         style="@style/solution_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@+id/radios_material"
                         android:paddingLeft="12dip" />
 
-                    <EditText
-                        android:id="@+id/edit_text_material"
-                        style="@style/solution_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/text_view_material"
-                        android:layout_toLeftOf="@+id/radios_material"
-                        android:paddingLeft="12dip" />
+                    <RadioGroup
+                        android:id="@+id/radios_material"
+                        style="@style/radio_group_default"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <RadioButton
+                            android:id="@+id/radio_material_comply"
+                            style="@style/checkbox_default"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/comply" />
+
+                        <RadioButton
+                            android:id="@+id/radio_material_custom"
+                            style="@style/checkbox_default"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/custom" />
+                    </RadioGroup>
 
                     <View
                         android:layout_width="fill_parent"
                         android:layout_height="1.0px"
-                        android:layout_alignParentBottom="true"
                         android:background="@drawable/setting_line" />
-                </RelativeLayout>
+                </LinearLayout>
 
                 <!-- tool -->
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/layout_tool"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:orientation="vertical"
                     android:visibility="gone" >
-
-                    <RadioGroup
-                        android:id="@+id/radios_tool"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dip"
-                        android:layout_marginTop="12dip"
-                        android:orientation="horizontal"
-                        android:paddingBottom="6dip" >
-
-                        <RadioButton
-                            android:id="@+id/radio_tool_comply"
-                            style="@style/button_radio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="1.0px"
-                            android:background="@drawable/button_radio_first_selector"
-                            android:text="@string/comply" />
-
-                        <RadioButton
-                            android:id="@+id/radio_tool_custom"
-                            style="@style/button_radio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/button_radio_last_selector"
-                            android:text="@string/custom" />
-                    </RadioGroup>
 
                     <TextView
                         android:id="@+id/text_view_tool"
                         style="@style/solution_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@+id/radios_tool"
                         android:paddingLeft="12dip" />
 
-                    <EditText
-                        android:id="@+id/edit_text_tool"
-                        style="@style/solution_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/text_view_tool"
-                        android:layout_toLeftOf="@+id/radios_tool"
-                        android:paddingLeft="12dip" />
+                    <RadioGroup
+                        android:id="@+id/radios_tool"
+                        style="@style/radio_group_default"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <RadioButton
+                            android:id="@+id/radio_tool_comply"
+                            style="@style/checkbox_default"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/comply" />
+
+                        <RadioButton
+                            android:id="@+id/radio_tool_custom"
+                            style="@style/checkbox_default"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/custom" />
+                    </RadioGroup>
 
                     <View
                         android:layout_width="fill_parent"
                         android:layout_height="1.0px"
-                        android:layout_alignParentBottom="true"
                         android:background="@drawable/setting_line" />
-                </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- time -->
+
+            <LinearLayout
+                android:id="@+id/layout_time"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <TextView
+                    style="@style/list_block_divider"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time" />
+
+                <TextView
+                    android:id="@+id/text_view_time"
+                    style="@style/solution_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="12dip" />
+
+                <RadioGroup
+                    android:id="@+id/radios_time"
+                    style="@style/radio_group_default"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:id="@+id/radio_time_comply"
+                        style="@style/checkbox_default"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/comply" />
+
+                    <RadioButton
+                        android:id="@+id/radio_time_custom"
+                        style="@style/checkbox_default"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/custom" />
+                </RadioGroup>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.0px"
+                    android:background="@drawable/setting_line" />
             </LinearLayout>
 
             <RelativeLayout
@@ -220,73 +237,60 @@
                 android:id="@+id/layout_steps"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical" />
 
-                <!--
-                <include layout="@layout/process_item" />
+            <!-- occasion -->
 
-                <include layout="@layout/process_item" />
-
-                <include layout="@layout/process_item" />
-                -->
-            </LinearLayout>
-
-            <TextView
-                style="@style/list_block_divider"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/occasion" />
-
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/layout_occasion"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:orientation="vertical"
                 android:visibility="gone" >
+
+                <TextView
+                    style="@style/list_block_divider"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/occasion" />
 
                 <TextView
                     android:id="@+id/text_view_occasion"
                     style="@style/solution_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/radios_occasion"
                     android:paddingLeft="12dip" />
 
                 <RadioGroup
                     android:id="@+id/radios_occasion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dip"
-                    android:layout_marginTop="12dip"
-                    android:orientation="horizontal"
-                    android:paddingBottom="6dip" >
+                    style="@style/radio_group_default"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
 
                     <RadioButton
                         android:id="@+id/radio_occasion_comply"
-                        style="@style/button_radio"
-                        android:layout_width="wrap_content"
+                        style="@style/checkbox_default"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="1.0px"
-                        android:background="@drawable/button_radio_first_selector"
+                        android:layout_weight="1"
                         android:text="@string/comply" />
 
                     <RadioButton
                         android:id="@+id/radio_occasion_custom"
-                        style="@style/button_radio"
-                        android:layout_width="wrap_content"
+                        style="@style/checkbox_default"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/button_radio_last_selector"
+                        android:layout_weight="1"
                         android:text="@string/custom" />
                 </RadioGroup>
 
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1.0px"
-                    android:layout_alignParentBottom="true"
                     android:background="@drawable/setting_line" />
-            </RelativeLayout>
+            </LinearLayout>
+
+            <include layout="@layout/special_statement" />
         </LinearLayout>
     </ScrollView>
 

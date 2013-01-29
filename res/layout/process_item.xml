@@ -1,64 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent" >
+    android:background="@android:color/transparent"
+    android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/step_no"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="12dip"
-        android:background="#FFDDDDDD"
-        android:paddingBottom="2dip"
-        android:paddingLeft="5dip"
-        android:paddingRight="5dip"
-        android:paddingTop="2dip"
-        android:textColor="#FF666666"
-        android:textSize="16sp" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/step_content"
-        style="@style/solution_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:paddingBottom="0dp"
-        android:paddingLeft="28dip" />
+        <TextView
+            android:id="@+id/step_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="12dip"
+            android:background="#FFDDDDDD"
+            android:paddingBottom="2dip"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            android:paddingTop="2dip"
+            android:textColor="#FF666666"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/step_content"
+            style="@style/solution_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:paddingBottom="0dp"
+            android:paddingLeft="28dip" />
+    </RelativeLayout>
 
     <RadioGroup
         android:id="@+id/radios"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/step_content"
-        android:layout_marginRight="10dip"
-        android:orientation="horizontal"
-        android:paddingBottom="6dip" >
+        style="@style/radio_group_default"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
 
         <RadioButton
-            android:id="@+id/done"
-            style="@style/button_radio"
-            android:layout_width="wrap_content"
+            android:id="@+id/radio_comply"
+            style="@style/checkbox_default"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="1.0px"
-            android:background="@drawable/button_radio_first_selector"
+            android:layout_weight="1"
             android:text="@string/done" />
 
         <RadioButton
-            android:id="@+id/custom"
-            style="@style/button_radio"
-            android:layout_width="wrap_content"
+            android:id="@+id/radio_custom"
+            style="@style/checkbox_default"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_radio_last_selector"
+            android:layout_weight="1"
             android:text="@string/custom" />
     </RadioGroup>
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="1.0px"
-        android:layout_alignParentBottom="true"
         android:background="@drawable/setting_line" />
 
-</RelativeLayout>
+</LinearLayout>

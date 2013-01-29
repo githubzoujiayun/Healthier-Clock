@@ -15,7 +15,9 @@ import com.jkydjk.healthier.clock.entity.AcupointSolutionStep;
 import com.jkydjk.healthier.clock.entity.SolarTermSolution;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionComment;
+import com.jkydjk.healthier.clock.entity.SolutionProcess;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
+import com.jkydjk.healthier.clock.entity.SolutionStepProcess;
 import com.jkydjk.healthier.clock.util.Log;
 
 import android.content.Context;
@@ -41,6 +43,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
   private Dao<SolarTermSolution, Integer> solarTermSolutionDao = null;
   private Dao<SolutionStep, Integer> solutionStepDao = null;
   private Dao<SolutionComment, Integer> solutionCommentDao = null;
+  private Dao<SolutionProcess, Integer> solutionProcessDao = null;
+  private Dao<SolutionStepProcess, Integer> solutionStepProcessDao = null;
   private Dao<Acupoint, Integer> acupointDao = null;
   private Dao<AcupointSolutionStep, Integer> acupointSolutionStepDao = null;
 
@@ -69,13 +73,18 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
   }
 
+  /**
+   * 数据库初始化后建表
+   */
   @Override
   public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
     try {
       TableUtils.createTable(connectionSource, Solution.class);
       TableUtils.createTable(connectionSource, SolarTermSolution.class);
       TableUtils.createTable(connectionSource, SolutionStep.class);
+      TableUtils.createTable(connectionSource, SolutionProcess.class);
       TableUtils.createTable(connectionSource, SolutionComment.class);
+      TableUtils.createTable(connectionSource, SolutionStepProcess.class);
       TableUtils.createTable(connectionSource, AcupointSolutionStep.class);
     } catch (SQLException e) {
       Log.v(DATABASE_NAME + "创建数据库失败: \n" + e);
@@ -90,7 +99,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
       TableUtils.dropTable(connectionSource, Solution.class, true);
       TableUtils.dropTable(connectionSource, SolarTermSolution.class, true);
       TableUtils.dropTable(connectionSource, SolutionStep.class, true);
+      TableUtils.dropTable(connectionSource, SolutionProcess.class, true);
       TableUtils.dropTable(connectionSource, SolutionComment.class, true);
+      TableUtils.dropTable(connectionSource, SolutionStepProcess.class, true);
       TableUtils.dropTable(connectionSource, AcupointSolutionStep.class, true);
       onCreate(db, connectionSource);
     } catch (SQLException e) {
@@ -147,6 +158,32 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
       solutionStepDao = getDao(SolutionStep.class);
     }
     return solutionStepDao;
+  }
+
+  /**
+   * 方案过程管理
+   * 
+   * @return
+   * @throws SQLException
+   */
+  public Dao<SolutionProcess, Integer> getSolutionProcessDao() throws SQLException {
+    if (solutionProcessDao == null) {
+      solutionProcessDao = getDao(SolutionProcess.class);
+    }
+    return solutionProcessDao;
+  }
+
+  /**
+   * 方案操作步骤过程管理
+   * 
+   * @return
+   * @throws SQLException
+   */
+  public Dao<SolutionStepProcess, Integer> getSolutionStepProcessDao() throws SQLException {
+    if (solutionStepProcessDao == null) {
+      solutionStepProcessDao = getDao(SolutionStepProcess.class);
+    }
+    return solutionStepProcessDao;
   }
 
   /**

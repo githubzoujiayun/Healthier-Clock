@@ -3,6 +3,11 @@ package com.jkydjk.healthier.clock.listener;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+/**
+ * 
+ * @author miclle
+ *
+ */
 public class TextChangedListener implements TextWatcher {
 
   @Override

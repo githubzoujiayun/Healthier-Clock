@@ -454,6 +454,7 @@
     <string name="unset">未设置</string>
     <string name="not_logged_in">未登录!</string>
     <string name="about">关于健康时钟</string>
+    <string name="special_statement">内容仅供参考, 不作为诊疗依据!</string>
     <string name="app_evaluate">评价应用</string>
     <string name="feedback">建议反馈</string>
     <string name="help">帮助</string>

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 /**
@@ -124,4 +125,19 @@ public class ActivityHelper {
     return emptyArrayAdapter;
   }
 
+  /**
+   * 根据给定Boolean值选中相应的RadioButton
+   * 
+   * @param value
+   * @param trueRadio
+   * @param falseRadio
+   */
+  public static void switchRadio(Boolean value, RadioButton trueRadio, RadioButton falseRadio) {
+    if (value == null)
+      return;
+    if (value)
+      trueRadio.setChecked(true);
+    else
+      falseRadio.setChecked(true);
+  }
 }

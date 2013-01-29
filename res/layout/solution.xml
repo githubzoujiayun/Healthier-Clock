@@ -132,6 +132,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="" />
+
+            <include layout="@layout/special_statement" />
         </LinearLayout>
     </ScrollView>
 
