@@ -28,8 +28,8 @@ public class SolutionStep {
   @DatabaseField(dataType = DataType.SERIALIZABLE, columnName = "acupoint_ids")
   private Ids acupointIds;
 
-//  @DatabaseField(foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
-//  public SolutionStepProcess process;
+  @DatabaseField(foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
+  public SolutionStepProcess process;
 
   public SolutionStep() {
     super();
@@ -61,6 +61,8 @@ public class SolutionStep {
       Integer acupointId = (Integer) acupoints.get(i);
       step.acupointIds.add(i, acupointId);
     }
+
+    step.process = new SolutionStepProcess(step.id);
 
     return step;
   }

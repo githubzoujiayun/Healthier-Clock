@@ -38,7 +38,8 @@ import com.jkydjk.healthier.clock.util.Log;
  * @author miclle
  * 
  */
-@SuppressLint("UseSparseArrays") public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnClickListener, OnCheckedChangeListener {
+@SuppressLint("UseSparseArrays")
+public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnClickListener, OnCheckedChangeListener {
 
   LayoutInflater layoutInflater;
 
@@ -276,6 +277,7 @@ import com.jkydjk.healthier.clock.util.Log;
 
           if (solutionStepProcess == null) {
             solutionStepProcess = new SolutionStepProcess(step.getId());
+            solutionStepProcess.setSolution(solution);
           }
 
           solutionStepProcesses.put(step.getId(), solutionStepProcess);
@@ -296,11 +298,6 @@ import com.jkydjk.healthier.clock.util.Log;
       break;
 
     case R.id.enter: {
-      try {
-        solutionProcessDao.createOrUpdate(solutionProcess);
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
       // finish();
       break;
     }
@@ -312,27 +309,37 @@ import com.jkydjk.healthier.clock.util.Log;
 
   @Override
   public void onCheckedChanged(RadioGroup group, int checkedId) {
-    switch (group.getId()) {
-    case R.id.radios_material:
-      solutionProcess.setMaterialIsComply(checkedId == R.id.radio_material_comply ? true : false);
-      break;
+    try {
+      switch (group.getId()) {
+      case R.id.radios_material:
+        solutionProcess.setMaterialIsComply(checkedId == R.id.radio_material_comply ? true : false);
+        solutionProcessDao.createOrUpdate(solutionProcess);
+        break;
 
-    case R.id.radios_tool:
-      solutionProcess.setToolIsComply(checkedId == R.id.radio_tool_comply ? true : false);
-      break;
+      case R.id.radios_tool:
+        solutionProcess.setToolIsComply(checkedId == R.id.radio_tool_comply ? true : false);
+        solutionProcessDao.createOrUpdate(solutionProcess);
+        break;
 
-    case R.id.radios_time:
-      solutionProcess.setTimeIsComply(checkedId == R.id.radio_time_comply ? true : false);
-      break;
+      case R.id.radios_time:
+        solutionProcess.setTimeIsComply(checkedId == R.id.radio_time_comply ? true : false);
+        solutionProcessDao.createOrUpdate(solutionProcess);
+        break;
 
-    case R.id.radios_occasion:
-      solutionProcess.setOccasionIsComply(checkedId == R.id.radio_occasion_comply ? true : false);
-      break;
+      case R.id.radios_occasion:
+        solutionProcess.setOccasionIsComply(checkedId == R.id.radio_occasion_comply ? true : false);
+        solutionProcessDao.createOrUpdate(solutionProcess);
+        break;
 
-    default:
-      int id = group.getId();
-      solutionStepProcesses.get(id).setComply(checkedId == R.id.radio_comply ? true : false);
-      break;
+      default:
+        int id = group.getId();
+        SolutionStepProcess solutionStepProcess = solutionStepProcesses.get(id);
+        solutionStepProcess.setComply(checkedId == R.id.radio_comply ? true : false);
+        solutionStepProcessDao.createOrUpdate(solutionStepProcess);
+        break;
+      }
+    } catch (SQLException e1) {
+      e1.printStackTrace();
     }
   }
 
