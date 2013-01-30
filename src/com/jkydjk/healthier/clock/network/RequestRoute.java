@@ -143,6 +143,15 @@ public class RequestRoute {
 
   /**
    * <pre>
+   * 方案过程管理
+   * <strong>Route</strong> : solution/:id/process
+   * <strong>Method</strong>: POST
+   * </pre>
+   */
+  public static String SOLUTION_PROCESS = REQUEST_PATH + "solution/process";
+
+  /**
+   * <pre>
    * 评价方案
    * <strong>Route</strong> : solution/:id/comment
    * <strong>Method</strong>: POST

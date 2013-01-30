@@ -34,6 +34,9 @@ import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionProcess;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
 import com.jkydjk.healthier.clock.entity.SolutionStepProcess;
+import com.jkydjk.healthier.clock.network.HttpClientManager;
+import com.jkydjk.healthier.clock.network.RequestRoute;
+import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.CollectionHelp;
 import com.jkydjk.healthier.clock.util.JSONHelper;
@@ -299,46 +302,6 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
     }
   }
 
-  public void onClick(View v) {
-    switch (v.getId()) {
-    case R.id.back:
-      finish();
-      break;
-
-    case R.id.enter: {
-
-      try {
-
-        JSONObject solutionProcessJSON = solutionProcess.toJSON();
-
-        Map<String, Object> args = new HashMap<String, Object>();
-
-        args.put("solution_id", solution.getId());
-
-        List<SolutionStepProcess> solutionStepProcesses = solutionStepProcessDao.queryForFieldValuesArgs(args);
-
-        JSONArray stepProcesses = new JSONArray();
-
-        for (SolutionStepProcess solutionStepProcess : solutionStepProcesses) {
-          stepProcesses.put(solutionStepProcess.toJSON());
-        }
-
-        solutionProcessJSON.put("stepProcesses", stepProcesses);
-
-        Log.v(solutionProcessJSON.toString());
-
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-      // finish();
-      break;
-    }
-    default:
-      break;
-    }
-
-  }
-
   @Override
   public void onCheckedChanged(RadioGroup group, int checkedId) {
     try {
@@ -373,6 +336,70 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
     } catch (SQLException e1) {
       e1.printStackTrace();
     }
+  }
+
+  public void onClick(View v) {
+    switch (v.getId()) {
+    case R.id.back:
+      finish();
+      break;
+
+    case R.id.enter: {
+      new CommitTask().execute();
+      break;
+    }
+    default:
+      break;
+    }
+  }
+
+  /**
+   * 提交数据到服务器
+   * @author miclle
+   *
+   */
+  class CommitTask extends AsyncTask<String, Integer, String> {
+
+    @Override
+    protected String doInBackground(String... params) {
+
+      try {
+
+        JSONObject solutionProcessJSON = solutionProcess.toJSON();
+
+        Map<String, Object> args = new HashMap<String, Object>();
+
+        args.put("solution_id", solution.getId());
+
+        List<SolutionStepProcess> solutionStepProcesses = solutionStepProcessDao.queryForFieldValuesArgs(args);
+
+        JSONArray stepProcesses = new JSONArray();
+
+        for (SolutionStepProcess solutionStepProcess : solutionStepProcesses) {
+          stepProcesses.put(solutionStepProcess.toJSON());
+        }
+
+        solutionProcessJSON.put("step_processes", stepProcesses);
+
+        HttpClientManager connect = new HttpClientManager(Process.this, RequestRoute.SOLUTION_PROCESS);
+
+        connect.addParam("solution_process", solutionProcessJSON.toString());
+
+        connect.execute(ResuestMethod.POST);
+
+        int code = connect.getResponseCode();
+
+        Log.v("Response Code: " + code);
+
+        // finish();
+
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+
+      return null;
+    }
+
   }
 
 }
