@@ -81,6 +81,8 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
   private TextViewWeather weatherLogoToday;
   private TextView weatherTextToday;
+  
+  private View weatherDividingLine;
 
   private TextViewWeather weatherLogoTomorrow;
   private TextView weatherTextTomorrow;
@@ -140,7 +142,9 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
     weatherLogoToday = (TextViewWeather) findViewById(R.id.weather_logo_today);
 
     weatherTextToday = (TextView) findViewById(R.id.weather_text_today);
-
+    
+    weatherDividingLine = findViewById(R.id.weather_dividing_line);
+    
     weatherLogoTomorrow = (TextViewWeather) findViewById(R.id.weather_logo_tomorrow);
 
     weatherTextTomorrow = (TextView) findViewById(R.id.weather_text_tomorrow);
@@ -320,13 +324,18 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
           weatherPicture.setImageResource(ActivityHelper.getImageResourceID(AlarmClock.this, "weather_picture_" + today.getFlagCodeStart()));
 
           weatherLogoToday.setText(today.getIcon(AlarmClock.this));
+          weatherLogoToday.setVisibility(View.VISIBLE);
           weatherTextToday.setText("今天 " + today.getFlag() + "\n" + today.getTemperature());
+          weatherTextToday.setVisibility(View.VISIBLE);
         }
 
         if (weathers.size() >= 2) {
+          weatherDividingLine.setVisibility(View.VISIBLE);
           Weather tomorrow = weathers.get(1);
           weatherLogoTomorrow.setText(tomorrow.getIcon(AlarmClock.this));
+          weatherLogoTomorrow.setVisibility(View.VISIBLE);
           weatherTextTomorrow.setText("明天 " + tomorrow.getFlag() + "\n" + tomorrow.getTemperature());
+          weatherTextTomorrow.setVisibility(View.VISIBLE);
         }
         
         weatherInfoTip.setVisibility(View.GONE);

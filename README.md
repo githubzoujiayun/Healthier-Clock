@@ -8,6 +8,8 @@ Android-Universal-Image-Loader
 #####ORM:
 OrmLite - Lightweight Object Relational Mapping (ORM) Java Package 
 <http://ormlite.com/>
+#####jackson:
+FasterXML / jackson-core <https://github.com/FasterXML/jackson-core/>
 
 
 ##天气

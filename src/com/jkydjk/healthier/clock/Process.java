@@ -3,7 +3,11 @@ package com.jkydjk.healthier.clock;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -19,6 +23,8 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
@@ -30,6 +36,7 @@ import com.jkydjk.healthier.clock.entity.SolutionStep;
 import com.jkydjk.healthier.clock.entity.SolutionStepProcess;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.CollectionHelp;
+import com.jkydjk.healthier.clock.util.JSONHelper;
 import com.jkydjk.healthier.clock.util.Log;
 
 /**
@@ -200,7 +207,7 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
 
       if (solutionProcess == null) {
         solutionProcess = new SolutionProcess();
-        solutionProcess.setId(solution.getId());
+        solutionProcess.id = solution.getId();
       }
 
       loadingLayout.setVisibility(View.GONE);
@@ -214,7 +221,7 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
         materialTextView.setText(String.format(getString(R.string.title_content), getString(R.string.material), CollectionHelp.join(materials.getNames())));
         materialLayout.setVisibility(View.VISIBLE);
         materialAndToolLayout.setVisibility(View.VISIBLE);
-        ActivityHelper.switchRadio(solutionProcess.getMaterialIsComply(), materialComplyRadio, materialCustomRadio);
+        ActivityHelper.switchRadio(solutionProcess.materialIsComply, materialComplyRadio, materialCustomRadio);
       }
 
       Names tools = solution.getTools();
@@ -223,7 +230,7 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
         toolTextView.setText(String.format(getString(R.string.title_content), getString(R.string.tool), CollectionHelp.join(tools.getNames())));
         toolLayout.setVisibility(View.VISIBLE);
         materialAndToolLayout.setVisibility(View.VISIBLE);
-        ActivityHelper.switchRadio(solutionProcess.getToolIsComply(), toolComplyRadio, toolCustomRadio);
+        ActivityHelper.switchRadio(solutionProcess.toolIsComply, toolComplyRadio, toolCustomRadio);
       }
 
       Names hours = solution.getHours();
@@ -232,7 +239,7 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
       if (hours.size() > 0 || solarTerms.size() > 0) {
         timeTextView.setText(CollectionHelp.join(hours.getNames(), solarTerms.getNames()));
         timeLayout.setVisibility(View.VISIBLE);
-        ActivityHelper.switchRadio(solutionProcess.getTimeIsComply(), timeComplyRadio, timeCustomRadio);
+        ActivityHelper.switchRadio(solutionProcess.timeIsComply, timeComplyRadio, timeCustomRadio);
       }
 
       Names occasions = solution.getOccasions();
@@ -240,7 +247,7 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
       if (occasions.size() > 0) {
         occasionTextView.setText(String.format(getString(R.string.title_content), getString(R.string.occasion), CollectionHelp.join(occasions.getNames())));
         occasionLayout.setVisibility(View.VISIBLE);
-        ActivityHelper.switchRadio(solutionProcess.getOccasionIsComply(), occasionComplyRadio, occasionCustomRadio);
+        ActivityHelper.switchRadio(solutionProcess.occasionIsComply, occasionComplyRadio, occasionCustomRadio);
       }
 
       ForeignCollection<SolutionStep> steps = solution.getSteps();
@@ -277,12 +284,13 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
 
           if (solutionStepProcess == null) {
             solutionStepProcess = new SolutionStepProcess(step.getId());
-            solutionStepProcess.setSolution(solution);
+            solutionStepProcess.solution = solution;
+            solutionStepProcess.solutionProcess = solutionProcess;
           }
 
           solutionStepProcesses.put(step.getId(), solutionStepProcess);
 
-          ActivityHelper.switchRadio(solutionStepProcess.isComply(), complyRadio, customRadio);
+          ActivityHelper.switchRadio(solutionStepProcess.comply, complyRadio, customRadio);
 
           layoutSteps.addView(stepView);
         }
@@ -298,6 +306,30 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
       break;
 
     case R.id.enter: {
+
+      try {
+
+        JSONObject solutionProcessJSON = solutionProcess.toJSON();
+
+        Map<String, Object> args = new HashMap<String, Object>();
+
+        args.put("solution_id", solution.getId());
+
+        List<SolutionStepProcess> solutionStepProcesses = solutionStepProcessDao.queryForFieldValuesArgs(args);
+
+        JSONArray stepProcesses = new JSONArray();
+
+        for (SolutionStepProcess solutionStepProcess : solutionStepProcesses) {
+          stepProcesses.put(solutionStepProcess.toJSON());
+        }
+
+        solutionProcessJSON.put("stepProcesses", stepProcesses);
+
+        Log.v(solutionProcessJSON.toString());
+
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
       // finish();
       break;
     }
@@ -312,29 +344,29 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
     try {
       switch (group.getId()) {
       case R.id.radios_material:
-        solutionProcess.setMaterialIsComply(checkedId == R.id.radio_material_comply ? true : false);
+        solutionProcess.materialIsComply = checkedId == R.id.radio_material_comply ? true : false;
         solutionProcessDao.createOrUpdate(solutionProcess);
         break;
 
       case R.id.radios_tool:
-        solutionProcess.setToolIsComply(checkedId == R.id.radio_tool_comply ? true : false);
+        solutionProcess.toolIsComply = checkedId == R.id.radio_tool_comply ? true : false;
         solutionProcessDao.createOrUpdate(solutionProcess);
         break;
 
       case R.id.radios_time:
-        solutionProcess.setTimeIsComply(checkedId == R.id.radio_time_comply ? true : false);
+        solutionProcess.timeIsComply = checkedId == R.id.radio_time_comply ? true : false;
         solutionProcessDao.createOrUpdate(solutionProcess);
         break;
 
       case R.id.radios_occasion:
-        solutionProcess.setOccasionIsComply(checkedId == R.id.radio_occasion_comply ? true : false);
+        solutionProcess.occasionIsComply = checkedId == R.id.radio_occasion_comply ? true : false;
         solutionProcessDao.createOrUpdate(solutionProcess);
         break;
 
       default:
         int id = group.getId();
         SolutionStepProcess solutionStepProcess = solutionStepProcesses.get(id);
-        solutionStepProcess.setComply(checkedId == R.id.radio_comply ? true : false);
+        solutionStepProcess.comply = checkedId == R.id.radio_comply ? true : false;
         solutionStepProcessDao.createOrUpdate(solutionStepProcess);
         break;
       }

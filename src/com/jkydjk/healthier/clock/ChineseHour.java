@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
@@ -425,6 +426,12 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
     }
 
     case R.id.process: {
+
+//      if (!ActivityHelper.networkConnected(this)) {
+//        Toast.makeText(this, R.string.network_is_not_connected, Toast.LENGTH_SHORT).show();
+//        return;
+//      }
+
       Intent intent = new Intent(this, Process.class);
       intent.putExtra("solutionId", solution.getId());
       startActivity(intent);

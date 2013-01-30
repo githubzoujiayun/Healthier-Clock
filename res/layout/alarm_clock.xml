@@ -79,36 +79,38 @@
                 style="@style/weather_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="" />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/weather_text_today"
                 style="@style/weather_info"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="" />
+                android:visibility="gone" />
 
             <View
+                android:id="@+id/weather_dividing_line"
                 android:layout_width="1.0px"
                 android:layout_height="32dip"
                 android:layout_marginBottom="12dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="#FFFFFFFF" />
+                android:background="#FFFFFFFF"
+                android:visibility="gone" />
 
             <com.jkydjk.healthier.clock.widget.TextViewWeather
                 android:id="@+id/weather_logo_tomorrow"
                 style="@style/weather_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="" />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/weather_text_tomorrow"
                 style="@style/weather_info"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="" />
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 

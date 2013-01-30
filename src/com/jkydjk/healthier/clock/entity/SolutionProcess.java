@@ -1,6 +1,11 @@
 package com.jkydjk.healthier.clock.entity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 /**
@@ -13,67 +18,42 @@ import com.j256.ormlite.table.DatabaseTable;
 public class SolutionProcess {
 
   @DatabaseField(id = true)
-  private int id;
-
-  // 时间
-  @DatabaseField(columnName = "time_is_comply")
-  private Boolean timeIsComply;
+  public int id;
 
   // 工具
   @DatabaseField(columnName = "tool_is_comply")
-  private Boolean toolIsComply;
+  public Boolean toolIsComply;
 
   // 选材
   @DatabaseField(columnName = "material_is_comply")
-  private Boolean materialIsComply;
+  public Boolean materialIsComply;
+  
+  // 时间
+  @DatabaseField(columnName = "time_is_comply")
+  public Boolean timeIsComply;
 
   // 场合
   @DatabaseField(columnName = "occasion_is_comply")
-  private Boolean occasionIsComply;
+  public Boolean occasionIsComply;
+
+  @ForeignCollectionField(eager = false)
+  public ForeignCollection<SolutionStepProcess> stepProcesses;
 
   public SolutionProcess() {
     super();
     // NOTE ORMLite need use
   }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public Boolean getTimeIsComply() {
-    return timeIsComply;
-  }
-
-  public void setTimeIsComply(Boolean timeIsComply) {
-    this.timeIsComply = timeIsComply;
-  }
-
-  public Boolean getToolIsComply() {
-    return toolIsComply;
-  }
-
-  public void setToolIsComply(Boolean toolIsComply) {
-    this.toolIsComply = toolIsComply;
-  }
-
-  public Boolean getMaterialIsComply() {
-    return materialIsComply;
-  }
-
-  public void setMaterialIsComply(Boolean materialIsComply) {
-    this.materialIsComply = materialIsComply;
-  }
-
-  public Boolean getOccasionIsComply() {
-    return occasionIsComply;
-  }
-
-  public void setOccasionIsComply(Boolean occasionIsComply) {
-    this.occasionIsComply = occasionIsComply;
+  
+  public JSONObject toJSON() throws JSONException{
+    JSONObject json = new JSONObject();
+    
+    json.put("id", id);
+    json.put("tool_is_comply", toolIsComply);
+    json.put("material_is_comply", materialIsComply);
+    json.put("time_is_comply", timeIsComply);
+    json.put("occasion_is_comply", occasionIsComply);
+    
+    return json;
   }
 
 }

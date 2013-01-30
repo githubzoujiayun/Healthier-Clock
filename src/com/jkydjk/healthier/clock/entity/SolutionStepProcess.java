@@ -1,5 +1,8 @@
 package com.jkydjk.healthier.clock.entity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -7,13 +10,16 @@ import com.j256.ormlite.table.DatabaseTable;
 public class SolutionStepProcess {
 
   @DatabaseField(id = true)
-  private int id;
+  public int id;
 
   @DatabaseField(columnName = "solution_id", foreign = true, canBeNull = false, foreignAutoCreate = true, foreignAutoRefresh = true)
-  private Solution solution;
+  public Solution solution;
+
+  @DatabaseField(columnName = "solution_process_id", foreign = true, canBeNull = false, foreignAutoCreate = true, foreignAutoRefresh = true)
+  public SolutionProcess solutionProcess;
 
   @DatabaseField(columnName = "comply")
-  private Boolean comply;
+  public Boolean comply;
 
   public SolutionStepProcess() {
     super();
@@ -23,28 +29,13 @@ public class SolutionStepProcess {
     id = solutionStepId;
   }
 
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public Solution getSolution() {
-    return solution;
-  }
-
-  public void setSolution(Solution solution) {
-    this.solution = solution;
-  }
-
-  public Boolean isComply() {
-    return comply;
-  }
-
-  public void setComply(Boolean comply) {
-    this.comply = comply;
+  public JSONObject toJSON() throws JSONException {
+    JSONObject json = new JSONObject();
+    json.put("id", id);
+    json.put("solution_id", solution.getId());
+    json.put("solution_process_id", solutionProcess.id);
+    json.put("comply", comply);
+    return json;
   }
 
 }
