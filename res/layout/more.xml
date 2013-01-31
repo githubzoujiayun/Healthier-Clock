@@ -86,6 +86,7 @@
                 android:layout_height="1.0px"
                 android:background="@drawable/setting_line" />
 
+            <!--
             <RelativeLayout
                 android:id="@+id/evaluate"
                 android:layout_width="fill_parent"
@@ -128,6 +129,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1.0px"
                 android:background="@drawable/setting_line" />
+            -->
 
             <RelativeLayout
                 android:id="@+id/feedback"
@@ -172,6 +174,7 @@
                 android:layout_height="1.0px"
                 android:background="@drawable/setting_line" />
 
+            <!--
             <RelativeLayout
                 android:id="@+id/help"
                 android:layout_width="fill_parent"
@@ -214,9 +217,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1.0px"
                 android:background="@drawable/setting_line" />
+            -->
 
             <RelativeLayout
-                android:id="@+id/about"
+                android:id="@+id/layout_about"
                 android:layout_width="fill_parent"
                 android:layout_height="48.0dip"
                 android:background="@drawable/list_blockbg_middle_selector"
@@ -258,6 +262,7 @@
                 android:layout_height="1.0px"
                 android:background="@drawable/setting_line" />
 
+            <!--
             <TextView
                 style="@style/list_block_divider"
                 android:layout_width="fill_parent"
@@ -313,6 +318,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1.0px"
                 android:background="@drawable/setting_line" />
+            -->
         </LinearLayout>
     </ScrollView>
 

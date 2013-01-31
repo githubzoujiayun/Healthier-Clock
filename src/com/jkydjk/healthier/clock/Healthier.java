@@ -19,6 +19,8 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
+import com.jkydjk.healthier.clock.network.APKManager;
+import com.jkydjk.healthier.clock.network.NetUtil;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
@@ -79,6 +81,12 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
     titlebar = findViewById(R.id.titlebar);
     titlebar.setVisibility(View.VISIBLE);
     tabs = findViewById(android.R.id.tabs);
+    
+  //检测更新 先检测网络
+    if(NetUtil.checkNetWork(this)){
+      APKManager updateAPK = new APKManager(this);
+      updateAPK.CheckUpdateTask();
+    }
   }
 
   /**

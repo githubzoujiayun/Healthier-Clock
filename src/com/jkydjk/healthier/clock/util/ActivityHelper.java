@@ -2,8 +2,6 @@ package com.jkydjk.healthier.clock.util;
 
 import java.io.File;
 
-import com.jkydjk.healthier.clock.R;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import com.jkydjk.healthier.clock.R;
 
 /**
  * 一个Activity的帮助类，提供一些静态方法
@@ -140,4 +140,5 @@ public class ActivityHelper {
     else
       falseRadio.setChecked(true);
   }
+
 }

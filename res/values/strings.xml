@@ -453,6 +453,8 @@
     <string name="account_dialog_tip">在此驻足小憩片刻，留下您的痕迹，我们将一路追寻，奉献出更精彩、更适合您的内容。</string>
     <string name="unset">未设置</string>
     <string name="not_logged_in">未登录!</string>
+    <string name="you_are_not_logged_in_can_not_do_the_process_management">您还没有登录,不能做过程管理!</string>
+    <string name="you_are_not_logged_in_can_not_be_evaluated">您还没有登录,不能评价!</string>
     <string name="about">关于健康时钟</string>
     <string name="special_statement">内容仅供参考, 不作为诊疗依据!</string>
     <string name="app_evaluate">评价应用</string>
@@ -501,6 +503,10 @@
 	<string name="loading">正在加载&#8230;</string>
 	<string name="cycling_loading">加载图片</string>
 	<string name="please_be_patient_wait_for_a_moment">~内容马上就会呈现～\n请耐心等待片刻</string>
+	<string name="data_being_submitted_please_wait">正在提交数据, 请稍候&#8230;</string>
+	<string name="save_successfully">保存成功!</string>
+	<string name="save_failed">保存失败!</string>
+	<string name="submit">提交</string>
 	
 	<string name="steps">操作步骤</string>
 	<string name="click_steps_to_try">点击步骤试试</string>

@@ -3,7 +3,6 @@ package com.jkydjk.healthier.clock;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -23,8 +22,6 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
@@ -37,9 +34,9 @@ import com.jkydjk.healthier.clock.entity.SolutionStepProcess;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
+import com.jkydjk.healthier.clock.ui.dialog.CustomProgressDialog;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.CollectionHelp;
-import com.jkydjk.healthier.clock.util.JSONHelper;
 import com.jkydjk.healthier.clock.util.Log;
 
 /**
@@ -88,6 +85,8 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
   RadioGroup occasionRadios;
   RadioButton occasionComplyRadio;
   RadioButton occasionCustomRadio;
+
+  CustomProgressDialog progressDialog;
 
   int solutionId;
 
@@ -355,10 +354,40 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
 
   /**
    * 提交数据到服务器
+   * 
    * @author miclle
-   *
+   * 
    */
   class CommitTask extends AsyncTask<String, Integer, String> {
+    int responseCode;
+
+    @Override
+    protected void onPreExecute() {
+      // TODO Auto-generated method stub
+
+      if (progressDialog == null) {
+        progressDialog = new CustomProgressDialog(Process.this);
+        progressDialog.setMessage(R.string.data_being_submitted_please_wait);
+      }
+
+      progressDialog.show();
+
+      super.onPreExecute();
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+      progressDialog.dismiss();
+      progressDialog.cancel();
+
+      if (responseCode == 200) {
+        Toast.makeText(Process.this, R.string.save_successfully, Toast.LENGTH_SHORT).show();
+        finish();
+      } else {
+        Toast.makeText(Process.this, R.string.save_failed, Toast.LENGTH_SHORT).show();
+      }
+      super.onPostExecute(result);
+    }
 
     @Override
     protected String doInBackground(String... params) {
@@ -367,16 +396,12 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
 
         JSONObject solutionProcessJSON = solutionProcess.toJSON();
 
-        Map<String, Object> args = new HashMap<String, Object>();
-
-        args.put("solution_id", solution.getId());
-
-        List<SolutionStepProcess> solutionStepProcesses = solutionStepProcessDao.queryForFieldValuesArgs(args);
-
         JSONArray stepProcesses = new JSONArray();
 
-        for (SolutionStepProcess solutionStepProcess : solutionStepProcesses) {
-          stepProcesses.put(solutionStepProcess.toJSON());
+        Iterator<Integer> iterator = solutionStepProcesses.keySet().iterator();
+
+        while (iterator.hasNext()) {
+          stepProcesses.put(solutionStepProcesses.get(iterator.next()).toJSON());
         }
 
         solutionProcessJSON.put("step_processes", stepProcesses);
@@ -387,11 +412,7 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
 
         connect.execute(ResuestMethod.POST);
 
-        int code = connect.getResponseCode();
-
-        Log.v("Response Code: " + code);
-
-        // finish();
+        responseCode = connect.getResponseCode();
 
       } catch (Exception e) {
         e.printStackTrace();

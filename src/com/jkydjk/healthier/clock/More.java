@@ -9,10 +9,11 @@ import android.view.View.OnClickListener;
 
 public class More extends BaseActivity implements OnClickListener {
 
-  private View back;
-  private View setting;
-  private View help;
-  private View feedback;
+  View backLayout;
+  View settingLayout;
+  View feedbackLayout;
+  View helpLayout;
+  View aboutLayout;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -22,17 +23,17 @@ public class More extends BaseActivity implements OnClickListener {
 
     setContentView(R.layout.more);
 
-    back = findViewById(R.id.back);
-    back.setOnClickListener(this);
+    backLayout = findViewById(R.id.back);
+    backLayout.setOnClickListener(this);
 
-    setting = findViewById(R.id.setting);
-    setting.setOnClickListener(this);
+    settingLayout = findViewById(R.id.setting);
+    settingLayout.setOnClickListener(this);
 
-    help = findViewById(R.id.help);
-    help.setOnClickListener(this);
+    aboutLayout = findViewById(R.id.layout_about);
+    aboutLayout.setOnClickListener(this);
 
-    feedback = findViewById(R.id.feedback);
-    feedback.setOnClickListener(this);
+    feedbackLayout = findViewById(R.id.feedback);
+    feedbackLayout.setOnClickListener(this);
   }
 
   public void onClick(View v) {
@@ -46,7 +47,7 @@ public class More extends BaseActivity implements OnClickListener {
       overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
       break;
 
-    case R.id.help:
+    case R.id.layout_about:
       startActivity(new Intent(this, Help.class));
       finish();
       break;

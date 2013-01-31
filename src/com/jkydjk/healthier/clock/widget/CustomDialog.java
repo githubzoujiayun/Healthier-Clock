@@ -42,7 +42,6 @@ public class CustomDialog extends Dialog {
   private CustomDialogOnStartCallback onStartCallback;
 
   public CustomDialog(Context context) {
-    // super(context);
     super(context, R.style.CustomDialog);
     this.context = context;
   }

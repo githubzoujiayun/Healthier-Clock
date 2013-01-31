@@ -427,10 +427,15 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
     case R.id.process: {
 
-//      if (!ActivityHelper.networkConnected(this)) {
-//        Toast.makeText(this, R.string.network_is_not_connected, Toast.LENGTH_SHORT).show();
-//        return;
-//      }
+      if (!ActivityHelper.networkConnected(this)) {
+        Toast.makeText(this, R.string.network_is_not_connected, Toast.LENGTH_SHORT).show();
+        return;
+      }
+
+      if (!ActivityHelper.isLogged(this)) {
+        Toast.makeText(this, R.string.you_are_not_logged_in_can_not_do_the_process_management, Toast.LENGTH_SHORT).show();
+        return;
+      }
 
       Intent intent = new Intent(this, Process.class);
       intent.putExtra("solutionId", solution.getId());
@@ -439,6 +444,16 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
     }
 
     case R.id.evaluate: {
+      if (!ActivityHelper.networkConnected(this)) {
+        Toast.makeText(this, R.string.network_is_not_connected, Toast.LENGTH_SHORT).show();
+        return;
+      }
+
+      if (!ActivityHelper.isLogged(this)) {
+        Toast.makeText(this, R.string.you_are_not_logged_in_can_not_be_evaluated, Toast.LENGTH_SHORT).show();
+        return;
+      }
+      
       Intent intent = new Intent(this, SolutionEvaluate.class);
       intent.putExtra("solutionId", solution.getId());
       startActivity(intent);
