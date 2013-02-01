@@ -13,6 +13,8 @@ public class RequestRoute {
   public static String IMAGE_REQUEST_PATH = "http://192.168.2.100:3000";
 
   // public static String REQUEST_PATH = "http://jkydjk.com/mobile/";
+  
+  public static final String VERSION = RequestRoute.REQUEST_PATH + "version/android";
 
   public static String getImageURL(String url) {
     return IMAGE_REQUEST_PATH + url;
@@ -182,4 +184,5 @@ public class RequestRoute {
   public static String acupointImages(int id) {
     return REQUEST_PATH + "acupoint/" + id + "/images";
   }
+
 }

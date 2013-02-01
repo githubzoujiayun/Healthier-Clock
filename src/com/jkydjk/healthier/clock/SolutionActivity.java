@@ -171,7 +171,7 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
         solution = solutionDao.queryForId(solutionId);
 
         if (solution == null) {
-          if (!ActivityHelper.networkConnected(SolutionActivity.this)) {
+          if (!ActivityHelper.networkIsConnected(SolutionActivity.this)) {
             return "网络未连接！";
           }
 
@@ -365,7 +365,7 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
 
     case R.id.process: {
 
-      if (!ActivityHelper.networkConnected(this)) {
+      if (!ActivityHelper.networkIsConnected(this)) {
         Toast.makeText(this, R.string.network_is_not_connected, Toast.LENGTH_SHORT).show();
         return;
       }
@@ -382,7 +382,7 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
     }
 
     case R.id.evaluate: {
-      if (!ActivityHelper.networkConnected(this)) {
+      if (!ActivityHelper.networkIsConnected(this)) {
         Toast.makeText(this, R.string.network_is_not_connected, Toast.LENGTH_SHORT).show();
         return;
       }

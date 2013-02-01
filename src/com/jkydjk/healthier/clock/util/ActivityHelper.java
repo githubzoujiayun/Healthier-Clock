@@ -71,7 +71,7 @@ public class ActivityHelper {
    * @param context
    * @return
    */
-  public static boolean networkConnected(Context context) {
+  public static boolean networkIsConnected(Context context) {
     ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
     if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == android.net.NetworkInfo.State.CONNECTED) {

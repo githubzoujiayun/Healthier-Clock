@@ -200,7 +200,7 @@ public class SolutionEvaluate extends OrmLiteBaseActivity<DatabaseHelper> implem
 
       try {
 
-        if (!ActivityHelper.networkConnected(SolutionEvaluate.this)) {
+        if (!ActivityHelper.networkIsConnected(SolutionEvaluate.this)) {
           return SolutionEvaluate.this.getString(R.string.network_is_not_connected);
         }
 

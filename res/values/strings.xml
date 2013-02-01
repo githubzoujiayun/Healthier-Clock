@@ -471,6 +471,7 @@
     <string name="special_concern">&#160;特别关注</string>
     <string name="special_concern_tip">选择特别关注后，我们将在每\n天这个时辰给你发送提醒 :)</string>
 	<string name="network_access_exception">网络访问异常</string>
+	<string name="network_connection_timeout">网络连接超时</string>
 	
 	<string name="hour_name_1">子时</string>
 	<string name="hour_name_2">丑时</string>
@@ -544,6 +545,11 @@
     <string name="help_page_text_alarm">健康闹钟，给您安个随身秘书！</string>
     <string name="help_page_text_chinese_hour">子丑寅卯辰，从时辰里看养生哲学。</string>
     <string name="help_page_text_solar_terms">生长化收藏，从节气里悟养生心语。</string>
+    
+    <string name="version_update">版本更新</string>
+    <string name="version_update_tip">该软件有的新版本，请您更新！</string>
+    <string name="download_the_update">下载更新</string>
+    <string name="a_later_date">以后再说</string>
     
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>

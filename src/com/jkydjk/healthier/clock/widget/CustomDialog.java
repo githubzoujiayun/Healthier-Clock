@@ -35,10 +35,11 @@ public class CustomDialog extends Dialog {
   private View dialogView;
 
   private int contentResourceID;
+  private String content;
 
   private Button.OnClickListener positiveOnClickListener;
   private Button.OnClickListener negativeOnClickListener;
-  
+
   private CustomDialogOnStartCallback onStartCallback;
 
   public CustomDialog(Context context) {
@@ -61,15 +62,17 @@ public class CustomDialog extends Dialog {
       title.setText(titleResourceID);
     }
 
-    contentTextView = (TextView) findViewById(R.id.text);
-    if (contentResourceID != 0) {
-      contentTextView.setText(contentResourceID);
-    }
-
     dialogViewContent = (LinearLayout) findViewById(R.id.dialog_view);
     if (dialogView != null) {
       dialogViewContent.removeAllViews();
       dialogViewContent.addView(dialogView, ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    contentTextView = (TextView) findViewById(R.id.text_view_content);
+    if (contentResourceID != 0) {
+      contentTextView.setText(contentResourceID);
+    } else if (content != null) {
+      contentTextView.setText(content);
     }
 
     close = findViewById(R.id.close);
@@ -108,7 +111,7 @@ public class CustomDialog extends Dialog {
   @Override
   protected void onStart() {
     super.onStart();
-    if(onStartCallback != null){
+    if (onStartCallback != null) {
       onStartCallback.onStart(CustomDialog.this);
     }
   }
@@ -125,6 +128,10 @@ public class CustomDialog extends Dialog {
     this.contentResourceID = rid;
   }
 
+  public void setContentText(String content) {
+    this.content = content;
+  }
+
   public void setPositiveButton(int rid, Button.OnClickListener positiveOnClickListener) {
     this.positiveTextResourceID = rid;
     this.positiveOnClickListener = positiveOnClickListener;
@@ -134,15 +141,15 @@ public class CustomDialog extends Dialog {
     this.negativeTextResourceID = rid;
     this.negativeOnClickListener = negativeOnClickListener;
   }
-  
-  public void setOnStartCallback(CustomDialog.CustomDialogOnStartCallback onStartCallback){
+
+  public void setOnStartCallback(CustomDialog.CustomDialogOnStartCallback onStartCallback) {
     this.onStartCallback = onStartCallback;
   }
 
-  public interface CustomDialogOnStartCallback{
+  public interface CustomDialogOnStartCallback {
     public void onStart(CustomDialog dialog);
   }
-  
+
   // called when this dialog is dismissed
   // protected void onStop() {
   // }

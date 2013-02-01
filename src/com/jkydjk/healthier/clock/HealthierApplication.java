@@ -8,9 +8,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class HealthierApplication extends Application {
 
-  public static final int VERSION = 1;
-
-  public static final String VERSION_NAME = "1.0BETA";
+  public static String PACKAGE_NAME;
 
   public static PackageManager packageManager;
 
@@ -18,26 +16,40 @@ public class HealthierApplication extends Application {
   public void onCreate() {
     super.onCreate();
 
-    // Initialize ImageLoader with configuration.
-    ImageLoader.getInstance().init(ImageLoaderUtil.getImageLoaderConfiguration(getApplicationContext()));
-
     packageManager = getPackageManager();
 
+    PACKAGE_NAME = getApplicationContext().getPackageName();
+
+    // Initialize ImageLoader with configuration.
+    ImageLoader.getInstance().init(ImageLoaderUtil.getImageLoaderConfiguration(getApplicationContext()));
   }
 
-  // public static int version() {
-  // try {
-  //
-  // PackageInfo packageInfo = packageManager.getPackageInfo("com.testSocket",
-  // 0);
-  //
-  // return packageInfo.versionCode;
-  //
-  // } catch (Exception e) {
-  // e.printStackTrace();
-  // }
-  //
-  // return -1;
-  // }
+  /**
+   * Application version code
+   * 
+   * @return
+   */
+  public static int getVersionCode() {
+    try {
+      return packageManager.getPackageInfo(PACKAGE_NAME, 0).versionCode;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return -1;
+    }
+  }
+
+  /**
+   * Application version name
+   * 
+   * @return
+   */
+  public static String getVersionName() {
+    try {
+      return packageManager.getPackageInfo(PACKAGE_NAME, 0).versionName;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
 
 }

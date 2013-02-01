@@ -133,7 +133,7 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
         solarTermSolutions = solarTermSolutionDao.queryForEq("solar_term_index", solarTermIndex);
 
         if (force || solarTermSolutions.size() == 0) {
-          if (!ActivityHelper.networkConnected(SolarTerms.this)) {
+          if (!ActivityHelper.networkIsConnected(SolarTerms.this)) {
             return "网络未连接！";
           }
           HttpClientManager connect = new HttpClientManager(SolarTerms.this, RequestRoute.REQUEST_PATH + RequestRoute.SOLUTION_SOLAR_TERM);
