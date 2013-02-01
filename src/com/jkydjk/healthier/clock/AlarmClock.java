@@ -249,32 +249,7 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
    * 设置欢迎文字
    */
   private void setWelcomeText() {
-    Time t = new Time();
-    t.setToNow();
-    int hour = t.hour;
-
-    String welcome;
-
-    if (5 <= hour && hour < 11) {
-      welcome = getString(R.string.welcome_good_morning);
-    } else if (11 <= hour && hour < 13) {
-      welcome = getString(R.string.welcome_good_noon);
-    } else if (13 <= hour && hour < 19) {
-      welcome = getString(R.string.welcome_good_afternoon);
-    } else {
-      welcome = getString(R.string.welcome_good_evening);
-    }
-
-    String realname = sharedPreferencesOnConfigure.getString("realname", null);
-    String username = sharedPreferencesOnConfigure.getString("username", null);
-
-    if (!StringUtil.isEmpty(realname)) {
-      welcome += ", " + realname;
-    } else if (!StringUtil.isEmpty(username)) {
-      welcome += ", " + username;
-    }
-
-    welcomeTextView.setText(welcome);
+    welcomeTextView.setText(ActivityHelper.getWelcomeText(this));
   }
 
   /**

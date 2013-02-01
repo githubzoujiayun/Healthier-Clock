@@ -1,8 +1,10 @@
 package com.jkydjk.healthier.clock;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -23,17 +25,23 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jkydjk.healthier.clock.entity.Alarm;
+import com.jkydjk.healthier.clock.entity.Region;
+import com.jkydjk.healthier.clock.entity.Weather;
+import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Alarms;
 import com.jkydjk.healthier.clock.util.Log;
+import com.jkydjk.healthier.clock.util.StringUtil;
 
 /**
  * Alarm Clock alarm alert: pops visible indicator and plays alarm tone. This
  * activity is the full screen version which shows over the lock screen with the
  * wallpaper as the background.
  */
+@SuppressLint("SimpleDateFormat")
 public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeListener {
 
   // These defaults must match the values in res/xml/settings.xml
@@ -46,7 +54,13 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
   private int mVolumeBehavior;
 
   ArrayList<View> pages = new ArrayList<View>();
-  
+
+  TextView weatherLogoTextView;
+  TextView locationTextView;
+  TextView weatherInfoTextView;
+  TextView alarmIntroTextView;
+  TextView timeTextView;
+
   private Button snooze;
   private Button dismiss;
 
@@ -87,69 +101,61 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
     registerReceiver(mReceiver, new IntentFilter(Alarms.ALARM_KILLED));
   }
 
+  /**
+   * 更新界面
+   */
   private void updateLayout() {
     LayoutInflater inflater = LayoutInflater.from(this);
 
     setContentView(inflater.inflate(R.layout.alarm_alert, null));
 
-    /* set clock face */
-    SharedPreferences settings = getSharedPreferences(AlarmClock.PREFERENCES, 0);
-
-    int face = settings.getInt(AlarmClock.PREF_CLOCK_FACE, 0);
-
-    if (face < 0 || face >= AlarmClock.CLOCKS.length) {
-      face = 0;
-    }
-
     ViewPager slider = (ViewPager) findViewById(R.id.slider);
 
-    View actions = inflater.inflate(R.layout.alarm_alert_page, null);
+    // 响铃界面
+    View alarmAlertPage = inflater.inflate(R.layout.alarm_alert_page, null);
 
     pages.add(inflater.inflate(R.layout.transparent, null));
-    pages.add(actions);
+    pages.add(alarmAlertPage);
     pages.add(inflater.inflate(R.layout.transparent, null));
 
     slider.setAdapter(new SlidePageAdapter());
     slider.setCurrentItem(1);
 
     slider.setOnPageChangeListener(this);
-    
-    snooze = (Button) actions.findViewById(R.id.snooze);
+
+    snooze = (Button) alarmAlertPage.findViewById(R.id.snooze);
     snooze.setBackgroundResource(R.drawable.animate_arrow_left);
     ((AnimationDrawable) snooze.getBackground()).start();
 
-    dismiss = (Button) actions.findViewById(R.id.dismiss);
+    dismiss = (Button) alarmAlertPage.findViewById(R.id.dismiss);
     dismiss.setBackgroundResource(R.drawable.animate_arrow_right);
     ((AnimationDrawable) dismiss.getBackground()).start();
 
-    // ViewGroup clockView = (ViewGroup) findViewById(R.id.clockView);
+    long regionID = getSharedPreferences("configure", Context.MODE_PRIVATE).getLong("city_id", Region.DEFAULT_REGION_ID);
 
-    // inflater.inflate(AlarmClock.CLOCKS[face], clockView);
+    Weather weather = Weather.getToday(this, regionID + "");
 
-    // View clockLayout = findViewById(R.id.clock);
-    //
-    // if (clockLayout instanceof DigitalClock) {
-    // ((DigitalClock) clockLayout).setAnimate();
-    // }
+    weatherInfoTextView = (TextView) alarmAlertPage.findViewById(R.id.text_view_weather_info);
 
-    /*
-     * snooze behavior: pop a snooze confirmation view, kick alarm manager.
-     */
-    // Button snooze = (Button) findViewById(R.id.snooze);
-    // snooze.requestFocus();
-    // snooze.setOnClickListener(new Button.OnClickListener() {
-    // public void onClick(View v) {
-    // snooze();
-    // }
-    // });
-    //
-    // /* dismiss button: close notification */
-    // findViewById(R.id.dismiss).setOnClickListener(new
-    // Button.OnClickListener() {
-    // public void onClick(View v) {
-    // dismiss(false);
-    // }
-    // });
+    weatherInfoTextView.setText("今天 " + weather.getFlag() + "\n" + weather.getTemperature());
+
+    weatherLogoTextView = (TextView) alarmAlertPage.findViewById(R.id.text_view_weather_logo);
+
+    weatherLogoTextView.setText(weather.getIcon(this));
+
+    locationTextView = (TextView) alarmAlertPage.findViewById(R.id.text_view_location);
+    locationTextView.setText(ActivityHelper.getCity(this));
+
+    alarmIntroTextView = (TextView) alarmAlertPage.findViewById(R.id.text_view_alarm_intro);
+
+    if (StringUtil.isEmpty(mAlarm.getLabel())) {
+      alarmIntroTextView.setText(ActivityHelper.getWelcomeText(this));
+    } else {
+      alarmIntroTextView.setText(mAlarm.getLabel());
+    }
+
+    timeTextView = (TextView) alarmAlertPage.findViewById(R.id.text_view_time);
+    timeTextView.setText(new SimpleDateFormat("HH:mm").format(new java.util.Date()));
 
   }
 
@@ -158,7 +164,7 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
   }
 
   public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    
+
   }
 
   public void onPageSelected(int position) {
@@ -173,11 +179,11 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
   // Attempt to snooze this alert.
   private void snooze() {
     final String snooze = PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.KEY_ALARM_SNOOZE, DEFAULT_SNOOZE);
-    
+
     int snoozeMinutes = Integer.parseInt(snooze);
 
     final long snoozeTime = System.currentTimeMillis() + (1000 * 60 * snoozeMinutes);
-    
+
     Alarms.saveSnoozeAlert(AlarmAlertFullScreen.this, mAlarm.id, snoozeTime);
 
     // Get the display time for the snooze and update the notification.
@@ -192,9 +198,9 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
     Intent cancelSnooze = new Intent(this, AlarmReceiver.class);
     cancelSnooze.setAction(Alarms.CANCEL_SNOOZE);
     cancelSnooze.putExtra(Alarms.ALARM_ID, mAlarm.id);
-    
+
     PendingIntent broadcast = PendingIntent.getBroadcast(this, mAlarm.id, cancelSnooze, 0);
-    
+
     NotificationManager nm = getNotificationManager();
     Notification n = new Notification(R.drawable.stat_notify_alarm, label, 0);
     n.setLatestEventInfo(this, label, getString(R.string.alarm_notify_snooze_text, Alarms.formatTime(this, c)), broadcast);
@@ -207,9 +213,9 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
 
     // Display the snooze minutes in a toast.
     Toast.makeText(AlarmAlertFullScreen.this, displayTime, Toast.LENGTH_LONG).show();
-    
+
     stopService(new Intent(Alarms.ALARM_ALERT_ACTION));
-    
+
     finish();
   }
 

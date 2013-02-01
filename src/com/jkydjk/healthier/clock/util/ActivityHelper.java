@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Environment;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.jkydjk.healthier.clock.R;
+import com.jkydjk.healthier.clock.entity.Region;
 
 /**
  * 一个Activity的帮助类，提供一些静态方法
@@ -139,6 +141,50 @@ public class ActivityHelper {
       trueRadio.setChecked(true);
     else
       falseRadio.setChecked(true);
+  }
+
+  /**
+   * Geg welcome text
+   * 
+   * @param textView
+   */
+  public static String getWelcomeText(Context context) {
+    SharedPreferences sharedPreferencesOnConfigure = context.getSharedPreferences("configure", Context.MODE_PRIVATE);
+
+    Time t = new Time();
+    t.setToNow();
+    int hour = t.hour;
+
+    String welcome;
+
+    if (5 <= hour && hour < 11) {
+      welcome = context.getString(R.string.welcome_good_morning);
+    } else if (11 <= hour && hour < 13) {
+      welcome = context.getString(R.string.welcome_good_noon);
+    } else if (13 <= hour && hour < 19) {
+      welcome = context.getString(R.string.welcome_good_afternoon);
+    } else {
+      welcome = context.getString(R.string.welcome_good_evening);
+    }
+
+    String realname = sharedPreferencesOnConfigure.getString("realname", null);
+    String username = sharedPreferencesOnConfigure.getString("username", null);
+
+    if (!StringUtil.isEmpty(realname)) {
+      welcome += ", " + realname;
+    } else if (!StringUtil.isEmpty(username)) {
+      welcome += ", " + username;
+    }
+    return welcome;
+  }
+
+  /**
+   * Get city
+   * @param context
+   * @return
+   */
+  public static String getCity(Context context) {
+    return context.getSharedPreferences("configure", Context.MODE_PRIVATE).getString("city", Region.DEFAULT_REGION);
   }
 
 }

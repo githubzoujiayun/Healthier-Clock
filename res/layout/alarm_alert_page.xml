@@ -20,7 +20,7 @@
             android:orientation="vertical" >
 
             <com.jkydjk.healthier.clock.widget.CustomTextView
-                android:id="@+id/weather_logo"
+                android:id="@+id/text_view_weather_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -35,43 +35,40 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/weather_logo"
+                android:layout_below="@+id/text_view_weather_logo"
                 android:layout_centerHorizontal="true"
                 android:gravity="clip_vertical" >
 
                 <TextView
-                    android:id="@+id/location"
+                    android:id="@+id/text_view_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="8dip"
                     android:gravity="center_vertical"
-                    android:text="上海"
                     android:textColor="#FFFFFFFF"
                     android:textSize="32sp" />
 
                 <TextView
-                    android:id="@+id/weather_info"
+                    android:id="@+id/text_view_weather_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="8dip"
                     android:gravity="center_vertical"
-                    android:text="今天 阴\n25 - 33℃"
                     android:textColor="#FFFFFFFF"
                     android:textSize="14sp" />
             </LinearLayout>
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/welcome"
+            android:id="@+id/text_view_alarm_intro"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_below="@+id/weather_layout"
             android:gravity="center"
             android:padding="10dip"
-            android:text="刘锐，早上好，该起床啦～"
             android:textColor="#FFFFFFFF"
             android:textSize="20sp" />
     </RelativeLayout>
@@ -86,29 +83,28 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/time"
-            android:layout_toLeftOf="@+id/time"
-            android:text="现在"
+            android:layout_alignBottom="@+id/text_view_time"
+            android:layout_toLeftOf="@+id/text_view_time"
+            android:text="@string/now"
             android:textColor="#FFFFFFFF"
             android:textSize="28sp" />
 
         <TextView
-            android:id="@+id/time"
+            android:id="@+id/text_view_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="15dip"
             android:layout_marginRight="15dip"
-            android:text="08:00"
             android:textColor="#FFFFFFFF"
             android:textSize="52sp" />
 
         <TextView
+            android:id="@+id/text_view_time_flag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/time"
-            android:layout_toRightOf="@+id/time"
-            android:text="AM"
+            android:layout_alignBottom="@+id/text_view_time"
+            android:layout_toRightOf="@+id/text_view_time"
             android:textColor="#FFFFFFFF"
             android:textSize="28sp" />
     </RelativeLayout>

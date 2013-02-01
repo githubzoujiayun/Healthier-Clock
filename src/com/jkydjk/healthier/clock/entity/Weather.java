@@ -9,6 +9,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -34,6 +35,7 @@ import com.jkydjk.healthier.clock.util.Log;
  * @author Miclle Zheng
  * 
  */
+@SuppressLint("SimpleDateFormat")
 public class Weather {
 
   private Integer regionID;
@@ -76,6 +78,62 @@ public class Weather {
     return ActivityHelper.getStringResourceID(context, "wealther_icon_" + getFlagCodeStart());
   }
 
+  /**
+   * 获取今天天气
+   * 
+   * @param context
+   * @param regionID
+   * @return
+   */
+  public static Weather getToday(Context context, String regionID) {
+    Weather weather = null;
+
+    SQLiteDatabase database = new WeatherDatabaseHelper(context).getWritableDatabase();
+
+    try {
+
+      SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+      Calendar calendar = Calendar.getInstance();
+      String today = dateFormat.format(calendar.getTime());
+      String fields = "region_id, date(date,'localtime'), flag, flag_start, flag_code_start, flag_end, flag_code_end, temperature, wind, wind_power, feel, proposal, uv";
+      Cursor cursor = database.rawQuery("select " + fields + " from weathers where region_id = ? and date = ? order by date", new String[] { regionID, today });
+
+      if (cursor != null && cursor.moveToFirst()) {
+
+        weather = new Weather();
+        weather.regionID = cursor.getInt(cursor.getColumnIndex("region_id"));
+        weather.date = dateFormat.parse(cursor.getString(cursor.getColumnIndex("date(date,'localtime')")));
+        weather.flag = cursor.getString(cursor.getColumnIndex("flag"));
+        weather.flagStart = cursor.getString(cursor.getColumnIndex("flag_start"));
+        weather.flagCodeStart = cursor.getString(cursor.getColumnIndex("flag_code_start"));
+        weather.flagEnd = cursor.getString(cursor.getColumnIndex("flag_end"));
+        weather.flagCodeEnd = cursor.getString(cursor.getColumnIndex("flag_code_end"));
+        weather.temperature = cursor.getString(cursor.getColumnIndex("temperature"));
+        weather.wind = cursor.getString(cursor.getColumnIndex("wind"));
+        weather.windPower = cursor.getString(cursor.getColumnIndex("wind_power"));
+        weather.feel = cursor.getString(cursor.getColumnIndex("feel"));
+        weather.proposal = cursor.getString(cursor.getColumnIndex("proposal"));
+        weather.uv = cursor.getString(cursor.getColumnIndex("uv"));
+
+        cursor.close();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    database.close();
+
+    return weather;
+  }
+
+  /**
+   * 获取从今天开始的天气
+   * 
+   * @param context
+   * @param regionID
+   * @return
+   */
   public static List<Weather> getWeathers(Context context, String regionID) {
     List<Weather> weathers = new ArrayList<Weather>();
     SQLiteDatabase database = new WeatherDatabaseHelper(context).getWritableDatabase();

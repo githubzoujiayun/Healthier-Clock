@@ -117,6 +117,7 @@ public final class Alarm implements Parcelable {
 
   public Alarm(Parcel p) {
     id = p.readInt();
+    label = p.readString();
     enabled = p.readInt() == 1;
     hour = p.readInt();
     minutes = p.readInt();
@@ -154,6 +155,7 @@ public final class Alarm implements Parcelable {
 
   public void writeToParcel(Parcel p, int flags) {
     p.writeInt(id);
+    p.writeString(label);
     p.writeInt(enabled ? 1 : 0);
     p.writeInt(hour);
     p.writeInt(minutes);
@@ -232,8 +234,8 @@ public final class Alarm implements Parcelable {
   public void setCycle(int cycle) {
     this.cycle = cycle;
   }
-  
-  public void setCycle(DaysOfWeek daysOfWeek){
+
+  public void setCycle(DaysOfWeek daysOfWeek) {
     this.cycle = daysOfWeek.getCoded();
   }
 

@@ -124,6 +124,8 @@
          the alarm is set to never repeat
     -->
     <string name="never">一律不</string>
+    
+    <string name="now">现在</string>
 
     <!--
          Repeat options that appear under an alarm on main Alarm Clock
