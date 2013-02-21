@@ -1,28 +1,35 @@
 #健吾投资 健康时钟 Android 应用
 
-##Android Reference 
+##Android Reference
 <http://developer.android.com/reference/packages.html>
+
 
 ===
 
 ##libs
 ===
-#####图片加载: 
+#####Google Analytics:
+<https://developers.google.com/analytics/devguides/collection/android/>
+
+#####图片加载:
 Android-Universal-Image-Loader
 <https://github.com/nostra13/Android-Universal-Image-Loader>
 
 #####ORM:
-OrmLite - Lightweight Object Relational Mapping (ORM) Java Package 
+
+######OrmLite:
+Lightweight Object Relational Mapping (ORM) Java Package
 <http://ormlite.com/>
 
-#####jackson:
-FasterXML / jackson-core <https://github.com/FasterXML/jackson-core/>
-
-#####orman
+######orman:
 lightweight and easy-to-use ORM framework for Java. supports sqlite, mysql, works on Android.
 <https://github.com/ahmetalpbalkan/orman>
 
 <http://ahmetalpbalkan.com/blog/real-world-database-design-with-orman-framework/>
+
+
+#####jackson:
+FasterXML / jackson-core <https://github.com/FasterXML/jackson-core/>
 
 
 ##天气
