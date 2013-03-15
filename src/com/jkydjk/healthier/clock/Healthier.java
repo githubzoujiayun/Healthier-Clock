@@ -19,6 +19,7 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.jkydjk.healthier.clock.entity.Version;
 import com.jkydjk.healthier.clock.network.APKManager;
 import com.jkydjk.healthier.clock.network.NetUtil;
@@ -85,7 +86,7 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
 
     // 检测更新 先检测网络
     if (NetUtil.checkNetWork(this)) {
-      new APKManager(this).checkApplicationVersion();
+      // new APKManager(this).checkApplicationVersion();
     }
   }
 
@@ -155,6 +156,20 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
   public boolean onCreateOptionsMenu(Menu menu) {
     startActivity(new Intent(this, More.class));
     return false;
+  }
+
+  @Override
+  protected void onStart() {
+    // TODO Auto-generated method stub
+    super.onStart();
+    EasyTracker.getInstance().activityStart(this);
+  }
+
+  @Override
+  protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+    EasyTracker.getInstance().activityStop(this); // Add this method.
   }
 
 }

@@ -212,8 +212,13 @@ public class AcupointSlider extends FragmentActivity implements OnClickListener,
       }
 
       titleTextView.setText(acupoint.getName());
-
-      ActivityHelper.generateContentItem(contentLayout, "所在经络", acupoint.getMeridian().getName());
+      
+      if(acupoint.getMeridian()==null){
+        ActivityHelper.generateContentItem(contentLayout, "所在经络", "经外奇穴");
+      }else{
+        ActivityHelper.generateContentItem(contentLayout, "所在经络", acupoint.getMeridian().getName());
+      }
+      
       ActivityHelper.generateContentItem(contentLayout, "准确定位", acupoint.getPosition());
       ActivityHelper.generateContentItem(contentLayout, "取穴技巧", acupoint.getLocateSkill());
 

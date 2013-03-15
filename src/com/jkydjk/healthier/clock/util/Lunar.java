@@ -48,8 +48,7 @@ public class Lunar {
 
   private static final String[] SolarTerm = { "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至", "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪", "冬至" };
 
-  private final static long[] SolarTermInfo = { 0, 21208, 42467, 63836, 85337, 107014, 128867, 150921, 173149, 195551, 218072, 240693, 263343, 285989, 308563, 331033, 353350, 375494, 397447, 419210,
-      440795, 462224, 483532, 504758 };
+  private final static long[] SolarTermInfo = { 0, 21208, 42467, 63836, 85337, 107014, 128867, 150921, 173149, 195551, 218072, 240693, 263343, 285989, 308563, 331033, 353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758 };
 
   // -----------------------------------节气-------------------------------------
 
@@ -78,11 +77,11 @@ public class Lunar {
    * @return
    */
   public static String getSolarTermInterval(Calendar cal) {
-    String solarTerms = Lunar.getSoralTerm(cal);
+    String solarTerms = Lunar.getSolarTerm(cal);
     if (solarTerms == null) {
       do {
         cal.set(Calendar.DATE, cal.get(Calendar.DATE) - 1); // 得到前一天
-        solarTerms = Lunar.getSoralTerm(cal);
+        solarTerms = Lunar.getSolarTerm(cal);
       } while (solarTerms == null);
     }
     return solarTerms;
@@ -94,7 +93,7 @@ public class Lunar {
    * @param cal
    * @return
    */
-  public static String getSoralTerm(Calendar cal) {
+  public static String getSolarTerm(Calendar cal) {
     return getSoralTerm(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
   }
 
