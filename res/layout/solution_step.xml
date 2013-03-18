@@ -36,7 +36,8 @@
         android:paddingBottom="10dip"
         android:paddingLeft="28dip"
         android:paddingRight="12dip"
-        android:paddingTop="10dip" >
+        android:paddingTop="10dip"
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/acupoint"

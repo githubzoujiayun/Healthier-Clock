@@ -501,30 +501,30 @@ public class Alarms {
   public static Calendar calculateAlarm(int hour, int minute, DaysOfWeek daysOfWeek) {
 
     // start with now
-    Calendar c = Calendar.getInstance();
-    c.setTimeInMillis(System.currentTimeMillis());
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(System.currentTimeMillis());
 
-    int nowHour = c.get(Calendar.HOUR_OF_DAY);
-    int nowMinute = c.get(Calendar.MINUTE);
+    int nowHour = calendar.get(Calendar.HOUR_OF_DAY);
+    int nowMinute = calendar.get(Calendar.MINUTE);
 
     // if alarm is behind current time, advance one day
     if (hour < nowHour || hour == nowHour && minute <= nowMinute) {
-      c.add(Calendar.DAY_OF_YEAR, 1);
+      calendar.add(Calendar.DAY_OF_YEAR, 1);
     }
-    c.set(Calendar.HOUR_OF_DAY, hour);
-    c.set(Calendar.MINUTE, minute);
-    c.set(Calendar.SECOND, 0);
-    c.set(Calendar.MILLISECOND, 0);
+    calendar.set(Calendar.HOUR_OF_DAY, hour);
+    calendar.set(Calendar.MINUTE, minute);
+    calendar.set(Calendar.SECOND, 0);
+    calendar.set(Calendar.MILLISECOND, 0);
 
-    int addDays = daysOfWeek.getNextAlarm(c);
+    int addDays = daysOfWeek.getNextAlarm(calendar);
     /*
      * Log.v("** TIMES * " + c.getTimeInMillis() + " hour " + hour + " minute "
      * + minute + " dow " + c.get(Calendar.DAY_OF_WEEK) + " from now " +
      * addDays);
      */
     if (addDays > 0)
-      c.add(Calendar.DAY_OF_WEEK, addDays);
-    return c;
+      calendar.add(Calendar.DAY_OF_WEEK, addDays);
+    return calendar;
   }
 
   public static String formatTime(final Context context, int hour, int minute, DaysOfWeek daysOfWeek) {

@@ -40,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/date_text"
             android:layout_toRightOf="@+id/alarm_divider"
             android:background="@android:color/transparent"
             android:gravity="center_vertical"
@@ -52,6 +53,7 @@
                 android:layout_marginTop="3dip"
                 android:gravity="bottom"
                 android:lineSpacingExtra="0sp"
+                android:singleLine="true"
                 android:text="@string/alarm_category_custom_alarm"
                 android:textColor="#FF333333"
                 android:textSize="16sp" />
@@ -112,7 +114,6 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:singleLine="true"
-            android:text="今天"
             android:textColor="#FFCCCCCC"
             android:textSize="24sp" />
 
@@ -187,7 +188,8 @@
             android:drawableLeft="@drawable/icon_trash"
             android:text="@string/delete" />
 
-        <!-- <Button
+        <!--
+             <Button
             android:id="@+id/skip"
             style="@style/alarm_action_button"
             android:layout_width="fill_parent"
@@ -195,7 +197,8 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:drawableLeft="@drawable/icon_forward"
-            android:text="@string/skip" /> -->
+            android:text="@string/skip" />
+        -->
     </LinearLayout>
 
 </LinearLayout>

@@ -339,15 +339,17 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
               }
             });
 
-            View acupointLayout = stepView.findViewById(R.id.acupoint_layout);
-
-            acupointLayout.setOnClickListener(new OnClickListener() {
-              public void onClick(View v) {
-                Intent intent = new Intent(ChineseHour.this, AcupointSlider.class);
-                intent.putExtra("acupoints", step.getAcupointIds());
-                startActivity(intent);
-              }
-            });
+            if (step.getAcupointIds().size() > 0) {
+              View acupointLayout = stepView.findViewById(R.id.acupoint_layout);
+              acupointLayout.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                  Intent intent = new Intent(ChineseHour.this, AcupointSlider.class);
+                  intent.putExtra("acupoints", step.getAcupointIds());
+                  startActivity(intent);
+                }
+              });
+              acupointLayout.setVisibility(View.VISIBLE);
+            }
 
             stepsView.addView(stepView);
           }
@@ -453,7 +455,7 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
         Toast.makeText(this, R.string.you_are_not_logged_in_can_not_be_evaluated, Toast.LENGTH_SHORT).show();
         return;
       }
-      
+
       Intent intent = new Intent(this, SolutionEvaluate.class);
       intent.putExtra("solutionId", solution.getId());
       startActivity(intent);

@@ -349,6 +349,10 @@
     <string name="cycle">周期</string>
     <string name="remark">备注</string>
     <string name="more">更多</string>
+    
+    <string name="today">今天</string>
+    <string name="tomorrow">明天</string>
+    <string name="the_day_after_tomorrow">后天</string>
 
     <!-- Week -->
     <string name="Monday">星期一</string>
@@ -358,6 +362,15 @@
     <string name="Friday">星期五</string>
     <string name="Saturday">星期六</string>
     <string name="Sunday">星期日</string>
+    
+	<string name="day_of_week_2">周一</string>
+	<string name="day_of_week_3">周二</string>
+	<string name="day_of_week_4">周三</string>
+	<string name="day_of_week_5">周四</string>
+	<string name="day_of_week_6">周五</string>
+	<string name="day_of_week_7">周六</string>
+    <string name="day_of_week_1">周日</string>
+    
     <string name="system_ringtones">系统铃声</string>
     <string name="current_ringtone">当前铃声</string>
     <string name="file_browser">文件浏览</string>

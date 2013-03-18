@@ -306,15 +306,17 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
             }
           });
 
-          View acupointLayout = stepView.findViewById(R.id.acupoint_layout);
-
-          acupointLayout.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-              Intent intent = new Intent(SolutionActivity.this, AcupointSlider.class);
-              intent.putExtra("acupoints", step.getAcupointIds());
-              startActivity(intent);
-            }
-          });
+          if (step.getAcupointIds().size() > 0) {
+            View acupointLayout = stepView.findViewById(R.id.acupoint_layout);
+            acupointLayout.setOnClickListener(new OnClickListener() {
+              public void onClick(View v) {
+                Intent intent = new Intent(SolutionActivity.this, AcupointSlider.class);
+                intent.putExtra("acupoints", step.getAcupointIds());
+                startActivity(intent);
+              }
+            });
+            acupointLayout.setVisibility(View.VISIBLE);
+          }
 
           stepsView.addView(stepView);
         }

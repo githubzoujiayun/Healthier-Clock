@@ -1,6 +1,7 @@
 package com.jkydjk.healthier.clock;
 
 import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -39,6 +40,7 @@ import com.jkydjk.healthier.clock.entity.Weather;
 import com.jkydjk.healthier.clock.entity.Weather.Callback;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Alarms;
+import com.jkydjk.healthier.clock.util.DateHelper;
 import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 import com.jkydjk.healthier.clock.widget.TextViewWeather;
@@ -81,7 +83,7 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
   private TextViewWeather weatherLogoToday;
   private TextView weatherTextToday;
-  
+
   private View weatherDividingLine;
 
   private TextViewWeather weatherLogoTomorrow;
@@ -142,9 +144,9 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
     weatherLogoToday = (TextViewWeather) findViewById(R.id.weather_logo_today);
 
     weatherTextToday = (TextView) findViewById(R.id.weather_text_today);
-    
+
     weatherDividingLine = findViewById(R.id.weather_dividing_line);
-    
+
     weatherLogoTomorrow = (TextViewWeather) findViewById(R.id.weather_logo_tomorrow);
 
     weatherTextTomorrow = (TextView) findViewById(R.id.weather_text_tomorrow);
@@ -312,7 +314,7 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
           weatherTextTomorrow.setText("明天 " + tomorrow.getFlag() + "\n" + tomorrow.getTemperature());
           weatherTextTomorrow.setVisibility(View.VISIBLE);
         }
-        
+
         weatherInfoTip.setVisibility(View.GONE);
         weatherInfo.setVisibility(View.VISIBLE);
 
@@ -425,9 +427,8 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
         alarmName.setText(alarm.label);
       }
 
-      DigitalClock digitalClock = (DigitalClock) view.findViewById(R.id.digitalClock);
-
       // 设置闹钟文字
+      DigitalClock digitalClock = (DigitalClock) view.findViewById(R.id.digitalClock);
       final Calendar calendar = Calendar.getInstance();
       calendar.set(Calendar.HOUR_OF_DAY, alarm.hour);
       calendar.set(Calendar.MINUTE, alarm.minutes);
@@ -435,14 +436,37 @@ public class AlarmClock extends BaseActivity implements OnClickListener {
 
       // 设置重复的文字或，如果它不重复留空
       TextView daysOfWeekView = (TextView) digitalClock.findViewById(R.id.daysOfWeek);
-
       final String daysOfWeekStr = alarm.daysOfWeek.toString(AlarmClock.this, false);
-
       if (daysOfWeekStr != null && daysOfWeekStr.length() != 0) {
         daysOfWeekView.setText(daysOfWeekStr);
         daysOfWeekView.setVisibility(View.VISIBLE);
       } else {
         daysOfWeekView.setVisibility(View.GONE);
+      }
+
+      TextView dateTextView = (TextView) view.findViewById(R.id.date_text);
+
+      Calendar alarmCalendar = Alarms.calculateAlarm(alarm.hour, alarm.minutes, alarm.daysOfWeek);
+      
+      try {
+        switch (DateHelper.daysAway(alarmCalendar)) {
+        case 0:
+          dateTextView.setText(R.string.today);
+          break;
+        case 1:
+          dateTextView.setText(R.string.tomorrow);
+          break;
+        case 2:
+          dateTextView.setText(R.string.the_day_after_tomorrow);
+          break;
+
+        default:
+          dateTextView.setText(ActivityHelper.getStringResourceID(AlarmClock.this, "day_of_week_" + alarmCalendar.get(Calendar.DAY_OF_WEEK)));
+          break;
+        }
+      } catch (ParseException e) {
+        dateTextView.setText(ActivityHelper.getStringResourceID(AlarmClock.this, "day_of_week_" + alarmCalendar.get(Calendar.DAY_OF_WEEK)));
+        e.printStackTrace();
       }
 
       // 编辑按钮
