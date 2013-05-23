@@ -130,6 +130,7 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
       try {
         genericSolutionIntegerDao = helper.getGenericSolutionIntegerDao();
 //        genericSolutions = genericSolutionIntegerDao.queryForEq("type", "recipe");
+//        genericSolutionIntegerDao.
 
 //        if (force || genericSolutions.size() == 0) {
 
@@ -149,20 +150,17 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
 
           for (int i = 0; i < solutionsArray.length(); i++) {
             GenericSolution solution = GenericSolution.parseJsonObject((JSONObject) solutionsArray.get(i));
-            ids.add(String.valueOf(solution.getId()));
             genericSolutionIntegerDao.createOrUpdate(solution);
+            ids.add(String.valueOf(solution.getId()));
 //            genericSolutions.add(solution);
           }
-
-          Log.v("===================" + ids);
 
           SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
           Calendar calendar = Calendar.getInstance();
 
           Editor editor = sharedPreferences.edit();
-
           editor.putString("solution_" + solarTermIndex + "_updated_at", dateFormat.format(calendar.getTime()));
-
+          editor.putStringSet("solution_ids", ids);
           editor.commit();
 //        }
 
