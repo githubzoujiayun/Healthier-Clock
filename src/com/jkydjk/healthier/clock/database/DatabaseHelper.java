@@ -10,14 +10,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.jkydjk.healthier.clock.R;
-import com.jkydjk.healthier.clock.entity.Acupoint;
-import com.jkydjk.healthier.clock.entity.AcupointSolutionStep;
-import com.jkydjk.healthier.clock.entity.SolarTermSolution;
-import com.jkydjk.healthier.clock.entity.Solution;
-import com.jkydjk.healthier.clock.entity.SolutionComment;
-import com.jkydjk.healthier.clock.entity.SolutionProcess;
-import com.jkydjk.healthier.clock.entity.SolutionStep;
-import com.jkydjk.healthier.clock.entity.SolutionStepProcess;
+import com.jkydjk.healthier.clock.entity.*;
 import com.jkydjk.healthier.clock.util.Log;
 
 import android.content.Context;
@@ -47,6 +40,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
   private Dao<SolutionStepProcess, Integer> solutionStepProcessDao = null;
   private Dao<Acupoint, Integer> acupointDao = null;
   private Dao<AcupointSolutionStep, Integer> acupointSolutionStepDao = null;
+  private Dao<GenericSolution, Integer> genericSolutionIntegerDao = null;
 
   public DatabaseHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -86,6 +80,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
       TableUtils.createTable(connectionSource, SolutionComment.class);
       TableUtils.createTable(connectionSource, SolutionStepProcess.class);
       TableUtils.createTable(connectionSource, AcupointSolutionStep.class);
+      TableUtils.createTable(connectionSource, GenericSolution.class);
     } catch (SQLException e) {
       Log.v(DATABASE_NAME + "创建数据库失败: \n" + e);
       e.printStackTrace();
@@ -103,6 +98,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
       TableUtils.dropTable(connectionSource, SolutionComment.class, true);
       TableUtils.dropTable(connectionSource, SolutionStepProcess.class, true);
       TableUtils.dropTable(connectionSource, AcupointSolutionStep.class, true);
+      TableUtils.dropTable(connectionSource, GenericSolution.class, true);
       onCreate(db, connectionSource);
     } catch (SQLException e) {
       Log.v(DATABASE_NAME + "更新数据库失败: \n" + e);
@@ -158,6 +154,19 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
       solutionStepDao = getDao(SolutionStep.class);
     }
     return solutionStepDao;
+  }
+
+    /**
+     * 能用方案
+     *
+     * @return
+     * @throws SQLException
+     */
+  public Dao<GenericSolution, Integer> getGenericSolutionIntegerDao() throws SQLException{
+    if (genericSolutionIntegerDao == null){
+      genericSolutionIntegerDao = getDao(GenericSolution.class);
+    }
+    return genericSolutionIntegerDao;
   }
 
   /**

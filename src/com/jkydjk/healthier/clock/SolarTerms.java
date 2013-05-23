@@ -2,6 +2,7 @@ package com.jkydjk.healthier.clock;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -28,11 +29,13 @@ import com.j256.ormlite.stmt.DeleteBuilder;
 import com.jkydjk.healthier.clock.adapter.SolutionListAdapter;
 import com.jkydjk.healthier.clock.animation.Cycling;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
+import com.jkydjk.healthier.clock.entity.GenericSolution;
 import com.jkydjk.healthier.clock.entity.SolarTermSolution;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
+import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.Lunar;
 
 @SuppressLint("SimpleDateFormat")
@@ -53,9 +56,8 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
 
   DatabaseHelper helper;
 
-  Dao<SolarTermSolution, Integer> solarTermSolutionDao;
-
-  List<SolarTermSolution> solarTermSolutions;
+  Dao<GenericSolution, Integer> genericSolutionIntegerDao;
+  List<GenericSolution> genericSolutions;
 
   boolean isUpdatIng = false;
 
@@ -91,7 +93,6 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
   @Override
   protected void onResume() {
     super.onResume();
-
     solarTermIndex = Lunar.getCurrentSolarTermIntervalIndex();
     picture.setImageResource(ActivityHelper.getImageResourceID(this, "solar_terms_" + solarTermIndex));
   }
@@ -125,44 +126,45 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
 
     @Override
     protected String doInBackground(String... params) {
-
       helper = getHelper();
       try {
-        solarTermSolutionDao = helper.getSolarTermSolutionDao();
+        genericSolutionIntegerDao = helper.getGenericSolutionIntegerDao();
+//        genericSolutions = genericSolutionIntegerDao.queryForEq("type", "recipe");
 
-        solarTermSolutions = solarTermSolutionDao.queryForEq("solar_term_index", solarTermIndex);
+//        if (force || genericSolutions.size() == 0) {
 
-        if (force || solarTermSolutions.size() == 0) {
+          Log.v("==========");
+
           if (!ActivityHelper.networkIsConnected(SolarTerms.this)) {
             return "网络未连接！";
           }
+
           HttpClientManager connect = new HttpClientManager(SolarTerms.this, RequestRoute.REQUEST_PATH + RequestRoute.SOLUTION_SOLAR_TERM);
           connect.addParam("solar_term", solarTermIndex + "");
           connect.execute(ResuestMethod.GET);
           JSONObject json = new JSONObject(connect.getResponse());
           JSONArray solutionsArray = json.getJSONArray("solutions");
 
-          DeleteBuilder<SolarTermSolution, Integer> deleteBuilder = solarTermSolutionDao.deleteBuilder();
-          deleteBuilder.where().eq("solar_term_index", solarTermIndex);
-
-          solarTermSolutionDao.delete(deleteBuilder.prepare());
-
-          solarTermSolutions.clear();
+          HashSet<String> ids = new HashSet<String>();
 
           for (int i = 0; i < solutionsArray.length(); i++) {
-            SolarTermSolution solution = SolarTermSolution.parseJsonObject((JSONObject) solutionsArray.get(i));
-            solution.setSolarTermIndex(solarTermIndex);
-            solarTermSolutionDao.create(solution);
-            solarTermSolutions.add(solution);
+            GenericSolution solution = GenericSolution.parseJsonObject((JSONObject) solutionsArray.get(i));
+            ids.add(String.valueOf(solution.getId()));
+            genericSolutionIntegerDao.createOrUpdate(solution);
+//            genericSolutions.add(solution);
           }
+
+          Log.v("===================" + ids);
 
           SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
           Calendar calendar = Calendar.getInstance();
 
           Editor editor = sharedPreferences.edit();
+
           editor.putString("solution_" + solarTermIndex + "_updated_at", dateFormat.format(calendar.getTime()));
+
           editor.commit();
-        }
+//        }
 
       } catch (Exception e) {
         e.printStackTrace();
@@ -181,16 +183,16 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
         updatedAtTextView.setVisibility(View.VISIBLE);
       }
 
-      if (solarTermSolutions.size() == 0) {
-        TextView loadingText = (TextView) loadingPage.findViewById(R.id.loading_text);
-        loadingText.setText("暂无方案");
-        loadingPage.findViewById(R.id.loading_icon).setVisibility(View.GONE);
-      } else {
-        solutionList.removeAllViewsInLayout();
-        solutionList.setAdapter(new SolutionListAdapter<SolarTermSolution>(SolarTerms.this, solarTermSolutions));
-        solutionList.setOnItemClickListener(SolarTerms.this);
-        solutionList.removeFooterView(loadingPage);
-      }
+//      if (solarTermSolutions.size() == 0) {
+//        TextView loadingText = (TextView) loadingPage.findViewById(R.id.loading_text);
+//        loadingText.setText("暂无方案");
+//        loadingPage.findViewById(R.id.loading_icon).setVisibility(View.GONE);
+//      } else {
+//        solutionList.removeAllViewsInLayout();
+//        solutionList.setAdapter(new SolutionListAdapter<SolarTermSolution>(SolarTerms.this, solarTermSolutions));
+//        solutionList.setOnItemClickListener(SolarTerms.this);
+//        solutionList.removeFooterView(loadingPage);
+//      }
 
       Cycling.stop(loadingView);
       isUpdatIng = false;
