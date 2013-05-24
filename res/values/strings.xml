@@ -1,573 +1,580 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <!--  -->
-    <!-- Label shown on launcher icon -->
-    <string name="app_label">健康时钟</string>
+  <!--  -->
+  <!-- Label shown on launcher icon -->
+  <string name="app_label">健康时钟</string>
 
-    <!-- Menu item on Alarm Clock screen: Add alarm -->
-    <string name="add_alarm">新增闹钟</string>
+  <!-- Menu item on Alarm Clock screen: Add alarm -->
+  <string name="add_alarm">新增闹钟</string>
 
-    <!-- Context Menu Item on Alarm Settings screen: Delete alarm -->
-    <string name="delete_alarm">取消闹钟</string>
+  <!-- Context Menu Item on Alarm Settings screen: Delete alarm -->
+  <string name="delete_alarm">取消闹钟</string>
 
-    <!-- Context Menu Item on Alarm Settings screen: Enable alarm -->
-    <string name="enable_alarm">启用闹钟</string>
+  <!-- Context Menu Item on Alarm Settings screen: Enable alarm -->
+  <string name="enable_alarm">启用闹钟</string>
 
-    <!-- Context Menu Item on Alarm Settings screen: Disable alarm -->
-    <string name="disable_alarm">停用闹钟</string>
+  <!-- Context Menu Item on Alarm Settings screen: Disable alarm -->
+  <string name="disable_alarm">停用闹钟</string>
 
-    <!-- Delete alarm confirmation dialog message. -->
-    <string name="delete_alarm_confirm">将会取消此闹钟。</string>
+  <!-- Delete alarm confirmation dialog message. -->
+  <string name="delete_alarm_confirm">将会取消此闹钟。</string>
 
-    <!-- Menu item on Alarm Clock screen: Show clock -->
-    <string name="show_clock">显示时钟</string>
+  <!-- Menu item on Alarm Clock screen: Show clock -->
+  <string name="show_clock">显示时钟</string>
 
-    <!-- Menu item on Alarm Clock screen: Hide clock -->
-    <string name="hide_clock">隐藏时钟</string>
+  <!-- Menu item on Alarm Clock screen: Hide clock -->
+  <string name="hide_clock">隐藏时钟</string>
 
-    <!-- Setting label on Set alarm screen: Label -->
-    <string name="label">标签</string>
+  <!-- Setting label on Set alarm screen: Label -->
+  <string name="label">标签</string>
 
-    <!-- Default label to display for an alarm -->
-    <string name="default_label">闹钟</string>
+  <!-- Default label to display for an alarm -->
+  <string name="default_label">闹钟</string>
 
-    <!-- Preference category on Alarm Settings screen: Set alarm -->
-    <string name="set_alarm">设置闹钟</string>
+  <!-- Preference category on Alarm Settings screen: Set alarm -->
+  <string name="set_alarm">设置闹钟</string>
 
-    <!-- Setting labels on Set alarm screen: Vibration on or off -->
-    <string name="alarm_vibrate">振动</string>
+  <!-- Setting labels on Set alarm screen: Vibration on or off -->
+  <string name="alarm_vibrate">振动</string>
 
-    <!-- Setting labels on Set alarm screen: Repeat -->
-    <string name="alarm_repeat">重复</string>
+  <!-- Setting labels on Set alarm screen: Repeat -->
+  <string name="alarm_repeat">重复</string>
 
-    <!-- Setting labels on Set alarm screen: Select alarm ringtone -->
-    <string name="alert">铃声</string>
+  <!-- Setting labels on Set alarm screen: Select alarm ringtone -->
+  <string name="alert">铃声</string>
 
-    <!-- Setting labels on Set alarm screen: Set time -->
-    <string name="time">时间</string>
+  <!-- Setting labels on Set alarm screen: Set time -->
+  <string name="time">时间</string>
 
-    <!-- Button labels on the alarm dialog: Dismiss -->
-    <string name="alarm_alert_dismiss_text">关闭提醒</string>
+  <!-- Button labels on the alarm dialog: Dismiss -->
+  <string name="alarm_alert_dismiss_text">关闭提醒</string>
 
-    <!--
-         Alarm Alert screen: this message is shown after an alarm rung
-         unattended for a number of minutes.  It tells the user that
-         the alarm has been silenced.
-    -->
-    <string name="alarm_alert_alert_silenced">闹钟响铃时间为 <xliff:g id="minutes">%d</xliff:g> 分钟</string>
+  <!--
+       Alarm Alert screen: this message is shown after an alarm rung
+       unattended for a number of minutes.  It tells the user that
+       the alarm has been silenced.
+  -->
+  <string name="alarm_alert_alert_silenced">闹钟响铃时间为 <xliff:g id="minutes">%d</xliff:g> 分钟</string>
 
-    <!-- Button labels on the alarm dialog: Snooze -->
-    <string name="alarm_alert_snooze_text">推迟提醒</string>
+  <!-- Button labels on the alarm dialog: Snooze -->
+  <string name="alarm_alert_snooze_text">推迟提醒</string>
 
-    <!--
-         Toast that appears after Alarm is snoozed from the Alarm
-         dialog. Says the alarm will snooze for xxx minutes.
-    -->
-    <string name="alarm_alert_snooze_set">暂停 <xliff:g id="minutes">%d</xliff:g> 分钟。</string>
+  <!--
+       Toast that appears after Alarm is snoozed from the Alarm
+       dialog. Says the alarm will snooze for xxx minutes.
+  -->
+  <string name="alarm_alert_snooze_set">暂停 <xliff:g id="minutes">%d</xliff:g> 分钟。</string>
 
-    <!--
-         0: nothing
-         1: days
-         2:      hours
-         3: days hours
-         4:            minutes
-         5: days       minutes
-         6:      hours minutes
-         7: days hours minutes
-    -->
-    <skip />
+  <!--
+       0: nothing
+       1: days
+       2:      hours
+       3: days hours
+       4:            minutes
+       5: days       minutes
+       6:      hours minutes
+       7: days hours minutes
+  -->
+  <skip />
 
-    <!--
-         Alarm confirmation toast: Describes how long from now until
-         alarm fires
-    -->
-    <string-array name="alarm_set">
-        <item>已将此闹钟设置为从现在起不到 1 分钟后提醒。</item>
-        <item>已将此闹钟设置为从现在起 <xliff:g id="DAYS" example="2 days">%1$s</xliff:g> 后再提醒。</item>
-        <item>已将此闹钟设置为从现在起 <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g> 后再提醒。</item>
-        <item>已将此闹钟设置为从现在起 <xliff:g id="DAYS" example="2 days">%1$s</xliff:g><xliff:g id="HOURS" example="2 hours">%2$s</xliff:g> 后再提醒。</item>
-        <item>已将此闹钟设置为从现在起 <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> 后再提醒。</item>
-        <item>已将此闹钟设置为从现在起 <xliff:g id="DAYS" example="2 days">%1$s</xliff:g><xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> 后再提醒。</item>
-        <item>已将此闹钟设置为从现在起 <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g><xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> 后再提醒。</item>
-        <item>已将该闹钟设置为从现在起 <xliff:g id="DAYS" example="2 days">%1$s</xliff:g><xliff:g id="HOURS" example="2 hours">%2$s</xliff:g><xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> 后再提醒。</item>
-    </string-array>
+  <!--
+       Alarm confirmation toast: Describes how long from now until
+       alarm fires
+  -->
+  <string-array name="alarm_set">
+    <item>已将此闹钟设置为从现在起不到 1 分钟后提醒。</item>
+    <item>已将此闹钟设置为从现在起 <xliff:g id="DAYS" example="2 days">%1$s</xliff:g> 后再提醒。</item>
+    <item>已将此闹钟设置为从现在起 <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g> 后再提醒。</item>
+    <item>已将此闹钟设置为从现在起 <xliff:g id="DAYS" example="2 days">%1$s</xliff:g><xliff:g id="HOURS" example="2 hours">%2$s</xliff:g> 后再提醒。</item>
+    <item>已将此闹钟设置为从现在起 <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> 后再提醒。</item>
+    <item>已将此闹钟设置为从现在起 <xliff:g id="DAYS" example="2 days">%1$s</xliff:g><xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> 后再提醒。</item>
+    <item>已将此闹钟设置为从现在起 <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g><xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> 后再提醒。</item>
+    <item>已将该闹钟设置为从现在起 <xliff:g id="DAYS" example="2 days">%1$s</xliff:g><xliff:g id="HOURS" example="2 hours">%2$s</xliff:g><xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> 后再提醒。</item>
+  </string-array>
 
-    <!-- Alarm confirmation toast: singular day -->
-    <string name="day">"1 天"</string>
+  <!-- Alarm confirmation toast: singular day -->
+  <string name="day">"1 天"</string>
 
-    <!-- Alarm confirmation toast: plural days -->
-    <string name="days">"<xliff:g id="days">%s</xliff:g> 天"</string>
+  <!-- Alarm confirmation toast: plural days -->
+  <string name="days">"<xliff:g id="days">%s</xliff:g> 天"</string>
 
-    <!-- Alarm confirmation toast: singular hour -->
-    <string name="hour">1 小时</string>
+  <!-- Alarm confirmation toast: singular hour -->
+  <string name="hour">1 小时</string>
 
-    <!-- Alarm confirmation toast: plural hours -->
-    <string name="hours"><xliff:g id="hours">%s</xliff:g> 小时</string>
+  <!-- Alarm confirmation toast: plural hours -->
+  <string name="hours"><xliff:g id="hours">%s</xliff:g> 小时</string>
 
-    <!-- Alarm confirmation toast: singular minute -->
-    <string name="minute">"1 分钟"</string>
+  <!-- Alarm confirmation toast: singular minute -->
+  <string name="minute">"1 分钟"</string>
 
-    <!-- Alarm confirmation toast: plural minutes -->
-    <string name="minutes">"<xliff:g id="minutes">%s</xliff:g> 分钟"</string>
+  <!-- Alarm confirmation toast: plural minutes -->
+  <string name="minutes">"<xliff:g id="minutes">%s</xliff:g> 分钟"</string>
 
-    <!--
-         Repeat options that appear under an alarm on main Alarm Clock
-         screen to identify repetition schedule: special case for when
-         the alarm is set to repeat every day
-    -->
-    <string name="every_day">每天</string>
+  <!--
+       Repeat options that appear under an alarm on main Alarm Clock
+       screen to identify repetition schedule: special case for when
+       the alarm is set to repeat every day
+  -->
+  <string name="every_day">每天</string>
 
-    <!--
-         Repeat options that appear under an alarm on main Alarm Clock
-         screen to identify repetition schedule: special case for when
-         the alarm is set to never repeat
-    -->
-    <string name="never">一律不</string>
-    
-    <string name="now">现在</string>
+  <!--
+       Repeat options that appear under an alarm on main Alarm Clock
+       screen to identify repetition schedule: special case for when
+       the alarm is set to never repeat
+  -->
+  <string name="never">一律不</string>
 
-    <!--
-         Repeat options that appear under an alarm on main Alarm Clock
-         screen to identify repetition schedule: concatenate days with
-         this character, i.e. "Mon, Tue, Wed"
-    -->
-    <string name="day_concat">", "</string>
+  <string name="now">现在</string>
 
-    <!--
-         Appears at the top of the Clock Picker screen: Tell user to
-         select a clock to display
-    -->
-    <string name="clock_instructions">选择要显示的时钟。</string>
+  <!--
+       Repeat options that appear under an alarm on main Alarm Clock
+       screen to identify repetition schedule: concatenate days with
+       this character, i.e. "Mon, Tue, Wed"
+  -->
+  <string name="day_concat">", "</string>
 
-    <!-- Label for analog clock gadget, shown in list of all gadgets -->
-    <string name="analog_gadget">模拟时钟</string>
+  <!--
+       Appears at the top of the Clock Picker screen: Tell user to
+       select a clock to display
+  -->
+  <string name="clock_instructions">选择要显示的时钟。</string>
 
-    <!-- Menu item title for general Alarm Clock Settings -->
-    <string name="settings">设置</string>
+  <!-- Label for analog clock gadget, shown in list of all gadgets -->
+  <string name="analog_gadget">模拟时钟</string>
 
-    <!--
-         Setting title for whether the alarm should play in silent mode.
-         Usually, silent mode only affects the ringer, but this setting
-         will make the alarms respect silent mode too.
-    -->
-    <string name="alarm_in_silent_mode_title">静音模式下闹钟响</string>
+  <!-- Menu item title for general Alarm Clock Settings -->
+  <string name="settings">设置</string>
 
-    <!-- Setting summary for whether the alarm should play in silent mode. -->
-    <string name="alarm_in_silent_mode_summary">手机处于静音模式时，闹钟仍会响</string>
+  <!--
+       Setting title for whether the alarm should play in silent mode.
+       Usually, silent mode only affects the ringer, but this setting
+       will make the alarms respect silent mode too.
+  -->
+  <string name="alarm_in_silent_mode_title">静音模式下闹钟响</string>
 
-    <!-- Setting title for changing the snooze duration. -->
-    <string name="snooze_duration_title">再响间隔</string>
+  <!-- Setting summary for whether the alarm should play in silent mode. -->
+  <string name="alarm_in_silent_mode_summary">手机处于静音模式时，闹钟仍会响</string>
 
-    <!--
-         Entries listed in the ListPreference when invoking the snooze duration
-         preference.
-    -->
-    <string-array name="snooze_duration_entries">
-        <item>5 分钟</item>
-        <item>10 分钟</item>
-        <item>15 分钟</item>
-        <item>20 分钟</item>
-        <item>25 分钟</item>
-        <item>30 分钟</item>
-    </string-array>
+  <!-- Setting title for changing the snooze duration. -->
+  <string name="snooze_duration_title">再响间隔</string>
 
-    <!--
-         Values that are retrieved from the ListPreference. These must match
-         the snooze_duration_entries above.
-    -->
-    <string-array name="snooze_duration_values">
-        <item>5</item>
-        <item>10</item>
-        <item>15</item>
-        <item>20</item>
-        <item>25</item>
-        <item>30</item>
-    </string-array>
+  <!--
+       Entries listed in the ListPreference when invoking the snooze duration
+       preference.
+  -->
+  <string-array name="snooze_duration_entries">
+    <item>5 分钟</item>
+    <item>10 分钟</item>
+    <item>15 分钟</item>
+    <item>20 分钟</item>
+    <item>25 分钟</item>
+    <item>30 分钟</item>
+  </string-array>
 
-    <!-- Done button when editing an alarm. -->
-    <string name="done">完成</string>
+  <!--
+       Values that are retrieved from the ListPreference. These must match
+       the snooze_duration_entries above.
+  -->
+  <string-array name="snooze_duration_values">
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <item>20</item>
+    <item>25</item>
+    <item>30</item>
+  </string-array>
 
-    <!-- Revert button when editing an alarm. -->
-    <string name="revert">还原</string>
+  <!-- Done button when editing an alarm. -->
+  <string name="done">完成</string>
 
-    <!-- Setting title for changing the alarm volume. -->
-    <string name="alarm_volume_title">闹钟音量</string>
+  <!-- Revert button when editing an alarm. -->
+  <string name="revert">还原</string>
 
-    <!-- Setting summary for changing the alarm volume. -->
-    <string name="alarm_volume_summary">设置闹钟音量</string>
+  <!-- Setting title for changing the alarm volume. -->
+  <string name="alarm_volume_title">闹钟音量</string>
 
-    <!-- Summary for the alarm preference when silent is chosen. -->
-    <string name="silent_alarm_summary">静音</string>
+  <!-- Setting summary for changing the alarm volume. -->
+  <string name="alarm_volume_summary">设置闹钟音量</string>
 
-    <!-- Text to display in the small text of the notification -->
-    <string name="alarm_notify_text">选择暂停或关闭此闹钟。</string>
+  <!-- Summary for the alarm preference when silent is chosen. -->
+  <string name="silent_alarm_summary">静音</string>
 
-    <!-- Text to display in the notification ticker and label -->
-    <string name="alarm_notify_snooze_label"><xliff:g id="label">%s</xliff:g>（已暂停）</string>
+  <!-- Text to display in the small text of the notification -->
+  <string name="alarm_notify_text">选择暂停或关闭此闹钟。</string>
 
-    <!-- Text to display in the notification when the alarm has been snoozed -->
-    <string name="alarm_notify_snooze_text">已将闹钟设置为从现在起 <xliff:g id="time">%s</xliff:g>后再提醒。选中可以取消。</string>
+  <!-- Text to display in the notification ticker and label -->
+  <string name="alarm_notify_snooze_label"><xliff:g id="label">%s</xliff:g>（已暂停）</string>
 
-    <!-- Title of the setting to change the volume/camera button behavior. -->
-    <string name="volume_button_setting_title">侧边按钮功用</string>
+  <!-- Text to display in the notification when the alarm has been snoozed -->
+  <string name="alarm_notify_snooze_text">已将闹钟设置为从现在起 <xliff:g id="time">%s</xliff:g>后再提醒。选中可以取消。</string>
 
-    <!-- The summary of the side button setting. -->
-    <string name="volume_button_setting_summary">设置侧边按钮在闹钟启动时的功用</string>
+  <!-- Title of the setting to change the volume/camera button behavior. -->
+  <string name="volume_button_setting_title">侧边按钮功用</string>
 
-    <!-- Title of the ringtone setting. -->
-    <string name="default_ringtone_setting_title">设置默认铃声</string>
-    <string name="default_ringtone">默认铃声</string>
+  <!-- The summary of the side button setting. -->
+  <string name="volume_button_setting_summary">设置侧边按钮在闹钟启动时的功用</string>
 
-    <!-- Entries listed in the setting for the side-button action. -->
-    <string-array name="volume_button_setting_entries">
-        <item>无</item>
-        <item>暂停</item>
-        <item>关闭</item>
-    </string-array>
+  <!-- Title of the ringtone setting. -->
+  <string name="default_ringtone_setting_title">设置默认铃声</string>
+  <string name="default_ringtone">默认铃声</string>
 
-    <!-- Values for the side-button setting. -->
-    <string-array name="volume_button_setting_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
-    
-    <string name="chinese_hour">时辰</string>
-    
-    <string name="solar_terms">节气</string>
-    <string name="solar_terms_0">小寒</string>
-	<string name="solar_terms_1">大寒</string>
-	<string name="solar_terms_2">立春</string>
-	<string name="solar_terms_3">雨水</string>
-	<string name="solar_terms_4">惊蛰</string>
-	<string name="solar_terms_5">春分</string>
-	<string name="solar_terms_6">清明</string>
-	<string name="solar_terms_7">谷雨</string>
-	<string name="solar_terms_8">立夏</string>
-	<string name="solar_terms_9">小满</string>
-	<string name="solar_terms_10">芒种</string>
-	<string name="solar_terms_11">夏至</string>
-	<string name="solar_terms_12">小暑</string>
-	<string name="solar_terms_13">大暑</string>
-	<string name="solar_terms_14">立秋</string>
-	<string name="solar_terms_15">处暑</string>
-	<string name="solar_terms_16">白露</string>
-	<string name="solar_terms_17">秋分</string>
-	<string name="solar_terms_18">寒露</string>
-	<string name="solar_terms_19">霜降</string>
-	<string name="solar_terms_20">立冬</string>
-	<string name="solar_terms_21">小雪</string>
-	<string name="solar_terms_22">大雪</string>
-	<string name="solar_terms_23">冬至</string>
+  <!-- Entries listed in the setting for the side-button action. -->
+  <string-array name="volume_button_setting_entries">
+    <item>无</item>
+    <item>暂停</item>
+    <item>关闭</item>
+  </string-array>
 
-    <string name="title_bar_shadow">标题栏阴影</string>
-    
-    <string name="solution">方案</string>
-    <string name="this_solution_can_not_be_found">找不到这个方案</string>
-    <string name="favorites">收藏</string>
-    <string name="the_solution_no_favorites">您还没有收藏方案</string>
-    <string name="cancel">取消</string>
-    <string name="enter">确定</string>
-    <string name="back">返回</string>
-    <string name="comply">遵从</string>
-    <string name="custom">自定</string>
-    
-    <string name="cure">治愈</string>
-    <string name="improvement">改善</string>
-    <string name="invalid">无效</string>
-    <string name="aggravating">加重</string>
-    
-    <string name="cost">性价比</string>
-    <string name="convenience">方便性</string>
-    <string name="overall">总评价</string>
-    
-    <!-- Welcome text -->
-    <string name="welcome_good_morning">早上好</string>
-    <string name="welcome_good_noon">中午好</string>
-    <string name="welcome_good_afternoon">下午好</string>
-    <string name="welcome_good_evening">晚上好</string>
-	
-	<string name="getting_weather_information">正在获取天气信息&#8230;</string>
-    <string name="unable_to_get_weather_information">无法获取天气信息!</string>
-    <string name="wealther_info_updated">天气更新成功!</string>
-    <!-- Weather logo font -->
-    
-    <string name="wealther_icon_0">v</string><!--晴-->
-	<string name="wealther_icon_1">1</string><!--多云-->
-	<string name="wealther_icon_2">`</string><!--阴-->
-	<string name="wealther_icon_3">4</string><!--阵雨-->
-	<string name="wealther_icon_4">z</string><!--雷阵雨-->
-	<string name="wealther_icon_5">z</string><!--雷阵雨伴有冰雹-->
-	<string name="wealther_icon_6">e</string><!--雨夹雪-->
-	<string name="wealther_icon_7">6</string><!--小雨-->
-	<string name="wealther_icon_8">9</string><!--中雨-->
-	<string name="wealther_icon_9">9</string><!--大雨-->
-	<string name="wealther_icon_10">9</string><!--暴雨-->
-	<string name="wealther_icon_11">9</string><!--大暴雨-->
-	<string name="wealther_icon_12">9</string><!--特大暴雨-->
-	<string name="wealther_icon_13">o</string><!--阵雪-->
-	<string name="wealther_icon_14">o</string><!--小雪-->
-	<string name="wealther_icon_15">]</string><!--中雪-->
-	<string name="wealther_icon_16">]</string><!--大雪-->
-	<string name="wealther_icon_17">]</string><!--暴雪-->
-	<string name="wealther_icon_18">s</string><!--雾-->
-	<string name="wealther_icon_19">e</string><!--冻雨-->
-	<string name="wealther_icon_20">(</string><!--沙尘暴-->
-	<string name="wealther_icon_21">6</string><!--小雨-中雨-->
-	<string name="wealther_icon_22">9</string><!--中雨-大雨-->
-	<string name="wealther_icon_23">9</string><!--大雨-暴雨-->
-	<string name="wealther_icon_24">9</string><!--暴雨-大暴雨-->
-	<string name="wealther_icon_25">9</string><!--大暴雨-特大暴雨-->
-	<string name="wealther_icon_26">o</string><!--小雪-中雪-->
-	<string name="wealther_icon_27">]</string><!--中雪-大雪-->
-	<string name="wealther_icon_28">]</string><!--大雪-暴雪-->
-	<string name="wealther_icon_29">(</string><!--浮尘-->
-	<string name="wealther_icon_30">(</string><!--扬沙-->
-	<string name="wealther_icon_31">(</string><!--强沙尘暴-->
+  <!-- Values for the side-button setting. -->
+  <string-array name="volume_button_setting_values">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+  </string-array>
 
-    <!-- Alarm category -->
-    <string name="alarm_category_image_content_description">闹钟分类图标</string>
-    <string name="alarm_category_work_rest">起床睡觉</string>
-    <string name="alarm_category_take_medicine">吃药提醒</string>
-    <string name="alarm_category_movement">运动提醒</string>
-    <string name="alarm_category_timer">计时器</string>
-    <string name="alarm_category_custom">自定义</string>
-    <string name="alarm_category_custom_alarm">闹铃</string>
+  <string name="chinese_hour">时辰</string>
 
-    <!-- Alarm action -->
-    <string name="edit">编辑</string>
-    <string name="close">关闭</string>
-    <string name="closed">已关闭</string>
-    <string name="open">开启</string>
-    <string name="delete">删除</string>
-    <string name="skip">跳过</string>
-    <string name="no_alarm">点击按钮添加新的闹钟\n健康生活由此开始</string>
-    <string name="save">保存</string>
-    <string name="set_alarm_custom">设置闹铃</string>
-    <string name="wake_time">起床时间</string>
-    <string name="cycle">周期</string>
-    <string name="remark">备注</string>
-    <string name="more">更多</string>
-    
-    <string name="today">今天</string>
-    <string name="tomorrow">明天</string>
-    <string name="the_day_after_tomorrow">后天</string>
+  <string name="solar_terms">节气</string>
+  <string name="solar_terms_0">小寒</string>
+  <string name="solar_terms_1">大寒</string>
+  <string name="solar_terms_2">立春</string>
+  <string name="solar_terms_3">雨水</string>
+  <string name="solar_terms_4">惊蛰</string>
+  <string name="solar_terms_5">春分</string>
+  <string name="solar_terms_6">清明</string>
+  <string name="solar_terms_7">谷雨</string>
+  <string name="solar_terms_8">立夏</string>
+  <string name="solar_terms_9">小满</string>
+  <string name="solar_terms_10">芒种</string>
+  <string name="solar_terms_11">夏至</string>
+  <string name="solar_terms_12">小暑</string>
+  <string name="solar_terms_13">大暑</string>
+  <string name="solar_terms_14">立秋</string>
+  <string name="solar_terms_15">处暑</string>
+  <string name="solar_terms_16">白露</string>
+  <string name="solar_terms_17">秋分</string>
+  <string name="solar_terms_18">寒露</string>
+  <string name="solar_terms_19">霜降</string>
+  <string name="solar_terms_20">立冬</string>
+  <string name="solar_terms_21">小雪</string>
+  <string name="solar_terms_22">大雪</string>
+  <string name="solar_terms_23">冬至</string>
 
-    <!-- Week -->
-    <string name="Monday">星期一</string>
-    <string name="Tuesday">星期二</string>
-    <string name="Wednesday">星期三</string>
-    <string name="Thursday">星期四</string>
-    <string name="Friday">星期五</string>
-    <string name="Saturday">星期六</string>
-    <string name="Sunday">星期日</string>
-    
-	<string name="day_of_week_2">周一</string>
-	<string name="day_of_week_3">周二</string>
-	<string name="day_of_week_4">周三</string>
-	<string name="day_of_week_5">周四</string>
-	<string name="day_of_week_6">周五</string>
-	<string name="day_of_week_7">周六</string>
-    <string name="day_of_week_1">周日</string>
-    
-    <string name="system_ringtones">系统铃声</string>
-    <string name="current_ringtone">当前铃声</string>
-    <string name="file_browser">文件浏览</string>
-    <string name="floder_is_empty">这是一个空文件夹</string>
-    <string name="no_music_files_in_the_folder">该文件夹下没有音乐文件</string>
-    <string name="my_account">我的帐户</string>
-    <string name="username">用户名</string>
-    <string name="email">邮箱</string>
-    <string name="username_email">用户名/邮箱</string>
-    <string name="password">密码</string>
-    <string name="signup">注册</string>
-    <string name="signup_tips">邮箱地址用于找回密码，请填写真实有效地址。\n完成注册代表你接受健康时钟的注册协议。</string>
-    <string name="signin">登录</string>
-    <string name="logout">注销</string>
-    <string name="resume">个人信息</string>
-    <string name="edit_resume">编辑个人信息</string>
-    <string name="realname">姓名</string>
-    <string name="set_realname">设置姓名</string>
-    <string name="gender">性别</string>
-    <string name="set_gender">设置性别</string>
-    <string name="birthday">生日</string>
-    <string name="set_birthday">设置生日</string>
-    <string name="location">所在地</string>
-    <string name="set_location">设置所在地</string>
-    
-    <string name="please_select_provinces">请选择省份</string>
-    <string name="please_select_city">请选择城市</string>
-    <string name="please_select_district">请选择区县</string>
-    
-    <string name="update">更新</string>
-    <string name="male">男性</string>
-    <string name="female">女性</string>
-    <string name="after_setting_can_not_be_modified">设置后不可以修改.</string>
-    
-    <string name="constitution">体质</string>
-    <string name="constitution_tip">了解自己的体质，让我们给你提供更个性化的健康方案。</string>
-    <string name="constitution_intro">“世界上没有两片完全相同的叶子”，更没有相同的人。传统中医理论将不同人的体质分为九种，看看以下哪种情况和你最为贴近：</string>
-    
-    <string name="constitution_a">平和质</string>
-    <string name="constitution_a_intro">精力充沛\n健康乐观</string>
-    <string name="constitution_a_desc">平和体质的人形体匀称，健康，面色、肤色润泽，头发茂密有光泽，目光有神，鼻色明润，嗅觉通利，味觉正常，唇色红润；精力充沛，不易疲劳，耐受寒热，睡眠安和，胃纳良好，二便正常，舌色淡红，舌苔薄白；性格随和开朗、阳光，不会为小事斤斤计较，也不会轻易郁闷或动怒。这种人平素患病较少，对自然环境和社会环境适应能力较强。</string>
-    
-    <string name="constitution_b">气虚质</string>
-    <string name="constitution_b_intro">气短力少\n容易疲乏</string>
-    <string name="constitution_b_desc">气虚体质的人形体特征有肌肉不健壮，气短；平素语言低怯，气短懒言，肢体容易疲乏，精神不振，易出汗，舌淡红，舌体胖大，边有齿痕；面色偏黄或白，目光少神，口淡，唇色少华，毛发不华，头晕，健忘，大便正常，或有便秘但不结硬，或不成形，小便正常或便多；性格内向，情绪不稳定，健忘胆小，不喜欢冒险；平素体质虚弱，易患感冒，或抗病能力弱，病后易迁延不愈；不耐受寒邪、风邪，暑邪等。</string>
-    
-    <string name="constitution_c">阳虚质</string>
-    <string name="constitution_c_intro">手脚发凉\n身体怕冷</string>
-    <string name="constitution_c_desc">阳虚体质的人多形体白胖，肌肉不壮，怕冷。平素手足不温，喜食热饮，精神不振，睡眠偏多，舌润。面色柔白，目胞晦暗，口唇色淡，毛发易落，易出汗，小便清长，大便溏薄；性格沉静，内向，平素不耐寒邪，耐夏不耐冬，易感湿邪。</string>
-    
-    <string name="constitution_d">阴虚质</string>
-    <string name="constitution_d_intro">手心发热\n阴虚火旺</string>
-    <string name="constitution_d_desc">阴虚体质的人体形瘦长，缺水。手足心热，平素易口燥咽干，鼻微干，口渴喜冷饮，大便干燥，小便短涩，舌红少津少苔；面色潮红、有烘热感，目干涩，视物花，唇红微干，皮肤偏干、易生皱纹，眩晕耳鸣；睡眠差，性情急躁，外向好动，活泼；易患阴亏燥热的病变，或病后易表现为阴亏症状；平素不耐受热邪，耐冬不耐夏，不耐受燥邪。</string>
-    
-    <string name="constitution_e">痰湿质</string>
-    <string name="constitution_e_intro">身体肥胖\n大腹便便</string>
-    <string name="constitution_e_desc">痰湿体质的人肥胖，腹部肥满松软；面部皮肤油脂较多，多汗且黏，胸闷，痰多，面色暗黄而暗，眼睑浮肿，容易困倦，口黏腻或甜，身体不爽；喜食肥甘甜黏，大便正常、不干，小便不多或微混，平素舌体胖大，舌苔白腻；性格偏温和，稳重恭谦，多善于忍耐；易患消渴、中风、胸痹等病症，对梅雨季节及潮湿环境适应能力差。</string>
-    
-    <string name="constitution_f">湿热质</string>
-    <string name="constitution_f_intro">面色油腻\n长痘长疮</string>
-    <string name="constitution_f_desc">湿热体质的人偏胖或苍瘦，性格多急躁易怒；平素面垢油光，易口苦口干，身重困倦，易生痤疮粉刺，舌质偏约，苔黄腻，心烦懈怠，眼睛红赤，大便短赤，带下增多；易患疮疖、黄疸等病症，对潮湿的气温偏高的环境，尤其是夏末秋初，湿热交蒸的天气较难适应。</string>
-    
-    <string name="constitution_g">血瘀质</string>
-    <string name="constitution_g_intro">面色晦暗\n脸上长斑</string>
-    <string name="constitution_g_desc">血淤体质的人多偏瘦，爱长斑，平素面色晦暗，皮肤偏暗或色素沉着，容易出现瘀斑，易患疼痛。口唇暗淡或紫，舌质暗，有点、片状瘀斑，舌下静脉曲张。眼眶暗黑，鼻部暗滞，发易脱落，肌肤干，或有出血倾向、吐血，多见痛经、闭经，或经血中多凝血块，或经色紫黑有块、崩漏。性情急躁，心情易烦，健忘，不耐受寒邪、风邪。</string>
-    
-    <string name="constitution_h">气郁质</string>
-    <string name="constitution_h_intro">多愁善感\n郁郁不乐</string>
-    <string name="constitution_h_desc">气郁体持贩人形偏瘦者居多，性格内向不稳定，忧郁脆弱，敏感多疑，对精神刺激适应能力比较差，平时面貌忧郁，神情时常烦闷不乐，胸肋部胀满或走窜疼痛，多善太息，或嗳气呃逆，或咽间有异物感，或乳房胀痛；睡眠较差，食欲减退，容易受到惊吓，健忘，痰多，大便多干，小便正常，舌淡红、苔薄白；对精神刺激适应能力较差，不喜欢阴雨天气。</string>
-    
-    <string name="constitution_i">特禀质</string>
-    <string name="constitution_i_intro">容易过敏\n喷嚏流泪</string>
-    <string name="constitution_i_desc">特禀体质的人无特殊体型，适应能力差，易过敏，且易复发。</string>
-    <string name="constitution_color">体质颜色</string>
-    <string name="select_constitution">选择体质</string>
-    <string name="my_constitution">我的体质</string>
-    <string name="setted_constitution">设置为我的体质!</string>
-    <string name="uncertainty_do_a_test_to_confirm">不确定?做个测试确认一下!</string>
-    <string name="your_constitution_is">你的主要体质是:</string>
-    <string name="retest">重新测试</string>
-    <string name="constitution_test">体质测试</string>
-    <string name="constitution_calculate">计算结果</string>
-    <string name="abandon_the_test">放弃测试</string>
-    <string name="tip">提示</string>
-    <string name="constitution_test_dialog_tip">该体质测试有时效性，放弃测试不会保存你的数据!确定要放弃测试吗?</string>
-    <string name="constitution_test_not_complete">还有测试题没有完成!</string>
-    
-    <string name="constitution_test_tip">请根据近一年的体验和感觉回答以下问题，孕妇及16岁以下青少年不建议使用本测试。</string>
-    <string name="constitution_option_no">没有</string>
-    <string name="constitution_option_seldom">很少</string>
-    <string name="constitution_option_sometimes">有时</string>
-    <string name="constitution_option_often">经常</string>
-    <string name="constitution_option_always">总是</string>
-    
-    <string name="account_dialog_tip">在此驻足小憩片刻，留下您的痕迹，我们将一路追寻，奉献出更精彩、更适合您的内容。</string>
-    <string name="unset">未设置</string>
-    <string name="not_logged_in">未登录!</string>
-    <string name="you_are_not_logged_in_can_not_do_the_process_management">您还没有登录,不能做过程管理!</string>
-    <string name="you_are_not_logged_in_can_not_be_evaluated">您还没有登录,不能评价!</string>
-    <string name="about">关于健康时钟</string>
-    <string name="special_statement">内容仅供参考, 不作为诊疗依据!</string>
-    <string name="app_evaluate">评价应用</string>
-    <string name="feedback">建议反馈</string>
-    <string name="help">帮助</string>
-    <string name="clock_global_setting">闹钟设置</string>
-    <string name="account_binding">帐号绑定</string>
-    <string name="account_weibo">新浪微博</string>
-    <string name="account_tencent">腾讯微博</string>
-    <string name="account_renren">人人网</string>
-    <string name="account_douban">豆瓣</string>
-    <string name="unbound">未绑定</string>
-    <string name="bounded">已绑定</string>
-    <string name="special_concern">&#160;特别关注</string>
-    <string name="special_concern_tip">选择特别关注后，我们将在每\n天这个时辰给你发送提醒 :)</string>
-	<string name="network_access_exception">网络访问异常</string>
-	<string name="network_connection_timeout">网络连接超时</string>
-	
-	<string name="hour_name_1">子时</string>
-	<string name="hour_name_2">丑时</string>
-	<string name="hour_name_3">寅时</string>
-	<string name="hour_name_4">卯时</string>
-	<string name="hour_name_5">辰时</string>
-	<string name="hour_name_6">巳时</string>
-	<string name="hour_name_7">午时</string>
-	<string name="hour_name_8">未时</string>
-	<string name="hour_name_9">申时</string>
-	<string name="hour_name_10">酉时</string>
-	<string name="hour_name_11">戌时</string>
-	<string name="hour_name_12">亥时</string>
-	
-	<string name="hour_time_interval_1">23:00~1:00</string>
-	<string name="hour_time_interval_2">1:00~3:00</string>
-	<string name="hour_time_interval_3">3:00~5:00</string>
-	<string name="hour_time_interval_4">5:00~7:00</string>
-	<string name="hour_time_interval_5">7:00~9:00</string>
-	<string name="hour_time_interval_6">9:00~11:00</string>
-	<string name="hour_time_interval_7">11:00~13:00</string>
-	<string name="hour_time_interval_8">13:00~15:00</string>
-	<string name="hour_time_interval_9">15:00~17:00</string>
-	<string name="hour_time_interval_10">17:00~19:00</string>
-	<string name="hour_time_interval_11">19:00~21:00</string>
-	<string name="hour_time_interval_12">21:00~23:00</string>
-	
-	<string name="acupoint">穴位</string>
-    
-	<string name="loading">正在加载&#8230;</string>
-	<string name="cycling_loading">加载图片</string>
-	<string name="please_be_patient_wait_for_a_moment">~内容马上就会呈现～\n请耐心等待片刻</string>
-	<string name="data_being_submitted_please_wait">正在提交数据, 请稍候&#8230;</string>
-	<string name="save_successfully">保存成功!</string>
-	<string name="save_failed">保存失败!</string>
-	<string name="submit">提交</string>
-	
-	<string name="steps">操作步骤</string>
-	<string name="click_steps_to_try">点击步骤试试</string>
-	<string name="tips">温馨提示</string>
-	<string name="view_acupoint">看看穴位在哪？</string>
-	<string name="material">材料</string>
-	<string name="tool">工具</string>
-	<string name="material_and_tool">材料工具</string>
-	<string name="occasion">场所</string>
-	
-    <!-- Solution action button -->
-    <string name="favorite">收藏</string>
-    <string name="set_solution_alarm">设置提醒</string>
-    <string name="process_management">过程管理</string>
-    <string name="todo">TODO</string>
-    <string name="evaluate">评价</string>
-    <string name="evaluate_score">评分</string>
-    <string name="forwarding">转发</string>
-    <string name="arrow_down">▼</string>
-    <string name="please_select_the_effect_and_feel">请选择效果感受!</string>
-    <string name="evaluation_of_success">评价成功!</string>
-    <string name="evaluation_of_failure">评价失败!</string>
-    <string name="please_wait_while_the_evaluation_is_being_submitted">请稍候，正在提交评价&#8230;</string>
-    
-    <string name="how_the_effect_and_feels_of_the_use_of_the_solution">使用方案后效果如何？有怎样的感受？</string>
-    
-    <string name="share">分享</string>
-    <string name="share_solution"><xliff:g id="title">%1$s</xliff:g>:<xliff:g id="content">%2$s</xliff:g> -- 《健康时钟》</string>
-    
-    <string name="title_content"><xliff:g id="title">%1$s</xliff:g>:<xliff:g id="content">%2$s</xliff:g></string>
-    
-    <string name="network_is_not_connected">网络未连接!</string>
-    
-    <string name="help_page_text_app">健康从一点一时开始</string>
-    <string name="help_page_text_alarm">健康闹钟，给您安个随身秘书！</string>
-    <string name="help_page_text_chinese_hour">子丑寅卯辰，从时辰里看养生哲学。</string>
-    <string name="help_page_text_solar_terms">生长化收藏，从节气里悟养生心语。</string>
-    
-    <string name="version_update">版本更新</string>
-    <string name="version_update_tip">该软件有的新版本，请您更新！</string>
-    <string name="download_the_update">下载更新</string>
-    <string name="a_later_date">以后再说</string>
-    
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
-    <string name="title_activity_process">Process</string>
+  <string name="title_bar_shadow">标题栏阴影</string>
+
+  <string name="solution">方案</string>
+  <string name="recipe">食谱</string>
+  <string name="food">食物</string>
+  <string name="this_solution_can_not_be_found">找不到这个方案</string>
+  <string name="favorites">收藏</string>
+  <string name="the_solution_no_favorites">您还没有收藏方案</string>
+  <string name="cancel">取消</string>
+  <string name="enter">确定</string>
+  <string name="back">返回</string>
+  <string name="comply">遵从</string>
+  <string name="custom">自定</string>
+
+  <string name="cure">治愈</string>
+  <string name="improvement">改善</string>
+  <string name="invalid">无效</string>
+  <string name="aggravating">加重</string>
+
+  <string name="cost">性价比</string>
+  <string name="convenience">方便性</string>
+  <string name="overall">总评价</string>
+
+  <!-- Welcome text -->
+  <string name="welcome_good_morning">早上好</string>
+  <string name="welcome_good_noon">中午好</string>
+  <string name="welcome_good_afternoon">下午好</string>
+  <string name="welcome_good_evening">晚上好</string>
+
+  <string name="getting_weather_information">正在获取天气信息&#8230;</string>
+  <string name="unable_to_get_weather_information">无法获取天气信息!</string>
+  <string name="wealther_info_updated">天气更新成功!</string>
+  <!-- Weather logo font -->
+
+  <string name="wealther_icon_0">v</string><!--晴-->
+  <string name="wealther_icon_1">1</string><!--多云-->
+  <string name="wealther_icon_2">`</string><!--阴-->
+  <string name="wealther_icon_3">4</string><!--阵雨-->
+  <string name="wealther_icon_4">z</string><!--雷阵雨-->
+  <string name="wealther_icon_5">z</string><!--雷阵雨伴有冰雹-->
+  <string name="wealther_icon_6">e</string><!--雨夹雪-->
+  <string name="wealther_icon_7">6</string><!--小雨-->
+  <string name="wealther_icon_8">9</string><!--中雨-->
+  <string name="wealther_icon_9">9</string><!--大雨-->
+  <string name="wealther_icon_10">9</string><!--暴雨-->
+  <string name="wealther_icon_11">9</string><!--大暴雨-->
+  <string name="wealther_icon_12">9</string><!--特大暴雨-->
+  <string name="wealther_icon_13">o</string><!--阵雪-->
+  <string name="wealther_icon_14">o</string><!--小雪-->
+  <string name="wealther_icon_15">]</string><!--中雪-->
+  <string name="wealther_icon_16">]</string><!--大雪-->
+  <string name="wealther_icon_17">]</string><!--暴雪-->
+  <string name="wealther_icon_18">s</string><!--雾-->
+  <string name="wealther_icon_19">e</string><!--冻雨-->
+  <string name="wealther_icon_20">(</string><!--沙尘暴-->
+  <string name="wealther_icon_21">6</string><!--小雨-中雨-->
+  <string name="wealther_icon_22">9</string><!--中雨-大雨-->
+  <string name="wealther_icon_23">9</string><!--大雨-暴雨-->
+  <string name="wealther_icon_24">9</string><!--暴雨-大暴雨-->
+  <string name="wealther_icon_25">9</string><!--大暴雨-特大暴雨-->
+  <string name="wealther_icon_26">o</string><!--小雪-中雪-->
+  <string name="wealther_icon_27">]</string><!--中雪-大雪-->
+  <string name="wealther_icon_28">]</string><!--大雪-暴雪-->
+  <string name="wealther_icon_29">(</string><!--浮尘-->
+  <string name="wealther_icon_30">(</string><!--扬沙-->
+  <string name="wealther_icon_31">(</string><!--强沙尘暴-->
+
+  <!-- Alarm category -->
+  <string name="alarm_category_image_content_description">闹钟分类图标</string>
+  <string name="alarm_category_work_rest">起床睡觉</string>
+  <string name="alarm_category_take_medicine">吃药提醒</string>
+  <string name="alarm_category_movement">运动提醒</string>
+  <string name="alarm_category_timer">计时器</string>
+  <string name="alarm_category_custom">自定义</string>
+  <string name="alarm_category_custom_alarm">闹铃</string>
+
+  <!-- Alarm action -->
+  <string name="edit">编辑</string>
+  <string name="close">关闭</string>
+  <string name="closed">已关闭</string>
+  <string name="open">开启</string>
+  <string name="delete">删除</string>
+  <string name="skip">跳过</string>
+  <string name="no_alarm">点击按钮添加新的闹钟\n健康生活由此开始</string>
+  <string name="save">保存</string>
+  <string name="set_alarm_custom">设置闹铃</string>
+  <string name="wake_time">起床时间</string>
+  <string name="cycle">周期</string>
+  <string name="remark">备注</string>
+  <string name="more">更多</string>
+
+  <string name="today">今天</string>
+  <string name="tomorrow">明天</string>
+  <string name="the_day_after_tomorrow">后天</string>
+
+  <!-- Week -->
+  <string name="Monday">星期一</string>
+  <string name="Tuesday">星期二</string>
+  <string name="Wednesday">星期三</string>
+  <string name="Thursday">星期四</string>
+  <string name="Friday">星期五</string>
+  <string name="Saturday">星期六</string>
+  <string name="Sunday">星期日</string>
+
+  <string name="day_of_week_2">周一</string>
+  <string name="day_of_week_3">周二</string>
+  <string name="day_of_week_4">周三</string>
+  <string name="day_of_week_5">周四</string>
+  <string name="day_of_week_6">周五</string>
+  <string name="day_of_week_7">周六</string>
+  <string name="day_of_week_1">周日</string>
+
+  <string name="system_ringtones">系统铃声</string>
+  <string name="current_ringtone">当前铃声</string>
+  <string name="file_browser">文件浏览</string>
+  <string name="floder_is_empty">这是一个空文件夹</string>
+  <string name="no_music_files_in_the_folder">该文件夹下没有音乐文件</string>
+  <string name="my_account">我的帐户</string>
+  <string name="username">用户名</string>
+  <string name="email">邮箱</string>
+  <string name="username_email">用户名/邮箱</string>
+  <string name="password">密码</string>
+  <string name="signup">注册</string>
+  <string name="signup_tips">邮箱地址用于找回密码，请填写真实有效地址。\n完成注册代表你接受健康时钟的注册协议。</string>
+  <string name="signin">登录</string>
+  <string name="logout">注销</string>
+  <string name="resume">个人信息</string>
+  <string name="edit_resume">编辑个人信息</string>
+  <string name="realname">姓名</string>
+  <string name="set_realname">设置姓名</string>
+  <string name="gender">性别</string>
+  <string name="set_gender">设置性别</string>
+  <string name="birthday">生日</string>
+  <string name="set_birthday">设置生日</string>
+  <string name="location">所在地</string>
+  <string name="set_location">设置所在地</string>
+
+  <string name="please_select_provinces">请选择省份</string>
+  <string name="please_select_city">请选择城市</string>
+  <string name="please_select_district">请选择区县</string>
+
+  <string name="update">更新</string>
+  <string name="male">男性</string>
+  <string name="female">女性</string>
+  <string name="after_setting_can_not_be_modified">设置后不可以修改.</string>
+
+  <string name="constitution">体质</string>
+  <string name="constitution_tip">了解自己的体质，让我们给你提供更个性化的健康方案。</string>
+  <string name="constitution_intro">“世界上没有两片完全相同的叶子”，更没有相同的人。传统中医理论将不同人的体质分为九种，看看以下哪种情况和你最为贴近：</string>
+
+  <string name="constitution_a">平和质</string>
+  <string name="constitution_a_intro">精力充沛\n健康乐观</string>
+  <string name="constitution_a_desc">平和体质的人形体匀称，健康，面色、肤色润泽，头发茂密有光泽，目光有神，鼻色明润，嗅觉通利，味觉正常，唇色红润；精力充沛，不易疲劳，耐受寒热，睡眠安和，胃纳良好，二便正常，舌色淡红，舌苔薄白；性格随和开朗、阳光，不会为小事斤斤计较，也不会轻易郁闷或动怒。这种人平素患病较少，对自然环境和社会环境适应能力较强。</string>
+
+  <string name="constitution_b">气虚质</string>
+  <string name="constitution_b_intro">气短力少\n容易疲乏</string>
+  <string name="constitution_b_desc">气虚体质的人形体特征有肌肉不健壮，气短；平素语言低怯，气短懒言，肢体容易疲乏，精神不振，易出汗，舌淡红，舌体胖大，边有齿痕；面色偏黄或白，目光少神，口淡，唇色少华，毛发不华，头晕，健忘，大便正常，或有便秘但不结硬，或不成形，小便正常或便多；性格内向，情绪不稳定，健忘胆小，不喜欢冒险；平素体质虚弱，易患感冒，或抗病能力弱，病后易迁延不愈；不耐受寒邪、风邪，暑邪等。</string>
+
+  <string name="constitution_c">阳虚质</string>
+  <string name="constitution_c_intro">手脚发凉\n身体怕冷</string>
+  <string name="constitution_c_desc">阳虚体质的人多形体白胖，肌肉不壮，怕冷。平素手足不温，喜食热饮，精神不振，睡眠偏多，舌润。面色柔白，目胞晦暗，口唇色淡，毛发易落，易出汗，小便清长，大便溏薄；性格沉静，内向，平素不耐寒邪，耐夏不耐冬，易感湿邪。</string>
+
+  <string name="constitution_d">阴虚质</string>
+  <string name="constitution_d_intro">手心发热\n阴虚火旺</string>
+  <string name="constitution_d_desc">阴虚体质的人体形瘦长，缺水。手足心热，平素易口燥咽干，鼻微干，口渴喜冷饮，大便干燥，小便短涩，舌红少津少苔；面色潮红、有烘热感，目干涩，视物花，唇红微干，皮肤偏干、易生皱纹，眩晕耳鸣；睡眠差，性情急躁，外向好动，活泼；易患阴亏燥热的病变，或病后易表现为阴亏症状；平素不耐受热邪，耐冬不耐夏，不耐受燥邪。</string>
+
+  <string name="constitution_e">痰湿质</string>
+  <string name="constitution_e_intro">身体肥胖\n大腹便便</string>
+  <string name="constitution_e_desc">痰湿体质的人肥胖，腹部肥满松软；面部皮肤油脂较多，多汗且黏，胸闷，痰多，面色暗黄而暗，眼睑浮肿，容易困倦，口黏腻或甜，身体不爽；喜食肥甘甜黏，大便正常、不干，小便不多或微混，平素舌体胖大，舌苔白腻；性格偏温和，稳重恭谦，多善于忍耐；易患消渴、中风、胸痹等病症，对梅雨季节及潮湿环境适应能力差。</string>
+
+  <string name="constitution_f">湿热质</string>
+  <string name="constitution_f_intro">面色油腻\n长痘长疮</string>
+  <string name="constitution_f_desc">湿热体质的人偏胖或苍瘦，性格多急躁易怒；平素面垢油光，易口苦口干，身重困倦，易生痤疮粉刺，舌质偏约，苔黄腻，心烦懈怠，眼睛红赤，大便短赤，带下增多；易患疮疖、黄疸等病症，对潮湿的气温偏高的环境，尤其是夏末秋初，湿热交蒸的天气较难适应。</string>
+
+  <string name="constitution_g">血瘀质</string>
+  <string name="constitution_g_intro">面色晦暗\n脸上长斑</string>
+  <string name="constitution_g_desc">血淤体质的人多偏瘦，爱长斑，平素面色晦暗，皮肤偏暗或色素沉着，容易出现瘀斑，易患疼痛。口唇暗淡或紫，舌质暗，有点、片状瘀斑，舌下静脉曲张。眼眶暗黑，鼻部暗滞，发易脱落，肌肤干，或有出血倾向、吐血，多见痛经、闭经，或经血中多凝血块，或经色紫黑有块、崩漏。性情急躁，心情易烦，健忘，不耐受寒邪、风邪。</string>
+
+  <string name="constitution_h">气郁质</string>
+  <string name="constitution_h_intro">多愁善感\n郁郁不乐</string>
+  <string name="constitution_h_desc">气郁体持贩人形偏瘦者居多，性格内向不稳定，忧郁脆弱，敏感多疑，对精神刺激适应能力比较差，平时面貌忧郁，神情时常烦闷不乐，胸肋部胀满或走窜疼痛，多善太息，或嗳气呃逆，或咽间有异物感，或乳房胀痛；睡眠较差，食欲减退，容易受到惊吓，健忘，痰多，大便多干，小便正常，舌淡红、苔薄白；对精神刺激适应能力较差，不喜欢阴雨天气。</string>
+
+  <string name="constitution_i">特禀质</string>
+  <string name="constitution_i_intro">容易过敏\n喷嚏流泪</string>
+  <string name="constitution_i_desc">特禀体质的人无特殊体型，适应能力差，易过敏，且易复发。</string>
+  <string name="constitution_color">体质颜色</string>
+  <string name="select_constitution">选择体质</string>
+  <string name="my_constitution">我的体质</string>
+  <string name="setted_constitution">设置为我的体质!</string>
+  <string name="uncertainty_do_a_test_to_confirm">不确定?做个测试确认一下!</string>
+  <string name="your_constitution_is">你的主要体质是:</string>
+  <string name="retest">重新测试</string>
+  <string name="constitution_test">体质测试</string>
+  <string name="constitution_calculate">计算结果</string>
+  <string name="abandon_the_test">放弃测试</string>
+  <string name="tip">提示</string>
+  <string name="constitution_test_dialog_tip">该体质测试有时效性，放弃测试不会保存你的数据!确定要放弃测试吗?</string>
+  <string name="constitution_test_not_complete">还有测试题没有完成!</string>
+
+  <string name="constitution_test_tip">请根据近一年的体验和感觉回答以下问题，孕妇及16岁以下青少年不建议使用本测试。</string>
+  <string name="constitution_option_no">没有</string>
+  <string name="constitution_option_seldom">很少</string>
+  <string name="constitution_option_sometimes">有时</string>
+  <string name="constitution_option_often">经常</string>
+  <string name="constitution_option_always">总是</string>
+
+  <string name="account_dialog_tip">在此驻足小憩片刻，留下您的痕迹，我们将一路追寻，奉献出更精彩、更适合您的内容。</string>
+  <string name="unset">未设置</string>
+  <string name="not_logged_in">未登录!</string>
+  <string name="you_are_not_logged_in_can_not_do_the_process_management">您还没有登录,不能做过程管理!</string>
+  <string name="you_are_not_logged_in_can_not_be_evaluated">您还没有登录,不能评价!</string>
+  <string name="about">关于健康时钟</string>
+  <string name="special_statement">内容仅供参考, 不作为诊疗依据!</string>
+  <string name="app_evaluate">评价应用</string>
+  <string name="feedback">建议反馈</string>
+  <string name="help">帮助</string>
+  <string name="clock_global_setting">闹钟设置</string>
+  <string name="account_binding">帐号绑定</string>
+  <string name="account_weibo">新浪微博</string>
+  <string name="account_tencent">腾讯微博</string>
+  <string name="account_renren">人人网</string>
+  <string name="account_douban">豆瓣</string>
+  <string name="unbound">未绑定</string>
+  <string name="bounded">已绑定</string>
+  <string name="special_concern">&#160;特别关注</string>
+  <string name="special_concern_tip">选择特别关注后，我们将在每\n天这个时辰给你发送提醒 :)</string>
+  <string name="network_access_exception">网络访问异常</string>
+  <string name="network_connection_timeout">网络连接超时</string>
+
+  <string name="hour_name_1">子时</string>
+  <string name="hour_name_2">丑时</string>
+  <string name="hour_name_3">寅时</string>
+  <string name="hour_name_4">卯时</string>
+  <string name="hour_name_5">辰时</string>
+  <string name="hour_name_6">巳时</string>
+  <string name="hour_name_7">午时</string>
+  <string name="hour_name_8">未时</string>
+  <string name="hour_name_9">申时</string>
+  <string name="hour_name_10">酉时</string>
+  <string name="hour_name_11">戌时</string>
+  <string name="hour_name_12">亥时</string>
+
+  <string name="hour_time_interval_1">23:00~1:00</string>
+  <string name="hour_time_interval_2">1:00~3:00</string>
+  <string name="hour_time_interval_3">3:00~5:00</string>
+  <string name="hour_time_interval_4">5:00~7:00</string>
+  <string name="hour_time_interval_5">7:00~9:00</string>
+  <string name="hour_time_interval_6">9:00~11:00</string>
+  <string name="hour_time_interval_7">11:00~13:00</string>
+  <string name="hour_time_interval_8">13:00~15:00</string>
+  <string name="hour_time_interval_9">15:00~17:00</string>
+  <string name="hour_time_interval_10">17:00~19:00</string>
+  <string name="hour_time_interval_11">19:00~21:00</string>
+  <string name="hour_time_interval_12">21:00~23:00</string>
+
+  <string name="acupoint">穴位</string>
+
+  <string name="loading">正在加载&#8230;</string>
+  <string name="cycling_loading">加载图片</string>
+  <string name="please_be_patient_wait_for_a_moment">~内容马上就会呈现～\n请耐心等待片刻</string>
+  <string name="data_being_submitted_please_wait">正在提交数据, 请稍候&#8230;</string>
+  <string name="save_successfully">保存成功!</string>
+  <string name="save_failed">保存失败!</string>
+  <string name="submit">提交</string>
+
+  <string name="steps">操作步骤</string>
+  <string name="recipe_steps">烹饪步骤</string>
+  <string name="click_steps_to_try">点击步骤试试</string>
+  <string name="tips">温馨提示</string>
+  <string name="view_acupoint">看看穴位在哪？</string>
+  <string name="material">材料</string>
+  <string name="tool">工具</string>
+  <string name="material_and_tool">材料工具</string>
+  <string name="occasion">场所</string>
+
+  <string name="material_ingredient">主料</string>
+  <string name="material_accessorie">辅料</string>
+  <string name="material_seasoning">调料</string>
+
+  <!-- Solution action button -->
+  <string name="favorite">收藏</string>
+  <string name="set_solution_alarm">设置提醒</string>
+  <string name="process_management">过程管理</string>
+  <string name="todo">TODO</string>
+  <string name="evaluate">评价</string>
+  <string name="evaluate_score">评分</string>
+  <string name="forwarding">转发</string>
+  <string name="arrow_down">▼</string>
+  <string name="please_select_the_effect_and_feel">请选择效果感受!</string>
+  <string name="evaluation_of_success">评价成功!</string>
+  <string name="evaluation_of_failure">评价失败!</string>
+  <string name="please_wait_while_the_evaluation_is_being_submitted">请稍候，正在提交评价&#8230;</string>
+
+  <string name="how_the_effect_and_feels_of_the_use_of_the_solution">使用方案后效果如何？有怎样的感受？</string>
+
+  <string name="share">分享</string>
+  <string name="share_solution"><xliff:g id="title">%1$s</xliff:g>:<xliff:g id="content">%2$s</xliff:g> -- 《健康时钟》</string>
+
+  <string name="title_content"><xliff:g id="title">%1$s</xliff:g>:<xliff:g id="content">%2$s</xliff:g></string>
+
+  <string name="network_is_not_connected">网络未连接!</string>
+
+  <string name="help_page_text_app">健康从一点一时开始</string>
+  <string name="help_page_text_alarm">健康闹钟，给您安个随身秘书！</string>
+  <string name="help_page_text_chinese_hour">子丑寅卯辰，从时辰里看养生哲学。</string>
+  <string name="help_page_text_solar_terms">生长化收藏，从节气里悟养生心语。</string>
+
+  <string name="version_update">版本更新</string>
+  <string name="version_update_tip">该软件有的新版本，请您更新！</string>
+  <string name="download_the_update">下载更新</string>
+  <string name="a_later_date">以后再说</string>
+
+  <string name="hello_world">Hello world!</string>
+  <string name="menu_settings">Settings</string>
+  <string name="title_activity_process">Process</string>
 
 </resources>

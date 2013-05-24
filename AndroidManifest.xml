@@ -1,224 +1,234 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jkydjk.healthier.clock"
-    android:versionCode="1"
-    android:versionName="1.0beta" >
+          package="com.jkydjk.healthier.clock"
+          android:versionCode="1"
+          android:versionName="1.1beta" >
 
-    <uses-sdk
-        android:minSdkVersion="11"
-        android:targetSdkVersion="17" />
+  <uses-sdk
+    android:minSdkVersion="11"
+    android:targetSdkVersion="17" />
 
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+  <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+  <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+  <uses-permission android:name="android.permission.VIBRATE" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
-    <!-- android.permission.EXPAND_STATUS_BAR -->
+  <!-- android.permission.EXPAND_STATUS_BAR -->
 
-    <application
-        android:name=".HealthierApplication"
-        android:icon="@drawable/ic_launcher_alarmclock"
-        android:label="@string/app_label"
-        android:persistent="true"
-        android:theme="@style/Theme.Dialog" >
-        <provider
-            android:name="AlarmProvider"
-            android:authorities="com.jkydjk.healthier.clock" />
+  <application
+    android:name=".HealthierApplication"
+    android:icon="@drawable/ic_launcher_alarmclock"
+    android:label="@string/app_label"
+    android:persistent="true"
+    android:theme="@style/Theme.Dialog" >
+    <provider
+      android:name="AlarmProvider"
+      android:authorities="com.jkydjk.healthier.clock" />
 
-        <activity
-            android:name=".Healthier"
-            android:configChanges="orientation|keyboardHidden|keyboard|navigation"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+    <activity
+      android:name=".Healthier"
+      android:configChanges="orientation|keyboardHidden|keyboard|navigation"
+      android:launchMode="singleInstance"
+      android:screenOrientation="portrait" >
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".AlarmClock"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ChineseHour"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".SolarTerms"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Favorites"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".SolutionActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" />
-        <activity
-            android:name=".SolutionStepSlider"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" />
-        <activity
-            android:name=".More"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.InputMethod" />
-        <activity
-            android:name=".Signup"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" />
-        <activity
-            android:name=".Signin"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" />
-        <activity
-            android:name=".Resume"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" />
-        <activity
-            android:name=".RegionSelector"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.InputMethod" />
-        <activity
-            android:name=".ConstitutionSelector"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" />
-        <activity
-            android:name=".ConstitutionIntro"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" />
-        <activity
-            android:name=".Constitution"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.InputMethod" />
-        <activity
-            android:name=".ConstitutionTest"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.InputMethod" />
-        <activity
-            android:name=".Help"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Toast" />
-        <activity
-            android:name=".Feedback"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.InputMethod"
-            android:windowSoftInputMode="adjustUnspecified|stateAlwaysVisible" />
-        <activity
-            android:name=".SettingsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".SetAlarm"
-            android:label="@string/set_alarm"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".SetAlarmCustom"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <activity
-            android:name=".SetAlarmCycle"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".SetAlarmAlert"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".SystemRingtone"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".AddAlarm"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" />
-        <activity
-            android:name=".AlarmAlert"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:taskAffinity=""
-            android:theme="@style/alarm_alert" />
-        <activity
-            android:name=".FileBrower"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Process"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.InputMethod" />
-        <activity
-            android:name=".SolutionEvaluate"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.InputMethod" />
-        <activity
-            android:name=".HourRemind"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" />
-        <activity
-            android:name="com.jkydjk.healthier.clock.AcupointSlider"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <activity
+      android:name=".AlarmClock"
+      android:screenOrientation="portrait" />
+    <activity
+      android:name=".ChineseHour"
+      android:screenOrientation="portrait" />
+    <activity
+      android:name=".SolarTerms"
+      android:screenOrientation="portrait" />
+    <activity
+      android:name=".Favorites"
+      android:screenOrientation="portrait" />
+    <activity
+      android:name=".SolutionActivity"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.Transparent" />
+    <activity
+      android:name=".RecipeActivity"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.Transparent" />
+    <activity
+      android:name=".SolutionStepSlider"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.Transparent" />
 
-        <!--
-             This activity is basically the same as AlarmAlert but with a more
-             generic theme. It also shows as full screen (with status bar) but
-             with the wallpaper background.
-        -->
+    <activity
+      android:name=".FoodActivity"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.Transparent" />
 
-        <activity
-            android:name=".AlarmAlertFullScreen"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:taskAffinity=""
-            android:theme="@style/Theme.Wallpaper" />
-        <activity android:name="ClockPicker" />
+    <activity
+      android:name=".More"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.InputMethod" />
+    <activity
+      android:name=".Signup"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.Transparent" />
+    <activity
+      android:name=".Signin"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.Transparent" />
+    <activity
+      android:name=".Resume"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.Transparent" />
+    <activity
+      android:name=".RegionSelector"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.InputMethod" />
+    <activity
+      android:name=".ConstitutionSelector"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.Transparent" />
+    <activity
+      android:name=".ConstitutionIntro"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.Transparent" />
+    <activity
+      android:name=".Constitution"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.InputMethod" />
+    <activity
+      android:name=".ConstitutionTest"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.InputMethod" />
+    <activity
+      android:name=".Help"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.Toast" />
+    <activity
+      android:name=".Feedback"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.InputMethod"
+      android:windowSoftInputMode="adjustUnspecified|stateAlwaysVisible" />
+    <activity
+      android:name=".SettingsActivity"
+      android:screenOrientation="portrait" />
+    <activity
+      android:name=".SetAlarm"
+      android:label="@string/set_alarm"
+      android:screenOrientation="portrait" />
+    <activity
+      android:name=".SetAlarmCustom"
+      android:screenOrientation="portrait"
+      android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+    <activity
+      android:name=".SetAlarmCycle"
+      android:screenOrientation="portrait" />
+    <activity
+      android:name=".SetAlarmAlert"
+      android:screenOrientation="portrait" />
+    <activity
+      android:name=".SystemRingtone"
+      android:screenOrientation="portrait" />
+    <activity
+      android:name=".AddAlarm"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.Transparent" />
+    <activity
+      android:name=".AlarmAlert"
+      android:excludeFromRecents="true"
+      android:launchMode="singleInstance"
+      android:screenOrientation="portrait"
+      android:taskAffinity=""
+      android:theme="@style/alarm_alert" />
+    <activity
+      android:name=".FileBrower"
+      android:screenOrientation="portrait" />
+    <activity
+      android:name=".Process"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.InputMethod" />
+    <activity
+      android:name=".SolutionEvaluate"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.InputMethod" />
+    <activity
+      android:name=".HourRemind"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.Transparent" />
+    <activity
+      android:name="com.jkydjk.healthier.clock.AcupointSlider"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.Transparent" />
 
-        <receiver android:name="AlarmReceiver" >
-            <intent-filter>
-                <action android:name="com.jkydjk.healthier.clock.ALARM_ALERT" />
-                <action android:name="alarm_killed" />
-                <action android:name="cancel_snooze" />
-            </intent-filter>
-        </receiver>
+    <!--
+         This activity is basically the same as AlarmAlert but with a more
+         generic theme. It also shows as full screen (with status bar) but
+         with the wallpaper background.
+    -->
 
-        <!--
-             This service receives the same intent as AlarmReceiver but it does
-             not respond to the same broadcast. The AlarmReceiver will receive
-             the alert broadcast and will start this service with the same
-             intent. The service plays the alarm alert and vibrates the device.
-             This allows the alert to continue playing even if another activity
-             causes the AlarmAlert activity to pause.
-        -->
-        <service android:name="AlarmKlaxon" >
-            <intent-filter>
-                <action android:name="com.jkydjk.healthier.clock.ALARM_ALERT" />
-            </intent-filter>
-        </service>
+    <activity
+      android:name=".AlarmAlertFullScreen"
+      android:excludeFromRecents="true"
+      android:launchMode="singleInstance"
+      android:screenOrientation="portrait"
+      android:taskAffinity=""
+      android:theme="@style/Theme.Wallpaper" />
+    <activity android:name="ClockPicker" />
 
-        <receiver android:name="AlarmInitReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.TIME_SET" />
-                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
-                <action android:name="android.intent.action.LOCALE_CHANGED" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="AnalogAppWidgetProvider"
-            android:icon="@drawable/ic_widget_analog_clock"
-            android:label="@string/analog_gadget" >
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
+    <receiver android:name="AlarmReceiver" >
+      <intent-filter>
+        <action android:name="com.jkydjk.healthier.clock.ALARM_ALERT" />
+        <action android:name="alarm_killed" />
+        <action android:name="cancel_snooze" />
+      </intent-filter>
+    </receiver>
 
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/analog_appwidget" />
-        </receiver>
-    </application>
+    <!--
+         This service receives the same intent as AlarmReceiver but it does
+         not respond to the same broadcast. The AlarmReceiver will receive
+         the alert broadcast and will start this service with the same
+         intent. The service plays the alarm alert and vibrates the device.
+         This allows the alert to continue playing even if another activity
+         causes the AlarmAlert activity to pause.
+    -->
+    <service android:name="AlarmKlaxon" >
+      <intent-filter>
+        <action android:name="com.jkydjk.healthier.clock.ALARM_ALERT" />
+      </intent-filter>
+    </service>
+
+    <receiver android:name="AlarmInitReceiver" >
+      <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.TIME_SET" />
+        <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+        <action android:name="android.intent.action.LOCALE_CHANGED" />
+      </intent-filter>
+    </receiver>
+    <receiver
+      android:name="AnalogAppWidgetProvider"
+      android:icon="@drawable/ic_widget_analog_clock"
+      android:label="@string/analog_gadget" >
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/analog_appwidget" />
+    </receiver>
+  </application>
 
 </manifest>

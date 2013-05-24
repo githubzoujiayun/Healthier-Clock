@@ -40,7 +40,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
   private Dao<SolutionStepProcess, Integer> solutionStepProcessDao = null;
   private Dao<Acupoint, Integer> acupointDao = null;
   private Dao<AcupointSolutionStep, Integer> acupointSolutionStepDao = null;
-  private Dao<GenericSolution, Integer> genericSolutionIntegerDao = null;
+  private Dao<GenericSolution, String> genericSolutionIntegerDao = null;
 
   public DatabaseHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -162,7 +162,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
      * @return
      * @throws SQLException
      */
-  public Dao<GenericSolution, Integer> getGenericSolutionIntegerDao() throws SQLException{
+  public Dao<GenericSolution, String> getGenericSolutionIntegerDao() throws SQLException{
     if (genericSolutionIntegerDao == null){
       genericSolutionIntegerDao = getDao(GenericSolution.class);
     }

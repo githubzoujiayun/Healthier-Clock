@@ -1,9 +1,12 @@
 package com.jkydjk.healthier.clock;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,12 +28,10 @@ import android.widget.TextView;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.DeleteBuilder;
-import com.jkydjk.healthier.clock.adapter.SolutionListAdapter;
+import com.jkydjk.healthier.clock.adapter.GenericSolutionListAdapter;
 import com.jkydjk.healthier.clock.animation.Cycling;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.GenericSolution;
-import com.jkydjk.healthier.clock.entity.SolarTermSolution;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
@@ -56,7 +57,7 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
 
   DatabaseHelper helper;
 
-  Dao<GenericSolution, Integer> genericSolutionIntegerDao;
+  Dao<GenericSolution, String> genericSolutionIntegerDao;
   List<GenericSolution> genericSolutions;
 
   boolean isUpdatIng = false;
@@ -129,12 +130,21 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
       helper = getHelper();
       try {
         genericSolutionIntegerDao = helper.getGenericSolutionIntegerDao();
-//        genericSolutions = genericSolutionIntegerDao.queryForEq("type", "recipe");
-//        genericSolutionIntegerDao.
 
-//        if (force || genericSolutions.size() == 0) {
+        genericSolutions = new ArrayList<GenericSolution>();
 
-          Log.v("==========");
+        Set<String> solution_ids = sharedPreferences.getStringSet("solution_ids", new HashSet<String>());
+
+        Iterator<String> it =  solution_ids.iterator();
+
+        while (it.hasNext()){
+          String id = it.next();
+          GenericSolution genericSolution = genericSolutionIntegerDao.queryForId(id);
+          Log.v("GenericSolution" + genericSolution);
+          genericSolutions.add(genericSolution);
+        }
+
+        if (force || genericSolutions.size() == 0) {
 
           if (!ActivityHelper.networkIsConnected(SolarTerms.this)) {
             return "网络未连接！";
@@ -146,13 +156,13 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
           JSONObject json = new JSONObject(connect.getResponse());
           JSONArray solutionsArray = json.getJSONArray("solutions");
 
-          HashSet<String> ids = new HashSet<String>();
+          solution_ids.clear();
 
           for (int i = 0; i < solutionsArray.length(); i++) {
-            GenericSolution solution = GenericSolution.parseJsonObject((JSONObject) solutionsArray.get(i));
-            genericSolutionIntegerDao.createOrUpdate(solution);
-            ids.add(String.valueOf(solution.getId()));
-//            genericSolutions.add(solution);
+            GenericSolution genericSolution = GenericSolution.parseJsonObject((JSONObject) solutionsArray.get(i));
+            genericSolutionIntegerDao.createOrUpdate(genericSolution);
+            solution_ids.add(String.valueOf(genericSolution.getId()));
+            genericSolutions.add(genericSolution);
           }
 
           SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -160,9 +170,9 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
 
           Editor editor = sharedPreferences.edit();
           editor.putString("solution_" + solarTermIndex + "_updated_at", dateFormat.format(calendar.getTime()));
-          editor.putStringSet("solution_ids", ids);
+          editor.putStringSet("solution_ids", solution_ids);
           editor.commit();
-//        }
+        }
 
       } catch (Exception e) {
         e.printStackTrace();
@@ -181,16 +191,16 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
         updatedAtTextView.setVisibility(View.VISIBLE);
       }
 
-//      if (solarTermSolutions.size() == 0) {
-//        TextView loadingText = (TextView) loadingPage.findViewById(R.id.loading_text);
-//        loadingText.setText("暂无方案");
-//        loadingPage.findViewById(R.id.loading_icon).setVisibility(View.GONE);
-//      } else {
-//        solutionList.removeAllViewsInLayout();
-//        solutionList.setAdapter(new SolutionListAdapter<SolarTermSolution>(SolarTerms.this, solarTermSolutions));
-//        solutionList.setOnItemClickListener(SolarTerms.this);
-//        solutionList.removeFooterView(loadingPage);
-//      }
+      if (genericSolutions.size() == 0) {
+        TextView loadingText = (TextView) loadingPage.findViewById(R.id.loading_text);
+        loadingText.setText("暂无方案");
+        loadingPage.findViewById(R.id.loading_icon).setVisibility(View.GONE);
+      } else {
+        solutionList.removeAllViewsInLayout();
+        solutionList.setAdapter(new GenericSolutionListAdapter<GenericSolution>(SolarTerms.this, genericSolutions));
+        solutionList.setOnItemClickListener(SolarTerms.this);
+        solutionList.removeFooterView(loadingPage);
+      }
 
       Cycling.stop(loadingView);
       isUpdatIng = false;
@@ -201,9 +211,18 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
    * ListView onItemClick();
    */
   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    SolarTermSolution solution = (SolarTermSolution) parent.getItemAtPosition(position);
-    Intent intent = new Intent(this, SolutionActivity.class);
-    intent.putExtra("solutionId", solution.getSolutionId());
+
+    GenericSolution genericSolution = (GenericSolution) parent.getItemAtPosition(position);
+
+    String solutionType = genericSolution.getType();
+
+    Intent intent = null;
+
+    if (GenericSolution.Type.RECIPE.equals(solutionType)){
+      intent = new Intent(this, RecipeActivity.class);
+    }
+
+    intent.putExtra("generic_solution_id", genericSolution.getId());
     startActivity(intent);
   }
 

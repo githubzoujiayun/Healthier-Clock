@@ -12,7 +12,7 @@ public class RequestRoute {
   
   public static String IMAGE_REQUEST_PATH = "http://jkydjk.com";
   
-  public static String REQUEST_PATH = "http://192.168.2.100:3000/mobile/";
+  public static String REQUEST_PATH = "http://192.168.2.109:3000/mobile/";
 
 //   public static String REQUEST_PATH = "http://jkydjk.com/mobile/";
   

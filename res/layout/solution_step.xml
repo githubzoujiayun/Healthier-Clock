@@ -23,9 +23,9 @@
         style="@style/solution_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:paddingLeft="28dip" />
+        android:layout_toRightOf="@+id/step_no"
+        android:paddingLeft="5dip" />
 
     <RelativeLayout
         android:id="@+id/acupoint_layout"
