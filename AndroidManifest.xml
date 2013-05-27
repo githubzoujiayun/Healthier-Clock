@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.jkydjk.healthier.clock"
-          android:versionCode="1"
+          android:versionCode="2"
           android:versionName="1.1beta" >
 
   <uses-sdk
@@ -30,6 +30,10 @@
     android:label="@string/app_label"
     android:persistent="true"
     android:theme="@style/Theme.Dialog" >
+
+    <meta-data android:value="51a2ccd956240bc9c401b12a" android:name="UMENG_APPKEY"></meta-data>
+    <meta-data android:value="Healthier-Clock" android:name="UMENG_CHANNEL"/>
+
     <provider
       android:name="AlarmProvider"
       android:authorities="com.jkydjk.healthier.clock" />

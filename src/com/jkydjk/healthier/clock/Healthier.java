@@ -18,6 +18,7 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabWidget;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jkydjk.healthier.clock.entity.Version;
@@ -29,6 +30,8 @@ import com.jkydjk.healthier.clock.util.StringUtil;
 import com.jkydjk.healthier.clock.widget.AnimationTabHost;
 import com.jkydjk.healthier.clock.widget.CustomDialog;
 import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
 
 public class Healthier extends TabActivity implements OnTabChangeListener, OnClickListener {
 
@@ -174,10 +177,6 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
     // TODO Auto-generated method stub
     super.onStop();
     EasyTracker.getInstance().activityStop(this); // Add this method.
-  }
-
-  public void update(Context context){
-
   }
 
 }
