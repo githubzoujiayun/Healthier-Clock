@@ -267,6 +267,7 @@
   <string name="recipe">食谱</string>
   <string name="food">食物</string>
   <string name="this_solution_can_not_be_found">找不到这个方案</string>
+  <string name="this_food_can_not_be_found">找不到这个食物</string>
   <string name="favorites">收藏</string>
   <string name="the_solution_no_favorites">您还没有收藏方案</string>
   <string name="cancel">取消</string>

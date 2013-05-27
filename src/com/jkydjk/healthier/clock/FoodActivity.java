@@ -47,6 +47,7 @@ public class FoodActivity extends BaseActivity implements OnClickListener {
   View close;
 
   View loading;
+  ScrollView contentScrollView;
   LinearLayout page;
 
   RelativeLayout pictureWrapper;
@@ -75,6 +76,7 @@ public class FoodActivity extends BaseActivity implements OnClickListener {
     close = findViewById(R.id.close);
     close.setOnClickListener(this);
 
+    contentScrollView = (ScrollView) findViewById(R.id.content_scroll_view);
     page = (LinearLayout)findViewById(R.id.page);
 
     pictureWrapper = (RelativeLayout) findViewById(R.id.picture_wrapper);
@@ -109,12 +111,9 @@ public class FoodActivity extends BaseActivity implements OnClickListener {
       layoutInflater = FoodActivity.this.getLayoutInflater();
 
       try {
-        HttpClientManager connect = new HttpClientManager(FoodActivity.this, RequestRoute.REQUEST_PATH + RequestRoute.SOLUTION_SOLAR_TERM);
+        HttpClientManager connect = new HttpClientManager(FoodActivity.this, RequestRoute.food(foodId));
         connect.execute(ResuestMethod.GET);
-        connect.addParam("id", foodId + "");
-
         responseJSON = new JSONObject(connect.getResponse());
-
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -127,7 +126,10 @@ public class FoodActivity extends BaseActivity implements OnClickListener {
 
       loading.setVisibility(View.GONE);
 
+      contentScrollView.setVisibility(View.VISIBLE);
+
       try {
+
         titleTextView.setText(responseJSON.getString("name"));
 
         JSONArray descriptions = responseJSON.getJSONArray("descriptions");

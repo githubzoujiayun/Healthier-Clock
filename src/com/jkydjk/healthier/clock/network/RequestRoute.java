@@ -187,4 +187,15 @@ public class RequestRoute {
     return REQUEST_PATH + "acupoint/" + id + "/images";
   }
 
+  /**
+   * <pre>
+   * 食物内容
+   * <strong>Route</strong> : food/:id
+   * <strong>Method</strong>: GET
+   * </pre>
+   */
+  public static String food(int id) {
+    return REQUEST_PATH + "food/" + id;
+  }
+
 }
