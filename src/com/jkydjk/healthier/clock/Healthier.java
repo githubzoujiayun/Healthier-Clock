@@ -28,6 +28,7 @@ import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 import com.jkydjk.healthier.clock.widget.AnimationTabHost;
 import com.jkydjk.healthier.clock.widget.CustomDialog;
+import com.umeng.update.UmengUpdateAgent;
 
 public class Healthier extends TabActivity implements OnTabChangeListener, OnClickListener {
 
@@ -55,6 +56,9 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    UmengUpdateAgent.update(this);
+
     setContentView(R.layout.main);
 
     mTabHost = (TabHost) findViewById(android.R.id.tabhost);
@@ -170,6 +174,10 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
     // TODO Auto-generated method stub
     super.onStop();
     EasyTracker.getInstance().activityStop(this); // Add this method.
+  }
+
+  public void update(Context context){
+
   }
 
 }

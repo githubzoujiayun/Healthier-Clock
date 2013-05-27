@@ -44,6 +44,7 @@ import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Alarms;
+import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 
 @SuppressLint("SimpleDateFormat")
@@ -265,6 +266,8 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
           editor.putString("hour_" + hourID + "_updated_at", today);
           editor.commit();
         }
+
+        solutionDao.refresh(solution);
 
       } catch (Exception e) {
         e.printStackTrace();
