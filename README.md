@@ -31,6 +31,9 @@ lightweight and easy-to-use ORM framework for Java. supports sqlite, mysql, work
 #####jackson:
 FasterXML / jackson-core <https://github.com/FasterXML/jackson-core/>
 
+#####自动更新组件
+友盟 <http://www.umeng.com/>
+
 
 ##天气
 ===
