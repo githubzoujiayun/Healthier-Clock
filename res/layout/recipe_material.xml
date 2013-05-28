@@ -6,11 +6,20 @@
 
   <TextView
     android:id="@+id/text_view_name"
+    style="@style/solution_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
-    style="@style/solution_text"
-    android:layout_alignParentLeft="true" />
+    android:layout_alignParentLeft="true"
+    android:ellipsize="end"
+    android:lines="1" />
+
+  <View
+    android:id="@+id/benchmarking"
+    android:layout_width="1.0px"
+    android:layout_height="1.0px"
+    android:layout_centerInParent="true"
+    android:background="@drawable/transparent_background" />
 
   <TextView
     android:id="@+id/text_view_intro"
@@ -18,7 +27,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
-    android:layout_centerHorizontal="true"
+    android:layout_toRightOf="@+id/benchmarking"
     android:ellipsize="end"
     android:lines="1" />
 

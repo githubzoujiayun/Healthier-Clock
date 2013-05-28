@@ -1,162 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:CoustomTextView="http://schemas.android.com/apk/res-auto"
+                xmlns:CoustomTextView="http://schemas.android.com/apk/res-auto"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical" >
+
+  <ScrollView
+    android:id="@+id/content_scroll_view"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center_vertical" >
+    android:background="@android:color/transparent"
+    android:fadingEdge="none"
+    android:listSelector="@android:color/transparent"
+    android:scrollingCache="false" >
 
-    <ScrollView
-        android:id="@+id/content_scroll_view"
+    <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical" >
+
+      <RelativeLayout
+        android:id="@+id/banner_layout"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@android:color/transparent"
-        android:fadingEdge="none"
-        android:listSelector="@android:color/transparent"
-        android:scrollingCache="false" >
+        android:layout_height="wrap_content" >
+
+        <ImageView
+          android:id="@+id/picture"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:adjustViewBounds="true"
+          android:src="@drawable/transparent_banner_image" />
+
+        <ImageView
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignBottom="@+id/picture"
+          android:src="@drawable/picture_bottom_inner_shadow" />
+
+        <Button
+          android:id="@+id/concern_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentRight="true"
+          android:layout_marginBottom="15dip"
+          android:layout_marginLeft="10dip"
+          android:layout_marginRight="10dip"
+          android:layout_marginTop="10dip"
+          android:background="@drawable/shadow_background"
+          android:drawableLeft="@drawable/icon_heart_small_white"
+          android:paddingBottom="5dip"
+          android:paddingLeft="8dip"
+          android:paddingRight="8dip"
+          android:paddingTop="5dip"
+          android:text="@string/special_concern"
+          android:textColor="#FFFFFFFF" />
+        <!-- icon_heart_small_red -->
+
+        <TextView
+          android:id="@+id/concern_tip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignTop="@+id/concern_button"
+          android:layout_toLeftOf="@+id/concern_button"
+          android:background="@drawable/tip_background_left"
+          android:paddingLeft="6dip"
+          android:paddingRight="12dip"
+          android:paddingTop="3dip"
+          android:text="@string/special_concern_tip"
+          android:textColor="#FF000000"
+          android:textSize="12sp"
+          android:visibility="gone" />
 
         <LinearLayout
+          android:id="@+id/updated_at_wrapper"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="12dip"
+          android:layout_marginTop="45dip" >
+
+          <TextView
+            android:id="@+id/updated_at"
+            style="@style/shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" />
+
+          <ImageView
+            android:id="@+id/cycling_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/icon_refresh"
+            android:contentDescription="@string/cycling_loading" />
+        </LinearLayout>
+
+        <RelativeLayout
+          android:id="@+id/hour_remind"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignBottom="@+id/picture"
+          android:layout_marginBottom="18dip"
+          android:layout_marginLeft="100dip"
+          android:background="@drawable/shadow_background_contain_left"
+          android:orientation="vertical" >
+
+          <TextView
+            android:id="@+id/appropriate_text_view"
+            style="@style/hour_tip"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_alignParentLeft="true" />
 
-            <RelativeLayout
-                android:id="@+id/banner_layout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+          <TextView
+            android:id="@+id/taboo_text_view"
+            style="@style/hour_tip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/appropriate_text_view" />
 
-                <ImageView
-                    android:id="@+id/picture"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/transparent_banner_image" />
+          <ImageView
+            android:id="@+id/arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="4dip"
+            android:src="@drawable/setting_arrow" />
+        </RelativeLayout>
+      </RelativeLayout>
 
-                <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/picture"
-                    android:src="@drawable/picture_bottom_inner_shadow" />
-
-                <Button
-                    android:id="@+id/concern_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="15dip"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
-                    android:layout_marginTop="10dip"
-                    android:background="@drawable/shadow_background"
-                    android:drawableLeft="@drawable/icon_heart_small_white"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="8dip"
-                    android:paddingRight="8dip"
-                    android:paddingTop="5dip"
-                    android:text="@string/special_concern"
-                    android:textColor="#FFFFFFFF" />
-                <!-- icon_heart_small_red -->
-
-                <TextView
-                    android:id="@+id/concern_tip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/concern_button"
-                    android:layout_toLeftOf="@+id/concern_button"
-                    android:background="@drawable/tip_background_left"
-                    android:paddingLeft="6dip"
-                    android:paddingRight="12dip"
-                    android:paddingTop="3dip"
-                    android:text="@string/special_concern_tip"
-                    android:textColor="#FF000000"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
-
-                <LinearLayout
-                    android:id="@+id/updated_at_wrapper"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dip"
-                    android:layout_marginTop="45dip" >
-
-                    <TextView
-                        android:id="@+id/updated_at"
-                        style="@style/shadow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical" />
-
-                    <ImageView
-                        android:id="@+id/cycling_loading"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/icon_refresh"
-                        android:contentDescription="@string/cycling_loading" />
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:id="@+id/hour_remind"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/picture"
-                    android:layout_marginBottom="18dip"
-                    android:layout_marginLeft="100dip"
-                    android:background="@drawable/shadow_background_contain_left"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/appropriate_text_view"
-                        style="@style/hour_tip"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true" />
-
-                    <TextView
-                        android:id="@+id/taboo_text_view"
-                        style="@style/hour_tip"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/appropriate_text_view" />
-
-                    <ImageView
-                        android:id="@+id/arrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:padding="4dip"
-                        android:src="@drawable/setting_arrow" />
-                </RelativeLayout>
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/solution_content"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:id="@+id/loading"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:paddingTop="20dip" >
-
-                <include layout="@layout/loading_page" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-
-    <include
-        android:id="@+id/action_toolbar"
-        android:layout_width="wrap_content"
+      <LinearLayout
+        android:id="@+id/solution_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
+
+      <LinearLayout
+        android:id="@+id/loading"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingTop="20dip" >
+
+        <include layout="@layout/loading_page" />
+      </LinearLayout>
+
+      <include layout="@layout/special_statement" />
+
+      <include
+        android:id="@+id/action_toolbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="5dip"
         layout="@layout/solution_actions"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:visibility="gone" />
+    </LinearLayout>
+  </ScrollView>
+
 
 </RelativeLayout>

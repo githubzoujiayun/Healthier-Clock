@@ -1,9 +1,11 @@
 package com.jkydjk.healthier.clock;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
@@ -29,9 +31,11 @@ import android.widget.ViewSwitcher.ViewFactory;
 
 import com.j256.ormlite.dao.Dao;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
+import com.jkydjk.healthier.clock.entity.GenericSolution;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
 import com.jkydjk.healthier.clock.network.RequestRoute;
+import com.jkydjk.healthier.clock.util.StringUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
@@ -39,10 +43,14 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 @SuppressLint("UseSparseArrays")
 public class SolutionStepSlider extends FragmentActivity implements OnClickListener, OnPageChangeListener {
 
-  int solutionId;
+  String solutionId;
   int stepNo;
 
   String title;
@@ -60,23 +68,21 @@ public class SolutionStepSlider extends FragmentActivity implements OnClickListe
 
   Button back;
 
-  Solution solution;
-  List<SolutionStep> steps;
-
   DatabaseHelper helper;
-
-  Dao<Solution, Integer> solutionDao;
-  Dao<SolutionStep, Integer> solutionStepDao;
+  Dao<GenericSolution, String> genericSolutionStringDao;
+  GenericSolution genericSolution;
+  List<SolutionStep> steps;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.solution_step_slider);
 
-    solutionId = getIntent().getIntExtra("solutionId", -1);
+    solutionId = getIntent().getStringExtra("solutionId");
+
     stepNo = getIntent().getIntExtra("stepNo", -1);
 
-    if (solutionId == -1 || stepNo == -1)
+    if (solutionId == null || stepNo == -1)
       finish();
 
     titleTextView = (TextView) findViewById(R.id.title_text);
@@ -99,8 +105,8 @@ public class SolutionStepSlider extends FragmentActivity implements OnClickListe
     protected String doInBackground(String... params) {
       try {
         helper = new DatabaseHelper(SolutionStepSlider.this);
-        solutionStepDao = helper.getSolutionStepDao();
-        steps = solutionStepDao.queryForEq("solution_id", solutionId);
+        genericSolutionStringDao = helper.getGenericSolutionStringDao();
+        genericSolution = genericSolutionStringDao.queryForId(solutionId);
       } catch (SQLException e) {
         e.printStackTrace();
       }
@@ -109,8 +115,22 @@ public class SolutionStepSlider extends FragmentActivity implements OnClickListe
 
     @Override
     protected void onPostExecute(String result) {
-      if (steps == null || steps.size() == 0)
+      if (genericSolution == null)
         return;
+
+      try {
+        JSONObject solutionJSON = new JSONObject(genericSolution.getData());
+
+        JSONArray stepsArray = solutionJSON.getJSONArray("steps");
+
+        steps = new ArrayList<SolutionStep>();
+        
+        for (int i = 0; i < stepsArray.length(); i++) {
+          steps.add(SolutionStep.parseJsonObject((JSONObject) stepsArray.get(i)));
+        }
+      } catch (JSONException e) {
+        e.printStackTrace();
+      }
 
       if (steps.size() > 1) {
         imageViews = new ImageView[steps.size()];

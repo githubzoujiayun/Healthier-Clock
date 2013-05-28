@@ -43,7 +43,7 @@
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:orientation="vertical"
-      android:paddingBottom="50dip" >
+      android:paddingBottom="5dip" >
 
       <TextView
         android:id="@+id/title"
@@ -148,40 +148,39 @@
 
       </LinearLayout>
 
+      <LinearLayout
+        android:id="@+id/action_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dip"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+        <ImageButton
+          android:id="@+id/favorite"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@android:color/transparent"
+          android:src="@drawable/action_favorite" />
+
+        <ImageButton
+          android:id="@+id/evaluate"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@android:color/transparent"
+          android:src="@drawable/action_evaluate" />
+
+        <ImageButton
+          android:id="@+id/forwarding"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@android:color/transparent"
+          android:src="@drawable/action_forwarding" />
+      </LinearLayout>
+
     </LinearLayout>
   </ScrollView>
-
-  <LinearLayout
-    android:id="@+id/action_toolbar"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginBottom="5dip"
-    android:gravity="center_horizontal"
-    android:orientation="horizontal" >
-
-    <ImageButton
-      android:id="@+id/favorite"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:background="@android:color/transparent"
-      android:src="@drawable/action_favorite" />
-
-    <ImageButton
-      android:id="@+id/evaluate"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:background="@android:color/transparent"
-      android:src="@drawable/action_evaluate" />
-
-    <ImageButton
-      android:id="@+id/forwarding"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:background="@android:color/transparent"
-      android:src="@drawable/action_forwarding" />
-  </LinearLayout>
 
   <!-- 标题栏下阴影 -->
 

@@ -15,6 +15,7 @@ import com.jkydjk.healthier.clock.util.StringUtil;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.sax.TextElementListener;
 import android.text.util.Linkify;
@@ -94,68 +95,65 @@ public class Signup extends BaseActivity implements OnClickListener {
 
     case R.id.enter:
       if (isCheck()) {
-        User user = submit();
-        if (user != null) {
-          Intent intent = new Intent(this, Resume.class);
-          startActivity(intent);
-          finish();
-        } else {
-          Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
-        }
+        new Task().execute();
       } else {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
       }
       break;
-
     }
   }
 
-  /**
-   * 提交注册信息
-   * 
-   * @return
-   */
-  private User submit() {
-    String strUsername = username.getText().toString();
-    String strEmail = email.getText().toString();
-    String strPassword = password.getText().toString();
-
+  class Task extends AsyncTask<String, Integer, String> {
     User user = null;
 
-    HttpClientManager httpClientManager = new HttpClientManager(this, RequestRoute.USER_SIGNUP);
-
-    httpClientManager.addParam("username", strUsername);
-    httpClientManager.addParam("email", strEmail);
-    httpClientManager.addParam("password", strPassword);
-
-    try {
-      httpClientManager.execute(ResuestMethod.POST);
-
-      String result = httpClientManager.getResponse();
-
-      JSONObject json = new JSONObject(result);
-
-      if ("1".equals(json.getString("status"))) {
-
-        user = User.parse(json.getJSONObject("user"));
-
-        User.serializable(Signup.this, sharedPreference, user);
-
-      } else {
-
-        user = null;
-        
-        errorMessage = json.getString("message");
-        
-        Log.d("signup=", errorMessage);
-
-      }
-    } catch (Exception e) {
-      user = null;
-      errorMessage = "网络访问异常";
-      e.printStackTrace();
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
     }
-    return user;
+
+    @Override
+    protected String doInBackground(String... params) {
+      String strUsername = username.getText().toString();
+      String strEmail = email.getText().toString();
+      String strPassword = password.getText().toString();
+
+      HttpClientManager httpClientManager = new HttpClientManager(Signup.this, RequestRoute.USER_SIGNUP);
+
+      httpClientManager.addParam("username", strUsername);
+      httpClientManager.addParam("email", strEmail);
+      httpClientManager.addParam("password", strPassword);
+
+      try {
+        httpClientManager.execute(ResuestMethod.POST);
+        String result = httpClientManager.getResponse();
+        JSONObject json = new JSONObject(result);
+
+        if ("1".equals(json.getString("status"))) {
+          user = User.parse(json.getJSONObject("user"));
+          User.serializable(Signup.this, sharedPreference, user);
+        } else {
+          errorMessage = json.getString("message");
+        }
+      } catch (Exception e) {
+        errorMessage = "网络访问异常";
+        e.printStackTrace();
+      }
+
+      return null;
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+      super.onPostExecute(result);
+
+      if (user != null) {
+        Intent intent = new Intent(Signup.this, Resume.class);
+        startActivity(intent);
+        finish();
+      } else {
+        Toast.makeText(Signup.this, errorMessage, Toast.LENGTH_SHORT).show();
+      }
+    }
   }
 
 }

@@ -36,7 +36,6 @@ import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
-import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.Lunar;
 
 @SuppressLint("SimpleDateFormat")
@@ -57,7 +56,7 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
 
   DatabaseHelper helper;
 
-  Dao<GenericSolution, String> genericSolutionIntegerDao;
+  Dao<GenericSolution, String> genericSolutionStringDao;
   List<GenericSolution> genericSolutions;
 
   boolean isUpdatIng = false;
@@ -129,7 +128,7 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
     protected String doInBackground(String... params) {
       helper = getHelper();
       try {
-        genericSolutionIntegerDao = helper.getGenericSolutionIntegerDao();
+        genericSolutionStringDao = helper.getGenericSolutionStringDao();
 
         genericSolutions = new ArrayList<GenericSolution>();
 
@@ -139,12 +138,13 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
 
         while (it.hasNext()){
           String id = it.next();
-          GenericSolution genericSolution = genericSolutionIntegerDao.queryForId(id);
-          Log.v("GenericSolution" + genericSolution);
+          GenericSolution genericSolution = genericSolutionStringDao.queryForId(id);
           genericSolutions.add(genericSolution);
         }
 
         if (force || genericSolutions.size() == 0) {
+
+          genericSolutions.clear();
 
           if (!ActivityHelper.networkIsConnected(SolarTerms.this)) {
             return "网络未连接！";
@@ -160,7 +160,13 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
 
           for (int i = 0; i < solutionsArray.length(); i++) {
             GenericSolution genericSolution = GenericSolution.parseJsonObject((JSONObject) solutionsArray.get(i));
-            genericSolutionIntegerDao.createOrUpdate(genericSolution);
+
+            GenericSolution genericSolutionTemp = genericSolutionStringDao.queryForId(genericSolution.getId());
+            if(genericSolutionTemp != null){
+              genericSolution.setFavorited(genericSolutionTemp.isFavorited());
+            }
+
+            genericSolutionStringDao.createOrUpdate(genericSolution);
             solution_ids.add(String.valueOf(genericSolution.getId()));
             genericSolutions.add(genericSolution);
           }

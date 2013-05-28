@@ -13,8 +13,10 @@ import android.widget.ListView;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
+import com.jkydjk.healthier.clock.adapter.GenericSolutionListAdapter;
 import com.jkydjk.healthier.clock.adapter.SolutionListAdapter;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
+import com.jkydjk.healthier.clock.entity.GenericSolution;
 import com.jkydjk.healthier.clock.entity.Solution;
 
 public class Favorites extends OrmLiteBaseActivity<DatabaseHelper> implements OnItemClickListener {
@@ -76,6 +78,9 @@ public class Favorites extends OrmLiteBaseActivity<DatabaseHelper> implements On
       } else {
         noFavoritesView.setVisibility(View.GONE);
         solutionList.setAdapter(new SolutionListAdapter<Solution>(Favorites.this, solutions));
+
+//        solutionList.setAdapter(new GenericSolutionListAdapter<GenericSolution>(Favorites.this, solutions));
+
         solutionList.setOnItemClickListener(Favorites.this);
         solutionList.setVisibility(View.VISIBLE);
       }

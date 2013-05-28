@@ -3,9 +3,9 @@ package com.jkydjk.healthier.clock;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Iterator;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
@@ -18,10 +18,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -32,10 +30,10 @@ import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.ForeignCollection;
 import com.jkydjk.healthier.clock.animation.Cycling;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Acupoint;
+import com.jkydjk.healthier.clock.entity.GenericSolution;
 import com.jkydjk.healthier.clock.entity.Hour;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
@@ -48,7 +46,7 @@ import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 
 @SuppressLint("SimpleDateFormat")
-public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements OnClickListener, OnTouchListener {
+public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements OnClickListener {
 
   ScrollView contentScrollView;
 
@@ -67,7 +65,6 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
   LinearLayout solutionContentView;
 
   View actionsToolbar;
-  View todoButton;
   View actionsLayout;
 
   ImageButton favoriteImageButton;
@@ -82,14 +79,14 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
   SharedPreferences sharedPreferences;
 
   DatabaseHelper helper;
-  Dao<Solution, Integer> solutionDao;
-  Dao<SolutionStep, Integer> solutionStepDao;
   Dao<Acupoint, Integer> acupointDao;
+
+  Dao<GenericSolution, String> genericSolutionStringDao;
+  GenericSolution genericSolution;
 
   Hour hour;
   int hourID;
   int solutionId;
-  Solution solution;
 
   boolean isUpdatIng = false;
 
@@ -108,7 +105,6 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
     hour = Hour.find(ChineseHour.this, hourID);
 
     contentScrollView = (ScrollView) findViewById(R.id.content_scroll_view);
-    contentScrollView.setOnTouchListener(this);
 
     picture = (ImageView) findViewById(R.id.picture);
     picture.setImageResource(ActivityHelper.getImageResourceID(this, "hour_" + hourID));
@@ -136,9 +132,6 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
     actionsToolbar = findViewById(R.id.action_toolbar);
 
-    todoButton = findViewById(R.id.todo_button);
-    todoButton.setOnClickListener(this);
-
     actionsLayout = findViewById(R.id.actions_layout);
 
     favoriteImageButton = (ImageButton) findViewById(R.id.favorite);
@@ -163,16 +156,15 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
   @Override
   protected void onResume() {
-    if (solution != null) {
-      alarmImageButton.setImageResource(solution.isAlarm(this) ? R.drawable.action_alarm_on : R.drawable.action_alarm);
-
-      try {
-        solutionDao.refresh(solution);
-        favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
+//    if (solution != null) {
+//      alarmImageButton.setImageResource(solution.isAlarm(this) ? R.drawable.action_alarm_on : R.drawable.action_alarm);
+//
+//      try {
+//        favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//    }
     super.onResume();
   }
 
@@ -208,22 +200,20 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
       layoutInflater = ChineseHour.this.getLayoutInflater();
 
-      solutionId = sharedPreferences.getInt("hour_" + hourID, -1);
+      String genericSolutionId = sharedPreferences.getString("hour_" + hourID, "");
+
+      helper = getHelper();
 
       try {
-        helper = getHelper();
 
-        solutionDao = helper.getSolutionDao();
-        solutionStepDao = helper.getSolutionStepDao();
+        genericSolutionStringDao = helper.getGenericSolutionStringDao();
+
         acupointDao = helper.getAcupointDao();
 
-        if (force || solutionId == -1) {
-          solution = null;
-        } else {
-          solution = solutionDao.queryForId(solutionId);
-        }
+        genericSolution = genericSolutionStringDao.queryForId(genericSolutionId);
 
-        if (solution == null) {
+        if (force || genericSolution == null) {
+
           if (!ActivityHelper.networkIsConnected(ChineseHour.this)) {
             return "网络未连接！";
           }
@@ -237,43 +227,28 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
           JSONObject solutionJSON = json.getJSONObject("solution");
 
-          solution = Solution.parseJsonObject(solutionJSON);
+          boolean isFavorited = (genericSolution != null && genericSolution.isFavorited()) ? true : false;
 
-          solutionDao.createIfNotExists(solution);
-          solutionDao.refresh(solution);
+          genericSolution = GenericSolution.parseJsonObject(solutionJSON);
 
-          JSONArray stepsArray = solutionJSON.getJSONArray("steps");
+          genericSolution.setFavorited(isFavorited);
 
-          ForeignCollection<SolutionStep> steps = solutionDao.getEmptyForeignCollection("steps");
-
-          for (int i = 0; i < stepsArray.length(); i++) {
-            SolutionStep step = SolutionStep.parseJsonObject((JSONObject) stepsArray.get(i));
-            step.setSolution(solution);
-            solutionStepDao.delete(step);
-            // solutionStepDao.createOrUpdate(step);
-            steps.add(step);
-          }
-
-          solution.setSteps(steps);
+          genericSolutionStringDao.createOrUpdate(genericSolution);
 
           SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
           Calendar calendar = Calendar.getInstance();
           String today = dateFormat.format(calendar.getTime());
 
           Editor editor = sharedPreferences.edit();
-
-          editor.putInt("hour_" + hourID, solution.getId());
+          editor.putString("hour_" + hourID, genericSolution.getId());
           editor.putString("hour_" + hourID + "_updated_at", today);
           editor.commit();
         }
-
-        solutionDao.refresh(solution);
 
       } catch (Exception e) {
         e.printStackTrace();
         return "网络访问异常!";
       }
-
       return null;
     }
 
@@ -291,39 +266,30 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
         updatedAtTextView.setVisibility(View.VISIBLE);
       }
 
-      if (solution != null) {
+      if (genericSolution != null) {
 
         loading.setVisibility(View.GONE);
 
-        View solutionView = layoutInflater.inflate(R.layout.hour_solution, null);
+        solutionContentView.removeAllViews();
+
+        LinearLayout solutionView = (LinearLayout) layoutInflater.inflate(R.layout.hour_solution, null);
 
         TextView titleTextView = (TextView) solutionView.findViewById(R.id.title);
-        titleTextView.setText(solution.getTitle());
+        titleTextView.setText(genericSolution.getTitle());
 
         TextView efficacy = (TextView) solutionView.findViewById(R.id.efficacy);
-        efficacy.setText(solution.getEffect());
+        efficacy.setText(genericSolution.getIntro());
 
-        TextView tips = (TextView) solutionView.findViewById(R.id.tips);
-        tips.setText(solution.getNote());
+        try {
+          JSONObject solutionJSON = new JSONObject(genericSolution.getData());
 
-        if (StringUtil.isEmpty(solution.getNote())) {
-          tips.setVisibility(View.GONE);
-          solutionView.findViewById(R.id.tips_title).setVisibility(View.GONE);
-        } else {
-          tips.setVisibility(View.VISIBLE);
-          solutionView.findViewById(R.id.tips_title).setVisibility(View.VISIBLE);
-        }
+          JSONArray stepsArray = solutionJSON.getJSONArray("steps");
 
-        LinearLayout stepsView = (LinearLayout) solutionView.findViewById(R.id.steps_view);
+          LinearLayout stepsView = (LinearLayout) solutionView.findViewById(R.id.steps_view);
 
-        ForeignCollection<SolutionStep> steps = solution.getSteps();
+          for (int i = 0; i < stepsArray.length(); i++) {
 
-        if (steps != null) {
-
-          Iterator<SolutionStep> it = steps.iterator();
-
-          while (it.hasNext()) {
-            final SolutionStep step = (SolutionStep) it.next();
+            final SolutionStep step = SolutionStep.parseJsonObject((JSONObject) stepsArray.get(i));
 
             View stepView = layoutInflater.inflate(R.layout.solution_step, null);
 
@@ -336,7 +302,7 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
             stepContentTextView.setOnClickListener(new OnClickListener() {
               public void onClick(View v) {
                 Intent intent = new Intent(ChineseHour.this, SolutionStepSlider.class);
-                intent.putExtra("solutionId", solution.getId());
+                intent.putExtra("solutionId", genericSolution.getId());
                 intent.putExtra("stepNo", step.getNo());
                 startActivity(intent);
               }
@@ -353,22 +319,38 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
               });
               acupointLayout.setVisibility(View.VISIBLE);
             }
-
             stepsView.addView(stepView);
           }
+
+          JSONArray descriptions = solutionJSON.getJSONArray("descriptions");
+          for (int i = 0; i < descriptions.length(); i++) {
+            JSONArray field = (JSONArray) descriptions.get(i);
+            String title = (String) field.get(0);
+            String content = (String) field.get(1);
+            if (!StringUtil.isEmpty(content)) {
+              View contentItemView = layoutInflater.inflate(R.layout.content_item, null, false);
+              TextView itemTitleTextView = (TextView) contentItemView.findViewById(R.id.title);
+              itemTitleTextView.setText(title);
+              TextView contentTextView = (TextView) contentItemView.findViewById(R.id.content);
+              contentTextView.setText(content);
+              solutionView.addView(contentItemView);
+            }
+          }
+
+        } catch (JSONException e) {
+          e.printStackTrace();
         }
 
-        solutionContentView.removeAllViews();
         solutionContentView.addView(solutionView);
         solutionContentView.setVisibility(View.VISIBLE);
 
         actionsToolbar.setVisibility(View.VISIBLE);
 
-        favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
+        favoriteImageButton.setImageResource(genericSolution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
 
-        if (solution.isAlarm(ChineseHour.this)) {
-          alarmImageButton.setImageResource(R.drawable.action_alarm_on);
-        }
+//        if (solution.isAlarm(ChineseHour.this)) {
+//          alarmImageButton.setImageResource(R.drawable.action_alarm_on);
+//        }
 
       } else {
         loading.findViewById(R.id.loading_icon).setVisibility(View.GONE);
@@ -405,28 +387,24 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       startActivity(intent);
       break;
     }
-    case R.id.todo_button:
-      v.setVisibility(View.GONE);
-      actionsLayout.setVisibility(View.VISIBLE);
-      break;
 
     case R.id.favorite:
       try {
-        solution.setFavorited(!solution.isFavorited());
-        solutionDao.update(solution);
-        favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
+        genericSolution.setFavorited(!genericSolution.isFavorited());
+        genericSolutionStringDao.update(genericSolution);
+        favoriteImageButton.setImageResource(genericSolution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
       } catch (SQLException e) {
         e.printStackTrace();
       }
       break;
 
     case R.id.alarm: {
-      if (!solution.isAlarm(this)) {
-        long time = Alarms.addSolutionAlarm(this, solution);
-        if (time > 0)
-          alarmImageButton.setImageResource(R.drawable.action_alarm_on);
-        Alarms.popAlarmSetToast(this, time);
-      }
+//      if (!genericSolution.isAlarm(this)) {
+//        long time = Alarms.addSolutionAlarm(this, genericSolution);
+//        if (time > 0)
+//          alarmImageButton.setImageResource(R.drawable.action_alarm_on);
+//        Alarms.popAlarmSetToast(this, time);
+//      }
       break;
     }
 
@@ -443,7 +421,7 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       }
 
       Intent intent = new Intent(this, Process.class);
-      intent.putExtra("solutionId", solution.getId());
+      intent.putExtra("solutionId", genericSolution.getId());
       startActivity(intent);
       break;
     }
@@ -460,7 +438,7 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       }
 
       Intent intent = new Intent(this, SolutionEvaluate.class);
-      intent.putExtra("solutionId", solution.getId());
+      intent.putExtra("solutionId", genericSolution.getId());
       startActivity(intent);
       break;
     }
@@ -469,7 +447,7 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       Intent intent = new Intent(Intent.ACTION_SEND);
       intent.setType("text/plain");
       intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
-      intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_solution), solution.getTitle(), solution.getEffect()));
+      intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_solution), genericSolution.getTitle(), genericSolution.getIntro()));
       startActivity(Intent.createChooser(intent, getTitle()));
       break;
     }
@@ -478,15 +456,6 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       break;
     }
 
-  }
-
-  /**
-   * 触摸事件处理
-   */
-  public boolean onTouch(View v, MotionEvent event) {
-    todoButton.setVisibility(View.VISIBLE);
-    actionsLayout.setVisibility(View.INVISIBLE);
-    return false;
   }
 
   /**

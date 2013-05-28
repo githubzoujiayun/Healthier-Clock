@@ -21,17 +21,11 @@ Android-Universal-Image-Loader
 Lightweight Object Relational Mapping (ORM) Java Package
 <http://ormlite.com/>
 
-######orman:
-lightweight and easy-to-use ORM framework for Java. supports sqlite, mysql, works on Android.
-<https://github.com/ahmetalpbalkan/orman>
-
-<http://ahmetalpbalkan.com/blog/real-world-database-design-with-orman-framework/>
-
 
 #####jackson:
 FasterXML / jackson-core <https://github.com/FasterXML/jackson-core/>
 
-#####自动更新组件
+####自动更新组件
 友盟 <http://www.umeng.com/>
 
 

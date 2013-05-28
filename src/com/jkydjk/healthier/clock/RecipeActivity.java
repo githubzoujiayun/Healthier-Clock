@@ -1,7 +1,6 @@
 package com.jkydjk.healthier.clock;
 
 import java.sql.SQLException;
-import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,16 +24,10 @@ import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.ForeignCollection;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.GenericSolution;
-import com.jkydjk.healthier.clock.entity.Solution;
-import com.jkydjk.healthier.clock.entity.SolutionStep;
-import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
-import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
-import com.jkydjk.healthier.clock.util.Alarms;
 import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.StringUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -155,7 +148,7 @@ public class RecipeActivity extends OrmLiteBaseActivity<DatabaseHelper> implemen
       layoutInflater = RecipeActivity.this.getLayoutInflater();
       helper = getHelper();
       try {
-        genericSolutionStringDao = helper.getGenericSolutionIntegerDao();
+        genericSolutionStringDao = helper.getGenericSolutionStringDao();
         genericSolution = genericSolutionStringDao.queryForId(solutionId);
       } catch (Exception e) {
         e.printStackTrace();
