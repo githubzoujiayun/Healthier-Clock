@@ -20,11 +20,11 @@ Android-Universal-Image-Loader
 > 
 > **ActiveAndroid:** https://github.com/pardom/ActiveAndroid
 
-####XML
-FasterXML / jackson-core <https://github.com/FasterXML/jackson-core/>
+####XML:
+**FasterXML** / jackson-core <https://github.com/FasterXML/jackson-core/>
 
-####自动更新组件
-友盟 <http://www.umeng.com/>
+####自动更新组件:
+**友盟** <http://www.umeng.com/>
 
 
 ##天气
