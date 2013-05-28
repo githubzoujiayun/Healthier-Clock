@@ -124,7 +124,7 @@ public class SolutionStepSlider extends FragmentActivity implements OnClickListe
         JSONArray stepsArray = solutionJSON.getJSONArray("steps");
 
         steps = new ArrayList<SolutionStep>();
-        
+
         for (int i = 0; i < stepsArray.length(); i++) {
           steps.add(SolutionStep.parseJsonObject((JSONObject) stepsArray.get(i)));
         }

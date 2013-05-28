@@ -7,22 +7,20 @@
 ===
 
 ##libs
-===
-#####Google Analytics:
+
+####Google Analytics:
 <https://developers.google.com/analytics/devguides/collection/android/>
 
-#####图片加载:
+####图片加载:
 Android-Universal-Image-Loader
 <https://github.com/nostra13/Android-Universal-Image-Loader>
 
-#####ORM:
+####ORM:
+> **OrmLite:** Lightweight Object Relational Mapping (ORM) Java Package <http://ormlite.com/>
+> 
+> **ActiveAndroid:** https://github.com/pardom/ActiveAndroid
 
-######OrmLite:
-Lightweight Object Relational Mapping (ORM) Java Package
-<http://ormlite.com/>
-
-
-#####jackson:
+####XML
 FasterXML / jackson-core <https://github.com/FasterXML/jackson-core/>
 
 ####自动更新组件
@@ -30,7 +28,7 @@ FasterXML / jackson-core <https://github.com/FasterXML/jackson-core/>
 
 
 ##天气
-===
+
 #####天气数据:
 中国天气 <http://www.weather.com.cn/>
 
