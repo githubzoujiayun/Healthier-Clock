@@ -1,6 +1,7 @@
 package com.jkydjk.healthier.clock;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
@@ -26,8 +27,8 @@ public class Favorites extends OrmLiteBaseActivity<DatabaseHelper> implements On
   View loading;
 
   DatabaseHelper helper;
-  Dao<Solution, Integer> solutionDao;
-  List<Solution> solutions;
+  Dao<GenericSolution, String> genericSolutionStringDao;
+  List<GenericSolution> genericSolutions;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +60,8 @@ public class Favorites extends OrmLiteBaseActivity<DatabaseHelper> implements On
     protected String doInBackground(String... params) {
       helper = getHelper();
       try {
-        solutionDao = helper.getSolutionDao();
-        solutions = solutionDao.queryForEq("favorited", true);
+        genericSolutionStringDao = helper.getGenericSolutionStringDao();
+        genericSolutions = genericSolutionStringDao.queryForEq("favorited", true);
       } catch (SQLException e) {
         e.printStackTrace();
       }
@@ -71,13 +72,13 @@ public class Favorites extends OrmLiteBaseActivity<DatabaseHelper> implements On
     protected void onPostExecute(String result) {
       super.onPostExecute(result);
       loading.setVisibility(View.GONE);
-      if (solutions.size() == 0) {
+      if (genericSolutions.size() == 0) {
         noFavoritesView.setVisibility(View.VISIBLE);
         solutionList.removeAllViewsInLayout();
         solutionList.setVisibility(View.GONE);
       } else {
         noFavoritesView.setVisibility(View.GONE);
-        solutionList.setAdapter(new SolutionListAdapter<Solution>(Favorites.this, solutions));
+        solutionList.setAdapter(new GenericSolutionListAdapter<GenericSolution>(Favorites.this, genericSolutions));
 
 //        solutionList.setAdapter(new GenericSolutionListAdapter<GenericSolution>(Favorites.this, solutions));
 
@@ -88,9 +89,22 @@ public class Favorites extends OrmLiteBaseActivity<DatabaseHelper> implements On
   }
 
   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    Solution solution = (Solution) parent.getItemAtPosition(position);
-    Intent intent = new Intent(this, SolutionActivity.class);
-    intent.putExtra("solutionId", solution.getId());
+    GenericSolution genericSolution = (GenericSolution) parent.getItemAtPosition(position);
+
+    String solutionType = genericSolution.getType();
+
+    Intent intent = null;
+
+    if (GenericSolution.Type.RECIPE.equals(solutionType)){
+      intent = new Intent(this, RecipeActivity.class);
+    }
+
+    if (GenericSolution.Type.MASSAGE_SOLUTION.equals(solutionType) || GenericSolution.Type.MOXIBUSTION_SOLUTION.equals(solutionType)
+      || GenericSolution.Type.CUPPING_SOLUTION.equals(solutionType) || GenericSolution.Type.SKIN_SCRAPING_SOLUTION.equals(solutionType)){
+      intent = new Intent(this, SolutionActivity.class);
+    }
+
+    intent.putExtra("generic_solution_id", genericSolution.getId());
     startActivity(intent);
   }
 

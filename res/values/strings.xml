@@ -233,6 +233,8 @@
     <item>2</item>
   </string-array>
 
+  <string name="alarm_is_not_created_successfully">闹铃未创建成功</string>
+
   <string name="chinese_hour">时辰</string>
 
   <string name="solar_terms">节气</string>

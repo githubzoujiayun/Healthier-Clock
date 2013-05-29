@@ -26,14 +26,18 @@ import android.widget.Toast;
 import com.j256.ormlite.dao.Dao;
 import com.jkydjk.healthier.clock.AlarmClock;
 import com.jkydjk.healthier.clock.R;
+import com.jkydjk.healthier.clock.SolutionActivity;
 import com.jkydjk.healthier.clock.ToastMaster;
 import com.jkydjk.healthier.clock.database.AlarmDatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Alarm;
 import com.jkydjk.healthier.clock.entity.DaysOfWeek;
+import com.jkydjk.healthier.clock.entity.GenericSolution;
 import com.jkydjk.healthier.clock.entity.Hour;
 import com.jkydjk.healthier.clock.entity.Ids;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.columns.AlarmColumns;
+
+import org.json.JSONObject;
 
 /**
  * The Alarms provider supplies info about Alarm Clock settings
@@ -150,7 +154,7 @@ public class Alarms {
 
   /**
    * Queries all alarms
-   * 
+   *
    * @return cursor over all alarms
    */
   public static Cursor getAlarmsCursor(ContentResolver contentResolver) {
@@ -180,26 +184,17 @@ public class Alarms {
 
   /**
    * A convenience method to set an alarm in the Alarms content provider.
-   * 
+   * @param context
    * @param id
-   *          corresponds to the _id column
+   * @param label
    * @param enabled
-   *          corresponds to the ENABLED column
    * @param hour
-   *          corresponds to the HOUR column
    * @param minutes
-   *          corresponds to the MINUTES column
    * @param daysOfWeek
-   *          corresponds to the DAYS_OF_WEEK column
-   * @param time
-   *          corresponds to the ALARM_TIME column
    * @param vibrate
-   *          corresponds to the VIBRATE column
    * @param alert
-   *          corresponds to the ALERT column
    * @param remark
-   *          corresponds to the REMARK column
-   * @return Time when the alarm will fire.
+   * @return
    */
   public static long setAlarm(Context context, int id, String label, boolean enabled, int hour, int minutes, DaysOfWeek daysOfWeek, boolean vibrate, String alert, String remark) {
 
@@ -246,7 +241,7 @@ public class Alarms {
 
   /**
    * A convenience method to enable or disable an alarm.
-   * 
+   *
    * @param id
    *          corresponds to the _id column
    * @param enabled
@@ -352,7 +347,7 @@ public class Alarms {
   /**
    * Sets alert in AlarmManger and StatusBar. This is what will actually launch
    * the alert when the alarm triggers.
-   * 
+   *
    * @param alarm
    *          Alarm.
    * @param atTimeInMillis
@@ -395,9 +390,7 @@ public class Alarms {
 
   /**
    * Disables alert in AlarmManger and StatusBar.
-   * 
-   * @param acupointId
-   *          Alarm ID.
+   * @param context
    */
   static void disableAlert(Context context) {
     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -454,7 +447,7 @@ public class Alarms {
 
   /**
    * If there is a snooze set, enable it in AlarmManager
-   * 
+   *
    * @return true if snooze is set
    */
   private static boolean enableSnoozeAlert(final Context context) {
@@ -490,7 +483,7 @@ public class Alarms {
   /**
    * Given an alarm in hours and minutes, return a time suitable for setting in
    * AlarmManager.
-   * 
+   *
    * @param hour
    *          Always in 24 hour 0-23
    * @param minute
@@ -563,7 +556,7 @@ public class Alarms {
 
   /**
    * 显示Toast提示
-   * 
+   *
    * @param context
    * @param timeInMillis
    */
@@ -601,47 +594,63 @@ public class Alarms {
   /**
    * 增加方案闹钟
    */
-  public static long addSolutionAlarm(Context context, Solution solution) {
+  public static long addSolutionAlarm(Context context, GenericSolution genericSolution) {
 
-    long timeInMillis = 0;
+    String solutionType = genericSolution.getType();
 
-    AlarmDatabaseHelper help = new AlarmDatabaseHelper(context);
+    if (GenericSolution.Type.MASSAGE_SOLUTION.equals(solutionType) || GenericSolution.Type.MOXIBUSTION_SOLUTION.equals(solutionType)
+      || GenericSolution.Type.CUPPING_SOLUTION.equals(solutionType) || GenericSolution.Type.SKIN_SCRAPING_SOLUTION.equals(solutionType)){
 
-    try {
-      Dao<Alarm, Integer> alarmDao = help.getAlarmDao();
+      long timeInMillis = 0;
 
-      Alarm alarm = new Alarm();
+      AlarmDatabaseHelper help = new AlarmDatabaseHelper(context);
 
-      alarm.setCategory(Alarm.CATEGORY_SOLUTION);
-      alarm.setCategoryAbleId(solution.getId());
-      alarm.setLabel(solution.getTitle());
-      alarm.setHour(solution.getStartedAt());
+      try {
+        Dao<Alarm, Integer> alarmDao = help.getAlarmDao();
+
+        Alarm alarm = new Alarm();
+
+        alarm.setCategory(Alarm.CATEGORY_SOLUTION);
+
+        alarm.setCategoryAbleId(genericSolution.getId());
+
+        alarm.setLabel(genericSolution.getTitle());
+
+        JSONObject solutionJSON = new JSONObject(genericSolution.getData());
+
+        int startedAt = solutionJSON.getInt("started_at");
+
+        alarm.setHour(startedAt);
 //      alarm.setMinutes(0);
-      alarm.setEnabled(true);
-      alarm.setCycle(DaysOfWeek.REPEATING_EVERY_DAYS);
-      alarm.setVibrate(true);
-      // alarm.setRing(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString());
-      alarm.setRemark(solution.getEffect());
+        alarm.setEnabled(true);
+        alarm.setCycle(DaysOfWeek.REPEATING_EVERY_DAYS);
+        alarm.setVibrate(true);
+        // alarm.setRing(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString());
+        alarm.setRemark(genericSolution.getIntro());
 
-      alarmDao.create(alarm);
+        alarmDao.create(alarm);
 
-      timeInMillis = calculateAlarm(alarm.getHour(), alarm.getMinutes(), new DaysOfWeek(alarm.getCycle())).getTimeInMillis();
+        timeInMillis = calculateAlarm(alarm.getHour(), alarm.getMinutes(), new DaysOfWeek(alarm.getCycle())).getTimeInMillis();
 
-      SharedPreferences prefs = context.getSharedPreferences(AlarmClock.PREFERENCES, 0);
+        SharedPreferences prefs = context.getSharedPreferences(AlarmClock.PREFERENCES, 0);
 
-      long snoozeTime = prefs.getLong(PREF_SNOOZE_TIME, 0);
+        long snoozeTime = prefs.getLong(PREF_SNOOZE_TIME, 0);
 
-      if (timeInMillis < snoozeTime) {
-        clearSnoozePreference(context, prefs);
+        if (timeInMillis < snoozeTime) {
+          clearSnoozePreference(context, prefs);
+        }
+
+        setNextAlert(context);
+
+      } catch (Exception e) {
+        e.printStackTrace();
       }
 
-      setNextAlert(context);
+      return timeInMillis;
 
-    } catch (SQLException e) {
-      e.printStackTrace();
+    } else {
+      return 0;
     }
-
-    return timeInMillis;
   }
 
 }

@@ -25,6 +25,7 @@ import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
+import com.jkydjk.healthier.clock.util.Lunar;
 import com.jkydjk.healthier.clock.util.StringUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -112,6 +113,7 @@ public class FoodActivity extends BaseActivity implements OnClickListener {
 
       try {
         HttpClientManager connect = new HttpClientManager(FoodActivity.this, RequestRoute.food(foodId));
+        connect.addParam("solar_term", Lunar.getCurrentSolarTermIntervalIndex() + "");
         connect.execute(ResuestMethod.GET);
         responseJSON = new JSONObject(connect.getResponse());
       } catch (Exception e) {

@@ -1,10 +1,19 @@
 package com.jkydjk.healthier.clock.entity;
 
+import android.content.Context;
+
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.table.DatabaseTable;
+import com.jkydjk.healthier.clock.database.AlarmDatabaseHelper;
+import com.jkydjk.healthier.clock.entity.columns.AlarmColumns;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.sql.SQLException;
 
 /**
  * Created by miclle on 13-5-23.
@@ -13,6 +22,10 @@ import org.json.JSONObject;
 public class GenericSolution {
 
   public static class Type{
+    public static final String MASSAGE_SOLUTION = "massage_solution";
+    public static final String MOXIBUSTION_SOLUTION = "moxibustion_solution";
+    public static final String CUPPING_SOLUTION = "cupping_solution";
+    public static final String SKIN_SCRAPING_SOLUTION = "skin_scraping_solution";
     public static final String RECIPE = "recipe";
   }
 
@@ -125,4 +138,34 @@ public class GenericSolution {
 
     return solution;
   }
+
+  /**
+   * 返回为方案设置的闹铃提醒
+   *
+   * @param context
+   * @return
+   */
+  public Alarm getAlarm(Context context) {
+    try {
+      Dao<Alarm, Integer> alarmDao = new AlarmDatabaseHelper(context).getAlarmDao();
+      QueryBuilder<Alarm, Integer> queryBuilder = alarmDao.queryBuilder();
+      queryBuilder.where().eq(AlarmColumns.CATEGORY, Alarm.CATEGORY_SOLUTION).and().eq(AlarmColumns.CATEGORY_ABLE_ID, id);
+      PreparedQuery<Alarm> preparedQuery = queryBuilder.prepare();
+      return alarmDao.queryForFirst(preparedQuery);
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  /**
+   * 方案是否设置闹铃提醒
+   *
+   * @param context
+   * @return
+   */
+  public boolean isAlarm(Context context) {
+    return getAlarm(context) == null ? false : true;
+  }
+
 }

@@ -28,7 +28,7 @@ public final class Alarm implements Parcelable {
   public int category;
 
   @DatabaseField(columnName = AlarmColumns.CATEGORY_ABLE_ID)
-  public int categoryAbleId;
+  public String categoryAbleId;
 
   @DatabaseField(columnName = AlarmColumns.LABEL)
   public String label;
@@ -187,11 +187,11 @@ public final class Alarm implements Parcelable {
     this.category = category;
   }
 
-  public int getCategoryAbleId() {
+  public String getCategoryAbleId() {
     return categoryAbleId;
   }
 
-  public void setCategoryAbleId(int categoryAbleId) {
+  public void setCategoryAbleId(String categoryAbleId) {
     this.categoryAbleId = categoryAbleId;
   }
 

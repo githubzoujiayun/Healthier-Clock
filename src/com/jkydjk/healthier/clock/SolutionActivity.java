@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Iterator;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
@@ -26,6 +27,8 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
+import com.jkydjk.healthier.clock.entity.Acupoint;
+import com.jkydjk.healthier.clock.entity.GenericSolution;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionStep;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
@@ -45,7 +48,7 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 @SuppressLint("SimpleDateFormat")
 public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implements OnClickListener {
 
-  int solutionId;
+  String solutionId;
 
   View close;
 
@@ -58,10 +61,9 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
 
   TextView titleTextView;
   TextView efficacy;
-  View tipsTitle;
-  TextView tips;
 
   LinearLayout stepsView;
+  LinearLayout solutionView;
 
   View actionsToolbar;
 
@@ -74,18 +76,17 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
   LayoutInflater layoutInflater;
 
   DatabaseHelper helper;
-  Dao<Solution, Integer> solutionDao;
-  Dao<SolutionStep, Integer> solutionStepDao;
-
-  Solution solution;
+  Dao<GenericSolution, String> genericSolutionStringDao;
+  GenericSolution genericSolution;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.solution);
 
-    solutionId = getIntent().getIntExtra("solutionId", -1);
-    if (solutionId == -1)
+    solutionId = getIntent().getStringExtra("generic_solution_id");
+
+    if (solutionId == null)
       finish();
 
     close = findViewById(R.id.close);
@@ -97,13 +98,11 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
     picture = (ImageView) findViewById(R.id.picture);
     loadingIcon = findViewById(R.id.loading_icon);
 
+    solutionView = (LinearLayout) findViewById(R.id.solution_view);
+
     titleTextView = (TextView) findViewById(R.id.title);
 
     efficacy = (TextView) findViewById(R.id.efficacy);
-
-    tips = (TextView) findViewById(R.id.tips);
-
-    tipsTitle = findViewById(R.id.tips_title);
 
     stepsView = (LinearLayout) findViewById(R.id.steps_view);
 
@@ -131,12 +130,10 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
 
   @Override
   protected void onResume() {
-    if (solution != null) {
-      alarmImageButton.setImageResource(solution.isAlarm(this) ? R.drawable.action_alarm_on : R.drawable.action_alarm);
-
+    if (genericSolution != null) {
       try {
-        solutionDao.refresh(solution);
-        favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
+        genericSolutionStringDao.refresh(genericSolution);
+        favoriteImageButton.setImageResource(genericSolution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
       } catch (SQLException e) {
         e.printStackTrace();
       }
@@ -163,46 +160,9 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
       layoutInflater = SolutionActivity.this.getLayoutInflater();
 
       helper = getHelper();
-
       try {
-        solutionDao = helper.getSolutionDao();
-        solutionStepDao = helper.getSolutionStepDao();
-
-        solution = solutionDao.queryForId(solutionId);
-
-        if (solution == null) {
-          if (!ActivityHelper.networkIsConnected(SolutionActivity.this)) {
-            return "网络未连接！";
-          }
-
-          HttpClientManager connect = new HttpClientManager(SolutionActivity.this, RequestRoute.solution(solutionId));
-
-          connect.execute(ResuestMethod.GET);
-
-          JSONObject json = new JSONObject(connect.getResponse());
-
-          JSONObject solutionJSON = json.getJSONObject("solution");
-
-          solution = Solution.parseJsonObject(solutionJSON);
-
-          solutionDao.createOrUpdate(solution);
-
-          JSONArray stepsArray = solutionJSON.getJSONArray("steps");
-
-          ForeignCollection<SolutionStep> steps = solutionDao.getEmptyForeignCollection("steps");
-
-          for (int i = 0; i < stepsArray.length(); i++) {
-            SolutionStep step = SolutionStep.parseJsonObject((JSONObject) stepsArray.get(i));
-            step.setSolution(solution);
-            solutionStepDao.delete(step);
-            // solutionStepDao.createOrUpdate(step);
-            steps.add(step);
-          }
-
-          solution.setSteps(steps);
-
-        }
-
+        genericSolutionStringDao = helper.getGenericSolutionStringDao();
+        genericSolution = genericSolutionStringDao.queryForId(solutionId);
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -214,7 +174,7 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
     protected void onPostExecute(String result) {
       super.onPostExecute(result);
 
-      if (solution == null) {
+      if (genericSolution == null) {
         SolutionActivity.this.finish();
         Toast.makeText(SolutionActivity.this, R.string.this_solution_can_not_be_found, Toast.LENGTH_SHORT).show();
         return;
@@ -223,19 +183,9 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
       loading.setVisibility(View.GONE);
       contentScrollView.setVisibility(View.VISIBLE);
 
-      titleTextView.setText(solution.getTitle());
+      titleTextView.setText(genericSolution.getTitle());
 
-      efficacy.setText(solution.getEffect());
-
-      tips.setText(solution.getNote());
-
-      if (StringUtil.isEmpty(solution.getNote())) {
-        tips.setVisibility(View.GONE);
-        tipsTitle.setVisibility(View.GONE);
-      } else {
-        tips.setVisibility(View.VISIBLE);
-        tipsTitle.setVisibility(View.VISIBLE);
-      }
+      efficacy.setText(genericSolution.getIntro());
 
       ImageLoader imageLoader = ImageLoader.getInstance();
 
@@ -243,7 +193,7 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
           .cacheInMemory().cacheOnDisc().imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).bitmapConfig(Bitmap.Config.ARGB_8888).delayBeforeLoading(1000).displayer(new RoundedBitmapDisplayer(5))
           .build();
 
-      imageLoader.displayImage(RequestRoute.solutionImage(solutionId), picture, options, new SimpleImageLoadingListener() {
+      imageLoader.displayImage(RequestRoute.REQUEST_PATH + genericSolution.getLargeImage(), picture, options, new SimpleImageLoadingListener() {
         @Override
         public void onLoadingComplete(Bitmap loadedImage) {
           loadingIcon.setVisibility(View.GONE);
@@ -256,38 +206,14 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
         }
       });
 
-      // Display display = getWindowManager().getDefaultDisplay();
-      //
-      // int width = display.getWidth(); // deprecated
-      // int height = display.getHeight(); // deprecated
-      //
-      // Log.v("width: " + width);
-      //
-      // ImageSize minImageSize = new ImageSize(width - 20, 80);
-      //
-      // imageLoader.loadImage(SolutionActivity.this, imageUrl, minImageSize,
-      // options, new SimpleImageLoadingListener() {
-      // @Override
-      // public void onLoadingComplete(Bitmap loadedImage) {
-      // picture.setImageBitmap(loadedImage);
-      // // picture.setVisibility(View.GONE);
-      // loadingIcon.setVisibility(View.GONE);
-      //
-      // // ImageView image = new ImageView(SolutionActivity.this);
-      // // image.setBackgroundColor(0xFFFF0000);
-      // // image.setImageBitmap(loadedImage);
-      // // pictureWrapper.addView(image);
-      // }
-      // });
+      try {
+        JSONObject solutionJSON = new JSONObject(genericSolution.getData());
 
-      ForeignCollection<SolutionStep> steps = solution.getSteps();
+        JSONArray stepsArray = solutionJSON.getJSONArray("steps");
 
-      if (steps != null) {
+        for (int i = 0; i < stepsArray.length(); i++) {
 
-        Iterator<SolutionStep> it = steps.iterator();
-
-        while (it.hasNext()) {
-          final SolutionStep step = (SolutionStep) it.next();
+          final SolutionStep step = SolutionStep.parseJsonObject((JSONObject) stepsArray.get(i));
 
           View stepView = layoutInflater.inflate(R.layout.solution_step, null);
 
@@ -300,7 +226,7 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
           stepContentTextView.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
               Intent intent = new Intent(SolutionActivity.this, SolutionStepSlider.class);
-              intent.putExtra("solutionId", solution.getId());
+              intent.putExtra("solutionId", genericSolution.getId());
               intent.putExtra("stepNo", step.getNo());
               startActivity(intent);
             }
@@ -317,16 +243,33 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
             });
             acupointLayout.setVisibility(View.VISIBLE);
           }
-
           stepsView.addView(stepView);
         }
+
+        JSONArray descriptions = solutionJSON.getJSONArray("descriptions");
+        for (int i = 0; i < descriptions.length(); i++) {
+          JSONArray field = (JSONArray) descriptions.get(i);
+          String title = (String) field.get(0);
+          String content = (String) field.get(1);
+          if (!StringUtil.isEmpty(content)) {
+            View contentItemView = layoutInflater.inflate(R.layout.content_item, null, false);
+            TextView itemTitleTextView = (TextView) contentItemView.findViewById(R.id.title);
+            itemTitleTextView.setText(title);
+            TextView contentTextView = (TextView) contentItemView.findViewById(R.id.content);
+            contentTextView.setText(content);
+            solutionView.addView(contentItemView);
+          }
+        }
+
+      } catch (JSONException e) {
+        e.printStackTrace();
       }
 
       actionsToolbar.setVisibility(View.VISIBLE);
 
-      favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
+      favoriteImageButton.setImageResource(genericSolution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
 
-      if (solution.isAlarm(SolutionActivity.this)) {
+      if (genericSolution.isAlarm(SolutionActivity.this)) {
         alarmImageButton.setImageResource(R.drawable.action_alarm_on);
       }
 
@@ -347,20 +290,23 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
     // 收藏
     case R.id.favorite:
       try {
-        solution.setFavorited(!solution.isFavorited());
-        solutionDao.update(solution);
-        favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
+        genericSolution.setFavorited(!genericSolution.isFavorited());
+        genericSolutionStringDao.update(genericSolution);
+        favoriteImageButton.setImageResource(genericSolution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
       } catch (SQLException e) {
         e.printStackTrace();
       }
       break;
 
     case R.id.alarm: {
-      if (!solution.isAlarm(this)) {
-        long time = Alarms.addSolutionAlarm(this, solution);
-        if (time > 0)
+      if (!genericSolution.isAlarm(this)) {
+        long time = Alarms.addSolutionAlarm(this, genericSolution);
+        if (time > 0){
           alarmImageButton.setImageResource(R.drawable.action_alarm_on);
-        Alarms.popAlarmSetToast(this, time);
+          Alarms.popAlarmSetToast(this, time);
+        }else{
+          Toast.makeText(this, R.string.alarm_is_not_created_successfully, Toast.LENGTH_SHORT).show();
+        }
       }
       break;
     }
@@ -378,7 +324,7 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
       }
 
       Intent intent = new Intent(this, Process.class);
-      intent.putExtra("solutionId", solution.getId());
+      intent.putExtra("solutionId", genericSolution.getId());
       startActivity(intent);
       break;
     }
@@ -395,7 +341,7 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
       }
 
       Intent intent = new Intent(this, SolutionEvaluate.class);
-      intent.putExtra("solutionId", solution.getId());
+      intent.putExtra("solutionId", genericSolution.getId());
       startActivity(intent);
       break;
     }
@@ -404,7 +350,7 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
       Intent intent = new Intent(Intent.ACTION_SEND);
       intent.setType("text/plain");
       intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
-      intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_solution), solution.getTitle(), solution.getEffect()));
+      intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_solution), genericSolution.getTitle(), genericSolution.getIntro()));
       startActivity(Intent.createChooser(intent, getTitle()));
       break;
     }

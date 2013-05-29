@@ -16,7 +16,7 @@ public class AlarmDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
   private static final String DATABASE_NAME = "alarms.db";
 
-  private static final int DATABASE_VERSION = 5;
+  private static final int DATABASE_VERSION = 6;
 
   private Dao<Alarm, Integer> alarmDao = null;
 

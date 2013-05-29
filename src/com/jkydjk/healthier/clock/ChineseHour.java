@@ -79,14 +79,11 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
   SharedPreferences sharedPreferences;
 
   DatabaseHelper helper;
-  Dao<Acupoint, Integer> acupointDao;
-
   Dao<GenericSolution, String> genericSolutionStringDao;
   GenericSolution genericSolution;
 
   Hour hour;
   int hourID;
-  int solutionId;
 
   boolean isUpdatIng = false;
 
@@ -156,15 +153,14 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
   @Override
   protected void onResume() {
-//    if (solution != null) {
-//      alarmImageButton.setImageResource(solution.isAlarm(this) ? R.drawable.action_alarm_on : R.drawable.action_alarm);
-//
-//      try {
-//        favoriteImageButton.setImageResource(solution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//    }
+    if (genericSolution != null) {
+      try {
+        genericSolutionStringDao.refresh(genericSolution);
+        favoriteImageButton.setImageResource(genericSolution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
     super.onResume();
   }
 
@@ -207,8 +203,6 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       try {
 
         genericSolutionStringDao = helper.getGenericSolutionStringDao();
-
-        acupointDao = helper.getAcupointDao();
 
         genericSolution = genericSolutionStringDao.queryForId(genericSolutionId);
 
@@ -348,9 +342,9 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
         favoriteImageButton.setImageResource(genericSolution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
 
-//        if (solution.isAlarm(ChineseHour.this)) {
-//          alarmImageButton.setImageResource(R.drawable.action_alarm_on);
-//        }
+        if (genericSolution.isAlarm(ChineseHour.this)) {
+          alarmImageButton.setImageResource(R.drawable.action_alarm_on);
+        }
 
       } else {
         loading.findViewById(R.id.loading_icon).setVisibility(View.GONE);
@@ -399,12 +393,15 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       break;
 
     case R.id.alarm: {
-//      if (!genericSolution.isAlarm(this)) {
-//        long time = Alarms.addSolutionAlarm(this, genericSolution);
-//        if (time > 0)
-//          alarmImageButton.setImageResource(R.drawable.action_alarm_on);
-//        Alarms.popAlarmSetToast(this, time);
-//      }
+      if (!genericSolution.isAlarm(this)) {
+        long time = Alarms.addSolutionAlarm(this, genericSolution);
+        if (time > 0){
+          alarmImageButton.setImageResource(R.drawable.action_alarm_on);
+          Alarms.popAlarmSetToast(this, time);
+        }else{
+          Toast.makeText(this, R.string.alarm_is_not_created_successfully, Toast.LENGTH_SHORT).show();
+        }
+      }
       break;
     }
 
