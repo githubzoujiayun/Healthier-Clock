@@ -196,7 +196,18 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
 
       layoutInflater = ChineseHour.this.getLayoutInflater();
 
-      String genericSolutionId = sharedPreferences.getString("hour_" + hourID, "");
+
+      String genericSolutionId;
+
+      try {
+        genericSolutionId = sharedPreferences.getString("hour_" + hourID, "");
+      } catch (Exception e) {
+        genericSolutionId = "";
+        Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+        e.printStackTrace();
+      }
 
       helper = getHelper();
 
