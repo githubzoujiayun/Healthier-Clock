@@ -324,7 +324,8 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
       }
 
       Intent intent = new Intent(this, Process.class);
-      intent.putExtra("solutionId", genericSolution.getId());
+      intent.putExtra("generic_solution_id", genericSolution.getId());
+      intent.putExtra("generic_solution_type_id", genericSolution.getTypeId());
       startActivity(intent);
       break;
     }
@@ -341,7 +342,8 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
       }
 
       Intent intent = new Intent(this, SolutionEvaluate.class);
-      intent.putExtra("solutionId", genericSolution.getId());
+      intent.putExtra("generic_solution_id", genericSolution.getId());
+      intent.putExtra("generic_solution_type_id", genericSolution.getTypeId());
       startActivity(intent);
       break;
     }

@@ -36,6 +36,9 @@ public class GenericSolution {
   private String type;
 
   @DatabaseField
+  private int typeId;
+
+  @DatabaseField
   private String title;
 
   @DatabaseField
@@ -78,6 +81,14 @@ public class GenericSolution {
 
   public String getType() {
     return type;
+  }
+
+  public int getTypeId() {
+    return typeId;
+  }
+
+  public void setTypeId(int typeId) {
+    this.typeId = typeId;
   }
 
   public String getLargeImage() {
@@ -129,6 +140,7 @@ public class GenericSolution {
 
     solution.id = solutionJSON.getString("type") + "-" + solutionJSON.getInt("id");
     solution.type = solutionJSON.getString("type");
+    solution.typeId = solutionJSON.getInt("id");
     solution.title = solutionJSON.getString("title");
     solution.intro = solutionJSON.getString("intro");
     solution.listImage = solutionJSON.getString("list_image");

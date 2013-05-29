@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class SolutionComment {
 
   @DatabaseField(id = true)
-  private int id;
+  private String id;
 
   @DatabaseField(columnName = "effect_feel")
   private int effectFeel;
@@ -28,11 +28,11 @@ public class SolutionComment {
     super();
   }
 
-  public int getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(String id) {
     this.id = id;
   }
 

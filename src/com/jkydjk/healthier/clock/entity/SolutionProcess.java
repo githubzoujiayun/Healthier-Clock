@@ -18,7 +18,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class SolutionProcess {
 
   @DatabaseField(id = true)
-  public int id;
+  public String id;
 
   // 工具
   @DatabaseField(columnName = "tool_is_comply")

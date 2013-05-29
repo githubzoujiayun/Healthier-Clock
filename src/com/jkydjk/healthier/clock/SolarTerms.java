@@ -139,7 +139,9 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
         while (it.hasNext()){
           String id = it.next();
           GenericSolution genericSolution = genericSolutionStringDao.queryForId(id);
-          genericSolutions.add(genericSolution);
+          if (genericSolution != null){
+            genericSolutions.add(genericSolution);
+          }
         }
 
         if (force || genericSolutions.size() == 0) {

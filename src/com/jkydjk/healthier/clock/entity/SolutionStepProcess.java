@@ -13,7 +13,7 @@ public class SolutionStepProcess {
   public int id;
 
   @DatabaseField(columnName = "solution_id", foreign = true, canBeNull = false, foreignAutoCreate = true, foreignAutoRefresh = true)
-  public Solution solution;
+  public GenericSolution solution;
 
   @DatabaseField(columnName = "solution_process_id", foreign = true, canBeNull = false, foreignAutoCreate = true, foreignAutoRefresh = true)
   public SolutionProcess solutionProcess;

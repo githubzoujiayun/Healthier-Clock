@@ -418,7 +418,8 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       }
 
       Intent intent = new Intent(this, Process.class);
-      intent.putExtra("solutionId", genericSolution.getId());
+      intent.putExtra("generic_solution_id", genericSolution.getId());
+      intent.putExtra("generic_solution_type_id", genericSolution.getTypeId());
       startActivity(intent);
       break;
     }
@@ -435,7 +436,8 @@ public class ChineseHour extends OrmLiteBaseActivity<DatabaseHelper> implements 
       }
 
       Intent intent = new Intent(this, SolutionEvaluate.class);
-      intent.putExtra("solutionId", genericSolution.getId());
+      intent.putExtra("generic_solution_id", genericSolution.getId());
+      intent.putExtra("generic_solution_type_id", genericSolution.getTypeId());
       startActivity(intent);
       break;
     }

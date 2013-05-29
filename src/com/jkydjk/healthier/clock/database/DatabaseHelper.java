@@ -29,14 +29,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
   private static final int BUFFER_SIZE = 400000;
 
-  private static final int DATABASE_VERSION = 1;
+  private static final int DATABASE_VERSION = 3;
 
   // Dao
   private Dao<Solution, Integer> solutionDao = null;
   private Dao<SolarTermSolution, Integer> solarTermSolutionDao = null;
   private Dao<SolutionStep, Integer> solutionStepDao = null;
-  private Dao<SolutionComment, Integer> solutionCommentDao = null;
-  private Dao<SolutionProcess, Integer> solutionProcessDao = null;
+
+  private Dao<SolutionComment, String> solutionCommentDao = null;
+
+  private Dao<SolutionProcess, String> solutionProcessDao = null;
+
   private Dao<SolutionStepProcess, Integer> solutionStepProcessDao = null;
   private Dao<Acupoint, Integer> acupointDao = null;
   private Dao<AcupointSolutionStep, Integer> acupointSolutionStepDao = null;
@@ -175,7 +178,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
    * @return
    * @throws SQLException
    */
-  public Dao<SolutionProcess, Integer> getSolutionProcessDao() throws SQLException {
+  public Dao<SolutionProcess, String> getSolutionProcessDao() throws SQLException {
     if (solutionProcessDao == null) {
       solutionProcessDao = getDao(SolutionProcess.class);
     }
@@ -201,7 +204,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
    * @return
    * @throws SQLException
    */
-  public Dao<SolutionComment, Integer> getSolutionCommentDao() throws SQLException {
+  public Dao<SolutionComment, String> getSolutionCommentDao() throws SQLException {
     if (solutionCommentDao == null) {
       solutionCommentDao = getDao(SolutionComment.class);
     }

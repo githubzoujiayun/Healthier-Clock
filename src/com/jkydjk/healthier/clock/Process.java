@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
@@ -26,6 +27,7 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
+import com.jkydjk.healthier.clock.entity.GenericSolution;
 import com.jkydjk.healthier.clock.entity.Names;
 import com.jkydjk.healthier.clock.entity.Solution;
 import com.jkydjk.healthier.clock.entity.SolutionProcess;
@@ -88,15 +90,19 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
 
   CustomProgressDialog progressDialog;
 
-  int solutionId;
+  String solutionId;
+  int solutionTypeId;
 
   DatabaseHelper helper;
-  Dao<Solution, Integer> solutionDao;
+  Dao<GenericSolution, String> genericSolutionStringDao;
+
+  Dao<SolutionProcess, String> solutionProcessDao;
+
   Dao<SolutionStep, Integer> solutionStepDao;
-  Dao<SolutionProcess, Integer> solutionProcessDao;
   Dao<SolutionStepProcess, Integer> solutionStepProcessDao;
 
-  Solution solution;
+  GenericSolution genericSolution;
+
   SolutionProcess solutionProcess;
   Map<Integer, SolutionStepProcess> solutionStepProcesses;
 
@@ -105,10 +111,10 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
     super.onCreate(savedInstanceState);
     setContentView(R.layout.process);
 
-    Intent intent = getIntent();
-    solutionId = intent.getIntExtra("solutionId", 0);
+    solutionId = getIntent().getStringExtra("generic_solution_id");
+    solutionTypeId = getIntent().getIntExtra("generic_solution_type_id", -1);
 
-    if (solutionId == 0)
+    if (solutionId == null)
       finish();
 
     back = findViewById(R.id.back);
@@ -179,12 +185,15 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
       try {
 
         helper = getHelper();
-        solutionDao = helper.getSolutionDao();
+
+        genericSolutionStringDao = helper.getGenericSolutionStringDao();
+
         solutionStepDao = helper.getSolutionStepDao();
         solutionProcessDao = helper.getSolutionProcessDao();
         solutionStepProcessDao = helper.getSolutionStepProcessDao();
 
-        solution = solutionDao.queryForId(solutionId);
+        genericSolution = genericSolutionStringDao.queryForId(solutionId);
+
         solutionProcess = solutionProcessDao.queryForId(solutionId);
 
       } catch (Exception e) {
@@ -201,7 +210,7 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
     protected void onPostExecute(String result) {
       super.onPostExecute(result);
 
-      if (solution == null) {
+      if (genericSolution == null) {
         Process.this.finish();
         Toast.makeText(Process.this, R.string.this_solution_can_not_be_found, Toast.LENGTH_SHORT).show();
         return;
@@ -209,57 +218,58 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
 
       if (solutionProcess == null) {
         solutionProcess = new SolutionProcess();
-        solutionProcess.id = solution.getId();
+        solutionProcess.id = genericSolution.getId();
       }
 
       loadingLayout.setVisibility(View.GONE);
       contentScrollView.setVisibility(View.VISIBLE);
 
-      textViewTitle.setText(solution.getTitle());
+      textViewTitle.setText(genericSolution.getTitle());
 
-      Names materials = solution.getMaterials();
+      try {
+        JSONObject solutionJSON = new JSONObject(genericSolution.getData());
 
-      if (materials.size() > 0) {
-        materialTextView.setText(String.format(getString(R.string.title_content), getString(R.string.material), CollectionHelp.join(materials.getNames())));
-        materialLayout.setVisibility(View.VISIBLE);
-        materialAndToolLayout.setVisibility(View.VISIBLE);
-        ActivityHelper.switchRadio(solutionProcess.materialIsComply, materialComplyRadio, materialCustomRadio);
-      }
+        Names materials = Names.parseJSONArray(solutionJSON.getJSONArray("materials"));
 
-      Names tools = solution.getTools();
+        if (materials.size() > 0) {
+          materialTextView.setText(String.format(getString(R.string.title_content), getString(R.string.material), CollectionHelp.join(materials.getNames())));
+          materialLayout.setVisibility(View.VISIBLE);
+          materialAndToolLayout.setVisibility(View.VISIBLE);
+          ActivityHelper.switchRadio(solutionProcess.materialIsComply, materialComplyRadio, materialCustomRadio);
+        }
 
-      if (tools.size() > 0) {
-        toolTextView.setText(String.format(getString(R.string.title_content), getString(R.string.tool), CollectionHelp.join(tools.getNames())));
-        toolLayout.setVisibility(View.VISIBLE);
-        materialAndToolLayout.setVisibility(View.VISIBLE);
-        ActivityHelper.switchRadio(solutionProcess.toolIsComply, toolComplyRadio, toolCustomRadio);
-      }
+        Names tools = Names.parseJSONArray(solutionJSON.getJSONArray("tools"));
 
-      Names hours = solution.getHours();
-      Names solarTerms = solution.getSolarTerms();
+        if (tools.size() > 0) {
+          toolTextView.setText(String.format(getString(R.string.title_content), getString(R.string.tool), CollectionHelp.join(tools.getNames())));
+          toolLayout.setVisibility(View.VISIBLE);
+          materialAndToolLayout.setVisibility(View.VISIBLE);
+          ActivityHelper.switchRadio(solutionProcess.toolIsComply, toolComplyRadio, toolCustomRadio);
+        }
 
-      if (hours.size() > 0 || solarTerms.size() > 0) {
-        timeTextView.setText(CollectionHelp.join(hours.getNames(), solarTerms.getNames()));
-        timeLayout.setVisibility(View.VISIBLE);
-        ActivityHelper.switchRadio(solutionProcess.timeIsComply, timeComplyRadio, timeCustomRadio);
-      }
+        Names hours = Names.parseJSONArray(solutionJSON.getJSONArray("hours"));
 
-      Names occasions = solution.getOccasions();
+        Names solarTerms = Names.parseJSONArray(solutionJSON.getJSONArray("solar_terms"));
 
-      if (occasions.size() > 0) {
-        occasionTextView.setText(String.format(getString(R.string.title_content), getString(R.string.occasion), CollectionHelp.join(occasions.getNames())));
-        occasionLayout.setVisibility(View.VISIBLE);
-        ActivityHelper.switchRadio(solutionProcess.occasionIsComply, occasionComplyRadio, occasionCustomRadio);
-      }
+        if (hours.size() > 0 || solarTerms.size() > 0) {
+          timeTextView.setText(CollectionHelp.join(hours.getNames(), solarTerms.getNames()));
+          timeLayout.setVisibility(View.VISIBLE);
+          ActivityHelper.switchRadio(solutionProcess.timeIsComply, timeComplyRadio, timeCustomRadio);
+        }
 
-      ForeignCollection<SolutionStep> steps = solution.getSteps();
+        Names occasions = Names.parseJSONArray(solutionJSON.getJSONArray("occasions"));
 
-      if (steps != null) {
+        if (occasions.size() > 0) {
+          occasionTextView.setText(String.format(getString(R.string.title_content), getString(R.string.occasion), CollectionHelp.join(occasions.getNames())));
+          occasionLayout.setVisibility(View.VISIBLE);
+          ActivityHelper.switchRadio(solutionProcess.occasionIsComply, occasionComplyRadio, occasionCustomRadio);
+        }
 
-        Iterator<SolutionStep> it = steps.iterator();
+        JSONArray stepsArray = solutionJSON.getJSONArray("steps");
 
-        while (it.hasNext()) {
-          final SolutionStep step = (SolutionStep) it.next();
+        for (int i = 0; i < stepsArray.length(); i++) {
+
+          final SolutionStep step = SolutionStep.parseJsonObject((JSONObject) stepsArray.get(i));
 
           View stepView = layoutInflater.inflate(R.layout.process_item, null);
 
@@ -286,7 +296,7 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
 
           if (solutionStepProcess == null) {
             solutionStepProcess = new SolutionStepProcess(step.getId());
-            solutionStepProcess.solution = solution;
+            solutionStepProcess.solution = genericSolution;
             solutionStepProcess.solutionProcess = solutionProcess;
           }
 
@@ -296,6 +306,9 @@ public class Process extends OrmLiteBaseActivity<DatabaseHelper> implements OnCl
 
           layoutSteps.addView(stepView);
         }
+
+      } catch (JSONException e) {
+        e.printStackTrace();
       }
 
     }

@@ -31,7 +31,8 @@ public class SolutionEvaluate extends OrmLiteBaseActivity<DatabaseHelper> implem
   Button enter;
   RadioGroup effectRadios;
 
-  int solutionId;
+  String solutionId;
+  int solutionTypeId;
 
   int effectFeel;
 
@@ -46,10 +47,10 @@ public class SolutionEvaluate extends OrmLiteBaseActivity<DatabaseHelper> implem
     super.onCreate(savedInstanceState);
     setContentView(R.layout.solution_evaluate);
 
-    Intent intent = getIntent();
-    solutionId = intent.getIntExtra("solutionId", 0);
+    solutionId = getIntent().getStringExtra("generic_solution_id");
+    solutionTypeId = getIntent().getIntExtra("generic_solution_type_id", -1);
 
-    if (solutionId == 0)
+    if (solutionId == null)
       finish();
 
     back = (Button) findViewById(R.id.back);
@@ -204,7 +205,7 @@ public class SolutionEvaluate extends OrmLiteBaseActivity<DatabaseHelper> implem
           return SolutionEvaluate.this.getString(R.string.network_is_not_connected);
         }
 
-        HttpClientManager connect = new HttpClientManager(SolutionEvaluate.this, RequestRoute.solutionEvaluate(solutionId));
+        HttpClientManager connect = new HttpClientManager(SolutionEvaluate.this, RequestRoute.solutionEvaluate(solutionTypeId));
 
         connect.addParam("effect", comment.getEffectFeel() + "");
         connect.addParam("cost", comment.getCost() + "");
