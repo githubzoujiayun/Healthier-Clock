@@ -1,6 +1,7 @@
 package com.jkydjk.healthier.clock;
 
 import android.app.Application;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import com.jkydjk.healthier.clock.util.ImageLoaderUtil;
@@ -22,6 +23,8 @@ public class HealthierApplication extends Application {
 
     // Initialize ImageLoader with configuration.
     ImageLoader.getInstance().init(ImageLoaderUtil.getImageLoaderConfiguration(getApplicationContext()));
+
+    startService(new Intent(this, PullService.class));
   }
 
   /**

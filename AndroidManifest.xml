@@ -213,6 +213,8 @@
       </intent-filter>
     </service>
 
+    <service android:enabled="true" android:name=".PullService" />
+
     <service
       android:name="com.umeng.common.net.DownloadingService"
       android:exported="true"

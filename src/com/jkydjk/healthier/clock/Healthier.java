@@ -35,13 +35,6 @@ import com.umeng.update.UpdateResponse;
 
 public class Healthier extends TabActivity implements OnTabChangeListener, OnClickListener {
 
-  public final static int FULL_SCREEN_NO = 0;
-  public final static int FULL_SCREEN_YES = 1;
-  public final static int FULL_SCREEN_AUTO = 2;
-
-  public final static int SLIDE_UP = 0x0;
-  public final static int SLIDE_DOWN = 0x1;
-
   private TabWidget channelTabWidget;
   private TabHost mTabHost;
 
@@ -60,6 +53,7 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    // 检查更新
     UmengUpdateAgent.update(this);
 
     setContentView(R.layout.main);
@@ -90,11 +84,6 @@ public class Healthier extends TabActivity implements OnTabChangeListener, OnCli
     titlebar = findViewById(R.id.titlebar);
     titlebar.setVisibility(View.VISIBLE);
     tabs = findViewById(android.R.id.tabs);
-
-    // 检测更新 先检测网络
-    if (NetUtil.checkNetWork(this)) {
-      // new APKManager(this).checkApplicationVersion();
-    }
   }
 
   /**
