@@ -88,6 +88,7 @@ public class PullService extends Service {
     // 定义计时器
     timer = new Timer();
 
+    // 每两小时更新天气
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
@@ -97,8 +98,9 @@ public class PullService extends Service {
           Weather.update(getApplicationContext(), String.valueOf(regionID));
         }
       }
-    }, 0, 1000 * 60 * 60 * 4);
+    }, 0, 1000 * 60 * 60 * 2);
 
+    // 每分钟定时任务
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
@@ -174,7 +176,7 @@ public class PullService extends Service {
     }
 
     if (weathers.size() >= 1) {
-      sendNotification(contentView, Healthier.class);
+      sendNotification(NOTIFICATION_ID, contentView, Healthier.class);
     }
   }
 
@@ -208,7 +210,7 @@ public class PullService extends Service {
 
     contentView.setTextViewText(R.id.intro, "健康投资：聪明的人，投资健康，健康增值，一百二十；明白的人，关注健康，健康保值，平安九十；无知的人，漠视健康，健康贬值，带病活到七十；糊涂的人，透支健康，健康贬值，五十六十。");
 
-    sendNotification(contentView, Healthier.class);
+    sendNotification(NOTIFICATION_ID, contentView, Healthier.class);
   }
 
   /**
@@ -216,7 +218,7 @@ public class PullService extends Service {
    * @param contentView
    * @param activity
    */
-  private void sendNotification(RemoteViews contentView, Class activity){
+  private void sendNotification(int id, RemoteViews contentView, Class activity){
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
       .setContent(contentView)
       .setSmallIcon(R.drawable.ic_launcher_alarmclock);
@@ -241,7 +243,7 @@ public class PullService extends Service {
     NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
     // mId allows you to update the notification later on.
-    mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+    mNotificationManager.notify(id, mBuilder.build());
   }
 
 }
