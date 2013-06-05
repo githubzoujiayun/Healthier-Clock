@@ -14,7 +14,7 @@ public class RequestRoute {
   
 //  public static String REQUEST_PATH = "http://192.168.2.109:3000/mobile/";
 
-   public static String REQUEST_PATH = "http://jkydjk.com/mobile/";
+  public static String REQUEST_PATH = "http://jkydjk.com/mobile/";
   
   public static final String VERSION = RequestRoute.REQUEST_PATH + "version/android";
 
@@ -197,5 +197,10 @@ public class RequestRoute {
   public static String food(int id) {
     return REQUEST_PATH + "food/" + id;
   }
+
+  /**
+   * Pull service
+   */
+  public static final String PULL_SERVICE = REQUEST_PATH + "information/pull/";
 
 }

@@ -26,10 +26,16 @@ import com.jkydjk.healthier.clock.entity.Region;
 import com.jkydjk.healthier.clock.entity.Weather;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
+import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
+import com.jkydjk.healthier.clock.util.Lunar;
 import com.jkydjk.healthier.clock.widget.TextViewWeather;
 
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -44,6 +50,10 @@ public class PullService extends Service {
 
   final static int NOTIFICATION_ID = 0x9999;
 
+  static boolean NOTIFICATION_HAS_BEEN_SEND = false;
+
+  NotificationManager notificationManager;
+
   SharedPreferences sharedPreferences;
 
   DatabaseHelper helper;
@@ -57,29 +67,31 @@ public class PullService extends Service {
   public void onCreate() {
     super.onCreate();
 
+    notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
     sharedPreferences = getSharedPreferences("chinese_hour", Context.MODE_PRIVATE);
 
     helper = new DatabaseHelper(getApplicationContext());
 
-    try {
-      genericSolutionStringDao = helper.getGenericSolutionStringDao();
-//      genericSolution = genericSolutionStringDao.queryForId(genericSolutionId);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+//    try {
+//      genericSolutionStringDao = helper.getGenericSolutionStringDao();
+////      genericSolution = genericSolutionStringDao.queryForId(genericSolutionId);
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
 
     handler = new Handler() {
       @Override
       public void handleMessage(Message msg) {
         super.handleMessage(msg);
-
         switch (msg.what){
           case MESSAGE_WEATHER:
             sendWeatherNotification();
             break;
-
           case MESSAGE_INFORMATION:
-//            sendInformationNotification();
+            sendInformationNotification();
+            break;
+          default:
             break;
         }
       }
@@ -106,34 +118,36 @@ public class PullService extends Service {
       public void run() {
         Time time = new Time();
         time.setToNow();
-        if (time.hour == 7){
-          Message msg = new Message();
-          msg.what = MESSAGE_WEATHER;
-          handler.sendMessage(msg);
+
+        Log.v("Now time hour: " + time.hour);
+        Log.v("NOTIFICATION_HAS_BEEN_SEND: " + NOTIFICATION_HAS_BEEN_SEND);
+
+        switch (time.hour){
+          case 7:
+            if(NOTIFICATION_HAS_BEEN_SEND == false){
+              Message msg = new Message();
+              msg.what = MESSAGE_WEATHER;
+              handler.sendMessage(msg);
+            }
+            break;
+
+          case 9:
+          case 11:
+          case 15:
+          case 19:
+            if(NOTIFICATION_HAS_BEEN_SEND == false){
+//              pullInformationMessage();
+            }
+            break;
+
+          default:
+            if(time.hour > 21)
+              cancelNotification(NOTIFICATION_ID);
+            break;
         }
       }
     }, 0, 1000 * 60);
 
-  }
-
-  @Override
-  public int onStartCommand(Intent intent, int flags, int startId) {
-    return super.onStartCommand(intent, flags, startId);
-  }
-
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-  }
-
-  @Override
-  public void onRebind(Intent intent) {
-    super.onRebind(intent);
-  }
-
-  @Override
-  public IBinder onBind(Intent intent) {
-    return null;
   }
 
   /**
@@ -181,6 +195,34 @@ public class PullService extends Service {
   }
 
   /**
+   * 获取资讯信息
+   */
+  private void pullInformationMessage() {
+    if (ActivityHelper.networkIsConnected(getApplicationContext())) {
+      try {
+
+        Time time = new Time();
+        time.setToNow();
+
+        int hourID = Hour.from_time_hour(time.hour);
+
+        int solarTermIndex = Lunar.getCurrentSolarTermIntervalIndex();
+
+        HttpClientManager connect = new HttpClientManager(getApplicationContext(), RequestRoute.PULL_SERVICE);
+        connect.addParam("hour", hourID + "");
+        connect.addParam("solar_term", solarTermIndex + "");
+        connect.execute(ResuestMethod.GET);
+
+        JSONObject json = new JSONObject(connect.getResponse());
+
+
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  /**
    * 发送资讯通知
    */
   private void sendInformationNotification(){
@@ -216,34 +258,58 @@ public class PullService extends Service {
   /**
    * 发送通知
    * @param contentView
-   * @param activity
+   * @param activityClass
    */
-  private void sendNotification(int id, RemoteViews contentView, Class activity){
+  private void sendNotification(int id, RemoteViews contentView, Class activityClass){
+
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
       .setContent(contentView)
       .setSmallIcon(R.drawable.ic_launcher_alarmclock);
 
-    // Creates an explicit intent for an Activity in your app
-    Intent resultIntent = new Intent(getApplicationContext(), activity);
+    Intent resultIntent = new Intent(getApplicationContext(), activityClass);
 
-    // The stack builder object will contain an artificial back stack for the started Activity.
-    // This ensures that navigating backward from the Activity leads out of your application to the Home screen.
     TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-
-    // Adds the back stack for the Intent (but not the Intent itself)
-    stackBuilder.addParentStack(activity);
-
-    // Adds the Intent that starts the Activity to the top of the stack
+    stackBuilder.addParentStack(activityClass);
     stackBuilder.addNextIntent(resultIntent);
 
     PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
     mBuilder.setContentIntent(resultPendingIntent);
 
-    NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    notificationManager.notify(id, mBuilder.build());
 
-    // mId allows you to update the notification later on.
-    mNotificationManager.notify(id, mBuilder.build());
+    NOTIFICATION_HAS_BEEN_SEND = true;
+  }
+
+  /**
+   * 移除通知
+   * @param id
+   */
+  private void cancelNotification(int id){
+    if(notificationManager != null){
+      notificationManager.cancel(id);
+      NOTIFICATION_HAS_BEEN_SEND = false;
+    }
+  }
+
+  @Override
+  public int onStartCommand(Intent intent, int flags, int startId) {
+    return super.onStartCommand(intent, flags, startId);
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+  }
+
+  @Override
+  public void onRebind(Intent intent) {
+    super.onRebind(intent);
+  }
+
+  @Override
+  public IBinder onBind(Intent intent) {
+    return null;
   }
 
 }
