@@ -6,7 +6,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -20,10 +20,7 @@ import android.widget.RemoteViews;
 
 import com.j256.ormlite.dao.Dao;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
-import com.jkydjk.healthier.clock.entity.GenericSolution;
-import com.jkydjk.healthier.clock.entity.Hour;
-import com.jkydjk.healthier.clock.entity.Region;
-import com.jkydjk.healthier.clock.entity.Weather;
+import com.jkydjk.healthier.clock.entity.*;
 import com.jkydjk.healthier.clock.network.HttpClientManager;
 import com.jkydjk.healthier.clock.network.RequestRoute;
 import com.jkydjk.healthier.clock.network.ResuestMethod;
@@ -34,8 +31,6 @@ import com.jkydjk.healthier.clock.widget.TextViewWeather;
 
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,7 +41,8 @@ import java.util.TimerTask;
 public class PullService extends Service {
 
   final static int MESSAGE_WEATHER = 1;
-  final static int MESSAGE_INFORMATION = 2;
+  final static int MESSAGE_HEALTH_TIP = 2;
+  final static int MESSAGE_INFORMATION = 3;
 
   final static int NOTIFICATION_ID = 0x9999;
 
@@ -57,8 +53,6 @@ public class PullService extends Service {
   SharedPreferences sharedPreferences;
 
   DatabaseHelper helper;
-  Dao<GenericSolution, String> genericSolutionStringDao;
-  GenericSolution genericSolution;
 
   Timer timer;
   Handler handler;
@@ -80,7 +74,7 @@ public class PullService extends Service {
 //      e.printStackTrace();
 //    }
 
-    handler = new Handler() {
+      handler = new Handler() {
       @Override
       public void handleMessage(Message msg) {
         super.handleMessage(msg);
@@ -88,9 +82,15 @@ public class PullService extends Service {
           case MESSAGE_WEATHER:
             sendWeatherNotification();
             break;
-          case MESSAGE_INFORMATION:
-            sendInformationNotification();
+
+          case MESSAGE_HEALTH_TIP:
+            sendHealthTipNotification(msg.getData());
             break;
+
+          case MESSAGE_INFORMATION:
+            sendInformationNotification(msg.getData());
+            break;
+
           default:
             break;
         }
@@ -136,7 +136,7 @@ public class PullService extends Service {
           case 15:
           case 19:
             if(NOTIFICATION_HAS_BEEN_SEND == false){
-//              pullInformationMessage();
+              pullInformationMessage();
             }
             break;
 
@@ -145,6 +145,10 @@ public class PullService extends Service {
               cancelNotification(NOTIFICATION_ID);
             break;
         }
+
+//        测试
+//        pullInformationMessage();
+
       }
     }, 0, 1000 * 60);
 
@@ -190,7 +194,24 @@ public class PullService extends Service {
     }
 
     if (weathers.size() >= 1) {
-      sendNotification(NOTIFICATION_ID, contentView, Healthier.class);
+
+      NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
+        .setContent(contentView)
+        .setSmallIcon(R.drawable.ic_launcher_alarmclock);
+
+      Intent resultIntent = new Intent(getApplicationContext(), Healthier.class);
+
+      TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+      stackBuilder.addParentStack(Healthier.class);
+      stackBuilder.addNextIntent(resultIntent);
+
+      PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+      mBuilder.setContentIntent(resultPendingIntent);
+
+      notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+
+      NOTIFICATION_HAS_BEEN_SEND = true;
     }
   }
 
@@ -204,17 +225,54 @@ public class PullService extends Service {
         Time time = new Time();
         time.setToNow();
 
-        int hourID = Hour.from_time_hour(time.hour);
-
-        int solarTermIndex = Lunar.getCurrentSolarTermIntervalIndex();
-
         HttpClientManager connect = new HttpClientManager(getApplicationContext(), RequestRoute.PULL_SERVICE);
-        connect.addParam("hour", hourID + "");
-        connect.addParam("solar_term", solarTermIndex + "");
+        connect.addParam("hour", String.valueOf(Hour.from_time_hour(time.hour)));
+        connect.addParam("solar_term", String.valueOf(Lunar.getCurrentSolarTermIntervalIndex()));
         connect.execute(ResuestMethod.GET);
 
         JSONObject json = new JSONObject(connect.getResponse());
 
+        String type = json.getString("type");
+        int id = json.getInt("id");
+
+        if("health_tip".equals(type)) {
+          Dao<HealthTip, Integer> healthTipIntegerDao = helper.getHealthTipIntegerDao();
+          HealthTip tip = new HealthTip();
+          tip.id = id;
+          tip.content = json.getString("content");
+
+          healthTipIntegerDao.createOrUpdate(tip);
+
+          Message msg = new Message();
+          msg.what = MESSAGE_HEALTH_TIP;
+          Bundle bundle = new Bundle();
+          bundle.putLong("id", tip.id);
+          bundle.putString("content", tip.content);
+          msg.setData(bundle);
+          handler.sendMessage(msg);
+
+        }else{
+
+          Dao<GenericSolution, String> genericSolutionStringDao = helper.getGenericSolutionStringDao();
+          GenericSolution genericSolution = genericSolutionStringDao.queryForId(type + "-" + id);
+
+          boolean isFavorited = (genericSolution != null && genericSolution.isFavorited()) ? true : false;
+
+          genericSolution = GenericSolution.parseJsonObject(json);
+          genericSolution.setFavorited(isFavorited);
+
+          genericSolutionStringDao.createOrUpdate(genericSolution);
+
+          Message msg = new Message();
+          msg.what = MESSAGE_INFORMATION;
+          Bundle bundle = new Bundle();
+          bundle.putString("id", genericSolution.getId());
+          bundle.putString("type", genericSolution.getType());
+          bundle.putString("title", genericSolution.getTitle());
+          bundle.putString("content", genericSolution.getIntro());
+          msg.setData(bundle);
+          handler.sendMessage(msg);
+        }
 
       } catch (Exception e) {
         e.printStackTrace();
@@ -223,50 +281,61 @@ public class PullService extends Service {
   }
 
   /**
-   * 发送资讯通知
+   * 健康小贴士通知
+   * @param data
    */
-  private void sendInformationNotification(){
-
-    if (!ActivityHelper.networkIsConnected(getApplicationContext())) {
-      return;
-    }
-
-    try {
-      HttpClientManager connect = new HttpClientManager(getApplicationContext(), RequestRoute.REQUEST_PATH + RequestRoute.SOLUTION_HOUR);
-//      connect.addParam("hour", hourID + "");
-    }catch (Exception e){
-      e.printStackTrace();
-      return;
-    }
-
-    Log.v("==========================sendNotification()==========================");
-
-    Time time = new Time();
-    time.setToNow();
-
-    int hourID = Hour.from_time_hour(time.hour);
-
+  private void sendHealthTipNotification(Bundle data){
     RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_information);
-
-    contentView.setTextViewText(R.id.title, time.hour + ":" + time.minute + ":" + time.second);
-
-    contentView.setTextViewText(R.id.intro, "健康投资：聪明的人，投资健康，健康增值，一百二十；明白的人，关注健康，健康保值，平安九十；无知的人，漠视健康，健康贬值，带病活到七十；糊涂的人，透支健康，健康贬值，五十六十。");
-
-    sendNotification(NOTIFICATION_ID, contentView, Healthier.class);
-  }
-
-  /**
-   * 发送通知
-   * @param contentView
-   * @param activityClass
-   */
-  private void sendNotification(int id, RemoteViews contentView, Class activityClass){
+    contentView.setTextViewText(R.id.title, "健康小贴士");
+    contentView.setTextViewText(R.id.intro, data.getString("content"));
 
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
       .setContent(contentView)
       .setSmallIcon(R.drawable.ic_launcher_alarmclock);
 
+    Intent resultIntent = new Intent(getApplicationContext(), Healthier.class);
+
+    TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+    stackBuilder.addParentStack(Healthier.class);
+    stackBuilder.addNextIntent(resultIntent);
+
+    PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+    mBuilder.setContentIntent(resultPendingIntent);
+
+    notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+
+    NOTIFICATION_HAS_BEEN_SEND = true;
+
+  }
+  /**
+   * 发送资讯通知
+   */
+  private void sendInformationNotification(Bundle data){
+    RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_information);
+    contentView.setTextViewText(R.id.title, data.getString("title"));
+    contentView.setTextViewText(R.id.intro, data.getString("content"));
+
+    String solutionType = data.getString("type");
+
+    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
+      .setContent(contentView)
+      .setSmallIcon(R.drawable.ic_launcher_alarmclock);
+
+    Class activityClass = null;
+
+    if (GenericSolution.Type.RECIPE.equals(solutionType)){
+      activityClass = RecipeActivity.class;
+    }
+
+    if (GenericSolution.Type.MASSAGE_SOLUTION.equals(solutionType) || GenericSolution.Type.MOXIBUSTION_SOLUTION.equals(solutionType)
+      || GenericSolution.Type.CUPPING_SOLUTION.equals(solutionType) || GenericSolution.Type.SKIN_SCRAPING_SOLUTION.equals(solutionType)){
+      activityClass = SolutionActivity.class;
+    }
+
     Intent resultIntent = new Intent(getApplicationContext(), activityClass);
+
+    resultIntent.putExtra("generic_solution_id", data.getString("id"));
 
     TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
     stackBuilder.addParentStack(activityClass);
@@ -276,7 +345,7 @@ public class PullService extends Service {
 
     mBuilder.setContentIntent(resultPendingIntent);
 
-    notificationManager.notify(id, mBuilder.build());
+    notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
 
     NOTIFICATION_HAS_BEEN_SEND = true;
   }

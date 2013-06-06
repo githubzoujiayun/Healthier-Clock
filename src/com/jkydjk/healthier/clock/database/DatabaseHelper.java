@@ -29,7 +29,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
   private static final int BUFFER_SIZE = 400000;
 
-  private static final int DATABASE_VERSION = 3;
+  private static final int DATABASE_VERSION = 5;
 
   // Dao
   private Dao<Solution, Integer> solutionDao = null;
@@ -44,6 +44,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
   private Dao<Acupoint, Integer> acupointDao = null;
   private Dao<AcupointSolutionStep, Integer> acupointSolutionStepDao = null;
   private Dao<GenericSolution, String> genericSolutionStringDao = null;
+
+  private Dao<HealthTip, Integer> healthTipIntegerDao = null;
 
   public DatabaseHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -84,6 +86,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
       TableUtils.createTable(connectionSource, SolutionStepProcess.class);
       TableUtils.createTable(connectionSource, AcupointSolutionStep.class);
       TableUtils.createTable(connectionSource, GenericSolution.class);
+      TableUtils.createTable(connectionSource, HealthTip.class);
     } catch (SQLException e) {
       Log.v(DATABASE_NAME + "创建数据库失败: \n" + e);
       e.printStackTrace();
@@ -102,6 +105,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
       TableUtils.dropTable(connectionSource, SolutionStepProcess.class, true);
       TableUtils.dropTable(connectionSource, AcupointSolutionStep.class, true);
       TableUtils.dropTable(connectionSource, GenericSolution.class, true);
+      TableUtils.dropTable(connectionSource, HealthTip.class, true);
       onCreate(db, connectionSource);
     } catch (SQLException e) {
       Log.v(DATABASE_NAME + "更新数据库失败: \n" + e);
@@ -118,6 +122,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     solutionCommentDao = null;
     acupointDao = null;
     acupointSolutionStepDao = null;
+    genericSolutionStringDao = null;
+    healthTipIntegerDao = null;
   }
 
   /**
@@ -229,6 +235,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
       acupointSolutionStepDao = getDao(AcupointSolutionStep.class);
     }
     return acupointSolutionStepDao;
+  }
+
+  public Dao<HealthTip, Integer> getHealthTipIntegerDao() throws SQLException {
+    if (healthTipIntegerDao == null){
+      healthTipIntegerDao = getDao(HealthTip.class);
+    }
+    return healthTipIntegerDao;
   }
 
 }
