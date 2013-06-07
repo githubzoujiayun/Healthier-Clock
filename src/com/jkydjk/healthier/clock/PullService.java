@@ -28,6 +28,7 @@ import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.Lunar;
 import com.jkydjk.healthier.clock.widget.TextViewWeather;
+import com.jkydjk.healthier.clock.entity.HealthTip;
 
 import org.json.JSONObject;
 
@@ -46,7 +47,7 @@ public class PullService extends Service {
 
   final static int NOTIFICATION_ID = 0x9999;
 
-  static boolean NOTIFICATION_HAS_BEEN_SEND = false;
+  static int NOTIFICATION_HAS_BEEN_SEND_ON_TIME = -1;
 
   NotificationManager notificationManager;
 
@@ -120,11 +121,10 @@ public class PullService extends Service {
         time.setToNow();
 
         Log.v("Now time hour: " + time.hour);
-        Log.v("NOTIFICATION_HAS_BEEN_SEND: " + NOTIFICATION_HAS_BEEN_SEND);
 
         switch (time.hour){
           case 7:
-            if(NOTIFICATION_HAS_BEEN_SEND == false){
+            if(NOTIFICATION_HAS_BEEN_SEND_ON_TIME == 7){
               Message msg = new Message();
               msg.what = MESSAGE_WEATHER;
               handler.sendMessage(msg);
@@ -132,23 +132,35 @@ public class PullService extends Service {
             break;
 
           case 9:
+            if(NOTIFICATION_HAS_BEEN_SEND_ON_TIME != 9){
+              pullInformationMessage();
+            }
+            break;
           case 11:
+            if(NOTIFICATION_HAS_BEEN_SEND_ON_TIME != 11){
+              pullInformationMessage();
+            }
+            break;
+
           case 15:
+            if(NOTIFICATION_HAS_BEEN_SEND_ON_TIME != 15){
+              pullInformationMessage();
+            }
+            break;
+
           case 19:
-            if(NOTIFICATION_HAS_BEEN_SEND == false){
+            if(NOTIFICATION_HAS_BEEN_SEND_ON_TIME != 19){
               pullInformationMessage();
             }
             break;
 
           default:
-            if(time.hour > 21)
+            if(time.hour > 21){
               cancelNotification(NOTIFICATION_ID);
+              NOTIFICATION_HAS_BEEN_SEND_ON_TIME = -1;
+            }
             break;
         }
-
-//        测试
-//        pullInformationMessage();
-
       }
     }, 0, 1000 * 60);
 
@@ -197,21 +209,14 @@ public class PullService extends Service {
 
       NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
         .setContent(contentView)
-        .setSmallIcon(R.drawable.ic_launcher_alarmclock);
-
-      Intent resultIntent = new Intent(getApplicationContext(), Healthier.class);
-
-      TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-      stackBuilder.addParentStack(Healthier.class);
-      stackBuilder.addNextIntent(resultIntent);
-
-      PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-      mBuilder.setContentIntent(resultPendingIntent);
+        .setSmallIcon(R.drawable.ic_launcher_alarmclock)
+        .setAutoCancel(true);
 
       notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
 
-      NOTIFICATION_HAS_BEEN_SEND = true;
+      Time time = new Time();
+      time.setToNow();
+      NOTIFICATION_HAS_BEEN_SEND_ON_TIME = time.hour;
     }
   }
 
@@ -246,7 +251,7 @@ public class PullService extends Service {
           Message msg = new Message();
           msg.what = MESSAGE_HEALTH_TIP;
           Bundle bundle = new Bundle();
-          bundle.putLong("id", tip.id);
+          bundle.putInt("id", tip.id);
           bundle.putString("content", tip.content);
           msg.setData(bundle);
           handler.sendMessage(msg);
@@ -291,12 +296,15 @@ public class PullService extends Service {
 
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
       .setContent(contentView)
-      .setSmallIcon(R.drawable.ic_launcher_alarmclock);
+      .setSmallIcon(R.drawable.ic_launcher_alarmclock)
+      .setAutoCancel(true);
 
-    Intent resultIntent = new Intent(getApplicationContext(), Healthier.class);
+    Intent resultIntent = new Intent(getApplicationContext(), HealthTipActivity.class);
+
+    resultIntent.putExtra("id", data.getInt("id"));
 
     TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-    stackBuilder.addParentStack(Healthier.class);
+    stackBuilder.addParentStack(HealthTipActivity.class);
     stackBuilder.addNextIntent(resultIntent);
 
     PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -305,8 +313,10 @@ public class PullService extends Service {
 
     notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
 
-    NOTIFICATION_HAS_BEEN_SEND = true;
+    Time time = new Time();
+    time.setToNow();
 
+    NOTIFICATION_HAS_BEEN_SEND_ON_TIME = time.hour;
   }
   /**
    * 发送资讯通知
@@ -320,7 +330,8 @@ public class PullService extends Service {
 
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
       .setContent(contentView)
-      .setSmallIcon(R.drawable.ic_launcher_alarmclock);
+      .setSmallIcon(R.drawable.ic_launcher_alarmclock)
+      .setAutoCancel(true);
 
     Class activityClass = null;
 
@@ -347,7 +358,10 @@ public class PullService extends Service {
 
     notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
 
-    NOTIFICATION_HAS_BEEN_SEND = true;
+    Time time = new Time();
+    time.setToNow();
+
+    NOTIFICATION_HAS_BEEN_SEND_ON_TIME = time.hour;
   }
 
   /**
@@ -357,7 +371,7 @@ public class PullService extends Service {
   private void cancelNotification(int id){
     if(notificationManager != null){
       notificationManager.cancel(id);
-      NOTIFICATION_HAS_BEEN_SEND = false;
+      NOTIFICATION_HAS_BEEN_SEND_ON_TIME = -1;
     }
   }
 

@@ -31,6 +31,12 @@
     <item name="android:windowNoTitle">true</item>
   </style>
 
+  <style name="Theme.DialogHealthTip" parent="android:Theme.Dialog">
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowIsTranslucent">false</item>
+    <item name="android:windowNoTitle">true</item>
+  </style>
+
   <!--
        A theme that has a wallpaper background.  Here we explicitly specify
        that this theme is to inherit from the system's wallpaper theme,

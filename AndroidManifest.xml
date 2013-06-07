@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.jkydjk.healthier.clock"
-          android:versionCode="7"
-          android:versionName="1.7beta" >
+          android:versionCode="8"
+          android:versionName="1.8beta" >
 
   <uses-sdk
     android:minSdkVersion="11"
@@ -74,6 +74,10 @@
       android:name=".SolutionStepSlider"
       android:screenOrientation="portrait"
       android:theme="@style/Theme.Transparent" />
+
+    <activity
+      android:name=".HealthTipActivity"
+      android:theme="@style/Theme.DialogHealthTip"/>
 
     <activity
       android:name=".FoodActivity"
@@ -189,6 +193,7 @@
       android:screenOrientation="portrait"
       android:taskAffinity=""
       android:theme="@style/Theme.Wallpaper" />
+
     <activity android:name="ClockPicker" />
 
     <receiver android:name="AlarmReceiver" >

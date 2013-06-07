@@ -579,5 +579,7 @@
   <string name="hello_world">Hello world!</string>
   <string name="menu_settings">Settings</string>
   <string name="title_activity_process">Process</string>
+  <string name="health_tip">健康小贴士</string>
+  <string name="open_healthier_app">进入健康时钟</string>
 
 </resources>
