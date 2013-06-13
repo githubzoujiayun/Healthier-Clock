@@ -323,6 +323,7 @@ public class PullService extends Service {
     Intent resultIntent = new Intent(getApplicationContext(), activityClass);
 
     resultIntent.putExtra("generic_solution_id", data.getString("id"));
+    resultIntent.putExtra("notification_to_enter", true);
 
     TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
     stackBuilder.addParentStack(activityClass);

@@ -42,6 +42,7 @@ public class RecipeActivity extends OrmLiteBaseActivity<DatabaseHelper> implemen
 
   String solutionId;
 
+  View back;
   View close;
 
   View loading;
@@ -82,6 +83,13 @@ public class RecipeActivity extends OrmLiteBaseActivity<DatabaseHelper> implemen
 
     if (solutionId == null)
       finish();
+
+    back = findViewById(R.id.back);
+    back.setOnClickListener(this);
+
+    if(getIntent().getBooleanExtra("notification_to_enter", false)){
+      back.setVisibility(View.VISIBLE);
+    }
 
     close = findViewById(R.id.close);
     close.setOnClickListener(this);
@@ -278,49 +286,56 @@ public class RecipeActivity extends OrmLiteBaseActivity<DatabaseHelper> implemen
   public void onClick(View v) {
     switch (v.getId()) {
 
-    // 返回
-    case R.id.close:
-      finish();
-      break;
-
-    // 收藏
-    case R.id.favorite:
-      try {
-        genericSolution.setFavorited(!genericSolution.isFavorited());
-        genericSolutionStringDao.update(genericSolution);
-        favoriteImageButton.setImageResource(genericSolution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-      break;
-
-    case R.id.evaluate: {
-      if (!ActivityHelper.networkIsConnected(this)) {
-        Toast.makeText(this, R.string.network_is_not_connected, Toast.LENGTH_SHORT).show();
-        return;
+      case R.id.back:{
+        Intent intent = new Intent(this, Healthier.class);
+        startActivity(intent);
+        finish();
+        break;
       }
 
-      if (!ActivityHelper.isLogged(this)) {
-        Toast.makeText(this, R.string.you_are_not_logged_in_can_not_be_evaluated, Toast.LENGTH_SHORT).show();
-        return;
+      // 返回
+      case R.id.close:
+        finish();
+        break;
+
+      // 收藏
+      case R.id.favorite:
+        try {
+          genericSolution.setFavorited(!genericSolution.isFavorited());
+          genericSolutionStringDao.update(genericSolution);
+          favoriteImageButton.setImageResource(genericSolution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+        break;
+
+      case R.id.evaluate: {
+        if (!ActivityHelper.networkIsConnected(this)) {
+          Toast.makeText(this, R.string.network_is_not_connected, Toast.LENGTH_SHORT).show();
+          return;
+        }
+
+        if (!ActivityHelper.isLogged(this)) {
+          Toast.makeText(this, R.string.you_are_not_logged_in_can_not_be_evaluated, Toast.LENGTH_SHORT).show();
+          return;
+        }
+
+        Intent intent = new Intent(this, SolutionEvaluate.class);
+        intent.putExtra("solutionId", genericSolution.getId());
+        startActivity(intent);
+        break;
       }
 
-      Intent intent = new Intent(this, SolutionEvaluate.class);
-      intent.putExtra("solutionId", genericSolution.getId());
-      startActivity(intent);
-      break;
-    }
-
-    case R.id.forwarding: {
-      Intent intent = new Intent(Intent.ACTION_SEND);
-      intent.setType("text/plain");
-      intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
-      intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_solution), genericSolution.getTitle(), genericSolution.getIntro()));
-      startActivity(Intent.createChooser(intent, getTitle()));
-      break;
-    }
-    default:
-      break;
+      case R.id.forwarding: {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
+        intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_solution), genericSolution.getTitle(), genericSolution.getIntro()));
+        startActivity(Intent.createChooser(intent, getTitle()));
+        break;
+      }
+      default:
+        break;
     }
 
   }

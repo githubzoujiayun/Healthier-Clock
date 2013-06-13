@@ -581,5 +581,6 @@
   <string name="title_activity_process">Process</string>
   <string name="health_tip">健康小贴士</string>
   <string name="open_healthier_app">进入健康时钟</string>
+  <string name="home">首页</string>
 
 </resources>

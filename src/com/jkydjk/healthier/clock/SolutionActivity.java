@@ -50,6 +50,7 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
 
   String solutionId;
 
+  View back;
   View close;
 
   View loading;
@@ -88,6 +89,13 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
 
     if (solutionId == null)
       finish();
+
+    back = findViewById(R.id.back);
+    back.setOnClickListener(this);
+
+    if(getIntent().getBooleanExtra("notification_to_enter", false)){
+      back.setVisibility(View.VISIBLE);
+    }
 
     close = findViewById(R.id.close);
     close.setOnClickListener(this);
@@ -282,82 +290,89 @@ public class SolutionActivity extends OrmLiteBaseActivity<DatabaseHelper> implem
   public void onClick(View v) {
     switch (v.getId()) {
 
-    // 返回
-    case R.id.close:
-      finish();
-      break;
-
-    // 收藏
-    case R.id.favorite:
-      try {
-        genericSolution.setFavorited(!genericSolution.isFavorited());
-        genericSolutionStringDao.update(genericSolution);
-        favoriteImageButton.setImageResource(genericSolution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
-      } catch (SQLException e) {
-        e.printStackTrace();
+      case R.id.back:{
+        Intent intent = new Intent(this, Healthier.class);
+        startActivity(intent);
+        finish();
+        break;
       }
-      break;
 
-    case R.id.alarm: {
-      if (!genericSolution.isAlarm(this)) {
-        long time = Alarms.addSolutionAlarm(this, genericSolution);
-        if (time > 0){
-          alarmImageButton.setImageResource(R.drawable.action_alarm_on);
-          Alarms.popAlarmSetToast(this, time);
-        }else{
-          Toast.makeText(this, R.string.alarm_is_not_created_successfully, Toast.LENGTH_SHORT).show();
+      // 返回
+      case R.id.close:
+        finish();
+        break;
+
+      // 收藏
+      case R.id.favorite:
+        try {
+          genericSolution.setFavorited(!genericSolution.isFavorited());
+          genericSolutionStringDao.update(genericSolution);
+          favoriteImageButton.setImageResource(genericSolution.isFavorited() ? R.drawable.action_favorite_on : R.drawable.action_favorite);
+        } catch (SQLException e) {
+          e.printStackTrace();
         }
-      }
-      break;
-    }
+        break;
 
-    case R.id.process: {
-
-      if (!ActivityHelper.networkIsConnected(this)) {
-        Toast.makeText(this, R.string.network_is_not_connected, Toast.LENGTH_SHORT).show();
-        return;
-      }
-
-      if (!ActivityHelper.isLogged(this)) {
-        Toast.makeText(this, R.string.you_are_not_logged_in_can_not_do_the_process_management, Toast.LENGTH_SHORT).show();
-        return;
-      }
-
-      Intent intent = new Intent(this, Process.class);
-      intent.putExtra("generic_solution_id", genericSolution.getId());
-      intent.putExtra("generic_solution_type_id", genericSolution.getTypeId());
-      startActivity(intent);
-      break;
-    }
-
-    case R.id.evaluate: {
-      if (!ActivityHelper.networkIsConnected(this)) {
-        Toast.makeText(this, R.string.network_is_not_connected, Toast.LENGTH_SHORT).show();
-        return;
+      case R.id.alarm: {
+        if (!genericSolution.isAlarm(this)) {
+          long time = Alarms.addSolutionAlarm(this, genericSolution);
+          if (time > 0){
+            alarmImageButton.setImageResource(R.drawable.action_alarm_on);
+            Alarms.popAlarmSetToast(this, time);
+          }else{
+            Toast.makeText(this, R.string.alarm_is_not_created_successfully, Toast.LENGTH_SHORT).show();
+          }
+        }
+        break;
       }
 
-      if (!ActivityHelper.isLogged(this)) {
-        Toast.makeText(this, R.string.you_are_not_logged_in_can_not_be_evaluated, Toast.LENGTH_SHORT).show();
-        return;
+      case R.id.process: {
+
+        if (!ActivityHelper.networkIsConnected(this)) {
+          Toast.makeText(this, R.string.network_is_not_connected, Toast.LENGTH_SHORT).show();
+          return;
+        }
+
+        if (!ActivityHelper.isLogged(this)) {
+          Toast.makeText(this, R.string.you_are_not_logged_in_can_not_do_the_process_management, Toast.LENGTH_SHORT).show();
+          return;
+        }
+
+        Intent intent = new Intent(this, Process.class);
+        intent.putExtra("generic_solution_id", genericSolution.getId());
+        intent.putExtra("generic_solution_type_id", genericSolution.getTypeId());
+        startActivity(intent);
+        break;
       }
 
-      Intent intent = new Intent(this, SolutionEvaluate.class);
-      intent.putExtra("generic_solution_id", genericSolution.getId());
-      intent.putExtra("generic_solution_type_id", genericSolution.getTypeId());
-      startActivity(intent);
-      break;
-    }
+      case R.id.evaluate: {
+        if (!ActivityHelper.networkIsConnected(this)) {
+          Toast.makeText(this, R.string.network_is_not_connected, Toast.LENGTH_SHORT).show();
+          return;
+        }
 
-    case R.id.forwarding: {
-      Intent intent = new Intent(Intent.ACTION_SEND);
-      intent.setType("text/plain");
-      intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
-      intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_solution), genericSolution.getTitle(), genericSolution.getIntro()));
-      startActivity(Intent.createChooser(intent, getTitle()));
-      break;
-    }
-    default:
-      break;
+        if (!ActivityHelper.isLogged(this)) {
+          Toast.makeText(this, R.string.you_are_not_logged_in_can_not_be_evaluated, Toast.LENGTH_SHORT).show();
+          return;
+        }
+
+        Intent intent = new Intent(this, SolutionEvaluate.class);
+        intent.putExtra("generic_solution_id", genericSolution.getId());
+        intent.putExtra("generic_solution_type_id", genericSolution.getTypeId());
+        startActivity(intent);
+        break;
+      }
+
+      case R.id.forwarding: {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
+        intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_solution), genericSolution.getTitle(), genericSolution.getIntro()));
+        startActivity(Intent.createChooser(intent, getTitle()));
+        break;
+      }
+      default:
+        break;
     }
 
   }
