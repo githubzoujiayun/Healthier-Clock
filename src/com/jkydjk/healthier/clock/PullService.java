@@ -27,14 +27,13 @@ import com.jkydjk.healthier.clock.network.ResuestMethod;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 import com.jkydjk.healthier.clock.util.Log;
 import com.jkydjk.healthier.clock.util.Lunar;
+import com.jkydjk.healthier.clock.util.TimerThread;
 import com.jkydjk.healthier.clock.widget.TextViewWeather;
 import com.jkydjk.healthier.clock.entity.HealthTip;
 
 import org.json.JSONObject;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by miclle on 13-5-30.
@@ -55,8 +54,10 @@ public class PullService extends Service {
 
   DatabaseHelper helper;
 
-  Timer timer;
   Handler handler;
+
+  TimerThread weatherUpdateTimer;
+  TimerThread informationPullTimer;
 
   @Override
   public void onCreate() {
@@ -68,14 +69,7 @@ public class PullService extends Service {
 
     helper = new DatabaseHelper(getApplicationContext());
 
-//    try {
-//      genericSolutionStringDao = helper.getGenericSolutionStringDao();
-////      genericSolution = genericSolutionStringDao.queryForId(genericSolutionId);
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
-
-      handler = new Handler() {
+    handler = new Handler() {
       @Override
       public void handleMessage(Message msg) {
         super.handleMessage(msg);
@@ -83,73 +77,54 @@ public class PullService extends Service {
           case MESSAGE_WEATHER:
             sendWeatherNotification();
             break;
-
           case MESSAGE_HEALTH_TIP:
             sendHealthTipNotification(msg.getData());
             break;
-
           case MESSAGE_INFORMATION:
             sendInformationNotification(msg.getData());
-            break;
-
-          default:
             break;
         }
       }
     };
 
-    // 定义计时器
-    timer = new Timer();
-
     // 每两小时更新天气
-    timer.schedule(new TimerTask() {
+    weatherUpdateTimer = new TimerThread(new TimerThread.Callback() {
       @Override
       public void run() {
+        Time time = new Time();
+        time.setToNow();
+        Log.v("Update weather: " + time.hour);
         if (ActivityHelper.networkIsConnected(getApplicationContext())) {
           SharedPreferences sharedPreferences = getSharedPreferences("configure", Context.MODE_PRIVATE);
           long regionID = sharedPreferences.getLong("city_id", Region.DEFAULT_REGION_ID);
           Weather.update(getApplicationContext(), String.valueOf(regionID));
         }
       }
-    }, 0, 1000 * 60 * 60 * 2);
+    }, 1000 * 60 * 60 * 2);
+    weatherUpdateTimer.start();
 
-    // 每分钟定时任务
-    timer.schedule(new TimerTask() {
+    informationPullTimer = new TimerThread(new TimerThread.Callback() {
       @Override
       public void run() {
         Time time = new Time();
         time.setToNow();
 
         Log.v("Now time hour: " + time.hour);
+        Log.v("NOTIFICATION_HAS_BEEN_SEND_ON_TIME: " + NOTIFICATION_HAS_BEEN_SEND_ON_TIME);
 
         switch (time.hour){
           case 7:
-            if(NOTIFICATION_HAS_BEEN_SEND_ON_TIME == 7){
+            if(NOTIFICATION_HAS_BEEN_SEND_ON_TIME != 7){
               Message msg = new Message();
               msg.what = MESSAGE_WEATHER;
               handler.sendMessage(msg);
             }
             break;
 
-          case 9:
-            if(NOTIFICATION_HAS_BEEN_SEND_ON_TIME != 9){
-              pullInformationMessage();
-            }
-            break;
           case 11:
-            if(NOTIFICATION_HAS_BEEN_SEND_ON_TIME != 11){
-              pullInformationMessage();
-            }
-            break;
-
           case 15:
-            if(NOTIFICATION_HAS_BEEN_SEND_ON_TIME != 15){
-              pullInformationMessage();
-            }
-            break;
-
           case 19:
-            if(NOTIFICATION_HAS_BEEN_SEND_ON_TIME != 19){
+            if(NOTIFICATION_HAS_BEEN_SEND_ON_TIME != time.hour){
               pullInformationMessage();
             }
             break;
@@ -162,7 +137,8 @@ public class PullService extends Service {
             break;
         }
       }
-    }, 0, 1000 * 60);
+    }, 1000 * 60);
+    informationPullTimer.start();
 
   }
 
@@ -382,6 +358,8 @@ public class PullService extends Service {
 
   @Override
   public void onDestroy() {
+    weatherUpdateTimer.destroy();
+    informationPullTimer.destroy();
     super.onDestroy();
   }
 
