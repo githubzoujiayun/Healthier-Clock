@@ -26,6 +26,7 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.jkydjk.healthier.clock.adapter.QuestionListAdapter;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.Question;
@@ -298,6 +299,20 @@ public class ConstitutionTest extends BaseActivity implements OnClickListener, O
     String[] whereArgs = { id + "" };
     database.update("constitution_questions", cvs, "question = (select question from constitution_questions where _id = ?)", whereArgs);
     database.close();
+  }
+
+  @Override
+  protected void onStart() {
+    // TODO Auto-generated method stub
+    super.onStart();
+    EasyTracker.getInstance().activityStart(this);
+  }
+
+  @Override
+  protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+    EasyTracker.getInstance().activityStop(this); // Add this method.
   }
 
 }

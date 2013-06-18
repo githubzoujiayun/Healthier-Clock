@@ -131,7 +131,6 @@ public class PullService extends Service {
 
           default:
             if(time.hour > 21){
-              cancelNotification(NOTIFICATION_ID);
               NOTIFICATION_HAS_BEEN_SEND_ON_TIME = -1;
             }
             break;
@@ -146,6 +145,8 @@ public class PullService extends Service {
    * 发送天气通知
    */
   private void sendWeatherNotification(){
+    cancelNotification(NOTIFICATION_ID);
+
     SharedPreferences sharedPreferences = getSharedPreferences("configure", Context.MODE_PRIVATE);
     long regionID = sharedPreferences.getLong("city_id", Region.DEFAULT_REGION_ID);
     List<Weather> weathers = Weather.getWeathers(getApplicationContext(), String.valueOf(regionID));
@@ -266,6 +267,8 @@ public class PullService extends Service {
    * @param data
    */
   private void sendHealthTipNotification(Bundle data){
+    cancelNotification(NOTIFICATION_ID);
+
     RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_information);
     contentView.setTextViewText(R.id.title, "健康小贴士");
     contentView.setTextViewText(R.id.intro, data.getString("content"));
@@ -298,6 +301,8 @@ public class PullService extends Service {
    * 发送资讯通知
    */
   private void sendInformationNotification(Bundle data){
+    cancelNotification(NOTIFICATION_ID);
+
     RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_information);
     contentView.setTextViewText(R.id.title, data.getString("title"));
     contentView.setTextViewText(R.id.intro, data.getString("content"));

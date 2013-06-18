@@ -26,6 +26,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
+import com.google.analytics.tracking.android.EasyTracker;
 
 /**
  * Settings for the Alarm Clock.
@@ -93,6 +94,20 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
     final ListPreference snooze = (ListPreference) findPreference(KEY_ALARM_SNOOZE);
     snooze.setSummary(snooze.getEntry());
     snooze.setOnPreferenceChangeListener(this);
+  }
+
+  @Override
+  protected void onStart() {
+    // TODO Auto-generated method stub
+    super.onStart();
+    EasyTracker.getInstance().activityStart(this);
+  }
+
+  @Override
+  protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+    EasyTracker.getInstance().activityStop(this); // Add this method.
   }
 
 }

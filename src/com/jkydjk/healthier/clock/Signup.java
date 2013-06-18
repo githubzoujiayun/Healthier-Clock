@@ -3,6 +3,7 @@ package com.jkydjk.healthier.clock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import org.json.JSONObject;
 
 import com.jkydjk.healthier.clock.entity.User;
@@ -154,6 +155,20 @@ public class Signup extends BaseActivity implements OnClickListener {
         Toast.makeText(Signup.this, errorMessage, Toast.LENGTH_SHORT).show();
       }
     }
+  }
+
+  @Override
+  protected void onStart() {
+    // TODO Auto-generated method stub
+    super.onStart();
+    EasyTracker.getInstance().activityStart(this);
+  }
+
+  @Override
+  protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+    EasyTracker.getInstance().activityStop(this); // Add this method.
   }
 
 }

@@ -1,5 +1,6 @@
 package com.jkydjk.healthier.clock;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -316,6 +317,20 @@ public class Resume extends BaseActivity implements OnClickListener {
       Toast.makeText(Resume.this, result, Toast.LENGTH_SHORT).show();
       initProfile();
     }
+  }
+
+  @Override
+  protected void onStart() {
+    // TODO Auto-generated method stub
+    super.onStart();
+    EasyTracker.getInstance().activityStart(this);
+  }
+
+  @Override
+  protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+    EasyTracker.getInstance().activityStop(this); // Add this method.
   }
 
 }

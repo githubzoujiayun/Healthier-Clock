@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -245,6 +246,20 @@ public class SolarTerms extends OrmLiteBaseActivity<DatabaseHelper> implements O
       break;
     }
 
+  }
+
+  @Override
+  protected void onStart() {
+    // TODO Auto-generated method stub
+    super.onStart();
+    EasyTracker.getInstance().activityStart(this);
+  }
+
+  @Override
+  protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+    EasyTracker.getInstance().activityStop(this); // Add this method.
   }
 
 }

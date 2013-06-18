@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import org.json.JSONArray;
 
 import android.graphics.Bitmap;
@@ -360,6 +361,20 @@ public class AcupointSlider extends FragmentActivity implements OnClickListener,
         imageViews[i].setBackgroundResource(R.drawable.page_indicator_black);
       }
     }
+  }
+
+  @Override
+  protected void onStart() {
+    // TODO Auto-generated method stub
+    super.onStart();
+    EasyTracker.getInstance().activityStart(this);
+  }
+
+  @Override
+  protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+    EasyTracker.getInstance().activityStop(this); // Add this method.
   }
 
 }

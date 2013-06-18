@@ -68,10 +68,10 @@
 
         <TextView
           style="@style/list_block_item_name"
-          android:layout_width="100dip"
+          android:layout_width="48dip"
           android:layout_height="wrap_content"
           android:layout_marginRight="5dip"
-          android:text="@string/username_email" />
+          android:text="@string/account"/>
 
         <EditText
           android:id="@+id/login"
@@ -79,7 +79,7 @@
           android:layout_width="0dip"
           android:layout_height="wrap_content"
           android:layout_weight="1.0"
-          android:hint=""
+          android:hint="@string/username_email"
           android:singleLine="true"/>
       </LinearLayout>
 
@@ -101,7 +101,7 @@
 
         <TextView
           style="@style/list_block_item_name"
-          android:layout_width="100dip"
+          android:layout_width="48dip"
           android:layout_height="wrap_content"
           android:layout_marginRight="5dip"
           android:text="@string/password" />
@@ -112,7 +112,7 @@
           android:layout_width="0dip"
           android:layout_height="wrap_content"
           android:layout_weight="1.0"
-          android:hint=""
+          android:hint="@string/password"
           android:inputType="textPassword"
           android:singleLine="true" />
       </LinearLayout>

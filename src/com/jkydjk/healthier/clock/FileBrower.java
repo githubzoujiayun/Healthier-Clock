@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.jkydjk.healthier.clock.adapter.FileListAdapter;
 import com.jkydjk.healthier.clock.entity.FileExtension;
 import com.jkydjk.healthier.clock.util.FileUtil;
@@ -27,191 +28,205 @@ import com.jkydjk.healthier.clock.widget.FilePage;
 //public class FileBrower extends ListActivity {
 public class FileBrower extends BaseActivity implements OnClickListener, OnItemClickListener {
 
-    private File currentOpenFileDirectory;
-    private File currentOpenFile;
+  private File currentOpenFileDirectory;
+  private File currentOpenFile;
 
-    private LayoutInflater inflater;
+  private LayoutInflater inflater;
 
-    private MediaPlayer mediaPlayer;
+  private MediaPlayer mediaPlayer;
 
-    private boolean filter = false;
-    private int filterFileType = 0;
+  private boolean filter = false;
+  private int filterFileType = 0;
 
-    private Uri fileUri;
-    private Uri currentPlay;
+  private Uri fileUri;
+  private Uri currentPlay;
 
-    private View cancelAction;
-    private View enterAction;
+  private View cancelAction;
+  private View enterAction;
 
-    private FileFlipBook fileView;
+  private FileFlipBook fileView;
 
-    @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+  @Override
+  public void onCreate(Bundle icicle) {
+    super.onCreate(icicle);
 
-        inflater = LayoutInflater.from(this);
+    inflater = LayoutInflater.from(this);
 
-        setContentView(R.layout.file_browser);
+    setContentView(R.layout.file_browser);
 
+    Intent intent = getIntent();
+    fileUri = (Uri) intent.getParcelableExtra("file");
+
+    filter = true;
+    filterFileType = FileUtil.AUDIO;
+
+    cancelAction = findViewById(R.id.cancel);
+    cancelAction.setOnClickListener(this);
+
+    enterAction = findViewById(R.id.enter);
+    enterAction.setOnClickListener(this);
+
+    fileView = (FileFlipBook) findViewById(R.id.scroll_view);
+
+    FilePage rootFolderPage = (FilePage) inflater.inflate(R.layout.file_page, null);
+
+    rootFolderPage.setFileExtension(FileExtension.SDCARD_FILE_EXTENSION);
+
+    fileView.appendPage(rootFolderPage, true);
+
+    openOrBrowseTo(rootFolderPage);
+  }
+
+  private void openOrBrowseTo(final FilePage filePage) {
+    FileExtension fileExtension = filePage.getFileExtension();
+    if (fileExtension != null) {
+      if (fileExtension.isDirectory()) {
+        File[] files = fileExtension.listFiles();
+        if (files.length > 0) {
+          List<FileExtension> fileExtensionEntries = new ArrayList<FileExtension>();
+          for (File file : files) {
+            if (file.isHidden())
+              continue;
+            if (filter && !FileUtil.fileFilter(file, filterFileType) && !file.isDirectory())
+              continue;
+            fileExtensionEntries.add(new FileExtension(file));
+          }
+          if (fileExtensionEntries.size() > 0) {
+            Collections.sort(fileExtensionEntries);
+            ListView fileList = (ListView) filePage.findViewById(R.id.list);
+            fileList.setAdapter(new FileListAdapter(this, fileExtensionEntries));
+            fileList.setOnItemClickListener(this);
+          } else {
+            filePage.showTipLayout(true, FileExtension.NO_FILES_IN_THE_FLODER);
+          }
+        } else {
+          filePage.showTipLayout(true, FileExtension.FLODER_IS_EMPTY);
+        }
+
+      } else {
+        openFile(fileExtension);
+      }
+      currentOpenFileDirectory = fileExtension.getFile();
+    }
+  }
+
+  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    FileItem item = (FileItem) view;
+    item.setIsSelected(true);
+    FileExtension selectedFileExtension = (FileExtension) parent.getAdapter().getItem(position);
+    if (selectedFileExtension.isDirectory()) {
+      FilePage filePage = (FilePage) inflater.inflate(R.layout.file_page, null);
+      filePage.setFileExtension(selectedFileExtension);
+      openOrBrowseTo(filePage);
+      fileView.appendPage(filePage, true);
+    } else {
+      openFile(selectedFileExtension);
+      fileView.scrollToPage(selectedFileExtension.getLevel());
+    }
+  }
+
+  // 打开文件
+  protected void openFile(FileExtension fileExtension) {
+    File file = fileExtension.getFile();
+    currentOpenFile = file;
+    switch (FileUtil.fileType(file)) {
+      case FileUtil.IMAGE:
+
+        break;
+
+      case FileUtil.WEBTEXT:
+
+        break;
+
+      case FileUtil.PACKAGE:
+
+        break;
+
+      case FileUtil.AUDIO:
+        autoPlayMedia(Uri.fromFile(file));
+        break;
+
+      case FileUtil.VIDEO:
+
+        break;
+
+      default:
+
+        break;
+    }
+  }
+
+  private void autoPlayMedia(Uri uri) {
+    fileUri = uri;
+    if (!uri.equals(currentPlay)) {
+      if (mediaPlayer != null) {
+        stopPlayMedia();
+      }
+      mediaPlayer = MediaPlayer.create(this, uri);
+      mediaPlayer.start();
+      currentPlay = uri;
+
+      mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+        public void onCompletion(MediaPlayer mp) {
+          stopPlayMedia();
+        }
+      });
+
+    } else {
+      stopPlayMedia();
+    }
+  }
+
+  private void stopPlayMedia() {
+    if (mediaPlayer != null) {
+      mediaPlayer.release();
+      mediaPlayer = null;
+      currentPlay = null;
+    }
+  }
+
+  public void onClick(View v) {
+    switch (v.getId()) {
+      case R.id.cancel:
+        finish();
+        break;
+
+      case R.id.enter:
         Intent intent = getIntent();
-        fileUri = (Uri) intent.getParcelableExtra("file");
+        intent.putExtra("alert", Uri.fromFile(currentOpenFile));
+        setResult(RESULT_OK, intent);
+        finish();
+        break;
 
-        filter = true;
-        filterFileType = FileUtil.AUDIO;
-
-        cancelAction = findViewById(R.id.cancel);
-        cancelAction.setOnClickListener(this);
-
-        enterAction = findViewById(R.id.enter);
-        enterAction.setOnClickListener(this);
-
-        fileView = (FileFlipBook) findViewById(R.id.scroll_view);
-
-        FilePage rootFolderPage = (FilePage) inflater.inflate(R.layout.file_page, null);
-
-        rootFolderPage.setFileExtension(FileExtension.SDCARD_FILE_EXTENSION);
-
-        fileView.appendPage(rootFolderPage, true);
-
-        openOrBrowseTo(rootFolderPage);
+      default:
+        break;
     }
+  }
 
-    private void openOrBrowseTo(final FilePage filePage) {
-        FileExtension fileExtension = filePage.getFileExtension();
-        if (fileExtension != null) {
-            if (fileExtension.isDirectory()) {
-                File[] files = fileExtension.listFiles();
-                if (files.length > 0) {
-                    List<FileExtension> fileExtensionEntries = new ArrayList<FileExtension>();
-                    for (File file : files) {
-                        if (file.isHidden())
-                            continue;
-                        if (filter && !FileUtil.fileFilter(file, filterFileType) && !file.isDirectory())
-                            continue;
-                        fileExtensionEntries.add(new FileExtension(file));
-                    }
-                    if (fileExtensionEntries.size() > 0) {
-                        Collections.sort(fileExtensionEntries);
-                        ListView fileList = (ListView) filePage.findViewById(R.id.list);
-                        fileList.setAdapter(new FileListAdapter(this, fileExtensionEntries));
-                        fileList.setOnItemClickListener(this);
-                    } else {
-                        filePage.showTipLayout(true, FileExtension.NO_FILES_IN_THE_FLODER);
-                    }
-                } else {
-                    filePage.showTipLayout(true, FileExtension.FLODER_IS_EMPTY);
-                }
+  @Override
+  protected void onPause() {
+    super.onPause();
+    stopPlayMedia();
+  }
 
-            } else {
-                openFile(fileExtension);
-            }
-            currentOpenFileDirectory = fileExtension.getFile();
-        }
-    }
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    stopPlayMedia();
+  }
 
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        FileItem item = (FileItem) view;
-        item.setIsSelected(true);
-        FileExtension selectedFileExtension = (FileExtension) parent.getAdapter().getItem(position);
-        if (selectedFileExtension.isDirectory()) {
-            FilePage filePage = (FilePage) inflater.inflate(R.layout.file_page, null);
-            filePage.setFileExtension(selectedFileExtension);
-            openOrBrowseTo(filePage);
-            fileView.appendPage(filePage, true);
-        } else {
-            openFile(selectedFileExtension);
-            fileView.scrollToPage(selectedFileExtension.getLevel());
-        }
-    }
+  @Override
+  protected void onStart() {
+    // TODO Auto-generated method stub
+    super.onStart();
+    EasyTracker.getInstance().activityStart(this);
+  }
 
-    // 打开文件
-    protected void openFile(FileExtension fileExtension) {
-        File file = fileExtension.getFile();
-        currentOpenFile = file;
-        switch (FileUtil.fileType(file)) {
-        case FileUtil.IMAGE:
-
-            break;
-
-        case FileUtil.WEBTEXT:
-
-            break;
-
-        case FileUtil.PACKAGE:
-
-            break;
-
-        case FileUtil.AUDIO:
-            autoPlayMedia(Uri.fromFile(file));
-            break;
-
-        case FileUtil.VIDEO:
-
-            break;
-
-        default:
-
-            break;
-        }
-    }
-
-    private void autoPlayMedia(Uri uri) {
-        fileUri = uri;
-        if (!uri.equals(currentPlay)) {
-            if (mediaPlayer != null) {
-                stopPlayMedia();
-            }
-            mediaPlayer = MediaPlayer.create(this, uri);
-            mediaPlayer.start();
-            currentPlay = uri;
-
-            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
-                public void onCompletion(MediaPlayer mp) {
-                    stopPlayMedia();
-                }
-            });
-
-        } else {
-            stopPlayMedia();
-        }
-    }
-
-    private void stopPlayMedia() {
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-            currentPlay = null;
-        }
-    }
-
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.cancel:
-            finish();
-            break;
-
-        case R.id.enter:
-            Intent intent = getIntent();
-            intent.putExtra("alert", Uri.fromFile(currentOpenFile));
-            setResult(RESULT_OK, intent);
-            finish();
-            break;
-
-        default:
-            break;
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        stopPlayMedia();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        stopPlayMedia();
-    }
+  @Override
+  protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+    EasyTracker.getInstance().activityStop(this); // Add this method.
+  }
 
 }

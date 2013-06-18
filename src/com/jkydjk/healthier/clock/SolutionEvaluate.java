@@ -2,6 +2,7 @@ package com.jkydjk.healthier.clock;
 
 import java.sql.SQLException;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.SolutionComment;
@@ -236,6 +237,20 @@ public class SolutionEvaluate extends OrmLiteBaseActivity<DatabaseHelper> implem
       super.onPostExecute(result);
     }
 
+  }
+
+  @Override
+  protected void onStart() {
+    // TODO Auto-generated method stub
+    super.onStart();
+    EasyTracker.getInstance().activityStart(this);
+  }
+
+  @Override
+  protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+    EasyTracker.getInstance().activityStop(this); // Add this method.
   }
 
 }

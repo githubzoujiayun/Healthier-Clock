@@ -164,7 +164,7 @@
 
   <style name="list_block_item_value" parent="@android:style/Widget.TextView">
     <item name="android:gravity">left|center_vertical</item>
-    <item name="android:textColor">#FFFF0000</item>
+    <item name="android:textColor">#FF333333</item>
     <item name="android:textSize">18sp</item>
   </style>
 
@@ -176,8 +176,9 @@
 
   <style name="list_block_item_edit_text" parent="@android:style/Widget.EditText">
     <item name="android:gravity">left|center_vertical</item>
-    <item name="android:textColor">#FFFF0000</item>
+    <item name="android:textColor">#FF333333</item>
     <item name="android:textSize">18sp</item>
+    <item name="android:textColorHint">#FF999999</item>
     <item name="android:background">@android:color/transparent</item>
   </style>
 

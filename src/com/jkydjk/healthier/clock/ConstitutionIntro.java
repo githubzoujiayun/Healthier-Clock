@@ -1,5 +1,6 @@
 package com.jkydjk.healthier.clock;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.jkydjk.healthier.clock.util.ActivityHelper;
 
 import android.content.Context;
@@ -83,6 +84,20 @@ public class ConstitutionIntro extends BaseActivity implements OnClickListener {
       finish();
       break;
     }
+  }
+
+  @Override
+  protected void onStart() {
+    // TODO Auto-generated method stub
+    super.onStart();
+    EasyTracker.getInstance().activityStart(this);
+  }
+
+  @Override
+  protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+    EasyTracker.getInstance().activityStop(this); // Add this method.
   }
 
 }

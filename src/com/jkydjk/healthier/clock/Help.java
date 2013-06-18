@@ -2,6 +2,7 @@ package com.jkydjk.healthier.clock;
 
 import java.util.ArrayList;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.jkydjk.healthier.clock.util.Log;
 
 import android.os.Bundle;
@@ -144,6 +145,20 @@ public class Help extends BaseActivity implements OnPageChangeListener {
     public void finishUpdate(View container) {
       // TODO Auto-generated method stub
     }
+  }
+
+  @Override
+  protected void onStart() {
+    // TODO Auto-generated method stub
+    super.onStart();
+    EasyTracker.getInstance().activityStart(this);
+  }
+
+  @Override
+  protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+    EasyTracker.getInstance().activityStop(this); // Add this method.
   }
 
 }

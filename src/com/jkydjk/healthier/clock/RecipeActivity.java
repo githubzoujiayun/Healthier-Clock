@@ -2,6 +2,7 @@ package com.jkydjk.healthier.clock;
 
 import java.sql.SQLException;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -337,7 +338,20 @@ public class RecipeActivity extends OrmLiteBaseActivity<DatabaseHelper> implemen
       default:
         break;
     }
+  }
 
+  @Override
+  protected void onStart() {
+    // TODO Auto-generated method stub
+    super.onStart();
+    EasyTracker.getInstance().activityStart(this);
+  }
+
+  @Override
+  protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+    EasyTracker.getInstance().activityStop(this); // Add this method.
   }
 
 }

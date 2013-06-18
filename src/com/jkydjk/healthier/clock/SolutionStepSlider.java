@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher.ViewFactory;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.j256.ormlite.dao.Dao;
 import com.jkydjk.healthier.clock.database.DatabaseHelper;
 import com.jkydjk.healthier.clock.entity.GenericSolution;
@@ -351,6 +352,20 @@ public class SolutionStepSlider extends FragmentActivity implements OnClickListe
         imageViews[i].setBackgroundResource(R.drawable.page_indicator_black);
       }
     }
+  }
+
+  @Override
+  protected void onStart() {
+    // TODO Auto-generated method stub
+    super.onStart();
+    EasyTracker.getInstance().activityStart(this);
+  }
+
+  @Override
+  protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+    EasyTracker.getInstance().activityStop(this); // Add this method.
   }
 
 }

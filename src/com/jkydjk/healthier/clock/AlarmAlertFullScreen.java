@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.jkydjk.healthier.clock.entity.Alarm;
 import com.jkydjk.healthier.clock.entity.Region;
 import com.jkydjk.healthier.clock.entity.Weather;
@@ -249,15 +250,6 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
   }
 
   @Override
-  protected void onStop() {
-    super.onStop();
-    if (!isFinishing()) {
-      // Don't hang around.
-      finish();
-    }
-  }
-
-  @Override
   public void onDestroy() {
     super.onDestroy();
     if (Log.LOGV)
@@ -337,6 +329,26 @@ public class AlarmAlertFullScreen extends BaseActivity implements OnPageChangeLi
       return pages.get(position);
     }
 
+  }
+
+  @Override
+  protected void onStart() {
+    // TODO Auto-generated method stub
+    super.onStart();
+    EasyTracker.getInstance().activityStart(this);
+  }
+
+  @Override
+  protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+
+    if (!isFinishing()) {
+      // Don't hang around.
+      finish();
+    }
+
+    EasyTracker.getInstance().activityStop(this); // Add this method.
   }
 
 }
