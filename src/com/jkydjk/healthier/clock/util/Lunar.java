@@ -54,7 +54,7 @@ public class Lunar {
 
   /**
    * 获得当前节气
-   * 
+   *
    * @return
    */
   public static int getCurrentSolarTermIntervalIndex() {
@@ -72,7 +72,7 @@ public class Lunar {
 
   /**
    * 获得该日期在哪个节气区间内
-   * 
+   *
    * @param cal
    * @return
    */
@@ -89,7 +89,7 @@ public class Lunar {
 
   /**
    * 根据日期得到节气
-   * 
+   *
    * @param cal
    * @return
    */
@@ -99,7 +99,7 @@ public class Lunar {
 
   /**
    * 根据日期(y年m月d日)得到节气
-   * 
+   *
    * @param y
    * @param m
    * @param d
@@ -112,7 +112,7 @@ public class Lunar {
 
   /**
    * 根据日期(y年m月d日)得到节气Index
-   * 
+   *
    * @param y
    * @param m
    * @param d
@@ -131,7 +131,7 @@ public class Lunar {
 
   /**
    * y年的第n个节气为几日（从0小寒起算）
-   * 
+   *
    * @param y
    * @param n
    * @return
@@ -146,7 +146,7 @@ public class Lunar {
 
   /**
    * 获取农历日期 如： 六月十一
-   * 
+   *
    * @param cal
    * @return
    */
@@ -160,7 +160,7 @@ public class Lunar {
 
   /**
    * 给定日期计算农历的年、月、日以及是否闰年
-   * 
+   *
    * @param cal
    * @return
    */
@@ -290,7 +290,7 @@ public class Lunar {
 
   /**
    * 传回农历 y年的生肖
-   * 
+   *
    * @return
    */
   public String animals() {
@@ -299,7 +299,7 @@ public class Lunar {
 
   /**
    * 获取农历时辰
-   * 
+   *
    * @param hour
    * @return Example: 子时
    */
@@ -309,7 +309,7 @@ public class Lunar {
 
   /**
    * 获取农历时辰
-   * 
+   *
    * @param hour
    * @return Example: 子时
    */
@@ -319,7 +319,7 @@ public class Lunar {
 
   /**
    * 给定日期获得一个农历对象
-   * 
+   *
    * @param cal
    */
   public Lunar(Calendar cal) {
@@ -333,7 +333,7 @@ public class Lunar {
 
   /**
    * 转换成公历时间
-   * 
+   *
    * @param sdf
    * @return 转换后的时间字符串
    */
@@ -343,7 +343,7 @@ public class Lunar {
 
   /**
    * 转换成公历时间
-   * 
+   *
    * @param sdf
    * @return 转换后的时间字符串
    */
@@ -353,7 +353,7 @@ public class Lunar {
 
   /**
    * 获得完整的公历表示
-   * 
+   *
    * @return Example: 1980年08月08日(周五) 下午4点
    */
   public String getGregorianFull() {
@@ -362,7 +362,7 @@ public class Lunar {
 
   /**
    * 获取农历日期
-   * 
+   *
    * @return Example: 六月廿八
    */
   public String getLunar() {
@@ -371,7 +371,7 @@ public class Lunar {
 
   /**
    * 获得完整的农历表示
-   * 
+   *
    * @return Example: 庚申年六月廿八日 申时
    */
   public String getLunarFull() {
@@ -380,7 +380,7 @@ public class Lunar {
 
   /**
    * 获取星期 Week Day
-   * 
+   *
    * @return Example: 周五
    */
   public String getWeekDay() {
@@ -389,7 +389,7 @@ public class Lunar {
 
   /**
    * 获取上午/下午
-   * 
+   *
    * @return
    */
   public String getAMPM() {
@@ -398,7 +398,7 @@ public class Lunar {
 
   /**
    * 获得（八字）天干地支
-   * 
+   *
    * @return
    */
   public String getCharacter() {
@@ -407,7 +407,7 @@ public class Lunar {
 
   /**
    * 获得年的天干地支
-   * 
+   *
    * @return
    */
   public String getYearGanZhi() {
@@ -464,7 +464,7 @@ public class Lunar {
 
   /**
    * 获得月的天干地支
-   * 
+   *
    * @return
    */
   private String getMonthGanZhi() {
@@ -491,7 +491,7 @@ public class Lunar {
 
   /**
    * 获得天的天干地支
-   * 
+   *
    * @return
    */
   public String getDayGanZhi() {

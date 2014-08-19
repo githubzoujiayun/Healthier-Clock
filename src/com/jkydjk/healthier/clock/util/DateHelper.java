@@ -8,18 +8,18 @@ import java.util.Date;
 
 /**
  * 日期帮助类
- * 
+ *
  * @author miclle
- * 
+ *
  */
-@SuppressLint("SimpleDateFormat") 
+@SuppressLint("SimpleDateFormat")
 public class DateHelper {
 
   final static SimpleDateFormat SIMPLE_DATE_FORMAT_yyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd");
-  
+
   /**
    * 求两个日期相隔天数
-   * 
+   *
    * @param cal1
    * @param cal2
    * @return
@@ -35,19 +35,19 @@ public class DateHelper {
 
   /**
    * 距离今天多少天
-   * 
+   *
    * @param cal
    * @return
    * @throws ParseException
    */
   public static int daysAway(Calendar cal) throws ParseException {
 
-    
+
     Date todayDate = SIMPLE_DATE_FORMAT_yyy_MM_dd.parse(SIMPLE_DATE_FORMAT_yyy_MM_dd.format(new Date()));
-    
+
     Calendar today = Calendar.getInstance();
     today.setTime(todayDate);
-    
+
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(cal.getTime());
 
